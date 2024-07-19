@@ -1,5 +1,7 @@
 project:
   type: book
+  resources:
+    - CNAME
 
 book:
   title: "Python for Clinical Study Reports and Submission"
