@@ -1,2 +1,2 @@
-pandas==2.2.2
+polars==1.2.1
 plotnine==0.13.6

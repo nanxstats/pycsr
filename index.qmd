@@ -5,7 +5,3 @@ jupyter: python3
 # Preface {.unnumbered}
 
 This is a Quarto book.
-
-```{python}
-1 + 1
-```
