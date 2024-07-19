@@ -1,0 +1,19 @@
+project:
+  type: book
+
+book:
+  title: "Python for Clinical Study Reports and Submission"
+  author: "Nan Xiao"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt

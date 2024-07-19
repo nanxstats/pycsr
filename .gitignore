@@ -1,0 +1,6 @@
+/env/
+.Rproj.user
+
+/.quarto/
+/_book/
+/site_libs/
