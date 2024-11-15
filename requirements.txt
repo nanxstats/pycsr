@@ -1,2 +1,3 @@
-polars==1.2.1
-plotnine==0.13.6
+plotnine==0.14.1
+polars==1.13.1
+jupyter==1.1.1
