@@ -4,28 +4,22 @@ $primary: #385898 !default;
 
 /*-- scss:rules --*/
 
+/* Lato build from https://github.com/applecuckoo/lato-builds */
+
 @font-face {
     font-display: swap;
     font-family: "Lato";
-    src: url("fonts/Lato-Regular.woff2") format("woff2");
-    font-weight: 400;
+    src: url("fonts/Lato-VF.woff2") format("woff2");
+    font-weight: 100 900;
     font-style: normal;
 }
 
 @font-face {
     font-display: swap;
     font-family: "Lato";
-    src: url("fonts/Lato-Italic.woff2") format("woff2");
-    font-weight: 400;
+    src: url("fonts/Lato-Italic-VF.woff2") format("woff2");
+    font-weight: 100 900;
     font-style: italic;
-}
-
-@font-face {
-    font-display: swap;
-    font-family: "Lato";
-    src: url("fonts/Lato-Bold.woff2") format("woff2");
-    font-weight: 700;
-    font-style: normal;
 }
 
 /* Cover image shadow */
