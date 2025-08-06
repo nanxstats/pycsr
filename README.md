@@ -12,6 +12,7 @@ Update dependencies:
 ```bash
 uv sync
 uv lock --upgrade
+source .venv/bin/activate
 pip-compile --generate-hashes
 ```
 
