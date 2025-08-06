@@ -2103,7 +2103,7 @@ requires-dist = [
     { name = "plotnine", specifier = ">=0.15.0" },
     { name = "polars", specifier = ">=1.0.0" },
     { name = "pyarrow", specifier = ">=21.0.0" },
-    { name = "rtflite", specifier = ">=0.1.3" },
+    { name = "rtflite", git = "https://github.com/nanxstats/rtflite.git" },
 ]
 
 [package.metadata.requires-dev]
@@ -2627,18 +2627,14 @@ wheels = [
 
 [[package]]
 name = "rtflite"
-version = "0.1.3"
-source = { registry = "https://pypi.org/simple" }
+version = "0.1.0"
+source = { git = "https://github.com/nanxstats/rtflite.git#008435f488d37f006ec789316c614ee8d0d0519a" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pandas" },
     { name = "pillow" },
     { name = "pydantic" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/bd/a3/c6e092c7f32d8687c99444f0edcee257909d3aaf941dcd9fb4ed835335d7/rtflite-0.1.3.tar.gz", hash = "sha256:28adcde5a9d3ed11c04ef0684112013d18b2543930ccd5867b696940a11fc8ea", size = 1322313, upload-time = "2025-04-04T23:59:17.92Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/19/8c/4fa61bc9a04d266a40df7a0c17bafc774cf3dec7c8e3f5ff85d3328a254e/rtflite-0.1.3-py3-none-any.whl", hash = "sha256:8c5742b79c3e1f7a438fd2c540319281274c3d6da18c1ddb0d4cf776fff57ed4", size = 1024281, upload-time = "2025-04-04T23:59:16.053Z" },
 ]
 
 [[package]]

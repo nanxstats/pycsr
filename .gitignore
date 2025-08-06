@@ -4,3 +4,7 @@
 /.quarto/
 /_book/
 /site_libs/
+
+# Output directories
+/rtf/
+/pdf/

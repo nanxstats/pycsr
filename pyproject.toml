@@ -27,3 +27,6 @@ dev = [
     "isort>=5.13.2",
     "pip-tools>=7.4.1",
 ]
+
+[tool.uv.sources]
+rtflite = { git = "https://github.com/nanxstats/rtflite.git" }
