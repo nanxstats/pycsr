@@ -1,0 +1,83 @@
+---
+title: "Specific Adverse Events Table"
+format: gfm
+eval: false
+---
+
+<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
+
+This article demonstrates how to create a specific adverse events table by System Organ Class and Preferred Term.
+
+## Setup
+
+```{python}
+import polars as pl
+import rtflite as rtf
+from importlib.resources import files
+
+adsl = pl.read_parquet(files("rtflite.data").joinpath("adsl.parquet"))
+adae = pl.read_parquet(files("rtflite.data").joinpath("adae.parquet"))
+treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+```
+
+## Prepare AE Summary Data
+
+```{python}
+# Get safety population counts and AE data
+adsl_safety = adsl.filter(pl.col("SAFFL") == "Y").select(["USUBJID", "TRT01A"])
+adae_safety = adae.join(adsl_safety, on="USUBJID", how="inner")
+pop_counts = adsl_safety.group_by("TRT01A").agg(N=pl.len()).sort("TRT01A")
+
+# Calculate AE counts by SOC and term
+ae_counts = (
+    adae_safety.with_columns(pl.col("AEDECOD").str.to_titlecase())
+    .group_by(["TRT01A", "AEBODSYS", "AEDECOD"])
+    .agg(n=pl.col("USUBJID").n_unique())
+    .sort(["AEBODSYS", "AEDECOD", "TRT01A"])
+)
+
+# Build table rows
+table_data = [
+    ["Participants in population"] + [str(pop_counts.filter(pl.col("TRT01A") == t)["N"][0]) for t in treatments],
+    [""] * 4  # Blank row
+]
+
+# Add SOC and AE term rows
+for soc in ae_counts["AEBODSYS"].unique().sort():
+    table_data.append([soc] + [""] * 3)
+    soc_data = ae_counts.filter(pl.col("AEBODSYS") == soc)
+    
+    for ae in soc_data["AEDECOD"].unique().sort():
+        row = [f"  {ae}"]
+        for trt in treatments:
+            count = soc_data.filter((pl.col("AEDECOD") == ae) & (pl.col("TRT01A") == trt))
+            row.append(str(count["n"][0]) if count.height > 0 else "0")
+        table_data.append(row)
+
+df_ae_specific = pl.DataFrame(table_data, schema=[""] + treatments, orient="row")
+```
+
+## Create RTF Output
+
+```{python}
+doc_ae_specific = rtf.RTFDocument(
+    df=df_ae_specific,
+    rtf_title=rtf.RTFTitle(text=["Specific Adverse Events", "(Safety Analysis Population)"]),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=["", "Placebo\nn", "Xanomeline Low Dose\nn", "Xanomeline High Dose\nn"],
+        col_rel_width=[4, 1, 1, 1],
+        text_justification=["l", "c", "c", "c"],
+    ),
+    rtf_body=rtf.RTFBody(
+        col_rel_width=[4, 1, 1, 1],
+        text_justification=["l", "c", "c", "c"],
+        text_font_style=lambda df, i, j: "bold" if j == 0 and "  " not in str(df[i, j]) else "",
+    ),
+    rtf_footnote=rtf.RTFFootnote(text=["Number of participants with specific adverse events."]),
+    rtf_source=rtf.RTFSource(text=["Source: ADSL and ADAE datasets"])
+)
+
+doc_ae_specific.write_rtf("../rtf/tlf_ae_specific.rtf")
+```
+
+<embed src="../pdf/tlf_ae_specific.pdf" style="width:100%; height:600px" type="application/pdf">

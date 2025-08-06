@@ -1,0 +1,86 @@
+---
+title: "Study Population"
+format: gfm
+eval: false
+---
+
+<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
+
+This article demonstrates how to create an analysis population overview table.
+
+## Setup
+
+```{python}
+import polars as pl
+import rtflite as rtf
+from importlib.resources import files
+
+adsl = pl.read_parquet(files("rtflite.data").joinpath("adsl.parquet"))
+treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+```
+
+## Create Population Table
+
+```{python}
+# Define populations to analyze
+populations = {
+    "Participants in population": None,
+    "Participants included in ITT population": "ITTFL",
+    "Participants included in efficacy population": "EFFFL", 
+    "Participants included in safety population": "SAFFL"
+}
+
+# Calculate statistics for each population
+table_data = []
+totals = adsl.group_by("TRT01P").agg(total=pl.len())
+
+for pop_name, flag in populations.items():
+    row = [pop_name]
+    
+    # Filter and calculate counts
+    df_pop = adsl if flag is None else adsl.filter(pl.col(flag) == "Y")
+    stats = (
+        df_pop.group_by("TRT01P")
+        .agg(n=pl.len())
+        .join(totals, on="TRT01P")
+        .with_columns(pct=(100.0 * pl.col("n") / pl.col("total")).round(1))
+    )
+    
+    # Format results for each treatment
+    for trt in treatments:
+        trt_data = stats.filter(pl.col("TRT01P") == trt)
+        if trt_data.height > 0:
+            n, pct = trt_data["n"][0], trt_data["pct"][0]
+            row.append(str(n) if flag is None else f"{n} ({pct:5.1f})")
+        else:
+            row.append("0 (  0.0)")
+    
+    table_data.append(row)
+
+df_overview = pl.DataFrame(table_data, schema=[""] + treatments, orient="row")
+```
+
+## Create RTF Output
+
+```{python}
+doc_overview = rtf.RTFDocument(
+    df=df_overview,
+    rtf_title=rtf.RTFTitle(
+        text=["Analysis Population", "All Participants Randomized"]
+    ),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=["", "Placebo\nn (%)", "Xanomeline Low Dose\nn (%)", "Xanomeline High Dose\nn (%)"],
+        col_rel_width=[4, 2, 2, 2],
+        text_justification=["l", "c", "c", "c"],
+    ),
+    rtf_body=rtf.RTFBody(
+        col_rel_width=[4, 2, 2, 2],
+        text_justification=["l", "c", "c", "c"],
+    ),
+    rtf_source=rtf.RTFSource(text=["Source: ADSL dataset"])
+)
+
+doc_overview.write_rtf("../rtf/tlf_population.rtf")
+```
+
+<embed src="../pdf/tlf_population.pdf" style="width:100%; height:600px" type="application/pdf">
