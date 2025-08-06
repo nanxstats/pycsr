@@ -5,7 +5,9 @@ project:
 
 book:
   title: "Python for Clinical Study Reports and Submission"
-  author: "Nan Xiao"
+  author:
+    - Yilong Zhang
+    - Nan Xiao
   chapters:
     - index.qmd
     - intro.qmd
