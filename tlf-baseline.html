@@ -262,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="imports" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">3.2</span> Imports</h2>
-<div id="6b705b2e" class="cell" data-execution_count="1">
+<div id="46372148" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.resources <span class="im">import</span> files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -270,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="data-preparation" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">3.3</span> Data Preparation</h2>
-<div id="ee99d479" class="cell" data-execution_count="2">
+<div id="1bbd89b2" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="op">=</span> files(<span class="st">"rtflite.data"</span>).joinpath(<span class="st">"adsl.parquet"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>adsl_baseline <span class="op">=</span> (</span>
@@ -286,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="statistics-function" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="statistics-function"><span class="header-section-number">3.4</span> Statistics Function</h2>
-<div id="18f29cdc" class="cell" data-execution_count="3">
+<div id="d7913a28" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_statistics(df, var, is_continuous<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    expr <span class="op">=</span> [</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>            pl.col(var).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean"</span>),</span>
@@ -336,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="build-table-data" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="build-table-data"><span class="header-section-number">3.5</span> Build Table Data</h2>
-<div id="ac176bcd" class="cell" data-execution_count="4">
+<div id="29c98b5c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Treatment groups and counts</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>treatment_counts <span class="op">=</span> <span class="bu">dict</span>(</span>
@@ -412,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-rtf-output" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">3.6</span> Create RTF Output</h2>
-<div id="d146b0d6" class="cell" data-execution_count="5">
+<div id="e63f6ac1" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Column headers with N counts</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>col_headers <span class="op">=</span> [<span class="st">""</span>] <span class="op">+</span> [<span class="ss">f"</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>treatment_counts[trt]<span class="sc">}</span><span class="ss">)"</span> <span class="cf">for</span> trt <span class="kw">in</span> treatments] <span class="op">+</span> [<span class="ss">f"Overall</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>adsl_baseline<span class="sc">.</span>height<span class="sc">}</span><span class="ss">)"</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
