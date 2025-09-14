@@ -19,8 +19,8 @@ This is a book project demonstrating how to use rtflite for creating clinical st
 ### Key Libraries
 ```python
 import polars as pl
-import plotnine as p9
-from rtflite import Rtf
+import plotnine as ggplot
+import rtflite
 ```
 
 ### Project Structure
@@ -34,7 +34,14 @@ The project contains example TLF (Tables, Listings, and Figures) notebooks:
 
 ## Commands
 - **Install dependencies**: `uv add <package>`
+- **Sync dependencies**: `uv sync`
 - **Run notebooks**: Use Quarto to render .qmd files
+
+## Package Management
+- Uses `uv` as the package manager (NOT pip)
+- Dependencies declared in `pyproject.toml`
+- Exact versions locked in `uv.lock`
+- No `requirements.txt` needed
 
 ## Important Notes
 - Always use polars DataFrames instead of pandas
