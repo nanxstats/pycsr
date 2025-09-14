@@ -1,124 +1,177 @@
 ---
 title: "Disposition of Participants Table"
-format: gfm
 ---
 
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-
-This article demonstrates how to create a disposition table following ICH E3 guidance using rtflite, based on the R4CSR example.
+This article demonstrates how to create a disposition table following ICH E3 guidance using rtflite.
 
 ## Overview
 
 The disposition table summarizes the flow of participants through the study, including:
 - Number of participants randomized
-- Number who discontinued and reasons for discontinuation  
+- Number who discontinued and reasons for discontinuation
 - Number who completed the study
+
+This follows ICH E3 guidance for reporting participants' randomization, entry, and completion status, including reasons for post-randomization discontinuations.
 
 ## Setup
 
 ```{python}
 import polars as pl
 import rtflite as rtf
-
-adsl = pl.read_parquet("data/adsl.parquet")
-
-treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
-## Calculate Disposition Statistics
+## Load Data
+
+```{python}
+adsl = pl.read_parquet("data/adsl.parquet").with_columns(
+    pl.col("TRT01PN").cast(pl.Int64)
+)
+```
+
+## Data Dictionary
+
+The following variables are used in the preparation of a simplified disposition of participants table:
+
+- **USUBJID**: unique subject identifier
+- **TRT01P**: planned treatment
+- **TRT01PN**: planned treatment numeric encoding
+- **DISCONFL**: discontinued from study flag
+- **DCREASCD**: discontinued from study reason coded
+
+```{python}
+adsl.select(["USUBJID", "TRT01P", "TRT01PN", "DISCONFL", "DCREASCD"])
+```
+
+## Step 1: Participants in Population
 
 ```{python}
 n_rand = (
     adsl
-    .group_by("TRT01P")
-    .agg(n=pl.len())
-    .sort("TRT01P")
+    .group_by("TRT01PN")
+    .agg(n = pl.len())
+    .with_columns([
+        pl.lit("Participants in population").alias("row"),
+        pl.lit("").alias("pct")
+    ])
+    .pivot(
+        index="row",
+        on="TRT01PN",
+        values=["n", "pct"],
+        sort_columns=True
+    )
 )
 
-def calc_stats(df, filter_expr=None):
-    if filter_expr is not None:
-        df = df.filter(filter_expr)
-    
-    counts = (
-        df
-        .group_by("TRT01P")
-        .agg(n=pl.len())
-        .join(n_rand, on="TRT01P", suffix="_total")
-        .with_columns(
-            pct=(100 * pl.col("n") / pl.col("n_total")).round(1)
-        )
-        .sort("TRT01P")
-    )
-    return counts
-
-stats = {
-    "completed": calc_stats(adsl, pl.col("DCREASCD") == "Completed"),
-    "discontinued": calc_stats(adsl, pl.col("DCREASCD") != "Completed")
-}
-
-disc_reasons = (
-    adsl
-    .filter(pl.col("DCREASCD") != "Completed")
-    .group_by(["TRT01P", "DCREASCD"])
-    .agg(n=pl.len())
-    .join(n_rand, on="TRT01P", suffix="_total")
-    .with_columns(
-        pct=(100 * pl.col("n") / pl.col("n_total")).round(1)
-    )
-    .sort(["DCREASCD", "TRT01P"])
-)
+n_rand
 ```
 
-## Build Table Data
+## Step 2: Participants who Completed
 
 ```{python}
-def format_row(label, stats_df=None, reason=None):
-    row = [label]
-    
-    for trt in treatments:
-        if stats_df is None:  # For total participants row
-            n = n_rand.filter(pl.col("TRT01P") == trt)["n"][0]
-            row.extend([str(n), ""])
-        else:
-            # Filter for specific treatment (and reason if provided)
-            filter_expr = pl.col("TRT01P") == trt
-            if reason:
-                filter_expr = filter_expr & (pl.col("DCREASCD") == reason)
-            
-            data = stats_df.filter(filter_expr)
-            if len(data) > 0:
-                row.extend([str(data["n"][0]), f"({data['pct'][0]:.1f}%)"])
-            else:
-                row.extend(["0", "(0.0%)"])
-    
-    return row
-
-table_data = [
-    format_row("Participants in population"),
-    format_row("Completed", stats["completed"]),
-    format_row("Discontinued", stats["discontinued"])
-]
-
-for reason in disc_reasons["DCREASCD"].unique().sort():
-    table_data.append(
-        format_row(f"    {reason}", disc_reasons, reason)
+n_complete = (
+    adsl
+    .filter(pl.col("DCREASCD") == "Completed")
+    .group_by("TRT01PN")
+    .agg(n = pl.len())
+    .join(
+        adsl.group_by("TRT01PN").agg(total = pl.len()),
+        on="TRT01PN"
     )
+    .with_columns([
+        pl.lit("Completed").alias("row"),
+        (100.0 * pl.col("n") / pl.col("total")).round(1).cast(pl.String).alias("pct")
+    ])
+    .pivot(
+        index="row",
+        on="TRT01PN",
+        values=["n", "pct"],
+        sort_columns=True
+    )
+)
 
-col_headers = [""] + [f"{trt}_{col}" for trt in treatments for col in ["n", "(%)"]]
-df_disp = pl.DataFrame(table_data, schema=col_headers, orient="row")
-
-df_disp
+n_complete
 ```
 
-## Generate RTF Output
+## Step 3: Participants who Discontinued
+
+```{python}
+n_disc = (
+    adsl
+    .filter(pl.col("DISCONFL") == "Y")
+    .group_by("TRT01PN")
+    .agg(n = pl.len())
+    .join(
+        adsl.group_by("TRT01PN").agg(total = pl.len()),
+        on="TRT01PN"
+    )
+    .with_columns([
+        pl.lit("Discontinued").alias("row"),
+        (100.0 * pl.col("n") / pl.col("total")).round(1).cast(pl.String).alias("pct")
+    ])
+    .pivot(
+        index="row",
+        on="TRT01PN",
+        values=["n", "pct"],
+        sort_columns=True
+    )
+)
+
+n_disc
+```
+
+## Step 4: Discontinuation Reasons
+
+```{python}
+n_reason = (
+    adsl
+    .filter(pl.col("DCREASCD") != "Completed")
+    .group_by(["TRT01PN", "DCREASCD"])
+    .agg(n = pl.len())
+    .join(
+        adsl.group_by("TRT01PN").agg(total = pl.len()),
+        on="TRT01PN"
+    )
+    .with_columns([
+        pl.concat_str([pl.lit("    "), pl.col("DCREASCD")]).alias("row"),
+        (100.0 * pl.col("n") / pl.col("total")).round(1).cast(pl.String).alias("pct")
+    ])
+    .pivot(
+        index="row",
+        on="TRT01PN",
+        values=["n", "pct"],
+        sort_columns=True
+    )
+    .with_columns([
+        pl.col(["n_0", "n_54", "n_81"]).fill_null(0),
+        pl.col(["pct_0", "pct_54", "pct_81"]).fill_null("0.0")
+    ])
+    .sort("row")
+)
+
+n_reason
+```
+
+## Step 5: Combine All Tables
+
+```{python}
+tbl_disp = pl.concat([
+    n_rand,
+    n_complete,
+    n_disc,
+    n_reason
+])
+
+tbl_disp
+```
+
+## Create RTF Output
 
 ```{python}
 doc_disp = rtf.RTFDocument(
-    df=df_disp,
+    df=tbl_disp.select("row", "n_0", "pct_0", "n_54", "pct_54", "n_81", "pct_81"),
     rtf_title=rtf.RTFTitle(text=["Disposition of Participants"]),
     rtf_column_header=[
         rtf.RTFColumnHeader(
-            text=[""] + treatments,
+            text=["", "Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"],
             col_rel_width=[3] + [2] * 3,
             text_justification=["l"] + ["c"] * 3,
         ),

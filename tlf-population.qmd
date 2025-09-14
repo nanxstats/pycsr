@@ -3,8 +3,6 @@ title: "Study Population"
 format: gfm
 ---
 
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-
 This article demonstrates how to create an analysis population overview table.
 
 ## Setup
@@ -12,50 +10,145 @@ This article demonstrates how to create an analysis population overview table.
 ```{python}
 import polars as pl
 import rtflite as rtf
+```
 
+## Load Data 
+
+```{python}
 adsl = pl.read_parquet("data/adsl.parquet")
-treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
 ## Create Population Table
 
 ```{python}
-# Define populations to analyze
-populations = {
-    "Participants in population": None,
-    "Participants included in ITT population": "ITTFL",
-    "Participants included in efficacy population": "EFFFL", 
-    "Participants included in safety population": "SAFFL"
-}
+# Step 1: Calculate total N for each treatment (denominator for percentages)
+totals = adsl.group_by("TRT01P").agg(
+    total = pl.len()
+)
 
-# Calculate statistics for each population
-table_data = []
-totals = adsl.group_by("TRT01P").agg(total=pl.len())
+totals
+```
 
-for pop_name, flag in populations.items():
-    row = [pop_name]
-    
-    # Filter and calculate counts
-    df_pop = adsl if flag is None else adsl.filter(pl.col(flag) == "Y")
-    stats = (
-        df_pop.group_by("TRT01P")
-        .agg(n=pl.len())
-        .join(totals, on="TRT01P")
-        .with_columns(pct=(100.0 * pl.col("n") / pl.col("total")).round(1))
+## Step 2: Calculate counts for each population flag
+
+```{python}
+# Simple function to count participants by treatment group
+def count_by_treatment(data, population_name):
+    """Count participants by treatment group and add population label"""
+    return data.group_by("TRT01P").agg(
+        n = pl.len()
+    ).with_columns(
+        population = pl.lit(population_name)
     )
-    
-    # Format results for each treatment
-    for trt in treatments:
-        trt_data = stats.filter(pl.col("TRT01P") == trt)
-        if trt_data.height > 0:
-            n, pct = trt_data["n"][0], trt_data["pct"][0]
-            row.append(str(n) if flag is None else f"{n} ({pct:5.1f})")
-        else:
-            row.append("0 (  0.0)")
-    
-    table_data.append(row)
+```
 
-df_overview = pl.DataFrame(table_data, schema=[""] + treatments, orient="row")
+```{python}
+# Row 1: Total participants (no filter needed)
+pop_all = count_by_treatment(
+    data=adsl,
+    population_name="Participants in population"
+)
+
+pop_all
+```
+
+```{python}
+# Row 2: ITT population (filter first, then count)
+adsl_itt = adsl.filter(pl.col("ITTFL") == "Y")
+pop_itt = count_by_treatment(
+    data=adsl_itt,
+    population_name="Participants included in ITT population"
+)
+
+pop_itt
+```
+
+```{python}
+# Row 3: Efficacy population (filter first, then count)
+adsl_eff = adsl.filter(pl.col("EFFFL") == "Y")
+pop_eff = count_by_treatment(
+    data=adsl_eff,
+    population_name="Participants included in efficacy population"
+)
+
+pop_eff
+```
+
+```{python}
+# Row 4: Safety population (filter first, then count)
+adsl_saf = adsl.filter(pl.col("SAFFL") == "Y")
+pop_saf = count_by_treatment(
+    data=adsl_saf,
+    population_name="Participants included in safety population"
+)
+
+pop_saf
+```
+
+## Step 3: Stack all populations together
+
+```{python}
+# Combine all population dataframes into one
+all_populations = pl.concat([
+    pop_all,
+    pop_itt,
+    pop_eff,
+    pop_saf
+])
+
+all_populations
+```
+
+## Step 4: Add total N and calculate percentages
+
+```{python}
+# Join with totals to calculate percentages
+stats_with_pct = all_populations.join(
+    totals,
+    on="TRT01P"
+).with_columns(
+    pct = (100.0 * pl.col("n") / pl.col("total")).round(1)
+)
+
+stats_with_pct
+```
+
+## Step 5: Format the display text
+
+```{python}
+# First row shows just N, other rows show "N (pct)"
+formatted_stats = stats_with_pct.with_columns(
+    display = pl.when(pl.col("population") == "Participants in population")
+        .then(pl.col("n").cast(str))
+        .otherwise(
+            pl.concat_str([
+                pl.col("n").cast(str),
+                pl.lit(" ("),
+                pl.col("pct").round(1).cast(str),
+                pl.lit(")")
+            ])
+        )
+)
+
+formatted_stats
+```
+
+## Step 6: Pivot from long to wide format
+
+```{python}
+# Transform to wide format for final table
+df_overview = formatted_stats.pivot(
+    values="display",
+    index="population",
+    on="TRT01P",
+    maintain_order=True
+).select(
+    ["population", "Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+).rename(
+    {"population": ""}
+)
+
+df_overview
 ```
 
 ## Create RTF Output

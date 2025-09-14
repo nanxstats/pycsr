@@ -13,9 +13,9 @@ book:
     - intro.qmd
     - part: "Tables, Listings, and Figures"
       chapters:
+        - tlf-disposition.qmd
         - tlf-population.qmd
         - tlf-baseline.qmd
-        - tlf-disposition.qmd
         - tlf-ae-summary.qmd
         - tlf-ae-specific.qmd
         - tlf-efficacy-ancova.qmd
