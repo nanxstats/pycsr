@@ -1,7 +1,6 @@
 ---
 title: "ANCOVA Efficacy Analysis"
 format: gfm
-eval: false
 ---
 
 <!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
@@ -19,8 +18,8 @@ import statsmodels.formula.api as smf
 from scipy import stats as scipy_stats
 from importlib.resources import files
 
-adsl = pl.read_parquet(files("rtflite.data").joinpath("adsl.parquet"))
-adlbc = pl.read_parquet(files("rtflite.data").joinpath("tlf-adlbc.parquet"))
+adsl = pl.read_parquet("data/adsl.parquet")
+adlbc = pl.read_parquet("data/adlbc.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
@@ -167,7 +166,15 @@ doc_ancova = rtf.RTFDocument(
     rtf_source=rtf.RTFSource(text=["Source: ADLBC dataset"])
 )
 
-doc_ancova.write_rtf("../rtf/tlf_efficacy_ancova.rtf")
+doc_ancova.write_rtf("rtf/tlf_efficacy_ancova.rtf")
 ```
 
-<embed src="../pdf/tlf_efficacy_ancova.pdf" style="width:100%; height:600px" type="application/pdf">
+```{python}
+#| echo: false
+# Convert RTF to PDF
+from rtflite import LibreOfficeConverter
+converter = LibreOfficeConverter()
+converter.convert("rtf/tlf_efficacy_ancova.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_efficacy_ancova.pdf" style="width:100%; height:600px" type="application/pdf">

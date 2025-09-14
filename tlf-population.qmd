@@ -1,7 +1,6 @@
 ---
 title: "Study Population"
 format: gfm
-eval: false
 ---
 
 <!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
@@ -13,9 +12,8 @@ This article demonstrates how to create an analysis population overview table.
 ```{python}
 import polars as pl
 import rtflite as rtf
-from importlib.resources import files
 
-adsl = pl.read_parquet(files("rtflite.data").joinpath("adsl.parquet"))
+adsl = pl.read_parquet("data/adsl.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
@@ -80,7 +78,15 @@ doc_overview = rtf.RTFDocument(
     rtf_source=rtf.RTFSource(text=["Source: ADSL dataset"])
 )
 
-doc_overview.write_rtf("../rtf/tlf_population.rtf")
+doc_overview.write_rtf("rtf/tlf_population.rtf")
 ```
 
-<embed src="../pdf/tlf_population.pdf" style="width:100%; height:600px" type="application/pdf">
+```{python}
+#| echo: false
+# Convert RTF to PDF
+from rtflite import LibreOfficeConverter
+converter = LibreOfficeConverter()
+converter.convert("rtf/tlf_population.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_population.pdf" style="width:100%; height:600px" type="application/pdf">

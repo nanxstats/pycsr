@@ -1,7 +1,6 @@
 ---
 title: "Baseline Characteristics Table"
 format: gfm
-eval: false
 ---
 
 <!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
@@ -17,16 +16,13 @@ Baseline characteristics tables summarize demographic and clinical characteristi
 ```{python}
 import polars as pl
 import rtflite as rtf
-from importlib.resources import files
 ```
 
 ## Data Preparation
 
 ```{python}
-data_path = files("rtflite.data").joinpath("adsl.parquet")
-
 adsl_baseline = (
-    pl.read_parquet(data_path)
+    pl.read_parquet("data/adsl.parquet")
     .filter(pl.col("SAFFL") == "Y")
     .select(["USUBJID", "TRT01P", "AGE", "SEX", "RACE"])
     .with_columns([
@@ -183,7 +179,15 @@ doc_baseline = rtf.RTFDocument(
     )
 )
 
-doc_baseline.write_rtf("../rtf/tlf_baseline.rtf")
+doc_baseline.write_rtf("rtf/tlf_baseline.rtf")
 ```
 
-<embed src="../pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">
+```{python}
+#| echo: false
+# Convert RTF to PDF
+from rtflite import LibreOfficeConverter
+converter = LibreOfficeConverter()
+converter.convert("rtf/tlf_baseline.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">

@@ -6,5 +6,4 @@
 /site_libs/
 
 # Output directories
-/rtf/
-/pdf/
+.DS_Store
