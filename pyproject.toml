@@ -11,7 +11,7 @@ dependencies = [
     "plotnine>=0.15.0",
     "polars>=1.0.0",
     "pyarrow>=21.0.0",
-    "rtflite>=1.0.2",
+    "rtflite>=1.0.0",
     "pkglite>=0.1.3",
 ]
 readme = "README.md"
@@ -27,4 +27,3 @@ dev = [
     "isort>=5.13.2",
     "pip-tools>=7.4.1",
 ]
-
