@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Baseline Characteristics Table – Python for Clinical Study Reports and Submission</title>
+<title>4&nbsp; Baseline Characteristics Table – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./tlf-disposition.html" rel="next">
+<link href="./tlf-ae-summary.html" rel="next">
 <link href="./tlf-population.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-population.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -171,20 +171,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./tlf-disposition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./tlf-population.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Study Population</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study Population</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-baseline.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./tlf-disposition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -229,21 +229,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">3.1</span> Overview</a></li>
-  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports"><span class="header-section-number">3.2</span> Imports</a></li>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="header-section-number">3.3</span> Data Preparation</a></li>
-  <li><a href="#statistics-function" id="toc-statistics-function" class="nav-link" data-scroll-target="#statistics-function"><span class="header-section-number">3.4</span> Statistics Function</a></li>
-  <li><a href="#build-table-data" id="toc-build-table-data" class="nav-link" data-scroll-target="#build-table-data"><span class="header-section-number">3.5</span> Build Table Data</a></li>
-  <li><a href="#create-rtf-output" id="toc-create-rtf-output" class="nav-link" data-scroll-target="#create-rtf-output"><span class="header-section-number">3.6</span> Create RTF Output</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">4.1</span> Overview</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports"><span class="header-section-number">4.2</span> Imports</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="header-section-number">4.3</span> Data Preparation</a></li>
+  <li><a href="#statistics-function" id="toc-statistics-function" class="nav-link" data-scroll-target="#statistics-function"><span class="header-section-number">4.4</span> Statistics Function</a></li>
+  <li><a href="#build-table-data" id="toc-build-table-data" class="nav-link" data-scroll-target="#build-table-data"><span class="header-section-number">4.5</span> Build Table Data</a></li>
+  <li><a href="#create-rtf-output" id="toc-create-rtf-output" class="nav-link" data-scroll-target="#create-rtf-output"><span class="header-section-number">4.6</span> Create RTF Output</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-population.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></h1>
 </div>
 
 
@@ -262,20 +262,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
 <p>This article demonstrates how to create a baseline characteristics table for clinical study reports using rtflite.</p>
-<section id="overview" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">3.1</span> Overview</h2>
+<section id="overview" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
 <p>Baseline characteristics tables summarize demographic and clinical characteristics of study participants at enrollment. These tables are essential for understanding the study population and assessing comparability between treatment groups.</p>
 </section>
-<section id="imports" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">3.2</span> Imports</h2>
-<div id="74303005" class="cell" data-execution_count="1">
+<section id="imports" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">4.2</span> Imports</h2>
+<div id="52645cd6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="data-preparation" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">3.3</span> Data Preparation</h2>
-<div id="d2f3aba1" class="cell" data-execution_count="2">
+<section id="data-preparation" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">4.3</span> Data Preparation</h2>
+<div id="67714126" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl_baseline <span class="op">=</span> (</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
@@ -287,9 +287,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="statistics-function" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="statistics-function"><span class="header-section-number">3.4</span> Statistics Function</h2>
-<div id="1cb7094d" class="cell" data-execution_count="3">
+<section id="statistics-function" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="statistics-function"><span class="header-section-number">4.4</span> Statistics Function</h2>
+<div id="f138f367" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_statistics(df, var, is_continuous<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    expr <span class="op">=</span> [</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>            pl.col(var).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean"</span>),</span>
@@ -337,9 +337,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> by_treatment, overall</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="build-table-data" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="build-table-data"><span class="header-section-number">3.5</span> Build Table Data</h2>
-<div id="99927956" class="cell" data-execution_count="4">
+<section id="build-table-data" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="build-table-data"><span class="header-section-number">4.5</span> Build Table Data</h2>
+<div id="566e21ad" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Treatment groups and counts</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>treatment_counts <span class="op">=</span> <span class="bu">dict</span>(</span>
@@ -514,9 +514,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="create-rtf-output" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">3.6</span> Create RTF Output</h2>
-<div id="04c3dec5" class="cell" data-execution_count="5">
+<section id="create-rtf-output" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">4.6</span> Create RTF Output</h2>
+<div id="7fd85571" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Column headers with N counts</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>col_headers <span class="op">=</span> [<span class="st">""</span>] <span class="op">+</span> [<span class="ss">f"</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>treatment_counts[trt]<span class="sc">}</span><span class="ss">)"</span> <span class="cf">for</span> trt <span class="kw">in</span> treatments] <span class="op">+</span> [<span class="ss">f"Overall</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>adsl_baseline<span class="sc">.</span>height<span class="sc">}</span><span class="ss">)"</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -540,7 +540,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_baseline.rtf</code></pre>
 </div>
 </div>
-<div id="7722c9c1" class="cell" data-execution_count="6">
+<div id="5b136d96" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>PosixPath('pdf/tlf_baseline.pdf')</code></pre>
 </div>
@@ -954,12 +954,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./tlf-population.html" class="pagination-link" aria-label="Study Population">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Study Population</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study Population</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./tlf-disposition.html" class="pagination-link" aria-label="Disposition of Participants Table">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./tlf-ae-summary.html" class="pagination-link" aria-label="Adverse Events Summary Table">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Adverse Events Summary Table</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -20,157 +20,278 @@
     ]
   },
   {
-    "objectID": "tlf-population.html",
-    "href": "tlf-population.html",
-    "title": "2  Study Population",
-    "section": "",
-    "text": "2.1 Setup\nThis article demonstrates how to create an analysis population overview table.\nimport polars as pl\nimport rtflite as rtf\n\nadsl = pl.read_parquet(\"data/adsl.parquet\")\ntreatments = [\"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Study Population</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-population.html#create-population-table",
-    "href": "tlf-population.html#create-population-table",
-    "title": "2  Study Population",
-    "section": "2.2 Create Population Table",
-    "text": "2.2 Create Population Table\n\n# Define populations to analyze\npopulations = {\n    \"Participants in population\": None,\n    \"Participants included in ITT population\": \"ITTFL\",\n    \"Participants included in efficacy population\": \"EFFFL\", \n    \"Participants included in safety population\": \"SAFFL\"\n}\n\n# Calculate statistics for each population\ntable_data = []\ntotals = adsl.group_by(\"TRT01P\").agg(total=pl.len())\n\nfor pop_name, flag in populations.items():\n    row = [pop_name]\n    \n    # Filter and calculate counts\n    df_pop = adsl if flag is None else adsl.filter(pl.col(flag) == \"Y\")\n    stats = (\n        df_pop.group_by(\"TRT01P\")\n        .agg(n=pl.len())\n        .join(totals, on=\"TRT01P\")\n        .with_columns(pct=(100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1))\n    )\n    \n    # Format results for each treatment\n    for trt in treatments:\n        trt_data = stats.filter(pl.col(\"TRT01P\") == trt)\n        if trt_data.height &gt; 0:\n            n, pct = trt_data[\"n\"][0], trt_data[\"pct\"][0]\n            row.append(str(n) if flag is None else f\"{n} ({pct:5.1f})\")\n        else:\n            row.append(\"0 (  0.0)\")\n    \n    table_data.append(row)\n\ndf_overview = pl.DataFrame(table_data, schema=[\"\"] + treatments, orient=\"row\")",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Study Population</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-population.html#create-rtf-output",
-    "href": "tlf-population.html#create-rtf-output",
-    "title": "2  Study Population",
-    "section": "2.3 Create RTF Output",
-    "text": "2.3 Create RTF Output\n\ndoc_overview = rtf.RTFDocument(\n    df=df_overview,\n    rtf_title=rtf.RTFTitle(\n        text=[\"Analysis Population\", \"All Participants Randomized\"]\n    ),\n    rtf_column_header=rtf.RTFColumnHeader(\n        text=[\"\", \"Placebo\\nn (%)\", \"Xanomeline Low Dose\\nn (%)\", \"Xanomeline High Dose\\nn (%)\"],\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_source=rtf.RTFSource(text=[\"Source: ADSL dataset\"])\n)\n\ndoc_overview.write_rtf(\"rtf/tlf_population.rtf\")\n\nrtf/tlf_population.rtf\n\n\n\n\nPosixPath('pdf/tlf_population.pdf')",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Study Population</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-baseline.html",
-    "href": "tlf-baseline.html",
-    "title": "3  Baseline Characteristics Table",
-    "section": "",
-    "text": "3.1 Overview\nThis article demonstrates how to create a baseline characteristics table for clinical study reports using rtflite.\nBaseline characteristics tables summarize demographic and clinical characteristics of study participants at enrollment. These tables are essential for understanding the study population and assessing comparability between treatment groups.",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-baseline.html#imports",
-    "href": "tlf-baseline.html#imports",
-    "title": "3  Baseline Characteristics Table",
-    "section": "3.2 Imports",
-    "text": "3.2 Imports\n\nimport polars as pl\nimport rtflite as rtf",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-baseline.html#data-preparation",
-    "href": "tlf-baseline.html#data-preparation",
-    "title": "3  Baseline Characteristics Table",
-    "section": "3.3 Data Preparation",
-    "text": "3.3 Data Preparation\n\nadsl_baseline = (\n    pl.read_parquet(\"data/adsl.parquet\")\n    .filter(pl.col(\"SAFFL\") == \"Y\")\n    .select([\"USUBJID\", \"TRT01P\", \"AGE\", \"SEX\", \"RACE\"])\n    .with_columns([\n        pl.col(\"SEX\").replace({\"F\": \"Female\", \"M\": \"Male\"}),\n        pl.col(\"RACE\").str.to_titlecase()\n    ])\n)",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-baseline.html#statistics-function",
-    "href": "tlf-baseline.html#statistics-function",
-    "title": "3  Baseline Characteristics Table",
-    "section": "3.4 Statistics Function",
-    "text": "3.4 Statistics Function\n\ndef get_statistics(df, var, is_continuous=False):\n    expr = [\n            pl.col(var).mean().round(1).alias(\"mean\"),\n            pl.col(var).std().round(1).alias(\"sd\"),\n            pl.col(var).median().round(1).alias(\"median\"),\n            pl.col(var).min().alias(\"min\"),\n            pl.col(var).max().alias(\"max\")\n        ]\n\n    if is_continuous:\n        # Continuous statistics by treatment\n        by_treatment = df.group_by(\"TRT01P\").agg(expr)\n        \n        # Overall statistics\n        overall = df.select(expr).row(0)\n        \n        return by_treatment, overall\n    else:\n        # Categorical counts and percentages\n        total_n = df.height\n        by_treatment = (\n            df.group_by([\"TRT01P\", var])\n            .len()\n            .join(df.group_by(\"TRT01P\").len().rename({\"len\": \"total\"}), on=\"TRT01P\")\n            .with_columns(\n                pl.format(\"{} ({}%)\", \n                    pl.col(\"len\"), \n                    (100 * pl.col(\"len\") / pl.col(\"total\")).round(1)\n                ).alias(\"formatted\")\n            )\n        )\n        \n        # Overall counts\n        overall = (\n            df.group_by(var)\n            .len()\n            .with_columns(\n                pl.format(\"{} ({}%)\", \n                    pl.col(\"len\"), \n                    (100 * pl.col(\"len\") / total_n).round(1)\n                ).alias(\"formatted\")\n            )\n        )\n        \n        return by_treatment, overall",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-baseline.html#build-table-data",
-    "href": "tlf-baseline.html#build-table-data",
-    "title": "3  Baseline Characteristics Table",
-    "section": "3.5 Build Table Data",
-    "text": "3.5 Build Table Data\n\n# Treatment groups and counts\ntreatments = [\"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]\ntreatment_counts = dict(\n    adsl_baseline.group_by(\"TRT01P\").len().iter_rows()\n)\n\ndef create_variable_rows(df, var_name, categories=None, is_continuous=False):\n    rows = [[var_name, \"\", \"\", \"\", \"\"]]\n    \n    by_treatment, overall_stats = get_statistics(df, var_name, is_continuous)\n    \n    if is_continuous:\n        # Mean (SD) row\n        row = [\"  Mean (SD)\"]\n        for trt in treatments:\n            trt_stats = by_treatment.filter(pl.col(\"TRT01P\") == trt)\n            if trt_stats.height &gt; 0:\n                mean, sd = trt_stats.select([\"mean\", \"sd\"]).row(0)\n                row.append(f\"{mean} ({sd})\")\n            else:\n                row.append(\"\")\n        row.append(f\"{overall_stats[0]} ({overall_stats[1]})\")\n        rows.append(row)\n        \n        # Median [Min, Max] row  \n        row = [\"  Median [Min, Max]\"]\n        for trt in treatments:\n            trt_stats = by_treatment.filter(pl.col(\"TRT01P\") == trt)\n            if trt_stats.height &gt; 0:\n                median, min_val, max_val = trt_stats.select([\"median\", \"min\", \"max\"]).row(0)\n                row.append(f\"{median} [{min_val}, {max_val}]\")\n            else:\n                row.append(\"\")\n        row.append(f\"{overall_stats[2]} [{overall_stats[3]}, {overall_stats[4]}]\")\n        rows.append(row)\n    else:\n        # Categorical variable rows\n        for cat in categories:\n            row = [f\"  {cat}\"]\n            \n            for trt in treatments:\n                trt_data = by_treatment.filter(\n                    (pl.col(\"TRT01P\") == trt) & (pl.col(var_name) == cat)\n                )\n                if trt_data.height &gt; 0:\n                    row.append(trt_data[\"formatted\"][0])\n                else:\n                    row.append(\"0 (0.0%)\")\n            \n            # Overall column\n            overall_data = overall_stats.filter(pl.col(var_name) == cat)\n            if overall_data.height &gt; 0:\n                row.append(overall_data[\"formatted\"][0])\n            else:\n                row.append(\"0 (0.0%)\")\n            rows.append(row)\n    \n    return rows\n\n# Build complete table\ntable_data = []\ntable_data.extend(create_variable_rows(adsl_baseline, \"SEX\", [\"Female\", \"Male\"]))\ntable_data.extend(create_variable_rows(adsl_baseline, \"AGE\", is_continuous=True))\ntable_data.extend(create_variable_rows(\n    adsl_baseline, \"RACE\", \n    [\"Black Or African American\", \"White\", \"American Indian Or Alaska Native\"]\n))\n\ndf_baseline = pl.DataFrame(table_data, orient=\"row\")\n\ndf_baseline\n\n\nshape: (10, 5)\n\n\n\ncolumn_0\ncolumn_1\ncolumn_2\ncolumn_3\ncolumn_4\n\n\nstr\nstr\nstr\nstr\nstr\n\n\n\n\n\"SEX\"\n\"\"\n\"\"\n\"\"\n\"\"\n\n\n\"  Female\"\n\"53 (61.6%)\"\n\"50 (59.5%)\"\n\"40 (47.6%)\"\n\"143 (56.3%)\"\n\n\n\"  Male\"\n\"33 (38.4%)\"\n\"34 (40.5%)\"\n\"44 (52.4%)\"\n\"111 (43.7%)\"\n\n\n\"AGE\"\n\"\"\n\"\"\n\"\"\n\"\"\n\n\n\"  Mean (SD)\"\n\"75.2 (8.6)\"\n\"75.7 (8.3)\"\n\"74.4 (7.9)\"\n\"75.1 (8.2)\"\n\n\n\"  Median [Min, Max]\"\n\"76.0 [52.0, 89.0]\"\n\"77.5 [51.0, 88.0]\"\n\"76.0 [56.0, 88.0]\"\n\"77.0 [51.0, 89.0]\"\n\n\n\"RACE\"\n\"\"\n\"\"\n\"\"\n\"\"\n\n\n\"  Black Or African American\"\n\"8 (9.3%)\"\n\"6 (7.1%)\"\n\"9 (10.7%)\"\n\"23 (9.1%)\"\n\n\n\"  White\"\n\"78 (90.7%)\"\n\"78 (92.9%)\"\n\"74 (88.1%)\"\n\"230 (90.6%)\"\n\n\n\"  American Indian Or Alaska Na…\n\"0 (0.0%)\"\n\"0 (0.0%)\"\n\"1 (1.2%)\"\n\"1 (0.4%)\"",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
-    ]
-  },
-  {
-    "objectID": "tlf-baseline.html#create-rtf-output",
-    "href": "tlf-baseline.html#create-rtf-output",
-    "title": "3  Baseline Characteristics Table",
-    "section": "3.6 Create RTF Output",
-    "text": "3.6 Create RTF Output\n\n# Column headers with N counts\ncol_headers = [\"\"] + [f\"{trt}\\n(N={treatment_counts[trt]})\" for trt in treatments] + [f\"Overall\\n(N={adsl_baseline.height})\"]\n\ndoc_baseline = rtf.RTFDocument(\n    df=df_baseline,\n    rtf_title=rtf.RTFTitle(\n        text=[\"Baseline Characteristics of Participants\", \"(All Participants Randomized)\"]\n    ),\n    rtf_column_header=rtf.RTFColumnHeader(\n        text=col_headers,\n        text_justification=[\"l\"] + [\"c\"] * 4\n    ),\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[2] + [1] * 4,\n        text_justification=[\"l\"] + [\"c\"] * 4\n    )\n)\n\ndoc_baseline.write_rtf(\"rtf/tlf_baseline.rtf\")\n\nrtf/tlf_baseline.rtf\n\n\n\n\nPosixPath('pdf/tlf_baseline.pdf')",
-    "crumbs": [
-      "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
-    ]
-  },
-  {
     "objectID": "tlf-disposition.html",
     "href": "tlf-disposition.html",
-    "title": "4  Disposition of Participants Table",
+    "title": "2  Disposition of Participants Table",
     "section": "",
-    "text": "4.1 Overview\nThis article demonstrates how to create a disposition table following ICH E3 guidance using rtflite, based on the R4CSR example.\nThe disposition table summarizes the flow of participants through the study, including: - Number of participants randomized - Number who discontinued and reasons for discontinuation\n- Number who completed the study",
+    "text": "2.1 Overview\nThis article demonstrates how to create a disposition table following ICH E3 guidance using rtflite.\nThe disposition table summarizes the flow of participants through the study, including: - Number of participants randomized - Number who discontinued and reasons for discontinuation - Number who completed the study\nThis follows ICH E3 guidance for reporting participants’ randomization, entry, and completion status, including reasons for post-randomization discontinuations.",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
     ]
   },
   {
     "objectID": "tlf-disposition.html#setup",
     "href": "tlf-disposition.html#setup",
-    "title": "4  Disposition of Participants Table",
-    "section": "4.2 Setup",
-    "text": "4.2 Setup\n\nimport polars as pl\nimport rtflite as rtf\n\nadsl = pl.read_parquet(\"data/adsl.parquet\")\n\ntreatments = [\"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.2 Setup",
+    "text": "2.2 Setup\n\nimport polars as pl\nimport rtflite as rtf",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
     ]
   },
   {
-    "objectID": "tlf-disposition.html#calculate-disposition-statistics",
-    "href": "tlf-disposition.html#calculate-disposition-statistics",
-    "title": "4  Disposition of Participants Table",
-    "section": "4.3 Calculate Disposition Statistics",
-    "text": "4.3 Calculate Disposition Statistics\n\nn_rand = (\n    adsl\n    .group_by(\"TRT01P\")\n    .agg(n=pl.len())\n    .sort(\"TRT01P\")\n)\n\ndef calc_stats(df, filter_expr=None):\n    if filter_expr is not None:\n        df = df.filter(filter_expr)\n    \n    counts = (\n        df\n        .group_by(\"TRT01P\")\n        .agg(n=pl.len())\n        .join(n_rand, on=\"TRT01P\", suffix=\"_total\")\n        .with_columns(\n            pct=(100 * pl.col(\"n\") / pl.col(\"n_total\")).round(1)\n        )\n        .sort(\"TRT01P\")\n    )\n    return counts\n\nstats = {\n    \"completed\": calc_stats(adsl, pl.col(\"DCREASCD\") == \"Completed\"),\n    \"discontinued\": calc_stats(adsl, pl.col(\"DCREASCD\") != \"Completed\")\n}\n\ndisc_reasons = (\n    adsl\n    .filter(pl.col(\"DCREASCD\") != \"Completed\")\n    .group_by([\"TRT01P\", \"DCREASCD\"])\n    .agg(n=pl.len())\n    .join(n_rand, on=\"TRT01P\", suffix=\"_total\")\n    .with_columns(\n        pct=(100 * pl.col(\"n\") / pl.col(\"n_total\")).round(1)\n    )\n    .sort([\"DCREASCD\", \"TRT01P\"])\n)",
+    "objectID": "tlf-disposition.html#load-data",
+    "href": "tlf-disposition.html#load-data",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.3 Load Data",
+    "text": "2.3 Load Data\n\nadsl = pl.read_parquet(\"data/adsl.parquet\").with_columns(\n    pl.col(\"TRT01PN\").cast(pl.Int64)\n)",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
     ]
   },
   {
-    "objectID": "tlf-disposition.html#build-table-data",
-    "href": "tlf-disposition.html#build-table-data",
-    "title": "4  Disposition of Participants Table",
-    "section": "4.4 Build Table Data",
-    "text": "4.4 Build Table Data\n\ndef format_row(label, stats_df=None, reason=None):\n    row = [label]\n    \n    for trt in treatments:\n        if stats_df is None:  # For total participants row\n            n = n_rand.filter(pl.col(\"TRT01P\") == trt)[\"n\"][0]\n            row.extend([str(n), \"\"])\n        else:\n            # Filter for specific treatment (and reason if provided)\n            filter_expr = pl.col(\"TRT01P\") == trt\n            if reason:\n                filter_expr = filter_expr & (pl.col(\"DCREASCD\") == reason)\n            \n            data = stats_df.filter(filter_expr)\n            if len(data) &gt; 0:\n                row.extend([str(data[\"n\"][0]), f\"({data['pct'][0]:.1f}%)\"])\n            else:\n                row.extend([\"0\", \"(0.0%)\"])\n    \n    return row\n\ntable_data = [\n    format_row(\"Participants in population\"),\n    format_row(\"Completed\", stats[\"completed\"]),\n    format_row(\"Discontinued\", stats[\"discontinued\"])\n]\n\nfor reason in disc_reasons[\"DCREASCD\"].unique().sort():\n    table_data.append(\n        format_row(f\"    {reason}\", disc_reasons, reason)\n    )\n\ncol_headers = [\"\"] + [f\"{trt}_{col}\" for trt in treatments for col in [\"n\", \"(%)\"]]\ndf_disp = pl.DataFrame(table_data, schema=col_headers, orient=\"row\")\n\ndf_disp\n\n\nshape: (12, 7)\n\n\n\ncolumn_0\nPlacebo_n\nPlacebo_(%)\nXanomeline Low Dose_n\nXanomeline Low Dose_(%)\nXanomeline High Dose_n\nXanomeline High Dose_(%)\n\n\nstr\nstr\nstr\nstr\nstr\nstr\nstr\n\n\n\n\n\"Participants in population\"\n\"86\"\n\"\"\n\"84\"\n\"\"\n\"84\"\n\"\"\n\n\n\"Completed\"\n\"58\"\n\"(67.4%)\"\n\"25\"\n\"(29.8%)\"\n\"27\"\n\"(32.1%)\"\n\n\n\"Discontinued\"\n\"28\"\n\"(32.6%)\"\n\"59\"\n\"(70.2%)\"\n\"57\"\n\"(67.9%)\"\n\n\n\"    Adverse Event\"\n\"8\"\n\"(9.3%)\"\n\"44\"\n\"(52.4%)\"\n\"40\"\n\"(47.6%)\"\n\n\n\"    Death\"\n\"2\"\n\"(2.3%)\"\n\"1\"\n\"(1.2%)\"\n\"0\"\n\"(0.0%)\"\n\n\n…\n…\n…\n…\n…\n…\n…\n\n\n\"    Lost to Follow-up\"\n\"1\"\n\"(1.2%)\"\n\"1\"\n\"(1.2%)\"\n\"0\"\n\"(0.0%)\"\n\n\n\"    Physician Decision\"\n\"1\"\n\"(1.2%)\"\n\"0\"\n\"(0.0%)\"\n\"2\"\n\"(2.4%)\"\n\n\n\"    Protocol Violation\"\n\"1\"\n\"(1.2%)\"\n\"1\"\n\"(1.2%)\"\n\"1\"\n\"(1.2%)\"\n\n\n\"    Sponsor Decision\"\n\"2\"\n\"(2.3%)\"\n\"2\"\n\"(2.4%)\"\n\"3\"\n\"(3.6%)\"\n\n\n\"    Withdrew Consent\"\n\"9\"\n\"(10.5%)\"\n\"10\"\n\"(11.9%)\"\n\"8\"\n\"(9.5%)\"",
+    "objectID": "tlf-disposition.html#data-dictionary",
+    "href": "tlf-disposition.html#data-dictionary",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.4 Data Dictionary",
+    "text": "2.4 Data Dictionary\nThe following variables are used in the preparation of a simplified disposition of participants table:\n\nUSUBJID: unique subject identifier\nTRT01P: planned treatment\nTRT01PN: planned treatment numeric encoding\nDISCONFL: discontinued from study flag\nDCREASCD: discontinued from study reason coded\n\n\nadsl.select([\"USUBJID\", \"TRT01P\", \"TRT01PN\", \"DISCONFL\", \"DCREASCD\"])\n\n\nshape: (254, 5)\n\n\n\nUSUBJID\nTRT01P\nTRT01PN\nDISCONFL\nDCREASCD\n\n\nstr\nstr\ni64\nstr\nstr\n\n\n\n\n\"01-701-1015\"\n\"Placebo\"\n0\n\"\"\n\"Completed\"\n\n\n\"01-701-1023\"\n\"Placebo\"\n0\n\"Y\"\n\"Adverse Event\"\n\n\n\"01-701-1028\"\n\"Xanomeline High Dose\"\n81\n\"\"\n\"Completed\"\n\n\n\"01-701-1033\"\n\"Xanomeline Low Dose\"\n54\n\"Y\"\n\"Sponsor Decision\"\n\n\n\"01-701-1034\"\n\"Xanomeline High Dose\"\n81\n\"\"\n\"Completed\"\n\n\n…\n…\n…\n…\n…\n\n\n\"01-718-1254\"\n\"Xanomeline Low Dose\"\n54\n\"\"\n\"Completed\"\n\n\n\"01-718-1328\"\n\"Xanomeline High Dose\"\n81\n\"Y\"\n\"Withdrew Consent\"\n\n\n\"01-718-1355\"\n\"Placebo\"\n0\n\"\"\n\"Completed\"\n\n\n\"01-718-1371\"\n\"Xanomeline High Dose\"\n81\n\"Y\"\n\"Adverse Event\"\n\n\n\"01-718-1427\"\n\"Xanomeline High Dose\"\n81\n\"Y\"\n\"Lack of Efficacy\"",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
     ]
   },
   {
-    "objectID": "tlf-disposition.html#generate-rtf-output",
-    "href": "tlf-disposition.html#generate-rtf-output",
-    "title": "4  Disposition of Participants Table",
-    "section": "4.5 Generate RTF Output",
-    "text": "4.5 Generate RTF Output\n\ndoc_disp = rtf.RTFDocument(\n    df=df_disp,\n    rtf_title=rtf.RTFTitle(text=[\"Disposition of Participants\"]),\n    rtf_column_header=[\n        rtf.RTFColumnHeader(\n            text=[\"\"] + treatments,\n            col_rel_width=[3] + [2] * 3,\n            text_justification=[\"l\"] + [\"c\"] * 3,\n        ),\n        rtf.RTFColumnHeader(\n            text=[\"\", \"n\", \"(%)\", \"n\", \"(%)\", \"n\", \"(%)\"],\n            col_rel_width=[3] + [1] * 6,\n            text_justification=[\"l\"] + [\"c\"] * 6,\n            border_top=[\"\"] + [\"single\"] * 6,\n            border_left=[\"single\"] + [\"single\", \"\"] * 3\n        )\n    ],\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[3] + [1] * 6,\n        text_justification=[\"l\"] + [\"c\"] * 6,\n        border_left=[\"single\"] + [\"single\", \"\"] * 3\n    ),\n    rtf_source=rtf.RTFSource(text=[\"Source: ADSL dataset\"])\n)\n\ndoc_disp.write_rtf(\"rtf/tlf_disposition.rtf\")\n\nrtf/tlf_disposition.rtf\n\n\n\n\nPosixPath('pdf/tlf_disposition.pdf')",
+    "objectID": "tlf-disposition.html#step-1-participants-in-population",
+    "href": "tlf-disposition.html#step-1-participants-in-population",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.5 Step 1: Participants in Population",
+    "text": "2.5 Step 1: Participants in Population\n\nn_rand = (\n    adsl\n    .group_by(\"TRT01PN\")\n    .agg(n = pl.len())\n    .with_columns([\n        pl.lit(\"Participants in population\").alias(\"row\"),\n        pl.lit(\"\").alias(\"pct\")\n    ])\n    .pivot(\n        index=\"row\",\n        on=\"TRT01PN\",\n        values=[\"n\", \"pct\"],\n        sort_columns=True\n    )\n)\n\nn_rand\n\n\nshape: (1, 7)\n\n\n\nrow\nn_0\nn_54\nn_81\npct_0\npct_54\npct_81\n\n\nstr\nu32\nu32\nu32\nstr\nstr\nstr\n\n\n\n\n\"Participants in population\"\n86\n84\n84\n\"\"\n\"\"\n\"\"",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-disposition.html#step-2-participants-who-completed",
+    "href": "tlf-disposition.html#step-2-participants-who-completed",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.6 Step 2: Participants who Completed",
+    "text": "2.6 Step 2: Participants who Completed\n\nn_complete = (\n    adsl\n    .filter(pl.col(\"DCREASCD\") == \"Completed\")\n    .group_by(\"TRT01PN\")\n    .agg(n = pl.len())\n    .join(\n        adsl.group_by(\"TRT01PN\").agg(total = pl.len()),\n        on=\"TRT01PN\"\n    )\n    .with_columns([\n        pl.lit(\"Completed\").alias(\"row\"),\n        (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1).cast(pl.String).alias(\"pct\")\n    ])\n    .pivot(\n        index=\"row\",\n        on=\"TRT01PN\",\n        values=[\"n\", \"pct\"],\n        sort_columns=True\n    )\n)\n\nn_complete\n\n\nshape: (1, 7)\n\n\n\nrow\nn_0\nn_54\nn_81\npct_0\npct_54\npct_81\n\n\nstr\nu32\nu32\nu32\nstr\nstr\nstr\n\n\n\n\n\"Completed\"\n58\n25\n27\n\"67.4\"\n\"29.8\"\n\"32.1\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-disposition.html#step-3-participants-who-discontinued",
+    "href": "tlf-disposition.html#step-3-participants-who-discontinued",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.7 Step 3: Participants who Discontinued",
+    "text": "2.7 Step 3: Participants who Discontinued\n\nn_disc = (\n    adsl\n    .filter(pl.col(\"DISCONFL\") == \"Y\")\n    .group_by(\"TRT01PN\")\n    .agg(n = pl.len())\n    .join(\n        adsl.group_by(\"TRT01PN\").agg(total = pl.len()),\n        on=\"TRT01PN\"\n    )\n    .with_columns([\n        pl.lit(\"Discontinued\").alias(\"row\"),\n        (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1).cast(pl.String).alias(\"pct\")\n    ])\n    .pivot(\n        index=\"row\",\n        on=\"TRT01PN\",\n        values=[\"n\", \"pct\"],\n        sort_columns=True\n    )\n)\n\nn_disc\n\n\nshape: (1, 7)\n\n\n\nrow\nn_0\nn_54\nn_81\npct_0\npct_54\npct_81\n\n\nstr\nu32\nu32\nu32\nstr\nstr\nstr\n\n\n\n\n\"Discontinued\"\n28\n59\n57\n\"32.6\"\n\"70.2\"\n\"67.9\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-disposition.html#step-4-discontinuation-reasons",
+    "href": "tlf-disposition.html#step-4-discontinuation-reasons",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.8 Step 4: Discontinuation Reasons",
+    "text": "2.8 Step 4: Discontinuation Reasons\n\nn_reason = (\n    adsl\n    .filter(pl.col(\"DCREASCD\") != \"Completed\")\n    .group_by([\"TRT01PN\", \"DCREASCD\"])\n    .agg(n = pl.len())\n    .join(\n        adsl.group_by(\"TRT01PN\").agg(total = pl.len()),\n        on=\"TRT01PN\"\n    )\n    .with_columns([\n        pl.concat_str([pl.lit(\"    \"), pl.col(\"DCREASCD\")]).alias(\"row\"),\n        (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1).cast(pl.String).alias(\"pct\")\n    ])\n    .pivot(\n        index=\"row\",\n        on=\"TRT01PN\",\n        values=[\"n\", \"pct\"],\n        sort_columns=True\n    )\n    .with_columns([\n        pl.col([\"n_0\", \"n_54\", \"n_81\"]).fill_null(0),\n        pl.col([\"pct_0\", \"pct_54\", \"pct_81\"]).fill_null(\"0.0\")\n    ])\n    .sort(\"row\")\n)\n\nn_reason\n\n\nshape: (9, 7)\n\n\n\nrow\nn_0\nn_54\nn_81\npct_0\npct_54\npct_81\n\n\nstr\nu32\nu32\nu32\nstr\nstr\nstr\n\n\n\n\n\"    Adverse Event\"\n8\n44\n40\n\"9.3\"\n\"52.4\"\n\"47.6\"\n\n\n\"    Death\"\n2\n1\n0\n\"2.3\"\n\"1.2\"\n\"0.0\"\n\n\n\"    I/E Not Met\"\n1\n0\n2\n\"1.2\"\n\"0.0\"\n\"2.4\"\n\n\n\"    Lack of Efficacy\"\n3\n0\n1\n\"3.5\"\n\"0.0\"\n\"1.2\"\n\n\n\"    Lost to Follow-up\"\n1\n1\n0\n\"1.2\"\n\"1.2\"\n\"0.0\"\n\n\n\"    Physician Decision\"\n1\n0\n2\n\"1.2\"\n\"0.0\"\n\"2.4\"\n\n\n\"    Protocol Violation\"\n1\n1\n1\n\"1.2\"\n\"1.2\"\n\"1.2\"\n\n\n\"    Sponsor Decision\"\n2\n2\n3\n\"2.3\"\n\"2.4\"\n\"3.6\"\n\n\n\"    Withdrew Consent\"\n9\n10\n8\n\"10.5\"\n\"11.9\"\n\"9.5\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-disposition.html#step-5-combine-all-tables",
+    "href": "tlf-disposition.html#step-5-combine-all-tables",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.9 Step 5: Combine All Tables",
+    "text": "2.9 Step 5: Combine All Tables\n\ntbl_disp = pl.concat([\n    n_rand,\n    n_complete,\n    n_disc,\n    n_reason\n])\n\ntbl_disp\n\n\nshape: (12, 7)\n\n\n\nrow\nn_0\nn_54\nn_81\npct_0\npct_54\npct_81\n\n\nstr\nu32\nu32\nu32\nstr\nstr\nstr\n\n\n\n\n\"Participants in population\"\n86\n84\n84\n\"\"\n\"\"\n\"\"\n\n\n\"Completed\"\n58\n25\n27\n\"67.4\"\n\"29.8\"\n\"32.1\"\n\n\n\"Discontinued\"\n28\n59\n57\n\"32.6\"\n\"70.2\"\n\"67.9\"\n\n\n\"    Adverse Event\"\n8\n44\n40\n\"9.3\"\n\"52.4\"\n\"47.6\"\n\n\n\"    Death\"\n2\n1\n0\n\"2.3\"\n\"1.2\"\n\"0.0\"\n\n\n…\n…\n…\n…\n…\n…\n…\n\n\n\"    Lost to Follow-up\"\n1\n1\n0\n\"1.2\"\n\"1.2\"\n\"0.0\"\n\n\n\"    Physician Decision\"\n1\n0\n2\n\"1.2\"\n\"0.0\"\n\"2.4\"\n\n\n\"    Protocol Violation\"\n1\n1\n1\n\"1.2\"\n\"1.2\"\n\"1.2\"\n\n\n\"    Sponsor Decision\"\n2\n2\n3\n\"2.3\"\n\"2.4\"\n\"3.6\"\n\n\n\"    Withdrew Consent\"\n9\n10\n8\n\"10.5\"\n\"11.9\"\n\"9.5\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-disposition.html#create-rtf-output",
+    "href": "tlf-disposition.html#create-rtf-output",
+    "title": "2  Disposition of Participants Table",
+    "section": "2.10 Create RTF Output",
+    "text": "2.10 Create RTF Output\n\ndoc_disp = rtf.RTFDocument(\n    df=tbl_disp.select(\"row\", \"n_0\", \"pct_0\", \"n_54\", \"pct_54\", \"n_81\", \"pct_81\"),\n    rtf_title=rtf.RTFTitle(text=[\"Disposition of Participants\"]),\n    rtf_column_header=[\n        rtf.RTFColumnHeader(\n            text=[\"\", \"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"],\n            col_rel_width=[3] + [2] * 3,\n            text_justification=[\"l\"] + [\"c\"] * 3,\n        ),\n        rtf.RTFColumnHeader(\n            text=[\"\", \"n\", \"(%)\", \"n\", \"(%)\", \"n\", \"(%)\"],\n            col_rel_width=[3] + [1] * 6,\n            text_justification=[\"l\"] + [\"c\"] * 6,\n            border_top=[\"\"] + [\"single\"] * 6,\n            border_left=[\"single\"] + [\"single\", \"\"] * 3\n        )\n    ],\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[3] + [1] * 6,\n        text_justification=[\"l\"] + [\"c\"] * 6,\n        border_left=[\"single\"] + [\"single\", \"\"] * 3\n    ),\n    rtf_source=rtf.RTFSource(text=[\"Source: ADSL dataset\"])\n)\n\ndoc_disp.write_rtf(\"rtf/tlf_disposition.rtf\")\n\nrtf/tlf_disposition.rtf\n\n\n\n\nPosixPath('pdf/tlf_disposition.pdf')",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disposition of Participants Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html",
+    "href": "tlf-population.html",
+    "title": "3  Study Population",
+    "section": "",
+    "text": "3.1 Setup\nThis article demonstrates how to create an analysis population overview table.\nimport polars as pl\nimport rtflite as rtf",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#load-data",
+    "href": "tlf-population.html#load-data",
+    "title": "3  Study Population",
+    "section": "3.2 Load Data",
+    "text": "3.2 Load Data\n\nadsl = pl.read_parquet(\"data/adsl.parquet\")",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#create-population-table",
+    "href": "tlf-population.html#create-population-table",
+    "title": "3  Study Population",
+    "section": "3.3 Create Population Table",
+    "text": "3.3 Create Population Table\n\n# Step 1: Calculate total N for each treatment (denominator for percentages)\ntotals = adsl.group_by(\"TRT01P\").agg(\n    total = pl.len()\n)\n\ntotals\n\n\nshape: (3, 2)\n\n\n\nTRT01P\ntotal\n\n\nstr\nu32\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\n\n\"Placebo\"\n86\n\n\n\"Xanomeline Low Dose\"\n84",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-2-calculate-counts-for-each-population-flag",
+    "href": "tlf-population.html#step-2-calculate-counts-for-each-population-flag",
+    "title": "3  Study Population",
+    "section": "3.4 Step 2: Calculate counts for each population flag",
+    "text": "3.4 Step 2: Calculate counts for each population flag\n\n# Simple function to count participants by treatment group\ndef count_by_treatment(data, population_name):\n    \"\"\"Count participants by treatment group and add population label\"\"\"\n    return data.group_by(\"TRT01P\").agg(\n        n = pl.len()\n    ).with_columns(\n        population = pl.lit(population_name)\n    )\n\n\n# Row 1: Total participants (no filter needed)\npop_all = count_by_treatment(\n    data=adsl,\n    population_name=\"Participants in population\"\n)\n\npop_all\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\n\n\n\n\n# Row 2: ITT population (filter first, then count)\nadsl_itt = adsl.filter(pl.col(\"ITTFL\") == \"Y\")\npop_itt = count_by_treatment(\n    data=adsl_itt,\n    population_name=\"Participants included in ITT population\"\n)\n\npop_itt\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n\n\n\n\n\n# Row 3: Efficacy population (filter first, then count)\nadsl_eff = adsl.filter(pl.col(\"EFFFL\") == \"Y\")\npop_eff = count_by_treatment(\n    data=adsl_eff,\n    population_name=\"Participants included in efficacy population\"\n)\n\npop_eff\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\n\n\n\n\n# Row 4: Safety population (filter first, then count)\nadsl_saf = adsl.filter(pl.col(\"SAFFL\") == \"Y\")\npop_saf = count_by_treatment(\n    data=adsl_saf,\n    population_name=\"Participants included in safety population\"\n)\n\npop_saf\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-3-stack-all-populations-together",
+    "href": "tlf-population.html#step-3-stack-all-populations-together",
+    "title": "3  Study Population",
+    "section": "3.5 Step 3: Stack all populations together",
+    "text": "3.5 Step 3: Stack all populations together\n\n# Combine all population dataframes into one\nall_populations = pl.concat([\n    pop_all,\n    pop_itt,\n    pop_eff,\n    pop_saf\n])\n\nall_populations\n\n\nshape: (12, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-4-add-total-n-and-calculate-percentages",
+    "href": "tlf-population.html#step-4-add-total-n-and-calculate-percentages",
+    "title": "3  Study Population",
+    "section": "3.6 Step 4: Add total N and calculate percentages",
+    "text": "3.6 Step 4: Add total N and calculate percentages\n\n# Join with totals to calculate percentages\nstats_with_pct = all_populations.join(\n    totals,\n    on=\"TRT01P\"\n).with_columns(\n    pct = (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1)\n)\n\nstats_with_pct\n\n\nshape: (12, 5)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\n\n\nstr\nu32\nstr\nu32\nf64\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n84\n88.1\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n86\n91.9\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-5-format-the-display-text",
+    "href": "tlf-population.html#step-5-format-the-display-text",
+    "title": "3  Study Population",
+    "section": "3.7 Step 5: Format the display text",
+    "text": "3.7 Step 5: Format the display text\n\n# First row shows just N, other rows show \"N (pct)\"\nformatted_stats = stats_with_pct.with_columns(\n    display = pl.when(pl.col(\"population\") == \"Participants in population\")\n        .then(pl.col(\"n\").cast(str))\n        .otherwise(\n            pl.concat_str([\n                pl.col(\"n\").cast(str),\n                pl.lit(\" (\"),\n                pl.col(\"pct\").round(1).cast(str),\n                pl.lit(\")\")\n            ])\n        )\n)\n\nformatted_stats\n\n\nshape: (12, 6)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\ndisplay\n\n\nstr\nu32\nstr\nu32\nf64\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\"86\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\"84 (100.0)\"\n\n\n…\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n84\n88.1\n\"74 (88.1)\"\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n86\n91.9\n\"79 (91.9)\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\"86 (100.0)\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-6-pivot-from-long-to-wide-format",
+    "href": "tlf-population.html#step-6-pivot-from-long-to-wide-format",
+    "title": "3  Study Population",
+    "section": "3.8 Step 6: Pivot from long to wide format",
+    "text": "3.8 Step 6: Pivot from long to wide format\n\n# Transform to wide format for final table\ndf_overview = formatted_stats.pivot(\n    values=\"display\",\n    index=\"population\",\n    on=\"TRT01P\",\n    maintain_order=True\n).select(\n    [\"population\", \"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]\n).rename(\n    {\"population\": \"\"}\n)\n\ndf_overview\n\n\nshape: (4, 4)\n\n\n\n\nPlacebo\nXanomeline Low Dose\nXanomeline High Dose\n\n\nstr\nstr\nstr\nstr\n\n\n\n\n\"Participants in population\"\n\"86\"\n\"84\"\n\"84\"\n\n\n\"Participants included in ITT p…\n\"86 (100.0)\"\n\"84 (100.0)\"\n\"84 (100.0)\"\n\n\n\"Participants included in effic…\n\"79 (91.9)\"\n\"81 (96.4)\"\n\"74 (88.1)\"\n\n\n\"Participants included in safet…\n\"86 (100.0)\"\n\"84 (100.0)\"\n\"84 (100.0)\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#create-rtf-output",
+    "href": "tlf-population.html#create-rtf-output",
+    "title": "3  Study Population",
+    "section": "3.9 Create RTF Output",
+    "text": "3.9 Create RTF Output\n\ndoc_overview = rtf.RTFDocument(\n    df=df_overview,\n    rtf_title=rtf.RTFTitle(\n        text=[\"Analysis Population\", \"All Participants Randomized\"]\n    ),\n    rtf_column_header=rtf.RTFColumnHeader(\n        text=[\"\", \"Placebo\\nn (%)\", \"Xanomeline Low Dose\\nn (%)\", \"Xanomeline High Dose\\nn (%)\"],\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_source=rtf.RTFSource(text=[\"Source: ADSL dataset\"])\n)\n\ndoc_overview.write_rtf(\"rtf/tlf_population.rtf\")\n\nrtf/tlf_population.rtf\n\n\n\n\nPosixPath('pdf/tlf_population.pdf')",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-baseline.html",
+    "href": "tlf-baseline.html",
+    "title": "4  Baseline Characteristics Table",
+    "section": "",
+    "text": "4.1 Overview\nThis article demonstrates how to create a baseline characteristics table for clinical study reports using rtflite.\nBaseline characteristics tables summarize demographic and clinical characteristics of study participants at enrollment. These tables are essential for understanding the study population and assessing comparability between treatment groups.",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-baseline.html#imports",
+    "href": "tlf-baseline.html#imports",
+    "title": "4  Baseline Characteristics Table",
+    "section": "4.2 Imports",
+    "text": "4.2 Imports\n\nimport polars as pl\nimport rtflite as rtf",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-baseline.html#data-preparation",
+    "href": "tlf-baseline.html#data-preparation",
+    "title": "4  Baseline Characteristics Table",
+    "section": "4.3 Data Preparation",
+    "text": "4.3 Data Preparation\n\nadsl_baseline = (\n    pl.read_parquet(\"data/adsl.parquet\")\n    .filter(pl.col(\"SAFFL\") == \"Y\")\n    .select([\"USUBJID\", \"TRT01P\", \"AGE\", \"SEX\", \"RACE\"])\n    .with_columns([\n        pl.col(\"SEX\").replace({\"F\": \"Female\", \"M\": \"Male\"}),\n        pl.col(\"RACE\").str.to_titlecase()\n    ])\n)",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-baseline.html#statistics-function",
+    "href": "tlf-baseline.html#statistics-function",
+    "title": "4  Baseline Characteristics Table",
+    "section": "4.4 Statistics Function",
+    "text": "4.4 Statistics Function\n\ndef get_statistics(df, var, is_continuous=False):\n    expr = [\n            pl.col(var).mean().round(1).alias(\"mean\"),\n            pl.col(var).std().round(1).alias(\"sd\"),\n            pl.col(var).median().round(1).alias(\"median\"),\n            pl.col(var).min().alias(\"min\"),\n            pl.col(var).max().alias(\"max\")\n        ]\n\n    if is_continuous:\n        # Continuous statistics by treatment\n        by_treatment = df.group_by(\"TRT01P\").agg(expr)\n        \n        # Overall statistics\n        overall = df.select(expr).row(0)\n        \n        return by_treatment, overall\n    else:\n        # Categorical counts and percentages\n        total_n = df.height\n        by_treatment = (\n            df.group_by([\"TRT01P\", var])\n            .len()\n            .join(df.group_by(\"TRT01P\").len().rename({\"len\": \"total\"}), on=\"TRT01P\")\n            .with_columns(\n                pl.format(\"{} ({}%)\", \n                    pl.col(\"len\"), \n                    (100 * pl.col(\"len\") / pl.col(\"total\")).round(1)\n                ).alias(\"formatted\")\n            )\n        )\n        \n        # Overall counts\n        overall = (\n            df.group_by(var)\n            .len()\n            .with_columns(\n                pl.format(\"{} ({}%)\", \n                    pl.col(\"len\"), \n                    (100 * pl.col(\"len\") / total_n).round(1)\n                ).alias(\"formatted\")\n            )\n        )\n        \n        return by_treatment, overall",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-baseline.html#build-table-data",
+    "href": "tlf-baseline.html#build-table-data",
+    "title": "4  Baseline Characteristics Table",
+    "section": "4.5 Build Table Data",
+    "text": "4.5 Build Table Data\n\n# Treatment groups and counts\ntreatments = [\"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]\ntreatment_counts = dict(\n    adsl_baseline.group_by(\"TRT01P\").len().iter_rows()\n)\n\ndef create_variable_rows(df, var_name, categories=None, is_continuous=False):\n    rows = [[var_name, \"\", \"\", \"\", \"\"]]\n    \n    by_treatment, overall_stats = get_statistics(df, var_name, is_continuous)\n    \n    if is_continuous:\n        # Mean (SD) row\n        row = [\"  Mean (SD)\"]\n        for trt in treatments:\n            trt_stats = by_treatment.filter(pl.col(\"TRT01P\") == trt)\n            if trt_stats.height &gt; 0:\n                mean, sd = trt_stats.select([\"mean\", \"sd\"]).row(0)\n                row.append(f\"{mean} ({sd})\")\n            else:\n                row.append(\"\")\n        row.append(f\"{overall_stats[0]} ({overall_stats[1]})\")\n        rows.append(row)\n        \n        # Median [Min, Max] row  \n        row = [\"  Median [Min, Max]\"]\n        for trt in treatments:\n            trt_stats = by_treatment.filter(pl.col(\"TRT01P\") == trt)\n            if trt_stats.height &gt; 0:\n                median, min_val, max_val = trt_stats.select([\"median\", \"min\", \"max\"]).row(0)\n                row.append(f\"{median} [{min_val}, {max_val}]\")\n            else:\n                row.append(\"\")\n        row.append(f\"{overall_stats[2]} [{overall_stats[3]}, {overall_stats[4]}]\")\n        rows.append(row)\n    else:\n        # Categorical variable rows\n        for cat in categories:\n            row = [f\"  {cat}\"]\n            \n            for trt in treatments:\n                trt_data = by_treatment.filter(\n                    (pl.col(\"TRT01P\") == trt) & (pl.col(var_name) == cat)\n                )\n                if trt_data.height &gt; 0:\n                    row.append(trt_data[\"formatted\"][0])\n                else:\n                    row.append(\"0 (0.0%)\")\n            \n            # Overall column\n            overall_data = overall_stats.filter(pl.col(var_name) == cat)\n            if overall_data.height &gt; 0:\n                row.append(overall_data[\"formatted\"][0])\n            else:\n                row.append(\"0 (0.0%)\")\n            rows.append(row)\n    \n    return rows\n\n# Build complete table\ntable_data = []\ntable_data.extend(create_variable_rows(adsl_baseline, \"SEX\", [\"Female\", \"Male\"]))\ntable_data.extend(create_variable_rows(adsl_baseline, \"AGE\", is_continuous=True))\ntable_data.extend(create_variable_rows(\n    adsl_baseline, \"RACE\", \n    [\"Black Or African American\", \"White\", \"American Indian Or Alaska Native\"]\n))\n\ndf_baseline = pl.DataFrame(table_data, orient=\"row\")\n\ndf_baseline\n\n\nshape: (10, 5)\n\n\n\ncolumn_0\ncolumn_1\ncolumn_2\ncolumn_3\ncolumn_4\n\n\nstr\nstr\nstr\nstr\nstr\n\n\n\n\n\"SEX\"\n\"\"\n\"\"\n\"\"\n\"\"\n\n\n\"  Female\"\n\"53 (61.6%)\"\n\"50 (59.5%)\"\n\"40 (47.6%)\"\n\"143 (56.3%)\"\n\n\n\"  Male\"\n\"33 (38.4%)\"\n\"34 (40.5%)\"\n\"44 (52.4%)\"\n\"111 (43.7%)\"\n\n\n\"AGE\"\n\"\"\n\"\"\n\"\"\n\"\"\n\n\n\"  Mean (SD)\"\n\"75.2 (8.6)\"\n\"75.7 (8.3)\"\n\"74.4 (7.9)\"\n\"75.1 (8.2)\"\n\n\n\"  Median [Min, Max]\"\n\"76.0 [52.0, 89.0]\"\n\"77.5 [51.0, 88.0]\"\n\"76.0 [56.0, 88.0]\"\n\"77.0 [51.0, 89.0]\"\n\n\n\"RACE\"\n\"\"\n\"\"\n\"\"\n\"\"\n\n\n\"  Black Or African American\"\n\"8 (9.3%)\"\n\"6 (7.1%)\"\n\"9 (10.7%)\"\n\"23 (9.1%)\"\n\n\n\"  White\"\n\"78 (90.7%)\"\n\"78 (92.9%)\"\n\"74 (88.1%)\"\n\"230 (90.6%)\"\n\n\n\"  American Indian Or Alaska Na…\n\"0 (0.0%)\"\n\"0 (0.0%)\"\n\"1 (1.2%)\"\n\"1 (0.4%)\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-baseline.html#create-rtf-output",
+    "href": "tlf-baseline.html#create-rtf-output",
+    "title": "4  Baseline Characteristics Table",
+    "section": "4.6 Create RTF Output",
+    "text": "4.6 Create RTF Output\n\n# Column headers with N counts\ncol_headers = [\"\"] + [f\"{trt}\\n(N={treatment_counts[trt]})\" for trt in treatments] + [f\"Overall\\n(N={adsl_baseline.height})\"]\n\ndoc_baseline = rtf.RTFDocument(\n    df=df_baseline,\n    rtf_title=rtf.RTFTitle(\n        text=[\"Baseline Characteristics of Participants\", \"(All Participants Randomized)\"]\n    ),\n    rtf_column_header=rtf.RTFColumnHeader(\n        text=col_headers,\n        text_justification=[\"l\"] + [\"c\"] * 4\n    ),\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[2] + [1] * 4,\n        text_justification=[\"l\"] + [\"c\"] * 4\n    )\n)\n\ndoc_baseline.write_rtf(\"rtf/tlf_baseline.rtf\")\n\nrtf/tlf_baseline.rtf\n\n\n\n\nPosixPath('pdf/tlf_baseline.pdf')",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Baseline Characteristics Table</span>"
     ]
   },
   {

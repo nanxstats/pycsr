@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Disposition of Participants Table – Python for Clinical Study Reports and Submission</title>
+<title>2&nbsp; Disposition of Participants Table – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./tlf-ae-summary.html" rel="next">
-<link href="./tlf-baseline.html" rel="prev">
+<link href="./tlf-population.html" rel="next">
+<link href="./intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-population.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-disposition.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-disposition.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -171,20 +171,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./tlf-disposition.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./tlf-population.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Study Population</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study Population</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-baseline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./tlf-disposition.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -229,20 +229,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">4.1</span> Overview</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">4.2</span> Setup</a></li>
-  <li><a href="#calculate-disposition-statistics" id="toc-calculate-disposition-statistics" class="nav-link" data-scroll-target="#calculate-disposition-statistics"><span class="header-section-number">4.3</span> Calculate Disposition Statistics</a></li>
-  <li><a href="#build-table-data" id="toc-build-table-data" class="nav-link" data-scroll-target="#build-table-data"><span class="header-section-number">4.4</span> Build Table Data</a></li>
-  <li><a href="#generate-rtf-output" id="toc-generate-rtf-output" class="nav-link" data-scroll-target="#generate-rtf-output"><span class="header-section-number">4.5</span> Generate RTF Output</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">2.1</span> Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">2.2</span> Setup</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data"><span class="header-section-number">2.3</span> Load Data</a></li>
+  <li><a href="#data-dictionary" id="toc-data-dictionary" class="nav-link" data-scroll-target="#data-dictionary"><span class="header-section-number">2.4</span> Data Dictionary</a></li>
+  <li><a href="#step-1-participants-in-population" id="toc-step-1-participants-in-population" class="nav-link" data-scroll-target="#step-1-participants-in-population"><span class="header-section-number">2.5</span> Step 1: Participants in Population</a></li>
+  <li><a href="#step-2-participants-who-completed" id="toc-step-2-participants-who-completed" class="nav-link" data-scroll-target="#step-2-participants-who-completed"><span class="header-section-number">2.6</span> Step 2: Participants who Completed</a></li>
+  <li><a href="#step-3-participants-who-discontinued" id="toc-step-3-participants-who-discontinued" class="nav-link" data-scroll-target="#step-3-participants-who-discontinued"><span class="header-section-number">2.7</span> Step 3: Participants who Discontinued</a></li>
+  <li><a href="#step-4-discontinuation-reasons" id="toc-step-4-discontinuation-reasons" class="nav-link" data-scroll-target="#step-4-discontinuation-reasons"><span class="header-section-number">2.8</span> Step 4: Discontinuation Reasons</a></li>
+  <li><a href="#step-5-combine-all-tables" id="toc-step-5-combine-all-tables" class="nav-link" data-scroll-target="#step-5-combine-all-tables"><span class="header-section-number">2.9</span> Step 5: Combine All Tables</a></li>
+  <li><a href="#create-rtf-output" id="toc-create-rtf-output" class="nav-link" data-scroll-target="#create-rtf-output"><span class="header-section-number">2.10</span> Create RTF Output</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-population.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-disposition.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-disposition.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></h1>
 </div>
 
 
@@ -259,108 +264,517 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-<p>This article demonstrates how to create a disposition table following ICH E3 guidance using rtflite, based on the R4CSR example.</p>
-<section id="overview" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
-<p>The disposition table summarizes the flow of participants through the study, including: - Number of participants randomized - Number who discontinued and reasons for discontinuation<br>
-- Number who completed the study</p>
+<p>This article demonstrates how to create a disposition table following ICH E3 guidance using rtflite.</p>
+<section id="overview" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">2.1</span> Overview</h2>
+<p>The disposition table summarizes the flow of participants through the study, including: - Number of participants randomized - Number who discontinued and reasons for discontinuation - Number who completed the study</p>
+<p>This follows ICH E3 guidance for reporting participants’ randomization, entry, and completion status, including reasons for post-randomization discontinuations.</p>
 </section>
-<section id="setup" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">4.2</span> Setup</h2>
-<div id="3c0bdffe" class="cell" data-execution_count="1">
+<section id="setup" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.2</span> Setup</h2>
+<div id="779704b6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="calculate-disposition-statistics" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="calculate-disposition-statistics"><span class="header-section-number">4.3</span> Calculate Disposition Statistics</h2>
-<div id="dca861a1" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n_rand <span class="op">=</span> (</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"TRT01P"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    .agg(n<span class="op">=</span>pl.<span class="bu">len</span>())</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"TRT01P"</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_stats(df, filter_expr<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> filter_expr <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.<span class="bu">filter</span>(filter_expr)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> (</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        df</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        .group_by(<span class="st">"TRT01P"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        .agg(n<span class="op">=</span>pl.<span class="bu">len</span>())</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        .join(n_rand, on<span class="op">=</span><span class="st">"TRT01P"</span>, suffix<span class="op">=</span><span class="st">"_total"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        .with_columns(</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            pct<span class="op">=</span>(<span class="dv">100</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"n_total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        .sort(<span class="st">"TRT01P"</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> counts</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> {</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"completed"</span>: calc_stats(adsl, pl.col(<span class="st">"DCREASCD"</span>) <span class="op">==</span> <span class="st">"Completed"</span>),</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"discontinued"</span>: calc_stats(adsl, pl.col(<span class="st">"DCREASCD"</span>) <span class="op">!=</span> <span class="st">"Completed"</span>)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>disc_reasons <span class="op">=</span> (</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    adsl</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DCREASCD"</span>) <span class="op">!=</span> <span class="st">"Completed"</span>)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"TRT01P"</span>, <span class="st">"DCREASCD"</span>])</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    .agg(n<span class="op">=</span>pl.<span class="bu">len</span>())</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    .join(n_rand, on<span class="op">=</span><span class="st">"TRT01P"</span>, suffix<span class="op">=</span><span class="st">"_total"</span>)</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    .with_columns(</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        pct<span class="op">=</span>(<span class="dv">100</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"n_total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"DCREASCD"</span>, <span class="st">"TRT01P"</span>])</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="load-data" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.3</span> Load Data</h2>
+<div id="132c1f25" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>).with_columns(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"TRT01PN"</span>).cast(pl.Int64)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="build-table-data" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="build-table-data"><span class="header-section-number">4.4</span> Build Table Data</h2>
-<div id="dada44e7" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_row(label, stats_df<span class="op">=</span><span class="va">None</span>, reason<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> [label]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> stats_df <span class="kw">is</span> <span class="va">None</span>:  <span class="co"># For total participants row</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            n <span class="op">=</span> n_rand.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> trt)[<span class="st">"n"</span>][<span class="dv">0</span>]</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            row.extend([<span class="bu">str</span>(n), <span class="st">""</span>])</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Filter for specific treatment (and reason if provided)</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            filter_expr <span class="op">=</span> pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> trt</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> reason:</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                filter_expr <span class="op">=</span> filter_expr <span class="op">&amp;</span> (pl.col(<span class="st">"DCREASCD"</span>) <span class="op">==</span> reason)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            data <span class="op">=</span> stats_df.<span class="bu">filter</span>(filter_expr)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(data) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                row.extend([<span class="bu">str</span>(data[<span class="st">"n"</span>][<span class="dv">0</span>]), <span class="ss">f"(</span><span class="sc">{</span>data[<span class="st">'pct'</span>][<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">%)"</span>])</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                row.extend([<span class="st">"0"</span>, <span class="st">"(0.0%)"</span>])</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> row</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>table_data <span class="op">=</span> [</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    format_row(<span class="st">"Participants in population"</span>),</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    format_row(<span class="st">"Completed"</span>, stats[<span class="st">"completed"</span>]),</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    format_row(<span class="st">"Discontinued"</span>, stats[<span class="st">"discontinued"</span>])</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> reason <span class="kw">in</span> disc_reasons[<span class="st">"DCREASCD"</span>].unique().sort():</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    table_data.append(</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        format_row(<span class="ss">f"    </span><span class="sc">{</span>reason<span class="sc">}</span><span class="ss">"</span>, disc_reasons, reason)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>col_headers <span class="op">=</span> [<span class="st">""</span>] <span class="op">+</span> [<span class="ss">f"</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> trt <span class="kw">in</span> treatments <span class="cf">for</span> col <span class="kw">in</span> [<span class="st">"n"</span>, <span class="st">"(%)"</span>]]</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>df_disp <span class="op">=</span> pl.DataFrame(table_data, schema<span class="op">=</span>col_headers, orient<span class="op">=</span><span class="st">"row"</span>)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>df_disp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="data-dictionary" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="data-dictionary"><span class="header-section-number">2.4</span> Data Dictionary</h2>
+<p>The following variables are used in the preparation of a simplified disposition of participants table:</p>
+<ul>
+<li><strong>USUBJID</strong>: unique subject identifier</li>
+<li><strong>TRT01P</strong>: planned treatment</li>
+<li><strong>TRT01PN</strong>: planned treatment numeric encoding</li>
+<li><strong>DISCONFL</strong>: discontinued from study flag</li>
+<li><strong>DCREASCD</strong>: discontinued from study reason coded</li>
+</ul>
+<div id="c1ee3bee" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl.select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"TRT01PN"</span>, <span class="st">"DISCONFL"</span>, <span class="st">"DCREASCD"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (254, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRT01P</th>
+<th data-quarto-table-cell-role="th">TRT01PN</th>
+<th data-quarto-table-cell-role="th">DISCONFL</th>
+<th data-quarto-table-cell-role="th">DCREASCD</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>i64</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"Placebo"</td>
+<td>0</td>
+<td>""</td>
+<td>"Completed"</td>
+</tr>
+<tr class="even">
+<td>"01-701-1023"</td>
+<td>"Placebo"</td>
+<td>0</td>
+<td>"Y"</td>
+<td>"Adverse Event"</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1028"</td>
+<td>"Xanomeline High Dose"</td>
+<td>81</td>
+<td>""</td>
+<td>"Completed"</td>
+</tr>
+<tr class="even">
+<td>"01-701-1033"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>54</td>
+<td>"Y"</td>
+<td>"Sponsor Decision"</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1034"</td>
+<td>"Xanomeline High Dose"</td>
+<td>81</td>
+<td>""</td>
+<td>"Completed"</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"01-718-1254"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>54</td>
+<td>""</td>
+<td>"Completed"</td>
+</tr>
+<tr class="even">
+<td>"01-718-1328"</td>
+<td>"Xanomeline High Dose"</td>
+<td>81</td>
+<td>"Y"</td>
+<td>"Withdrew Consent"</td>
+</tr>
+<tr class="odd">
+<td>"01-718-1355"</td>
+<td>"Placebo"</td>
+<td>0</td>
+<td>""</td>
+<td>"Completed"</td>
+</tr>
+<tr class="even">
+<td>"01-718-1371"</td>
+<td>"Xanomeline High Dose"</td>
+<td>81</td>
+<td>"Y"</td>
+<td>"Adverse Event"</td>
+</tr>
+<tr class="odd">
+<td>"01-718-1427"</td>
+<td>"Xanomeline High Dose"</td>
+<td>81</td>
+<td>"Y"</td>
+<td>"Lack of Efficacy"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-1-participants-in-population" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="step-1-participants-in-population"><span class="header-section-number">2.5</span> Step 1: Participants in Population</h2>
+<div id="8ba95852" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n_rand <span class="op">=</span> (</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"TRT01PN"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .agg(n <span class="op">=</span> pl.<span class="bu">len</span>())</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">"Participants in population"</span>).alias(<span class="st">"row"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">""</span>).alias(<span class="st">"pct"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>[<span class="st">"n"</span>, <span class="st">"pct"</span>],</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        sort_columns<span class="op">=</span><span class="va">True</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>n_rand</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 7)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">row</th>
+<th data-quarto-table-cell-role="th">n_0</th>
+<th data-quarto-table-cell-role="th">n_54</th>
+<th data-quarto-table-cell-role="th">n_81</th>
+<th data-quarto-table-cell-role="th">pct_0</th>
+<th data-quarto-table-cell-role="th">pct_54</th>
+<th data-quarto-table-cell-role="th">pct_81</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+<td>u32</td>
+<td>u32</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Participants in population"</td>
+<td>86</td>
+<td>84</td>
+<td>84</td>
+<td>""</td>
+<td>""</td>
+<td>""</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-participants-who-completed" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="step-2-participants-who-completed"><span class="header-section-number">2.6</span> Step 2: Participants who Completed</h2>
+<div id="e49f7d5c" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_complete <span class="op">=</span> (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DCREASCD"</span>) <span class="op">==</span> <span class="st">"Completed"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"TRT01PN"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    .agg(n <span class="op">=</span> pl.<span class="bu">len</span>())</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    .join(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        adsl.group_by(<span class="st">"TRT01PN"</span>).agg(total <span class="op">=</span> pl.<span class="bu">len</span>()),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">"Completed"</span>).alias(<span class="st">"row"</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(pl.String).alias(<span class="st">"pct"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>[<span class="st">"n"</span>, <span class="st">"pct"</span>],</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        sort_columns<span class="op">=</span><span class="va">True</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>n_complete</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 7)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">row</th>
+<th data-quarto-table-cell-role="th">n_0</th>
+<th data-quarto-table-cell-role="th">n_54</th>
+<th data-quarto-table-cell-role="th">n_81</th>
+<th data-quarto-table-cell-role="th">pct_0</th>
+<th data-quarto-table-cell-role="th">pct_54</th>
+<th data-quarto-table-cell-role="th">pct_81</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+<td>u32</td>
+<td>u32</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Completed"</td>
+<td>58</td>
+<td>25</td>
+<td>27</td>
+<td>"67.4"</td>
+<td>"29.8"</td>
+<td>"32.1"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-participants-who-discontinued" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="step-3-participants-who-discontinued"><span class="header-section-number">2.7</span> Step 3: Participants who Discontinued</h2>
+<div id="45f3c495" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n_disc <span class="op">=</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DISCONFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"TRT01PN"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    .agg(n <span class="op">=</span> pl.<span class="bu">len</span>())</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    .join(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        adsl.group_by(<span class="st">"TRT01PN"</span>).agg(total <span class="op">=</span> pl.<span class="bu">len</span>()),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">"Discontinued"</span>).alias(<span class="st">"row"</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(pl.String).alias(<span class="st">"pct"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>[<span class="st">"n"</span>, <span class="st">"pct"</span>],</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        sort_columns<span class="op">=</span><span class="va">True</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>n_disc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 7)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">row</th>
+<th data-quarto-table-cell-role="th">n_0</th>
+<th data-quarto-table-cell-role="th">n_54</th>
+<th data-quarto-table-cell-role="th">n_81</th>
+<th data-quarto-table-cell-role="th">pct_0</th>
+<th data-quarto-table-cell-role="th">pct_54</th>
+<th data-quarto-table-cell-role="th">pct_81</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+<td>u32</td>
+<td>u32</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Discontinued"</td>
+<td>28</td>
+<td>59</td>
+<td>57</td>
+<td>"32.6"</td>
+<td>"70.2"</td>
+<td>"67.9"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-4-discontinuation-reasons" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="step-4-discontinuation-reasons"><span class="header-section-number">2.8</span> Step 4: Discontinuation Reasons</h2>
+<div id="497f4104" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n_reason <span class="op">=</span> (</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DCREASCD"</span>) <span class="op">!=</span> <span class="st">"Completed"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"TRT01PN"</span>, <span class="st">"DCREASCD"</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    .agg(n <span class="op">=</span> pl.<span class="bu">len</span>())</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    .join(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        adsl.group_by(<span class="st">"TRT01PN"</span>).agg(total <span class="op">=</span> pl.<span class="bu">len</span>()),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        pl.concat_str([pl.lit(<span class="st">"    "</span>), pl.col(<span class="st">"DCREASCD"</span>)]).alias(<span class="st">"row"</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(pl.String).alias(<span class="st">"pct"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01PN"</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>[<span class="st">"n"</span>, <span class="st">"pct"</span>],</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        sort_columns<span class="op">=</span><span class="va">True</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        pl.col([<span class="st">"n_0"</span>, <span class="st">"n_54"</span>, <span class="st">"n_81"</span>]).fill_null(<span class="dv">0</span>),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        pl.col([<span class="st">"pct_0"</span>, <span class="st">"pct_54"</span>, <span class="st">"pct_81"</span>]).fill_null(<span class="st">"0.0"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"row"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>n_reason</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (9, 7)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">row</th>
+<th data-quarto-table-cell-role="th">n_0</th>
+<th data-quarto-table-cell-role="th">n_54</th>
+<th data-quarto-table-cell-role="th">n_81</th>
+<th data-quarto-table-cell-role="th">pct_0</th>
+<th data-quarto-table-cell-role="th">pct_54</th>
+<th data-quarto-table-cell-role="th">pct_81</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+<td>u32</td>
+<td>u32</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Adverse Event"</td>
+<td>8</td>
+<td>44</td>
+<td>40</td>
+<td>"9.3"</td>
+<td>"52.4"</td>
+<td>"47.6"</td>
+</tr>
+<tr class="even">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Death"</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>"2.3"</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
+</tr>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;I/E Not Met"</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
+<td>"2.4"</td>
+</tr>
+<tr class="even">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Lack of Efficacy"</td>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+<td>"3.5"</td>
+<td>"0.0"</td>
+<td>"1.2"</td>
+</tr>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Lost to Follow-up"</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>"1.2"</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
+</tr>
+<tr class="even">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Physician Decision"</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
+<td>"2.4"</td>
+</tr>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Protocol Violation"</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>"1.2"</td>
+<td>"1.2"</td>
+<td>"1.2"</td>
+</tr>
+<tr class="even">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Sponsor Decision"</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>"2.3"</td>
+<td>"2.4"</td>
+<td>"3.6"</td>
+</tr>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;Withdrew Consent"</td>
+<td>9</td>
+<td>10</td>
+<td>8</td>
+<td>"10.5"</td>
+<td>"11.9"</td>
+<td>"9.5"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-5-combine-all-tables" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="step-5-combine-all-tables"><span class="header-section-number">2.9</span> Step 5: Combine All Tables</h2>
+<div id="45b0b9da" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tbl_disp <span class="op">=</span> pl.concat([</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    n_rand,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    n_complete,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    n_disc,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    n_reason</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>tbl_disp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div><style>
 .dataframe > thead > tr,
 .dataframe > tbody > tr {
@@ -372,19 +786,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th">column_0</th>
-<th data-quarto-table-cell-role="th">Placebo_n</th>
-<th data-quarto-table-cell-role="th">Placebo_(%)</th>
-<th data-quarto-table-cell-role="th">Xanomeline Low Dose_n</th>
-<th data-quarto-table-cell-role="th">Xanomeline Low Dose_(%)</th>
-<th data-quarto-table-cell-role="th">Xanomeline High Dose_n</th>
-<th data-quarto-table-cell-role="th">Xanomeline High Dose_(%)</th>
+<th data-quarto-table-cell-role="th">row</th>
+<th data-quarto-table-cell-role="th">n_0</th>
+<th data-quarto-table-cell-role="th">n_54</th>
+<th data-quarto-table-cell-role="th">n_81</th>
+<th data-quarto-table-cell-role="th">pct_0</th>
+<th data-quarto-table-cell-role="th">pct_54</th>
+<th data-quarto-table-cell-role="th">pct_81</th>
 </tr>
 <tr class="even">
 <td>str</td>
-<td>str</td>
-<td>str</td>
-<td>str</td>
+<td>u32</td>
+<td>u32</td>
+<td>u32</td>
 <td>str</td>
 <td>str</td>
 <td>str</td>
@@ -393,48 +807,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td>"Participants in population"</td>
-<td>"86"</td>
+<td>86</td>
+<td>84</td>
+<td>84</td>
 <td>""</td>
-<td>"84"</td>
 <td>""</td>
-<td>"84"</td>
 <td>""</td>
 </tr>
 <tr class="even">
 <td>"Completed"</td>
-<td>"58"</td>
-<td>"(67.4%)"</td>
-<td>"25"</td>
-<td>"(29.8%)"</td>
-<td>"27"</td>
-<td>"(32.1%)"</td>
+<td>58</td>
+<td>25</td>
+<td>27</td>
+<td>"67.4"</td>
+<td>"29.8"</td>
+<td>"32.1"</td>
 </tr>
 <tr class="odd">
 <td>"Discontinued"</td>
-<td>"28"</td>
-<td>"(32.6%)"</td>
-<td>"59"</td>
-<td>"(70.2%)"</td>
-<td>"57"</td>
-<td>"(67.9%)"</td>
+<td>28</td>
+<td>59</td>
+<td>57</td>
+<td>"32.6"</td>
+<td>"70.2"</td>
+<td>"67.9"</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Adverse Event"</td>
-<td>"8"</td>
-<td>"(9.3%)"</td>
-<td>"44"</td>
-<td>"(52.4%)"</td>
-<td>"40"</td>
-<td>"(47.6%)"</td>
+<td>8</td>
+<td>44</td>
+<td>40</td>
+<td>"9.3"</td>
+<td>"52.4"</td>
+<td>"47.6"</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Death"</td>
-<td>"2"</td>
-<td>"(2.3%)"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
-<td>"0"</td>
-<td>"(0.0%)"</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>"2.3"</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -447,48 +861,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Lost to Follow-up"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
-<td>"0"</td>
-<td>"(0.0%)"</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>"1.2"</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Physician Decision"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
-<td>"0"</td>
-<td>"(0.0%)"</td>
-<td>"2"</td>
-<td>"(2.4%)"</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>"1.2"</td>
+<td>"0.0"</td>
+<td>"2.4"</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Protocol Violation"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
-<td>"1"</td>
-<td>"(1.2%)"</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>"1.2"</td>
+<td>"1.2"</td>
+<td>"1.2"</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Sponsor Decision"</td>
-<td>"2"</td>
-<td>"(2.3%)"</td>
-<td>"2"</td>
-<td>"(2.4%)"</td>
-<td>"3"</td>
-<td>"(3.6%)"</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>"2.3"</td>
+<td>"2.4"</td>
+<td>"3.6"</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Withdrew Consent"</td>
-<td>"9"</td>
-<td>"(10.5%)"</td>
-<td>"10"</td>
-<td>"(11.9%)"</td>
-<td>"8"</td>
-<td>"(9.5%)"</td>
+<td>9</td>
+<td>10</td>
+<td>8</td>
+<td>"10.5"</td>
+<td>"11.9"</td>
+<td>"9.5"</td>
 </tr>
 </tbody>
 </table>
@@ -496,41 +910,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="generate-rtf-output" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="generate-rtf-output"><span class="header-section-number">4.5</span> Generate RTF Output</h2>
-<div id="e2681217" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>doc_disp <span class="op">=</span> rtf.RTFDocument(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_disp,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(text<span class="op">=</span>[<span class="st">"Disposition of Participants"</span>]),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>[</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            text<span class="op">=</span>[<span class="st">""</span>] <span class="op">+</span> treatments,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">3</span>] <span class="op">+</span> [<span class="dv">2</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"n"</span>, <span class="st">"(%)"</span>, <span class="st">"n"</span>, <span class="st">"(%)"</span>, <span class="st">"n"</span>, <span class="st">"(%)"</span>],</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">3</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            border_top<span class="op">=</span>[<span class="st">""</span>] <span class="op">+</span> [<span class="st">"single"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            border_left<span class="op">=</span>[<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">3</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        border_left<span class="op">=</span>[<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL dataset"</span>])</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>doc_disp.write_rtf(<span class="st">"rtf/tlf_disposition.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="create-rtf-output" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">2.10</span> Create RTF Output</h2>
+<div id="03844523" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>doc_disp <span class="op">=</span> rtf.RTFDocument(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>tbl_disp.select(<span class="st">"row"</span>, <span class="st">"n_0"</span>, <span class="st">"pct_0"</span>, <span class="st">"n_54"</span>, <span class="st">"pct_54"</span>, <span class="st">"n_81"</span>, <span class="st">"pct_81"</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(text<span class="op">=</span>[<span class="st">"Disposition of Participants"</span>]),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>[</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>],</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">3</span>] <span class="op">+</span> [<span class="dv">2</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"n"</span>, <span class="st">"(%)"</span>, <span class="st">"n"</span>, <span class="st">"(%)"</span>, <span class="st">"n"</span>, <span class="st">"(%)"</span>],</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">3</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>            border_top<span class="op">=</span>[<span class="st">""</span>] <span class="op">+</span> [<span class="st">"single"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            border_left<span class="op">=</span>[<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">3</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        border_left<span class="op">=</span>[<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL dataset"</span>])</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>doc_disp.write_rtf(<span class="st">"rtf/tlf_disposition.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_disposition.rtf</code></pre>
 </div>
 </div>
-<div id="f1e57259" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="23cc3b56" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>PosixPath('pdf/tlf_disposition.pdf')</code></pre>
 </div>
 </div>
@@ -942,13 +1356,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./tlf-baseline.html" class="pagination-link" aria-label="Baseline Characteristics Table">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span>
+      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./tlf-ae-summary.html" class="pagination-link" aria-label="Adverse Events Summary Table">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Adverse Events Summary Table</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./tlf-population.html" class="pagination-link" aria-label="Study Population">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study Population</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
