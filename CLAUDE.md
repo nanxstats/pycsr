@@ -48,3 +48,8 @@ The project contains example TLF (Tables, Listings, and Figures) notebooks:
 - Keep examples simple and educational
 - Focus on demonstrating rtflite capabilities for clinical reporting
 - Ensure code is accessible to domain beginners
+
+## Git Policy
+- **NEVER commit or push changes automatically**
+- Always ask the user before committing changes
+- User must explicitly request git operations
