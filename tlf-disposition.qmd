@@ -2,47 +2,51 @@
 title: "Disposition of Participants Table"
 ---
 
-This article demonstrates how to create a disposition table following ICH E3 guidance using rtflite.
-
 ## Overview
 
-The disposition table summarizes the flow of participants through the study, including:
-- Number of participants randomized
-- Number who discontinued and reasons for discontinuation
-- Number who completed the study
+Clinical trials needs to track how participants flow through a study from enrollment to completion. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), regulatory submissions require a disposition table in Section 10.1 that summarizes:
 
-This follows ICH E3 guidance for reporting participants' randomization, entry, and completion status, including reasons for post-randomization discontinuations.
+- **Enrolled**: Total participants who entered the study
+- **Completed**: Participants who finished the study protocol
+- **Discontinued**: Participants who left early and their reasons
 
-## Setup
+This tutorial shows you how to create a regulatory-compliant disposition table using Python's `rtflite` package.
 
-```{python}
-import polars as pl
-import rtflite as rtf
-```
-
-## Load Data
+<embed src="pdf/tlf_disposition.pdf" style="width:100%; height:600px" type="application/pdf">
 
 ```{python}
-adsl = pl.read_parquet("data/adsl.parquet").with_columns(
-    pl.col("TRT01PN").cast(pl.Int64)
-)
+import polars as pl # Manipulate data
+import rtflite as rtf # Reporting in RTF format
 ```
 
-## Data Dictionary
+## Step 1: Load Data
 
-The following variables are used in the preparation of a simplified disposition of participants table:
+We start by loading the Subject-level Analysis Dataset (ADSL), which contains all participant information needed for our disposition table.
 
-- **USUBJID**: unique subject identifier
-- **TRT01P**: planned treatment
-- **TRT01PN**: planned treatment numeric encoding
-- **DISCONFL**: discontinued from study flag
-- **DCREASCD**: discontinued from study reason coded
+The ADSL dataset stores participant-level information including treatment assignments and study completion status. We're using the `parquet` format for data storage.
+
+```{python}
+adsl = pl.read_parquet("data/adsl.parquet")
+```
+
+
+Let's examine the key variables we'll use to build our disposition table:
+
+- **USUBJID**: Unique identifier for each participant
+- **TRT01P**: Treatment name (text)
+- **TRT01PN**: Treatment group (numeric code)
+- **DISCONFL**: Flag indicating if participant discontinued (Y/N)
+- **DCREASCD**: Specific reason for discontinuation
 
 ```{python}
 adsl.select(["USUBJID", "TRT01P", "TRT01PN", "DISCONFL", "DCREASCD"])
 ```
 
-## Step 1: Participants in Population
+## Step 2: Count Total Participants
+
+First, we count how many participants were enrolled in each treatment group.
+
+We group participants by treatment arm and count them using `.group_by()` and `.agg()`. The `.pivot()` operation reshapes our data from long format (rows for each treatment) to wide format (columns for each treatment), which matches the standard disposition table layout.
 
 ```{python}
 n_rand = (
@@ -51,7 +55,7 @@ n_rand = (
     .agg(n = pl.len())
     .with_columns([
         pl.lit("Participants in population").alias("row"),
-        pl.lit("").alias("pct")
+        pl.lit(None, dtype=pl.Float64).alias("pct") # Placeholder for percentage (not applicable for totals)
     ])
     .pivot(
         index="row",
@@ -64,7 +68,12 @@ n_rand = (
 n_rand
 ```
 
-## Step 2: Participants who Completed
+## Step 3: Count Completed Participants
+
+Next, we identify participants who successfully completed the study and calculate what percentage they represent of each treatment group.
+
+We filter for participants where `DCREASCD == "Completed"`, then calculate both counts and percentages. The `.join()` operation brings in the total count for each treatment group so we can compute percentages.
+
 
 ```{python}
 n_complete = (
@@ -78,7 +87,7 @@ n_complete = (
     )
     .with_columns([
         pl.lit("Completed").alias("row"),
-        (100.0 * pl.col("n") / pl.col("total")).round(1).cast(pl.String).alias("pct")
+        (100.0 * pl.col("n") / pl.col("total")).round(1).alias("pct")
     ])
     .pivot(
         index="row",
@@ -91,7 +100,11 @@ n_complete = (
 n_complete
 ```
 
-## Step 3: Participants who Discontinued
+## Step 4: Count Discontinued Participants
+
+Now we count participants who left the study early, regardless of their specific reason.
+
+We filter for participants where the discontinuation flag `DISCONFL == "Y"`, then follow the same pattern of counting and calculating percentages within each treatment group.
 
 ```{python}
 n_disc = (
@@ -105,7 +118,7 @@ n_disc = (
     )
     .with_columns([
         pl.lit("Discontinued").alias("row"),
-        (100.0 * pl.col("n") / pl.col("total")).round(1).cast(pl.String).alias("pct")
+        (100.0 * pl.col("n") / pl.col("total")).round(1).alias("pct")
     ])
     .pivot(
         index="row",
@@ -118,7 +131,11 @@ n_disc = (
 n_disc
 ```
 
-## Step 4: Discontinuation Reasons
+## Step 5: Break Down Discontinuation Reasons
+
+For regulatory reporting, we need to show the specific reasons why participants discontinued.
+
+We filter out completed participants, then group by both treatment and discontinuation reason. The indentation (four spaces) in the row labels helps show these are subcategories under "Discontinued". We also use `.fill_null(0)` to handle cases where certain discontinuation reasons don't occur in all treatment groups.
 
 ```{python}
 n_reason = (
@@ -132,7 +149,7 @@ n_reason = (
     )
     .with_columns([
         pl.concat_str([pl.lit("    "), pl.col("DCREASCD")]).alias("row"),
-        (100.0 * pl.col("n") / pl.col("total")).round(1).cast(pl.String).alias("pct")
+        (100.0 * pl.col("n") / pl.col("total")).round(1).alias("pct")
     ])
     .pivot(
         index="row",
@@ -142,7 +159,7 @@ n_reason = (
     )
     .with_columns([
         pl.col(["n_0", "n_54", "n_81"]).fill_null(0),
-        pl.col(["pct_0", "pct_54", "pct_81"]).fill_null("0.0")
+        pl.col(["pct_0", "pct_54", "pct_81"]).fill_null(0.0)
     ])
     .sort("row")
 )
@@ -150,7 +167,11 @@ n_reason = (
 n_reason
 ```
 
-## Step 5: Combine All Tables
+## Step 6: Combine All Results
+
+Now we stack all our individual summaries together to create the complete disposition table.
+
+Using `pl.concat()`, we combine the enrollment counts, completion counts, discontinuation counts, and detailed discontinuation reasons into a single table that flows logically from top to bottom.
 
 ```{python}
 tbl_disp = pl.concat([
@@ -163,9 +184,14 @@ tbl_disp = pl.concat([
 tbl_disp
 ```
 
-## Create RTF Output
+## Step 7: Generate Publication-Ready Output
+
+Finally, we format our table in RTF format using the `rtflite` package.
+
+The `RTFDocument` class handles the complex formatting required for clinical reports, including proper column headers, borders, and spacing. The resulting RTF file can be directly included in regulatory submissions or converted to PDF for review.
 
 ```{python}
+#| message: false
 doc_disp = rtf.RTFDocument(
     df=tbl_disp.select("row", "n_0", "pct_0", "n_54", "pct_54", "n_81", "pct_81"),
     rtf_title=rtf.RTFTitle(text=["Disposition of Participants"]),
@@ -188,14 +214,14 @@ doc_disp = rtf.RTFDocument(
         text_justification=["l"] + ["c"] * 6,
         border_left=["single"] + ["single", ""] * 3
     ),
-    rtf_source=rtf.RTFSource(text=["Source: ADSL dataset"])
+    rtf_source=rtf.RTFSource(text=["Source: ADSL dataset"]) # Required source attribution
 )
 
-doc_disp.write_rtf("rtf/tlf_disposition.rtf")
+doc_disp.write_rtf("rtf/tlf_disposition.rtf")  # Save as RTF for submission
 ```
 
 ```{python}
-#| echo: false
+#| include: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()
