@@ -268,14 +268,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="imports" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">5.2</span> Imports</h2>
-<div id="445b7c63" class="cell" data-execution_count="1">
+<div id="2d93cdfc" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="data-preparation" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">5.3</span> Data Preparation</h2>
-<div id="e3c3cf1f" class="cell" data-execution_count="2">
+<div id="38277f46" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare safety population data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>adae <span class="op">=</span> pl.read_parquet(<span class="st">"data/adae.parquet"</span>)</span>
@@ -287,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="ae-summary-calculations" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="ae-summary-calculations"><span class="header-section-number">5.4</span> AE Summary Calculations</h2>
-<div id="c7551ce0" class="cell" data-execution_count="3">
+<div id="41907c7c" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define AE categories with their filter conditions</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ae_categories <span class="op">=</span> {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participants in population"</span>: <span class="va">None</span>,  <span class="co"># Special case - uses total N</span></span>
@@ -353,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="format-ae-summary-table" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="format-ae-summary-table"><span class="header-section-number">5.5</span> Format AE Summary Table</h2>
-<div id="a53b3d3e" class="cell" data-execution_count="4">
+<div id="21b8d87c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define treatment order and category order for consistent display</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>category_order <span class="op">=</span> <span class="bu">list</span>(ae_categories.keys())</span>
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-rtf-output" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">5.6</span> Create RTF Output</h2>
-<div id="db3d84b7" class="cell" data-execution_count="5">
+<div id="50af5baa" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create RTF document</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>doc_ae_summary <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_ae_summary,</span>
@@ -528,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_ae_summary.rtf</code></pre>
 </div>
 </div>
-<div id="cc7e86b4" class="cell" data-execution_count="6">
+<div id="3524f26e" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>PosixPath('pdf/tlf_ae_summary.pdf')</code></pre>
 </div>
