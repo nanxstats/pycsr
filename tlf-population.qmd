@@ -1,27 +1,52 @@
 ---
-title: "Study Population"
-format: gfm
+title: "Study Population Table"
 ---
 
-This article demonstrates how to create an analysis population overview table.
+## Overview
 
-## Setup
+Clinical trials define multiple analysis populations based on different inclusion criteria. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), regulatory submissions must clearly document the number of participants in each analysis population to support the validity of statistical analyses.
+
+The key analysis populations typically include:
+
+- **All Randomized**: Total participants who entered the study
+- **Intent-to-Treat (ITT)**: Participants included in the primary efficacy analysis
+- **Efficacy Population**: Participants who meet specific criteria for efficacy evaluation
+- **Safety Population**: Participants who received at least one dose of study treatment
+
+This tutorial shows you how to create a population summary table using Python's `rtflite` package.
+
+<embed src="pdf/tlf_population.pdf" style="width:100%; height:600px" type="application/pdf">
 
 ```{python}
-import polars as pl
-import rtflite as rtf
+import polars as pl # Data manipulation
+import rtflite as rtf # RTF reporting
 ```
 
-## Load Data 
+## Step 1: Load Data
+
+We start by loading the Subject-level Analysis Dataset (ADSL), which contains population flags for each participant.
 
 ```{python}
 adsl = pl.read_parquet("data/adsl.parquet")
 ```
 
-## Create Population Table
+Let's examine the key population flag variables we'll use:
+
+- **USUBJID**: Unique participant identifier
+- **TRT01P**: Planned treatment group
+- **ITTFL**: Intent-to-treat population flag (Y/N)
+- **EFFFL**: Efficacy population flag (Y/N)
+- **SAFFL**: Safety population flag (Y/N)
 
 ```{python}
-# Step 1: Calculate total N for each treatment (denominator for percentages)
+adsl.select(["USUBJID", "TRT01P", "ITTFL", "EFFFL", "SAFFL"])
+```
+
+## Step 2: Calculate Treatment Group Totals
+
+First, we calculate the total number of randomized participants in each treatment group, which will serve as the denominator for percentage calculations.
+
+```{python}
 totals = adsl.group_by("TRT01P").agg(
     total = pl.len()
 )
@@ -29,10 +54,11 @@ totals = adsl.group_by("TRT01P").agg(
 totals
 ```
 
-## Step 2: Calculate counts for each population flag
+## Step 3: Define Helper Function
+
+We create a reusable function to count participants by treatment group for any population subset.
 
 ```{python}
-# Simple function to count participants by treatment group
 def count_by_treatment(data, population_name):
     """Count participants by treatment group and add population label"""
     return data.group_by("TRT01P").agg(
@@ -42,8 +68,13 @@ def count_by_treatment(data, population_name):
     )
 ```
 
+## Step 4: Count Each Population
+
+Now we calculate participant counts for each analysis population.
+
+### All Randomized Participants
+
 ```{python}
-# Row 1: Total participants (no filter needed)
 pop_all = count_by_treatment(
     data=adsl,
     population_name="Participants in population"
@@ -52,8 +83,9 @@ pop_all = count_by_treatment(
 pop_all
 ```
 
+### Intent-to-Treat Population
+
 ```{python}
-# Row 2: ITT population (filter first, then count)
 adsl_itt = adsl.filter(pl.col("ITTFL") == "Y")
 pop_itt = count_by_treatment(
     data=adsl_itt,
@@ -63,8 +95,9 @@ pop_itt = count_by_treatment(
 pop_itt
 ```
 
+### Efficacy Population
+
 ```{python}
-# Row 3: Efficacy population (filter first, then count)
 adsl_eff = adsl.filter(pl.col("EFFFL") == "Y")
 pop_eff = count_by_treatment(
     data=adsl_eff,
@@ -74,8 +107,9 @@ pop_eff = count_by_treatment(
 pop_eff
 ```
 
+### Safety Population
+
 ```{python}
-# Row 4: Safety population (filter first, then count)
 adsl_saf = adsl.filter(pl.col("SAFFL") == "Y")
 pop_saf = count_by_treatment(
     data=adsl_saf,
@@ -85,10 +119,11 @@ pop_saf = count_by_treatment(
 pop_saf
 ```
 
-## Step 3: Stack all populations together
+## Step 5: Combine All Populations
+
+We stack all population counts together into a single dataset.
 
 ```{python}
-# Combine all population dataframes into one
 all_populations = pl.concat([
     pop_all,
     pop_itt,
@@ -99,10 +134,11 @@ all_populations = pl.concat([
 all_populations
 ```
 
-## Step 4: Add total N and calculate percentages
+## Step 6: Calculate Percentages
+
+We join with the total counts and calculate what percentage each population represents of the total randomized participants.
 
 ```{python}
-# Join with totals to calculate percentages
 stats_with_pct = all_populations.join(
     totals,
     on="TRT01P"
@@ -113,15 +149,16 @@ stats_with_pct = all_populations.join(
 stats_with_pct
 ```
 
-## Step 5: Format the display text
+## Step 7: Format Display Values
+
+For the final table, we format the display text. The total randomized count shows just "N", while subset populations show "N (%)".
 
 ```{python}
-# First row shows just N, other rows show "N (pct)"
 formatted_stats = stats_with_pct.with_columns(
     display = pl.when(pl.col("population") == "Participants in population")
-        .then(pl.col("n").cast(str))
+        .then(pl.col("n").cast(str)) 
         .otherwise(
-            pl.concat_str([
+            pl.concat_str([ 
                 pl.col("n").cast(str),
                 pl.lit(" ("),
                 pl.col("pct").round(1).cast(str),
@@ -133,10 +170,11 @@ formatted_stats = stats_with_pct.with_columns(
 formatted_stats
 ```
 
-## Step 6: Pivot from long to wide format
+## Step 8: Create Final Table
+
+We reshape the data from long format (rows for each treatment-population combination) to wide format (columns for each treatment group).
 
 ```{python}
-# Transform to wide format for final table
 df_overview = formatted_stats.pivot(
     values="display",
     index="population",
@@ -144,14 +182,14 @@ df_overview = formatted_stats.pivot(
     maintain_order=True
 ).select(
     ["population", "Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
-).rename(
-    {"population": ""}
 )
 
 df_overview
 ```
 
-## Create RTF Output
+## Step 9: Generate Publication-Ready Output
+
+Finally, we format the population table for regulatory submission using the `rtflite` package.
 
 ```{python}
 doc_overview = rtf.RTFDocument(
@@ -175,7 +213,7 @@ doc_overview.write_rtf("rtf/tlf_population.rtf")
 ```
 
 ```{python}
-#| echo: false
+#| include: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()
