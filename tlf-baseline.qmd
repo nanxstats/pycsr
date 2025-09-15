@@ -1,189 +1,221 @@
 ---
 title: "Baseline Characteristics Table"
-format: gfm
 ---
-
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-
-This article demonstrates how to create a baseline characteristics table for clinical study reports using rtflite.
 
 ## Overview
 
-Baseline characteristics tables summarize demographic and clinical characteristics of study participants at enrollment. These tables are essential for understanding the study population and assessing comparability between treatment groups.
+Baseline characteristics tables summarize the demographic and clinical characteristics of study participants at enrollment. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), these tables are essential for understanding the study population and assessing comparability between treatment groups.
 
-## Imports
+This tutorial shows you how to create a baseline characteristics table using Python's `rtflite` package.
+
+<embed src="pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">
 
 ```{python}
-import polars as pl
-import rtflite as rtf
+import polars as pl # Data manipulation
+import rtflite as rtf # RTF reporting
 ```
 
-## Data Preparation
+## Step 1: Load Data
+
+We start by loading the Subject-level Analysis Dataset (ADSL) and filtering to the safety population.
 
 ```{python}
-adsl_baseline = (
+adsl = (
     pl.read_parquet("data/adsl.parquet")
-    .filter(pl.col("SAFFL") == "Y")
     .select(["USUBJID", "TRT01P", "AGE", "SEX", "RACE"])
-    .with_columns([
-        pl.col("SEX").replace({"F": "Female", "M": "Male"}),
-        pl.col("RACE").str.to_titlecase()
+)
+
+adsl
+```
+
+## Step 2: Calculate Summary Statistics
+
+We'll create separate functions to handle continuous and categorical variables.
+
+### Continuous Variables (Age)
+
+For continuous variables, we calculate mean (SD) and median [min, max].
+
+```{python}
+def summarize_continuous(df, var):
+    """Calculate summary statistics for continuous variables"""
+    return df.group_by("TRT01P").agg([
+        pl.col(var).mean().round(1).alias("mean"),
+        pl.col(var).std().round(2).alias("sd"),
+        pl.col(var).median().alias("median"),
+        pl.col(var).min().alias("min"),
+        pl.col(var).max().alias("max"),
+        pl.len().alias("n")
     ])
+
+age_stats = summarize_continuous(adsl, "AGE")
+age_stats
+```
+
+### Categorical Variables (Sex, Race)
+
+For categorical variables, we calculate counts and percentages.
+
+```{python}
+def summarize_categorical(df, var):
+    """Calculate counts and percentages for categorical variables"""
+    # Get counts by treatment and category
+    counts = df.group_by(["TRT01P", var]).len()
+
+    # Get treatment totals for percentage calculations
+    totals = df.group_by("TRT01P").len().rename({"len": "total"})
+
+    # Calculate percentages
+    result = counts.join(totals, on="TRT01P").with_columns([
+        (100.0 * pl.col("len") / pl.col("total")).round(1).alias("pct")
+    ])
+
+    return result
+
+sex_stats = summarize_categorical(adsl, "SEX")
+sex_stats
+```
+
+```{python}
+race_stats = summarize_categorical(adsl, "RACE")
+race_stats
+```
+
+## Step 3: Format Results
+
+Now we format the statistics into the standard baseline table format.
+
+### Format Age Statistics
+
+```{python}
+# Format age as "Mean (SD)" and "Median [Min, Max]"
+age_formatted = age_stats.with_columns([
+    pl.format("{} ({})", pl.col("mean"), pl.col("sd")).alias("mean_sd"),
+    pl.format("{} [{}, {}]", pl.col("median"), pl.col("min"), pl.col("max")).alias("median_range")
+]).select(["TRT01P", "mean_sd", "median_range"])
+
+age_formatted
+```
+
+### Format Categorical Statistics
+
+```{python}
+# Format categorical as "n (%)"
+sex_formatted = sex_stats.with_columns(
+    pl.format("{} ({}%)", pl.col("len"), pl.col("pct")).alias("n_pct")
+).select(["TRT01P", "SEX", "n_pct"])
+
+race_formatted = race_stats.with_columns(
+    pl.format("{} ({}%)", pl.col("len"), pl.col("pct")).alias("n_pct")
+).select(["TRT01P", "RACE", "n_pct"])
+
+sex_formatted
+```
+
+## Step 4: Create Table Structure
+
+We'll build the table row by row following the standard baseline table format.
+
+```{python}
+# Helper function to get value for a treatment group
+def get_value(df, treatment):
+    """Get value for a specific treatment group or return default"""
+    result = df.filter(pl.col("TRT01P") == treatment)
+    return result[result.columns[-1]][0] if result.height > 0 else "0 (0.0%)"
+
+# Build the baseline table structure
+table_rows = []
+
+# Age section
+table_rows.append(["Age (years)", "", "", ""])
+
+# Age Mean (SD) row
+age_mean_row = ["  Mean (SD)"] + [
+    get_value(age_formatted.select(["TRT01P", "mean_sd"]), trt).replace("0 (0.0%)", "")
+    for trt in ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+]
+table_rows.append(age_mean_row)
+
+# Age Median [Min, Max] row
+age_median_row = ["  Median [Min, Max]"] + [
+    get_value(age_formatted.select(["TRT01P", "median_range"]), trt).replace("0 (0.0%)", "")
+    for trt in ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+]
+table_rows.append(age_median_row)
+
+# Sex section
+table_rows.append(["Sex", "", "", ""])
+
+for sex_cat in ["Female", "Male"]:
+    sex_data = sex_formatted.filter(pl.col("SEX") == sex_cat)
+    sex_row = [f"  {sex_cat}"] + [
+        get_value(sex_data, trt)
+        for trt in ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+    ]
+    table_rows.append(sex_row)
+
+# Race section
+table_rows.append(["Race", "", "", ""])
+
+for race_cat in ["White", "Black Or African American", "American Indian Or Alaska Native"]:
+    race_data = race_formatted.filter(pl.col("RACE") == race_cat)
+    race_row = [f"  {race_cat}"] + [
+        get_value(race_data, trt)
+        for trt in ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+    ]
+    table_rows.append(race_row)
+
+# Create DataFrame from table rows
+baseline_table = pl.DataFrame(
+    table_rows,
+    schema=["Characteristic", "Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"],
+    orient="row"
 )
+
+baseline_table
 ```
 
-## Statistics Function
+## Step 5: Generate Publication-Ready Output
+
+Finally, we format the baseline table for regulatory submission using the `rtflite` package.
 
 ```{python}
-def get_statistics(df, var, is_continuous=False):
-    expr = [
-            pl.col(var).mean().round(1).alias("mean"),
-            pl.col(var).std().round(1).alias("sd"),
-            pl.col(var).median().round(1).alias("median"),
-            pl.col(var).min().alias("min"),
-            pl.col(var).max().alias("max")
-        ]
-
-    if is_continuous:
-        # Continuous statistics by treatment
-        by_treatment = df.group_by("TRT01P").agg(expr)
-        
-        # Overall statistics
-        overall = df.select(expr).row(0)
-        
-        return by_treatment, overall
-    else:
-        # Categorical counts and percentages
-        total_n = df.height
-        by_treatment = (
-            df.group_by(["TRT01P", var])
-            .len()
-            .join(df.group_by("TRT01P").len().rename({"len": "total"}), on="TRT01P")
-            .with_columns(
-                pl.format("{} ({}%)", 
-                    pl.col("len"), 
-                    (100 * pl.col("len") / pl.col("total")).round(1)
-                ).alias("formatted")
-            )
-        )
-        
-        # Overall counts
-        overall = (
-            df.group_by(var)
-            .len()
-            .with_columns(
-                pl.format("{} ({}%)", 
-                    pl.col("len"), 
-                    (100 * pl.col("len") / total_n).round(1)
-                ).alias("formatted")
-            )
-        )
-        
-        return by_treatment, overall
-```
-
-## Build Table Data
-
-```{python}
-# Treatment groups and counts
-treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
-treatment_counts = dict(
-    adsl_baseline.group_by("TRT01P").len().iter_rows()
-)
-
-def create_variable_rows(df, var_name, categories=None, is_continuous=False):
-    rows = [[var_name, "", "", "", ""]]
-    
-    by_treatment, overall_stats = get_statistics(df, var_name, is_continuous)
-    
-    if is_continuous:
-        # Mean (SD) row
-        row = ["  Mean (SD)"]
-        for trt in treatments:
-            trt_stats = by_treatment.filter(pl.col("TRT01P") == trt)
-            if trt_stats.height > 0:
-                mean, sd = trt_stats.select(["mean", "sd"]).row(0)
-                row.append(f"{mean} ({sd})")
-            else:
-                row.append("")
-        row.append(f"{overall_stats[0]} ({overall_stats[1]})")
-        rows.append(row)
-        
-        # Median [Min, Max] row  
-        row = ["  Median [Min, Max]"]
-        for trt in treatments:
-            trt_stats = by_treatment.filter(pl.col("TRT01P") == trt)
-            if trt_stats.height > 0:
-                median, min_val, max_val = trt_stats.select(["median", "min", "max"]).row(0)
-                row.append(f"{median} [{min_val}, {max_val}]")
-            else:
-                row.append("")
-        row.append(f"{overall_stats[2]} [{overall_stats[3]}, {overall_stats[4]}]")
-        rows.append(row)
-    else:
-        # Categorical variable rows
-        for cat in categories:
-            row = [f"  {cat}"]
-            
-            for trt in treatments:
-                trt_data = by_treatment.filter(
-                    (pl.col("TRT01P") == trt) & (pl.col(var_name) == cat)
-                )
-                if trt_data.height > 0:
-                    row.append(trt_data["formatted"][0])
-                else:
-                    row.append("0 (0.0%)")
-            
-            # Overall column
-            overall_data = overall_stats.filter(pl.col(var_name) == cat)
-            if overall_data.height > 0:
-                row.append(overall_data["formatted"][0])
-            else:
-                row.append("0 (0.0%)")
-            rows.append(row)
-    
-    return rows
-
-# Build complete table
-table_data = []
-table_data.extend(create_variable_rows(adsl_baseline, "SEX", ["Female", "Male"]))
-table_data.extend(create_variable_rows(adsl_baseline, "AGE", is_continuous=True))
-table_data.extend(create_variable_rows(
-    adsl_baseline, "RACE", 
-    ["Black Or African American", "White", "American Indian Or Alaska Native"]
-))
-
-df_baseline = pl.DataFrame(table_data, orient="row")
-
-df_baseline
-```
-
-## Create RTF Output
-
-```{python}
-# Column headers with N counts
-col_headers = [""] + [f"{trt}\n(N={treatment_counts[trt]})" for trt in treatments] + [f"Overall\n(N={adsl_baseline.height})"]
+# Get treatment group sizes for column headers
+treatment_n = adsl.group_by("TRT01P").len().sort("TRT01P")
+n_placebo = treatment_n.filter(pl.col("TRT01P") == "Placebo")["len"][0]
+n_low = treatment_n.filter(pl.col("TRT01P") == "Xanomeline Low Dose")["len"][0]
+n_high = treatment_n.filter(pl.col("TRT01P") == "Xanomeline High Dose")["len"][0]
 
 doc_baseline = rtf.RTFDocument(
-    df=df_baseline,
+    df=baseline_table,
     rtf_title=rtf.RTFTitle(
-        text=["Baseline Characteristics of Participants", "(All Participants Randomized)"]
+        text=[
+            "Baseline Characteristics of Participants", 
+            "(All Participants Randomized)"
+        ]
     ),
     rtf_column_header=rtf.RTFColumnHeader(
-        text=col_headers,
-        text_justification=["l"] + ["c"] * 4
+        text=[
+            "Characteristic",
+            f"Placebo\n(N={n_placebo})",
+            f"Xanomeline Low Dose\n(N={n_low})",
+            f"Xanomeline High Dose\n(N={n_high})"
+        ],
+        text_justification=["l", "c", "c", "c"],
+        col_rel_width=[3, 2, 2, 2]
     ),
     rtf_body=rtf.RTFBody(
-        col_rel_width=[2] + [1] * 4,
-        text_justification=["l"] + ["c"] * 4
-    )
+        text_justification=["l", "c", "c", "c"],
+        col_rel_width=[3, 2, 2, 2]
+    ),
+    rtf_source=rtf.RTFSource(text=["Source: ADSL dataset"])
 )
 
-doc_baseline.write_rtf("rtf/tlf_baseline.rtf")
+doc_baseline.write_rtf("rtf/tlf_baseline.rtf") # Save as RTF for submission
 ```
 
 ```{python}
-#| echo: false
+#| include: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()
