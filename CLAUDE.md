@@ -15,6 +15,8 @@ This is a book project demonstrating how to use rtflite for creating clinical st
 - Target beginners in the clinical study reporting domain
 - Demonstrate concepts clearly with minimal complexity
 - Focus on educational value and best practices
+- Follow regulatory guidance (ICH E3) for clinical reporting
+- Use step-by-step tutorials with clear explanations
 
 ### Key Libraries
 ```python
@@ -35,7 +37,9 @@ The project contains example TLF (Tables, Listings, and Figures) notebooks:
 ## Commands
 - **Install dependencies**: `uv add <package>`
 - **Sync dependencies**: `uv sync`
-- **Run notebooks**: Use Quarto to render .qmd files
+- **Render documents**: `quarto render` (renders all .qmd files)
+- **Render single file**: `quarto render filename.qmd`
+- **Activate environment**: `source .venv/bin/activate` (when needed for Quarto)
 
 ## Package Management
 - Uses `uv` as the package manager (NOT pip)
@@ -48,6 +52,17 @@ The project contains example TLF (Tables, Listings, and Figures) notebooks:
 - Keep examples simple and educational
 - Focus on demonstrating rtflite capabilities for clinical reporting
 - Ensure code is accessible to domain beginners
+- Include regulatory context (ICH E3 guidance) in tutorials
+- Use clear step-by-step structure with meaningful section headers
+- Add one-sentence summaries at the beginning of each step
+- Handle schema compatibility issues (e.g., use `pl.lit(None, dtype=pl.Float64)` for consistent dtypes)
+
+## Tutorial Structure Guidelines
+- **Overview**: Explain the regulatory purpose and importance
+- **Step-by-step approach**: Clear numbered steps with descriptive titles
+- **Educational comments**: Explain the "why" behind operations
+- **Error handling**: Use robust approaches that avoid common polars pitfalls
+- **Output format**: Generate both RTF (for submission) and PDF (for review)
 
 ## Git Policy
 - **NEVER commit or push changes automatically**
