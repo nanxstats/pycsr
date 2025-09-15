@@ -230,15 +230,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">2.1</span> Overview</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">2.2</span> Setup</a></li>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data"><span class="header-section-number">2.3</span> Load Data</a></li>
-  <li><a href="#data-dictionary" id="toc-data-dictionary" class="nav-link" data-scroll-target="#data-dictionary"><span class="header-section-number">2.4</span> Data Dictionary</a></li>
-  <li><a href="#step-1-participants-in-population" id="toc-step-1-participants-in-population" class="nav-link" data-scroll-target="#step-1-participants-in-population"><span class="header-section-number">2.5</span> Step 1: Participants in Population</a></li>
-  <li><a href="#step-2-participants-who-completed" id="toc-step-2-participants-who-completed" class="nav-link" data-scroll-target="#step-2-participants-who-completed"><span class="header-section-number">2.6</span> Step 2: Participants who Completed</a></li>
-  <li><a href="#step-3-participants-who-discontinued" id="toc-step-3-participants-who-discontinued" class="nav-link" data-scroll-target="#step-3-participants-who-discontinued"><span class="header-section-number">2.7</span> Step 3: Participants who Discontinued</a></li>
-  <li><a href="#step-4-discontinuation-reasons" id="toc-step-4-discontinuation-reasons" class="nav-link" data-scroll-target="#step-4-discontinuation-reasons"><span class="header-section-number">2.8</span> Step 4: Discontinuation Reasons</a></li>
-  <li><a href="#step-5-combine-all-tables" id="toc-step-5-combine-all-tables" class="nav-link" data-scroll-target="#step-5-combine-all-tables"><span class="header-section-number">2.9</span> Step 5: Combine All Tables</a></li>
-  <li><a href="#create-rtf-output" id="toc-create-rtf-output" class="nav-link" data-scroll-target="#create-rtf-output"><span class="header-section-number">2.10</span> Create RTF Output</a></li>
+  <li><a href="#step-1-load-data" id="toc-step-1-load-data" class="nav-link" data-scroll-target="#step-1-load-data"><span class="header-section-number">2.2</span> Step 1: Load Data</a></li>
+  <li><a href="#step-2-count-total-participants" id="toc-step-2-count-total-participants" class="nav-link" data-scroll-target="#step-2-count-total-participants"><span class="header-section-number">2.3</span> Step 2: Count Total Participants</a></li>
+  <li><a href="#step-3-count-completed-participants" id="toc-step-3-count-completed-participants" class="nav-link" data-scroll-target="#step-3-count-completed-participants"><span class="header-section-number">2.4</span> Step 3: Count Completed Participants</a></li>
+  <li><a href="#step-4-count-discontinued-participants" id="toc-step-4-count-discontinued-participants" class="nav-link" data-scroll-target="#step-4-count-discontinued-participants"><span class="header-section-number">2.5</span> Step 4: Count Discontinued Participants</a></li>
+  <li><a href="#step-5-break-down-discontinuation-reasons" id="toc-step-5-break-down-discontinuation-reasons" class="nav-link" data-scroll-target="#step-5-break-down-discontinuation-reasons"><span class="header-section-number">2.6</span> Step 5: Break Down Discontinuation Reasons</a></li>
+  <li><a href="#step-6-combine-all-results" id="toc-step-6-combine-all-results" class="nav-link" data-scroll-target="#step-6-combine-all-results"><span class="header-section-number">2.7</span> Step 6: Combine All Results</a></li>
+  <li><a href="#step-7-generate-publication-ready-output" id="toc-step-7-generate-publication-ready-output" class="nav-link" data-scroll-target="#step-7-generate-publication-ready-output"><span class="header-section-number">2.8</span> Step 7: Generate Publication-Ready Output</a></li>
   </ul>
 </nav>
     </div>
@@ -264,38 +262,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This article demonstrates how to create a disposition table following ICH E3 guidance using rtflite.</p>
 <section id="overview" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">2.1</span> Overview</h2>
-<p>The disposition table summarizes the flow of participants through the study, including: - Number of participants randomized - Number who discontinued and reasons for discontinuation - Number who completed the study</p>
-<p>This follows ICH E3 guidance for reporting participants’ randomization, entry, and completion status, including reasons for post-randomization discontinuations.</p>
-</section>
-<section id="setup" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.2</span> Setup</h2>
-<div id="779704b6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="load-data" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.3</span> Load Data</h2>
-<div id="132c1f25" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>).with_columns(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"TRT01PN"</span>).cast(pl.Int64)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="data-dictionary" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="data-dictionary"><span class="header-section-number">2.4</span> Data Dictionary</h2>
-<p>The following variables are used in the preparation of a simplified disposition of participants table:</p>
+<p>Clinical trials needs to track how participants flow through a study from enrollment to completion. Following <a href="https://database.ich.org/sites/default/files/E3_Guideline.pdf">ICH E3 guidance</a>, regulatory submissions require a disposition table in Section 10.1 that summarizes:</p>
 <ul>
-<li><strong>USUBJID</strong>: unique subject identifier</li>
-<li><strong>TRT01P</strong>: planned treatment</li>
-<li><strong>TRT01PN</strong>: planned treatment numeric encoding</li>
-<li><strong>DISCONFL</strong>: discontinued from study flag</li>
-<li><strong>DCREASCD</strong>: discontinued from study reason coded</li>
+<li><strong>Enrolled</strong>: Total participants who entered the study</li>
+<li><strong>Completed</strong>: Participants who finished the study protocol</li>
+<li><strong>Discontinued</strong>: Participants who left early and their reasons</li>
 </ul>
-<div id="c1ee3bee" class="cell" data-execution_count="3">
+<p>This tutorial shows you how to create a regulatory-compliant disposition table using Python’s <code>rtflite</code> package.</p>
+<embed src="pdf/tlf_disposition.pdf" style="width:100%; height:600px" type="application/pdf">
+<div id="1c18f6be" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl <span class="co"># Manipulate data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf <span class="co"># Reporting in RTF format</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="step-1-load-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">2.2</span> Step 1: Load Data</h2>
+<p>We start by loading the Subject-level Analysis Dataset (ADSL), which contains all participant information needed for our disposition table.</p>
+<p>The ADSL dataset stores participant-level information including treatment assignments and study completion status. We’re using the <code>parquet</code> format for data storage.</p>
+<div id="6914359b" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s examine the key variables we’ll use to build our disposition table:</p>
+<ul>
+<li><strong>USUBJID</strong>: Unique identifier for each participant</li>
+<li><strong>TRT01P</strong>: Treatment name (text)</li>
+<li><strong>TRT01PN</strong>: Treatment group (numeric code)</li>
+<li><strong>DISCONFL</strong>: Flag indicating if participant discontinued (Y/N)</li>
+<li><strong>DCREASCD</strong>: Specific reason for discontinuation</li>
+</ul>
+<div id="84d21581" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl.select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"TRT01PN"</span>, <span class="st">"DISCONFL"</span>, <span class="st">"DCREASCD"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div><style>
@@ -407,16 +404,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-1-participants-in-population" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="step-1-participants-in-population"><span class="header-section-number">2.5</span> Step 1: Participants in Population</h2>
-<div id="8ba95852" class="cell" data-execution_count="4">
+<section id="step-2-count-total-participants" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="step-2-count-total-participants"><span class="header-section-number">2.3</span> Step 2: Count Total Participants</h2>
+<p>First, we count how many participants were enrolled in each treatment group.</p>
+<p>We group participants by treatment arm and count them using <code>.group_by()</code> and <code>.agg()</code>. The <code>.pivot()</code> operation reshapes our data from long format (rows for each treatment) to wide format (columns for each treatment), which matches the standard disposition table layout.</p>
+<div id="54a79748" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n_rand <span class="op">=</span> (</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"TRT01PN"</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .agg(n <span class="op">=</span> pl.<span class="bu">len</span>())</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">"Participants in population"</span>).alias(<span class="st">"row"</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">""</span>).alias(<span class="st">"pct"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="va">None</span>, dtype<span class="op">=</span>pl.Float64).alias(<span class="st">"pct"</span>) <span class="co"># Placeholder for percentage (not applicable for totals)</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ])</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
@@ -452,9 +451,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>u32</td>
 <td>u32</td>
 <td>u32</td>
-<td>str</td>
-<td>str</td>
-<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
 </tr>
 </thead>
 <tbody>
@@ -463,9 +462,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>86</td>
 <td>84</td>
 <td>84</td>
-<td>""</td>
-<td>""</td>
-<td>""</td>
+<td>null</td>
+<td>null</td>
+<td>null</td>
 </tr>
 </tbody>
 </table>
@@ -473,9 +472,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-2-participants-who-completed" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="step-2-participants-who-completed"><span class="header-section-number">2.6</span> Step 2: Participants who Completed</h2>
-<div id="e49f7d5c" class="cell" data-execution_count="5">
+<section id="step-3-count-completed-participants" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="step-3-count-completed-participants"><span class="header-section-number">2.4</span> Step 3: Count Completed Participants</h2>
+<p>Next, we identify participants who successfully completed the study and calculate what percentage they represent of each treatment group.</p>
+<p>We filter for participants where <code>DCREASCD == "Completed"</code>, then calculate both counts and percentages. The <code>.join()</code> operation brings in the total count for each treatment group so we can compute percentages.</p>
+<div id="cde474f9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_complete <span class="op">=</span> (</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DCREASCD"</span>) <span class="op">==</span> <span class="st">"Completed"</span>)</span>
@@ -487,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">"Completed"</span>).alias(<span class="st">"row"</span>),</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(pl.String).alias(<span class="st">"pct"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"pct"</span>)</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
@@ -523,9 +524,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>u32</td>
 <td>u32</td>
 <td>u32</td>
-<td>str</td>
-<td>str</td>
-<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
 </tr>
 </thead>
 <tbody>
@@ -534,9 +535,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>58</td>
 <td>25</td>
 <td>27</td>
-<td>"67.4"</td>
-<td>"29.8"</td>
-<td>"32.1"</td>
+<td>67.4</td>
+<td>29.8</td>
+<td>32.1</td>
 </tr>
 </tbody>
 </table>
@@ -544,9 +545,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-3-participants-who-discontinued" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="step-3-participants-who-discontinued"><span class="header-section-number">2.7</span> Step 3: Participants who Discontinued</h2>
-<div id="45f3c495" class="cell" data-execution_count="6">
+<section id="step-4-count-discontinued-participants" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="step-4-count-discontinued-participants"><span class="header-section-number">2.5</span> Step 4: Count Discontinued Participants</h2>
+<p>Now we count participants who left the study early, regardless of their specific reason.</p>
+<p>We filter for participants where the discontinuation flag <code>DISCONFL == "Y"</code>, then follow the same pattern of counting and calculating percentages within each treatment group.</p>
+<div id="5fd27f3d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n_disc <span class="op">=</span> (</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DISCONFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
@@ -558,7 +561,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        pl.lit(<span class="st">"Discontinued"</span>).alias(<span class="st">"row"</span>),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(pl.String).alias(<span class="st">"pct"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"pct"</span>)</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
@@ -594,9 +597,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>u32</td>
 <td>u32</td>
 <td>u32</td>
-<td>str</td>
-<td>str</td>
-<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
 </tr>
 </thead>
 <tbody>
@@ -605,9 +608,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>28</td>
 <td>59</td>
 <td>57</td>
-<td>"32.6"</td>
-<td>"70.2"</td>
-<td>"67.9"</td>
+<td>32.6</td>
+<td>70.2</td>
+<td>67.9</td>
 </tr>
 </tbody>
 </table>
@@ -615,9 +618,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-4-discontinuation-reasons" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="step-4-discontinuation-reasons"><span class="header-section-number">2.8</span> Step 4: Discontinuation Reasons</h2>
-<div id="497f4104" class="cell" data-execution_count="7">
+<section id="step-5-break-down-discontinuation-reasons" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="step-5-break-down-discontinuation-reasons"><span class="header-section-number">2.6</span> Step 5: Break Down Discontinuation Reasons</h2>
+<p>For regulatory reporting, we need to show the specific reasons why participants discontinued.</p>
+<p>We filter out completed participants, then group by both treatment and discontinuation reason. The indentation (four spaces) in the row labels helps show these are subcategories under “Discontinued”. We also use <code>.fill_null(0)</code> to handle cases where certain discontinuation reasons don’t occur in all treatment groups.</p>
+<div id="48382d02" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n_reason <span class="op">=</span> (</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    adsl</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"DCREASCD"</span>) <span class="op">!=</span> <span class="st">"Completed"</span>)</span>
@@ -629,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        pl.concat_str([pl.lit(<span class="st">"    "</span>), pl.col(<span class="st">"DCREASCD"</span>)]).alias(<span class="st">"row"</span>),</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(pl.String).alias(<span class="st">"pct"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"pct"</span>)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"row"</span>,</span>
@@ -639,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        pl.col([<span class="st">"n_0"</span>, <span class="st">"n_54"</span>, <span class="st">"n_81"</span>]).fill_null(<span class="dv">0</span>),</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        pl.col([<span class="st">"pct_0"</span>, <span class="st">"pct_54"</span>, <span class="st">"pct_81"</span>]).fill_null(<span class="st">"0.0"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        pl.col([<span class="st">"pct_0"</span>, <span class="st">"pct_54"</span>, <span class="st">"pct_81"</span>]).fill_null(<span class="fl">0.0</span>)</span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    ])</span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    .sort(<span class="st">"row"</span>)</span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -670,9 +675,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>u32</td>
 <td>u32</td>
 <td>u32</td>
-<td>str</td>
-<td>str</td>
-<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
 </tr>
 </thead>
 <tbody>
@@ -681,81 +686,81 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>8</td>
 <td>44</td>
 <td>40</td>
-<td>"9.3"</td>
-<td>"52.4"</td>
-<td>"47.6"</td>
+<td>9.3</td>
+<td>52.4</td>
+<td>47.6</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Death"</td>
 <td>2</td>
 <td>1</td>
 <td>0</td>
-<td>"2.3"</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
+<td>2.3</td>
+<td>1.2</td>
+<td>0.0</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;I/E Not Met"</td>
 <td>1</td>
 <td>0</td>
 <td>2</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
-<td>"2.4"</td>
+<td>1.2</td>
+<td>0.0</td>
+<td>2.4</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Lack of Efficacy"</td>
 <td>3</td>
 <td>0</td>
 <td>1</td>
-<td>"3.5"</td>
-<td>"0.0"</td>
-<td>"1.2"</td>
+<td>3.5</td>
+<td>0.0</td>
+<td>1.2</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Lost to Follow-up"</td>
 <td>1</td>
 <td>1</td>
 <td>0</td>
-<td>"1.2"</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
+<td>1.2</td>
+<td>1.2</td>
+<td>0.0</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Physician Decision"</td>
 <td>1</td>
 <td>0</td>
 <td>2</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
-<td>"2.4"</td>
+<td>1.2</td>
+<td>0.0</td>
+<td>2.4</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Protocol Violation"</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
-<td>"1.2"</td>
-<td>"1.2"</td>
-<td>"1.2"</td>
+<td>1.2</td>
+<td>1.2</td>
+<td>1.2</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Sponsor Decision"</td>
 <td>2</td>
 <td>2</td>
 <td>3</td>
-<td>"2.3"</td>
-<td>"2.4"</td>
-<td>"3.6"</td>
+<td>2.3</td>
+<td>2.4</td>
+<td>3.6</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Withdrew Consent"</td>
 <td>9</td>
 <td>10</td>
 <td>8</td>
-<td>"10.5"</td>
-<td>"11.9"</td>
-<td>"9.5"</td>
+<td>10.5</td>
+<td>11.9</td>
+<td>9.5</td>
 </tr>
 </tbody>
 </table>
@@ -763,9 +768,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-5-combine-all-tables" class="level2" data-number="2.9">
-<h2 data-number="2.9" class="anchored" data-anchor-id="step-5-combine-all-tables"><span class="header-section-number">2.9</span> Step 5: Combine All Tables</h2>
-<div id="45b0b9da" class="cell" data-execution_count="8">
+<section id="step-6-combine-all-results" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="step-6-combine-all-results"><span class="header-section-number">2.7</span> Step 6: Combine All Results</h2>
+<p>Now we stack all our individual summaries together to create the complete disposition table.</p>
+<p>Using <code>pl.concat()</code>, we combine the enrollment counts, completion counts, discontinuation counts, and detailed discontinuation reasons into a single table that flows logically from top to bottom.</p>
+<div id="68a5af63" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tbl_disp <span class="op">=</span> pl.concat([</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    n_rand,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    n_complete,</span>
@@ -799,9 +806,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>u32</td>
 <td>u32</td>
 <td>u32</td>
-<td>str</td>
-<td>str</td>
-<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
 </tr>
 </thead>
 <tbody>
@@ -810,45 +817,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>86</td>
 <td>84</td>
 <td>84</td>
-<td>""</td>
-<td>""</td>
-<td>""</td>
+<td>null</td>
+<td>null</td>
+<td>null</td>
 </tr>
 <tr class="even">
 <td>"Completed"</td>
 <td>58</td>
 <td>25</td>
 <td>27</td>
-<td>"67.4"</td>
-<td>"29.8"</td>
-<td>"32.1"</td>
+<td>67.4</td>
+<td>29.8</td>
+<td>32.1</td>
 </tr>
 <tr class="odd">
 <td>"Discontinued"</td>
 <td>28</td>
 <td>59</td>
 <td>57</td>
-<td>"32.6"</td>
-<td>"70.2"</td>
-<td>"67.9"</td>
+<td>32.6</td>
+<td>70.2</td>
+<td>67.9</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Adverse Event"</td>
 <td>8</td>
 <td>44</td>
 <td>40</td>
-<td>"9.3"</td>
-<td>"52.4"</td>
-<td>"47.6"</td>
+<td>9.3</td>
+<td>52.4</td>
+<td>47.6</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Death"</td>
 <td>2</td>
 <td>1</td>
 <td>0</td>
-<td>"2.3"</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
+<td>2.3</td>
+<td>1.2</td>
+<td>0.0</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -864,45 +871,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>1</td>
 <td>1</td>
 <td>0</td>
-<td>"1.2"</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
+<td>1.2</td>
+<td>1.2</td>
+<td>0.0</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Physician Decision"</td>
 <td>1</td>
 <td>0</td>
 <td>2</td>
-<td>"1.2"</td>
-<td>"0.0"</td>
-<td>"2.4"</td>
+<td>1.2</td>
+<td>0.0</td>
+<td>2.4</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Protocol Violation"</td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
-<td>"1.2"</td>
-<td>"1.2"</td>
-<td>"1.2"</td>
+<td>1.2</td>
+<td>1.2</td>
+<td>1.2</td>
 </tr>
 <tr class="even">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Sponsor Decision"</td>
 <td>2</td>
 <td>2</td>
 <td>3</td>
-<td>"2.3"</td>
-<td>"2.4"</td>
-<td>"3.6"</td>
+<td>2.3</td>
+<td>2.4</td>
+<td>3.6</td>
 </tr>
 <tr class="odd">
 <td>"&nbsp;&nbsp;&nbsp;&nbsp;Withdrew Consent"</td>
 <td>9</td>
 <td>10</td>
 <td>8</td>
-<td>"10.5"</td>
-<td>"11.9"</td>
-<td>"9.5"</td>
+<td>10.5</td>
+<td>11.9</td>
+<td>9.5</td>
 </tr>
 </tbody>
 </table>
@@ -910,9 +917,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="create-rtf-output" class="level2" data-number="2.10">
-<h2 data-number="2.10" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">2.10</span> Create RTF Output</h2>
-<div id="03844523" class="cell" data-execution_count="9">
+<section id="step-7-generate-publication-ready-output" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="step-7-generate-publication-ready-output"><span class="header-section-number">2.8</span> Step 7: Generate Publication-Ready Output</h2>
+<p>Finally, we format our table in RTF format using the <code>rtflite</code> package.</p>
+<p>The <code>RTFDocument</code> class handles the complex formatting required for clinical reports, including proper column headers, borders, and spacing. The resulting RTF file can be directly included in regulatory submissions or converted to PDF for review.</p>
+<div id="d30be9ae" class="cell" data-message="false" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>doc_disp <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>tbl_disp.select(<span class="st">"row"</span>, <span class="st">"n_0"</span>, <span class="st">"pct_0"</span>, <span class="st">"n_54"</span>, <span class="st">"pct_54"</span>, <span class="st">"n_81"</span>, <span class="st">"pct_81"</span>),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(text<span class="op">=</span>[<span class="st">"Disposition of Participants"</span>]),</span>
@@ -935,17 +944,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        border_left<span class="op">=</span>[<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL dataset"</span>])</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL dataset"</span>]) <span class="co"># Required source attribution</span></span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>doc_disp.write_rtf(<span class="st">"rtf/tlf_disposition.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>doc_disp.write_rtf(<span class="st">"rtf/tlf_disposition.rtf"</span>)  <span class="co"># Save as RTF for submission</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_disposition.rtf</code></pre>
-</div>
-</div>
-<div id="23cc3b56" class="cell" data-execution_count="10">
-<div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>PosixPath('pdf/tlf_disposition.pdf')</code></pre>
 </div>
 </div>
 <embed src="pdf/tlf_disposition.pdf" style="width:100%; height:600px" type="application/pdf">

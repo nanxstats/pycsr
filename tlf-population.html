@@ -266,20 +266,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This article demonstrates how to create an analysis population overview table.</p>
 <section id="setup" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">3.1</span> Setup</h2>
-<div id="5b668e34" class="cell" data-execution_count="1">
+<div id="d05bfeaf" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="load-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="load-data"><span class="header-section-number">3.2</span> Load Data</h2>
-<div id="43226cd0" class="cell" data-execution_count="2">
+<div id="547547f0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="create-population-table" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="create-population-table"><span class="header-section-number">3.3</span> Create Population Table</h2>
-<div id="f2234963" class="cell" data-execution_count="3">
+<div id="e63c2b85" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Calculate total N for each treatment (denominator for percentages)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>totals <span class="op">=</span> adsl.group_by(<span class="st">"TRT01P"</span>).agg(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> pl.<span class="bu">len</span>()</span>
@@ -308,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 </tr>
 <tr class="even">
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>86</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 </tr>
 </tbody>
@@ -327,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-2-calculate-counts-for-each-population-flag" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="step-2-calculate-counts-for-each-population-flag"><span class="header-section-number">3.4</span> Step 2: Calculate counts for each population flag</h2>
-<div id="c98e94f6" class="cell" data-execution_count="4">
+<div id="d27530d6" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple function to count participants by treatment group</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_by_treatment(data, population_name):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Count participants by treatment group and add population label"""</span></span>
@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        population <span class="op">=</span> pl.lit(population_name)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="74ad2615" class="cell" data-execution_count="5">
+<div id="9dc9db67" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row 1: Total participants (no filter needed)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pop_all <span class="op">=</span> count_by_treatment(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>adsl,</span>
@@ -369,12 +369,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 </tr>
@@ -388,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="d7999321" class="cell" data-execution_count="6">
+<div id="5eeda067" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row 2: ITT population (filter first, then count)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adsl_itt <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"ITTFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pop_itt <span class="op">=</span> count_by_treatment(</span>
@@ -426,13 +426,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>86</td>
+<td>"Xanomeline Low Dose"</td>
+<td>84</td>
 <td>"Participants included in ITT p…</td>
 </tr>
 </tbody>
@@ -440,7 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="75b2e5d5" class="cell" data-execution_count="7">
+<div id="c9f01cfe" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row 3: Efficacy population (filter first, then count)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>adsl_eff <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"EFFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pop_eff <span class="op">=</span> count_by_treatment(</span>
@@ -473,13 +473,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>81</td>
+<td>"Xanomeline High Dose"</td>
+<td>74</td>
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline High Dose"</td>
-<td>74</td>
+<td>"Xanomeline Low Dose"</td>
+<td>81</td>
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="odd">
@@ -492,7 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="33703c03" class="cell" data-execution_count="8">
+<div id="e5454f28" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row 4: Safety population (filter first, then count)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adsl_saf <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pop_saf <span class="op">=</span> count_by_treatment(</span>
@@ -525,18 +525,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants included in safet…</td>
 </tr>
 <tr class="even">
-<td>"Placebo"</td>
-<td>86</td>
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
 <td>"Participants included in safet…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in safet…</td>
 </tr>
 </tbody>
@@ -547,7 +547,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-3-stack-all-populations-together" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="step-3-stack-all-populations-together"><span class="header-section-number">3.5</span> Step 3: Stack all populations together</h2>
-<div id="8a2145a9" class="cell" data-execution_count="9">
+<div id="7e2ffeca" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all population dataframes into one</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>all_populations <span class="op">=</span> pl.concat([</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    pop_all,</span>
@@ -581,12 +581,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 </tr>
@@ -601,8 +601,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="even">
@@ -611,8 +611,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>74</td>
+<td>"Xanomeline Low Dose"</td>
+<td>81</td>
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="even">
@@ -621,18 +621,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants included in safet…</td>
 </tr>
 <tr class="even">
-<td>"Placebo"</td>
-<td>86</td>
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
 <td>"Participants included in safet…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in safet…</td>
 </tr>
 </tbody>
@@ -643,7 +643,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-4-add-total-n-and-calculate-percentages" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="step-4-add-total-n-and-calculate-percentages"><span class="header-section-number">3.6</span> Step 4: Add total N and calculate percentages</h2>
-<div id="af41d44c" class="cell" data-execution_count="10">
+<div id="bb84b99e" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join with totals to calculate percentages</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>stats_with_pct <span class="op">=</span> all_populations.join(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    totals,</span>
@@ -681,14 +681,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 <td>84</td>
 <td>100.0</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 <td>84</td>
@@ -709,10 +709,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>100.0</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in ITT p…</td>
-<td>84</td>
+<td>86</td>
 <td>100.0</td>
 </tr>
 <tr class="even">
@@ -723,11 +723,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>74</td>
+<td>"Xanomeline Low Dose"</td>
+<td>81</td>
 <td>"Participants included in effic…</td>
 <td>84</td>
-<td>88.1</td>
+<td>96.4</td>
 </tr>
 <tr class="even">
 <td>"Placebo"</td>
@@ -737,24 +737,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>91.9</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants included in safet…</td>
 <td>84</td>
 <td>100.0</td>
 </tr>
 <tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+<td>"Participants included in safet…</td>
+<td>84</td>
+<td>100.0</td>
+</tr>
+<tr class="odd">
 <td>"Placebo"</td>
 <td>86</td>
 <td>"Participants included in safet…</td>
 <td>86</td>
-<td>100.0</td>
-</tr>
-<tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
-<td>"Participants included in safet…</td>
-<td>84</td>
 <td>100.0</td>
 </tr>
 </tbody>
@@ -765,7 +765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-5-format-the-display-text" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="step-5-format-the-display-text"><span class="header-section-number">3.7</span> Step 5: Format the display text</h2>
-<div id="3d99065d" class="cell" data-execution_count="11">
+<div id="10b363fa" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First row shows just N, other rows show "N (pct)"</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>formatted_stats <span class="op">=</span> stats_with_pct.with_columns(</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    display <span class="op">=</span> pl.when(pl.col(<span class="st">"population"</span>) <span class="op">==</span> <span class="st">"Participants in population"</span>)</span>
@@ -811,7 +811,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 <td>84</td>
@@ -819,7 +819,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"84"</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 <td>84</td>
@@ -843,12 +843,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"84 (100.0)"</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in ITT p…</td>
-<td>84</td>
+<td>86</td>
 <td>100.0</td>
-<td>"84 (100.0)"</td>
+<td>"86 (100.0)"</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -859,12 +859,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>74</td>
+<td>"Xanomeline Low Dose"</td>
+<td>81</td>
 <td>"Participants included in effic…</td>
 <td>84</td>
-<td>88.1</td>
-<td>"74 (88.1)"</td>
+<td>96.4</td>
+<td>"81 (96.4)"</td>
 </tr>
 <tr class="even">
 <td>"Placebo"</td>
@@ -875,7 +875,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"79 (91.9)"</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
+<td>"Xanomeline Low Dose"</td>
 <td>84</td>
 <td>"Participants included in safet…</td>
 <td>84</td>
@@ -883,20 +883,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"84 (100.0)"</td>
 </tr>
 <tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+<td>"Participants included in safet…</td>
+<td>84</td>
+<td>100.0</td>
+<td>"84 (100.0)"</td>
+</tr>
+<tr class="odd">
 <td>"Placebo"</td>
 <td>86</td>
 <td>"Participants included in safet…</td>
 <td>86</td>
 <td>100.0</td>
 <td>"86 (100.0)"</td>
-</tr>
-<tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
-<td>"Participants included in safet…</td>
-<td>84</td>
-<td>100.0</td>
-<td>"84 (100.0)"</td>
 </tr>
 </tbody>
 </table>
@@ -906,7 +906,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-6-pivot-from-long-to-wide-format" class="level2" data-number="3.8">
 <h2 data-number="3.8" class="anchored" data-anchor-id="step-6-pivot-from-long-to-wide-format"><span class="header-section-number">3.8</span> Step 6: Pivot from long to wide format</h2>
-<div id="057a160f" class="cell" data-execution_count="12">
+<div id="363a7667" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform to wide format for final table</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df_overview <span class="op">=</span> formatted_stats.pivot(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">"display"</span>,</span>
@@ -977,7 +977,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-rtf-output" class="level2" data-number="3.9">
 <h2 data-number="3.9" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">3.9</span> Create RTF Output</h2>
-<div id="97a9635a" class="cell" data-execution_count="13">
+<div id="140f2d5a" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>doc_overview <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_overview,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
@@ -1000,7 +1000,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_population.rtf</code></pre>
 </div>
 </div>
-<div id="586b9700" class="cell" data-execution_count="14">
+<div id="c40b8a44" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>PosixPath('pdf/tlf_population.pdf')</code></pre>
 </div>
