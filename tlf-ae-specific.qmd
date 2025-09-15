@@ -2,8 +2,6 @@
 title: "Specific Adverse Events Table"
 ---
 
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-
 This article demonstrates how to create a specific adverse events table by System Organ Class and Preferred Term.
 
 ## Setup

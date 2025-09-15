@@ -2,8 +2,6 @@
 title: "ANCOVA Efficacy Analysis"
 ---
 
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-
 This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.
 
 ## Setup
