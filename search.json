@@ -121,100 +121,122 @@
   {
     "objectID": "tlf-population.html",
     "href": "tlf-population.html",
-    "title": "3  Study Population",
+    "title": "3  Study Population Table",
     "section": "",
-    "text": "3.1 Setup\nThis article demonstrates how to create an analysis population overview table.\nimport polars as pl\nimport rtflite as rtf",
+    "text": "3.1 Overview\nClinical trials define multiple analysis populations based on different inclusion criteria. Following ICH E3 guidance, regulatory submissions must clearly document the number of participants in each analysis population to support the validity of statistical analyses.\nThe key analysis populations typically include:\nThis tutorial shows you how to create a population summary table using Python’s rtflite package.\nimport polars as pl # Data manipulation\nimport rtflite as rtf # RTF reporting",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#load-data",
-    "href": "tlf-population.html#load-data",
-    "title": "3  Study Population",
-    "section": "3.2 Load Data",
-    "text": "3.2 Load Data\n\nadsl = pl.read_parquet(\"data/adsl.parquet\")",
+    "objectID": "tlf-population.html#overview",
+    "href": "tlf-population.html#overview",
+    "title": "3  Study Population Table",
+    "section": "",
+    "text": "All Randomized: Total participants who entered the study\nIntent-to-Treat (ITT): Participants included in the primary efficacy analysis\nEfficacy Population: Participants who meet specific criteria for efficacy evaluation\nSafety Population: Participants who received at least one dose of study treatment",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#create-population-table",
-    "href": "tlf-population.html#create-population-table",
-    "title": "3  Study Population",
-    "section": "3.3 Create Population Table",
-    "text": "3.3 Create Population Table\n\n# Step 1: Calculate total N for each treatment (denominator for percentages)\ntotals = adsl.group_by(\"TRT01P\").agg(\n    total = pl.len()\n)\n\ntotals\n\n\nshape: (3, 2)\n\n\n\nTRT01P\ntotal\n\n\nstr\nu32\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\n\n\"Placebo\"\n86\n\n\n\"Xanomeline High Dose\"\n84",
+    "objectID": "tlf-population.html#step-1-load-data",
+    "href": "tlf-population.html#step-1-load-data",
+    "title": "3  Study Population Table",
+    "section": "3.2 Step 1: Load Data",
+    "text": "3.2 Step 1: Load Data\nWe start by loading the Subject-level Analysis Dataset (ADSL), which contains population flags for each participant.\n\nadsl = pl.read_parquet(\"data/adsl.parquet\")\n\nLet’s examine the key population flag variables we’ll use:\n\nUSUBJID: Unique participant identifier\nTRT01P: Planned treatment group\nITTFL: Intent-to-treat population flag (Y/N)\nEFFFL: Efficacy population flag (Y/N)\nSAFFL: Safety population flag (Y/N)\n\n\nadsl.select([\"USUBJID\", \"TRT01P\", \"ITTFL\", \"EFFFL\", \"SAFFL\"])\n\n\nshape: (254, 5)\n\n\n\nUSUBJID\nTRT01P\nITTFL\nEFFFL\nSAFFL\n\n\nstr\nstr\nstr\nstr\nstr\n\n\n\n\n\"01-701-1015\"\n\"Placebo\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-701-1023\"\n\"Placebo\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-701-1028\"\n\"Xanomeline High Dose\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-701-1033\"\n\"Xanomeline Low Dose\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-701-1034\"\n\"Xanomeline High Dose\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n…\n…\n…\n…\n…\n\n\n\"01-718-1254\"\n\"Xanomeline Low Dose\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-718-1328\"\n\"Xanomeline High Dose\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-718-1355\"\n\"Placebo\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-718-1371\"\n\"Xanomeline High Dose\"\n\"Y\"\n\"Y\"\n\"Y\"\n\n\n\"01-718-1427\"\n\"Xanomeline High Dose\"\n\"Y\"\n\"Y\"\n\"Y\"",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#step-2-calculate-counts-for-each-population-flag",
-    "href": "tlf-population.html#step-2-calculate-counts-for-each-population-flag",
-    "title": "3  Study Population",
-    "section": "3.4 Step 2: Calculate counts for each population flag",
-    "text": "3.4 Step 2: Calculate counts for each population flag\n\n# Simple function to count participants by treatment group\ndef count_by_treatment(data, population_name):\n    \"\"\"Count participants by treatment group and add population label\"\"\"\n    return data.group_by(\"TRT01P\").agg(\n        n = pl.len()\n    ).with_columns(\n        population = pl.lit(population_name)\n    )\n\n\n# Row 1: Total participants (no filter needed)\npop_all = count_by_treatment(\n    data=adsl,\n    population_name=\"Participants in population\"\n)\n\npop_all\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\n\n\n\n\n# Row 2: ITT population (filter first, then count)\nadsl_itt = adsl.filter(pl.col(\"ITTFL\") == \"Y\")\npop_itt = count_by_treatment(\n    data=adsl_itt,\n    population_name=\"Participants included in ITT population\"\n)\n\npop_itt\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n\n\n\n\n\n# Row 3: Efficacy population (filter first, then count)\nadsl_eff = adsl.filter(pl.col(\"EFFFL\") == \"Y\")\npop_eff = count_by_treatment(\n    data=adsl_eff,\n    population_name=\"Participants included in efficacy population\"\n)\n\npop_eff\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\n\n\n\n\n# Row 4: Safety population (filter first, then count)\nadsl_saf = adsl.filter(pl.col(\"SAFFL\") == \"Y\")\npop_saf = count_by_treatment(\n    data=adsl_saf,\n    population_name=\"Participants included in safety population\"\n)\n\npop_saf\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…",
+    "objectID": "tlf-population.html#step-2-calculate-treatment-group-totals",
+    "href": "tlf-population.html#step-2-calculate-treatment-group-totals",
+    "title": "3  Study Population Table",
+    "section": "3.3 Step 2: Calculate Treatment Group Totals",
+    "text": "3.3 Step 2: Calculate Treatment Group Totals\nFirst, we calculate the total number of randomized participants in each treatment group, which will serve as the denominator for percentage calculations.\n\ntotals = adsl.group_by(\"TRT01P\").agg(\n    total = pl.len()\n)\n\ntotals\n\n\nshape: (3, 2)\n\n\n\nTRT01P\ntotal\n\n\nstr\nu32\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\n\n\"Placebo\"\n86\n\n\n\"Xanomeline Low Dose\"\n84",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#step-3-stack-all-populations-together",
-    "href": "tlf-population.html#step-3-stack-all-populations-together",
-    "title": "3  Study Population",
-    "section": "3.5 Step 3: Stack all populations together",
-    "text": "3.5 Step 3: Stack all populations together\n\n# Combine all population dataframes into one\nall_populations = pl.concat([\n    pop_all,\n    pop_itt,\n    pop_eff,\n    pop_saf\n])\n\nall_populations\n\n\nshape: (12, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n…\n…\n…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…",
+    "objectID": "tlf-population.html#step-3-define-helper-function",
+    "href": "tlf-population.html#step-3-define-helper-function",
+    "title": "3  Study Population Table",
+    "section": "3.4 Step 3: Define Helper Function",
+    "text": "3.4 Step 3: Define Helper Function\nWe create a reusable function to count participants by treatment group for any population subset.\n\ndef count_by_treatment(data, population_name):\n    \"\"\"Count participants by treatment group and add population label\"\"\"\n    return data.group_by(\"TRT01P\").agg(\n        n = pl.len()\n    ).with_columns(\n        population = pl.lit(population_name)\n    )",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#step-4-add-total-n-and-calculate-percentages",
-    "href": "tlf-population.html#step-4-add-total-n-and-calculate-percentages",
-    "title": "3  Study Population",
-    "section": "3.6 Step 4: Add total N and calculate percentages",
-    "text": "3.6 Step 4: Add total N and calculate percentages\n\n# Join with totals to calculate percentages\nstats_with_pct = all_populations.join(\n    totals,\n    on=\"TRT01P\"\n).with_columns(\n    pct = (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1)\n)\n\nstats_with_pct\n\n\nshape: (12, 5)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\n\n\nstr\nu32\nstr\nu32\nf64\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n86\n100.0\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n84\n96.4\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n86\n91.9\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0",
+    "objectID": "tlf-population.html#step-4-count-each-population",
+    "href": "tlf-population.html#step-4-count-each-population",
+    "title": "3  Study Population Table",
+    "section": "3.5 Step 4: Count Each Population",
+    "text": "3.5 Step 4: Count Each Population\nNow we calculate participant counts for each analysis population.\n\n3.5.1 All Randomized Participants\n\npop_all = count_by_treatment(\n    data=adsl,\n    population_name=\"Participants in population\"\n)\n\npop_all\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\n\n\n\n\n\n3.5.2 Intent-to-Treat Population\n\nadsl_itt = adsl.filter(pl.col(\"ITTFL\") == \"Y\")\npop_itt = count_by_treatment(\n    data=adsl_itt,\n    population_name=\"Participants included in ITT population\"\n)\n\npop_itt\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\n\n\n\n\n\n3.5.3 Efficacy Population\n\nadsl_eff = adsl.filter(pl.col(\"EFFFL\") == \"Y\")\npop_eff = count_by_treatment(\n    data=adsl_eff,\n    population_name=\"Participants included in efficacy population\"\n)\n\npop_eff\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\n\n\n\n\n\n3.5.4 Safety Population\n\nadsl_saf = adsl.filter(pl.col(\"SAFFL\") == \"Y\")\npop_saf = count_by_treatment(\n    data=adsl_saf,\n    population_name=\"Participants included in safety population\"\n)\n\npop_saf\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#step-5-format-the-display-text",
-    "href": "tlf-population.html#step-5-format-the-display-text",
-    "title": "3  Study Population",
-    "section": "3.7 Step 5: Format the display text",
-    "text": "3.7 Step 5: Format the display text\n\n# First row shows just N, other rows show \"N (pct)\"\nformatted_stats = stats_with_pct.with_columns(\n    display = pl.when(pl.col(\"population\") == \"Participants in population\")\n        .then(pl.col(\"n\").cast(str))\n        .otherwise(\n            pl.concat_str([\n                pl.col(\"n\").cast(str),\n                pl.lit(\" (\"),\n                pl.col(\"pct\").round(1).cast(str),\n                pl.lit(\")\")\n            ])\n        )\n)\n\nformatted_stats\n\n\nshape: (12, 6)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\ndisplay\n\n\nstr\nu32\nstr\nu32\nf64\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\"86\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n86\n100.0\n\"86 (100.0)\"\n\n\n…\n…\n…\n…\n…\n…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n84\n96.4\n\"81 (96.4)\"\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n86\n91.9\n\"79 (91.9)\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\"86 (100.0)\"",
+    "objectID": "tlf-population.html#step-5-combine-all-populations",
+    "href": "tlf-population.html#step-5-combine-all-populations",
+    "title": "3  Study Population Table",
+    "section": "3.6 Step 5: Combine All Populations",
+    "text": "3.6 Step 5: Combine All Populations\nWe stack all population counts together into a single dataset.\n\nall_populations = pl.concat([\n    pop_all,\n    pop_itt,\n    pop_eff,\n    pop_saf\n])\n\nall_populations\n\n\nshape: (12, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#step-6-pivot-from-long-to-wide-format",
-    "href": "tlf-population.html#step-6-pivot-from-long-to-wide-format",
-    "title": "3  Study Population",
-    "section": "3.8 Step 6: Pivot from long to wide format",
-    "text": "3.8 Step 6: Pivot from long to wide format\n\n# Transform to wide format for final table\ndf_overview = formatted_stats.pivot(\n    values=\"display\",\n    index=\"population\",\n    on=\"TRT01P\",\n    maintain_order=True\n).select(\n    [\"population\", \"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]\n).rename(\n    {\"population\": \"\"}\n)\n\ndf_overview\n\n\nshape: (4, 4)\n\n\n\n\nPlacebo\nXanomeline Low Dose\nXanomeline High Dose\n\n\nstr\nstr\nstr\nstr\n\n\n\n\n\"Participants in population\"\n\"86\"\n\"84\"\n\"84\"\n\n\n\"Participants included in ITT p…\n\"86 (100.0)\"\n\"84 (100.0)\"\n\"84 (100.0)\"\n\n\n\"Participants included in effic…\n\"79 (91.9)\"\n\"81 (96.4)\"\n\"74 (88.1)\"\n\n\n\"Participants included in safet…\n\"86 (100.0)\"\n\"84 (100.0)\"\n\"84 (100.0)\"",
+    "objectID": "tlf-population.html#step-6-calculate-percentages",
+    "href": "tlf-population.html#step-6-calculate-percentages",
+    "title": "3  Study Population Table",
+    "section": "3.7 Step 6: Calculate Percentages",
+    "text": "3.7 Step 6: Calculate Percentages\nWe join with the total counts and calculate what percentage each population represents of the total randomized participants.\n\nstats_with_pct = all_populations.join(\n    totals,\n    on=\"TRT01P\"\n).with_columns(\n    pct = (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1)\n)\n\nstats_with_pct\n\n\nshape: (12, 5)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\n\n\nstr\nu32\nstr\nu32\nf64\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n86\n100.0\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n84\n88.1\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n84\n96.4\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
-    "objectID": "tlf-population.html#create-rtf-output",
-    "href": "tlf-population.html#create-rtf-output",
-    "title": "3  Study Population",
-    "section": "3.9 Create RTF Output",
-    "text": "3.9 Create RTF Output\n\ndoc_overview = rtf.RTFDocument(\n    df=df_overview,\n    rtf_title=rtf.RTFTitle(\n        text=[\"Analysis Population\", \"All Participants Randomized\"]\n    ),\n    rtf_column_header=rtf.RTFColumnHeader(\n        text=[\"\", \"Placebo\\nn (%)\", \"Xanomeline Low Dose\\nn (%)\", \"Xanomeline High Dose\\nn (%)\"],\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_source=rtf.RTFSource(text=[\"Source: ADSL dataset\"])\n)\n\ndoc_overview.write_rtf(\"rtf/tlf_population.rtf\")\n\nrtf/tlf_population.rtf\n\n\n\n\nPosixPath('pdf/tlf_population.pdf')",
+    "objectID": "tlf-population.html#step-7-format-display-values",
+    "href": "tlf-population.html#step-7-format-display-values",
+    "title": "3  Study Population Table",
+    "section": "3.8 Step 7: Format Display Values",
+    "text": "3.8 Step 7: Format Display Values\nFor the final table, we format the display text. The total randomized count shows just “N”, while subset populations show “N (%)”.\n\nformatted_stats = stats_with_pct.with_columns(\n    display = pl.when(pl.col(\"population\") == \"Participants in population\")\n        .then(pl.col(\"n\").cast(str)) \n        .otherwise(\n            pl.concat_str([ \n                pl.col(\"n\").cast(str),\n                pl.lit(\" (\"),\n                pl.col(\"pct\").round(1).cast(str),\n                pl.lit(\")\")\n            ])\n        )\n)\n\nformatted_stats\n\n\nshape: (12, 6)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\ndisplay\n\n\nstr\nu32\nstr\nu32\nf64\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\"86\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n86\n100.0\n\"86 (100.0)\"\n\n\n…\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n84\n88.1\n\"74 (88.1)\"\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n84\n96.4\n\"81 (96.4)\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\"86 (100.0)\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"",
     "crumbs": [
       "Tables, Listings, and Figures",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-8-create-final-table",
+    "href": "tlf-population.html#step-8-create-final-table",
+    "title": "3  Study Population Table",
+    "section": "3.9 Step 8: Create Final Table",
+    "text": "3.9 Step 8: Create Final Table\nWe reshape the data from long format (rows for each treatment-population combination) to wide format (columns for each treatment group).\n\ndf_overview = formatted_stats.pivot(\n    values=\"display\",\n    index=\"population\",\n    on=\"TRT01P\",\n    maintain_order=True\n).select(\n    [\"population\", \"Placebo\", \"Xanomeline Low Dose\", \"Xanomeline High Dose\"]\n)\n\ndf_overview\n\n\nshape: (4, 4)\n\n\n\npopulation\nPlacebo\nXanomeline Low Dose\nXanomeline High Dose\n\n\nstr\nstr\nstr\nstr\n\n\n\n\n\"Participants in population\"\n\"86\"\n\"84\"\n\"84\"\n\n\n\"Participants included in ITT p…\n\"86 (100.0)\"\n\"84 (100.0)\"\n\"84 (100.0)\"\n\n\n\"Participants included in effic…\n\"79 (91.9)\"\n\"81 (96.4)\"\n\"74 (88.1)\"\n\n\n\"Participants included in safet…\n\"86 (100.0)\"\n\"84 (100.0)\"\n\"84 (100.0)\"",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
+    ]
+  },
+  {
+    "objectID": "tlf-population.html#step-9-generate-publication-ready-output",
+    "href": "tlf-population.html#step-9-generate-publication-ready-output",
+    "title": "3  Study Population Table",
+    "section": "3.10 Step 9: Generate Publication-Ready Output",
+    "text": "3.10 Step 9: Generate Publication-Ready Output\nFinally, we format the population table for regulatory submission using the rtflite package.\n\ndoc_overview = rtf.RTFDocument(\n    df=df_overview,\n    rtf_title=rtf.RTFTitle(\n        text=[\"Analysis Population\", \"All Participants Randomized\"]\n    ),\n    rtf_column_header=rtf.RTFColumnHeader(\n        text=[\"\", \"Placebo\\nn (%)\", \"Xanomeline Low Dose\\nn (%)\", \"Xanomeline High Dose\\nn (%)\"],\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_body=rtf.RTFBody(\n        col_rel_width=[4, 2, 2, 2],\n        text_justification=[\"l\", \"c\", \"c\", \"c\"],\n    ),\n    rtf_source=rtf.RTFSource(text=[\"Source: ADSL dataset\"])\n)\n\ndoc_overview.write_rtf(\"rtf/tlf_population.rtf\")\n\nrtf/tlf_population.rtf",
+    "crumbs": [
+      "Tables, Listings, and Figures",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study Population Table</span>"
     ]
   },
   {
