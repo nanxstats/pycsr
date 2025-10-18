@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
 <title>3&nbsp; Study Population Table – Python for Clinical Study Reports and Submission</title>
 <style>
@@ -74,10 +75,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d242333e626cc5b3ec7068f034c6f638.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8f9bd8ba083e7b060590dbf18688554a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -139,6 +140,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Python for Clinical Study Reports and Submission</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/nanxstats/pycsr" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -151,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -246,7 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-8-create-final-table" id="toc-step-8-create-final-table" class="nav-link" data-scroll-target="#step-8-create-final-table"><span class="header-section-number">3.9</span> Step 8: Create Final Table</a></li>
   <li><a href="#step-9-generate-publication-ready-output" id="toc-step-9-generate-publication-ready-output" class="nav-link" data-scroll-target="#step-9-generate-publication-ready-output"><span class="header-section-number">3.10</span> Step 9: Generate Publication-Ready Output</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/tlf-population.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/tlf-population.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -282,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>This tutorial shows you how to create a population summary table using Python’s <code>rtflite</code> package.</p>
 <embed src="pdf/tlf_population.pdf" style="width:100%; height:600px" type="application/pdf">
-<div id="d484ee8e" class="cell" data-execution_count="1">
+<div id="62cd00b2" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl <span class="co"># Data manipulation</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf <span class="co"># RTF reporting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -290,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-load-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">3.2</span> Step 1: Load Data</h2>
 <p>We start by loading the Subject-level Analysis Dataset (ADSL), which contains population flags for each participant.</p>
-<div id="a0532832" class="cell" data-execution_count="2">
+<div id="2b81f1e7" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s examine the key population flag variables we’ll use:</p>
@@ -301,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>EFFFL</strong>: Efficacy population flag (Y/N)</li>
 <li><strong>SAFFL</strong>: Safety population flag (Y/N)</li>
 </ul>
-<div id="c30956c6" class="cell" data-execution_count="3">
+<div id="06da5625" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl.select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"ITTFL"</span>, <span class="st">"EFFFL"</span>, <span class="st">"SAFFL"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div><style>
@@ -416,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-calculate-treatment-group-totals" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="step-2-calculate-treatment-group-totals"><span class="header-section-number">3.3</span> Step 2: Calculate Treatment Group Totals</h2>
 <p>First, we calculate the total number of randomized participants in each treatment group, which will serve as the denominator for percentage calculations.</p>
-<div id="3718e833" class="cell" data-execution_count="4">
+<div id="75629d3c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>totals <span class="op">=</span> adsl.group_by(<span class="st">"TRT01P"</span>).agg(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> pl.<span class="bu">len</span>()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -444,16 +453,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>86</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline Low Dose"</td>
 <td>84</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>"Xanomeline High Dose"</td>
 <td>84</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>86</td>
 </tr>
 </tbody>
 </table>
@@ -464,7 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-define-helper-function" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="step-3-define-helper-function"><span class="header-section-number">3.4</span> Step 3: Define Helper Function</h2>
 <p>We create a reusable function to count participants by treatment group for any population subset.</p>
-<div id="a0edd6dc" class="cell" data-execution_count="5">
+<div id="68930de1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_by_treatment(data, population_name):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Count participants by treatment group and add population label"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data.group_by(<span class="st">"TRT01P"</span>).agg(</span>
@@ -479,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now we calculate participant counts for each analysis population.</p>
 <section id="all-randomized-participants" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="all-randomized-participants"><span class="header-section-number">3.5.1</span> All Randomized Participants</h3>
-<div id="5ecb5c29" class="cell" data-execution_count="6">
+<div id="87440944" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pop_all <span class="op">=</span> count_by_treatment(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>adsl,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    population_name<span class="op">=</span><span class="st">"Participants in population"</span></span>
@@ -510,18 +519,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 </tr>
 <tr class="even">
-<td>"Placebo"</td>
-<td>86</td>
+<td>"Xanomeline Low Dose"</td>
+<td>84</td>
 <td>"Participants in population"</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants in population"</td>
 </tr>
 </tbody>
@@ -532,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="intent-to-treat-population" class="level3" data-number="3.5.2">
 <h3 data-number="3.5.2" class="anchored" data-anchor-id="intent-to-treat-population"><span class="header-section-number">3.5.2</span> Intent-to-Treat Population</h3>
-<div id="ac12af0e" class="cell" data-execution_count="7">
+<div id="8bbf2d09" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>adsl_itt <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"ITTFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pop_itt <span class="op">=</span> count_by_treatment(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>adsl_itt,</span>
@@ -564,8 +573,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="even">
@@ -574,8 +583,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>86</td>
+<td>"Xanomeline Low Dose"</td>
+<td>84</td>
 <td>"Participants included in ITT p…</td>
 </tr>
 </tbody>
@@ -586,7 +595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="efficacy-population" class="level3" data-number="3.5.3">
 <h3 data-number="3.5.3" class="anchored" data-anchor-id="efficacy-population"><span class="header-section-number">3.5.3</span> Efficacy Population</h3>
-<div id="9700924c" class="cell" data-execution_count="8">
+<div id="aa72ef74" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adsl_eff <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"EFFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pop_eff <span class="op">=</span> count_by_treatment(</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>adsl_eff,</span>
@@ -623,13 +632,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="even">
-<td>"Placebo"</td>
-<td>79</td>
+<td>"Xanomeline High Dose"</td>
+<td>74</td>
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>74</td>
+<td>"Placebo"</td>
+<td>79</td>
 <td>"Participants included in effic…</td>
 </tr>
 </tbody>
@@ -640,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="safety-population" class="level3" data-number="3.5.4">
 <h3 data-number="3.5.4" class="anchored" data-anchor-id="safety-population"><span class="header-section-number">3.5.4</span> Safety Population</h3>
-<div id="7043c789" class="cell" data-execution_count="9">
+<div id="0a4d02fc" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>adsl_saf <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pop_saf <span class="op">=</span> count_by_treatment(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>adsl_saf,</span>
@@ -696,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-combine-all-populations" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="step-5-combine-all-populations"><span class="header-section-number">3.6</span> Step 5: Combine All Populations</h2>
 <p>We stack all population counts together into a single dataset.</p>
-<div id="14a40a7f" class="cell" data-execution_count="10">
+<div id="7e26e19d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>all_populations <span class="op">=</span> pl.concat([</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    pop_all,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    pop_itt,</span>
@@ -729,23 +738,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+<td>"Participants in population"</td>
+</tr>
+<tr class="even">
 <td>"Xanomeline Low Dose"</td>
 <td>84</td>
+<td>"Participants in population"</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>86</td>
 <td>"Participants in population"</td>
 </tr>
 <tr class="even">
 <td>"Placebo"</td>
 <td>86</td>
-<td>"Participants in population"</td>
-</tr>
-<tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>84</td>
-<td>"Participants in population"</td>
-</tr>
-<tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
 <td>"Participants included in ITT p…</td>
 </tr>
 <tr class="odd">
@@ -759,13 +768,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>79</td>
+<td>"Xanomeline High Dose"</td>
+<td>74</td>
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline High Dose"</td>
-<td>74</td>
+<td>"Placebo"</td>
+<td>79</td>
 <td>"Participants included in effic…</td>
 </tr>
 <tr class="odd">
@@ -792,7 +801,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-6-calculate-percentages" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="step-6-calculate-percentages"><span class="header-section-number">3.7</span> Step 6: Calculate Percentages</h2>
 <p>We join with the total counts and calculate what percentage each population represents of the total randomized participants.</p>
-<div id="7c8e13ac" class="cell" data-execution_count="11">
+<div id="b43d52ee" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>stats_with_pct <span class="op">=</span> all_populations.join(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    totals,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"TRT01P"</span></span>
@@ -829,20 +838,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
-<td>"Participants in population"</td>
-<td>84</td>
-<td>100.0</td>
-</tr>
-<tr class="even">
-<td>"Placebo"</td>
-<td>86</td>
-<td>"Participants in population"</td>
-<td>86</td>
-<td>100.0</td>
-</tr>
-<tr class="odd">
 <td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
@@ -852,8 +847,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td>"Xanomeline Low Dose"</td>
 <td>84</td>
-<td>"Participants included in ITT p…</td>
+<td>"Participants in population"</td>
 <td>84</td>
+<td>100.0</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>86</td>
+<td>"Participants in population"</td>
+<td>86</td>
+<td>100.0</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>86</td>
+<td>"Participants included in ITT p…</td>
+<td>86</td>
 <td>100.0</td>
 </tr>
 <tr class="odd">
@@ -871,18 +880,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>79</td>
-<td>"Participants included in effic…</td>
-<td>86</td>
-<td>91.9</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
 <td>74</td>
 <td>"Participants included in effic…</td>
 <td>84</td>
 <td>88.1</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>79</td>
+<td>"Participants included in effic…</td>
+<td>86</td>
+<td>91.9</td>
 </tr>
 <tr class="odd">
 <td>"Placebo"</td>
@@ -914,7 +923,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-7-format-display-values" class="level2" data-number="3.8">
 <h2 data-number="3.8" class="anchored" data-anchor-id="step-7-format-display-values"><span class="header-section-number">3.8</span> Step 7: Format Display Values</h2>
 <p>For the final table, we format the display text. The total randomized count shows just “N”, while subset populations show “N (%)”.</p>
-<div id="eef13f57" class="cell" data-execution_count="12">
+<div id="e857aa05" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>formatted_stats <span class="op">=</span> stats_with_pct.with_columns(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    display <span class="op">=</span> pl.when(pl.col(<span class="st">"population"</span>) <span class="op">==</span> <span class="st">"Participants in population"</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        .then(pl.col(<span class="st">"n"</span>).cast(<span class="bu">str</span>)) </span>
@@ -959,7 +968,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>84</td>
 <td>"Participants in population"</td>
 <td>84</td>
@@ -967,6 +976,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"84"</td>
 </tr>
 <tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>84</td>
+<td>"Participants in population"</td>
+<td>84</td>
+<td>100.0</td>
+<td>"84"</td>
+</tr>
+<tr class="odd">
 <td>"Placebo"</td>
 <td>86</td>
 <td>"Participants in population"</td>
@@ -974,53 +991,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>100.0</td>
 <td>"86"</td>
 </tr>
-<tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>84</td>
-<td>"Participants in population"</td>
-<td>84</td>
-<td>100.0</td>
-<td>"84"</td>
-</tr>
 <tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>84</td>
-<td>"Participants included in ITT p…</td>
-<td>84</td>
-<td>100.0</td>
-<td>"84 (100.0)"</td>
-</tr>
-<tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>84</td>
-<td>"Participants included in ITT p…</td>
-<td>84</td>
-<td>100.0</td>
-<td>"84 (100.0)"</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-<tr class="odd">
 <td>"Placebo"</td>
-<td>79</td>
-<td>"Participants included in effic…</td>
 <td>86</td>
-<td>91.9</td>
-<td>"79 (91.9)"</td>
+<td>"Participants included in ITT p…</td>
+<td>86</td>
+<td>100.0</td>
+<td>"86 (100.0)"</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+<td>"Participants included in ITT p…</td>
+<td>84</td>
+<td>100.0</td>
+<td>"84 (100.0)"</td>
 </tr>
 <tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
 <td>"Xanomeline High Dose"</td>
 <td>74</td>
 <td>"Participants included in effic…</td>
 <td>84</td>
 <td>88.1</td>
 <td>"74 (88.1)"</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>79</td>
+<td>"Participants included in effic…</td>
+<td>86</td>
+<td>91.9</td>
+<td>"79 (91.9)"</td>
 </tr>
 <tr class="odd">
 <td>"Placebo"</td>
@@ -1055,7 +1064,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-8-create-final-table" class="level2" data-number="3.9">
 <h2 data-number="3.9" class="anchored" data-anchor-id="step-8-create-final-table"><span class="header-section-number">3.9</span> Step 8: Create Final Table</h2>
 <p>We reshape the data from long format (rows for each treatment-population combination) to wide format (columns for each treatment group).</p>
-<div id="fd9a9b76" class="cell" data-execution_count="13">
+<div id="3975da03" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df_overview <span class="op">=</span> formatted_stats.pivot(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">"display"</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">"population"</span>,</span>
@@ -1124,7 +1133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-9-generate-publication-ready-output" class="level2" data-number="3.10">
 <h2 data-number="3.10" class="anchored" data-anchor-id="step-9-generate-publication-ready-output"><span class="header-section-number">3.10</span> Step 9: Generate Publication-Ready Output</h2>
 <p>Finally, we format the population table for regulatory submission using the <code>rtflite</code> package.</p>
-<div id="c6825fe0" class="cell" data-execution_count="14">
+<div id="75d59a65" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>doc_overview <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_overview,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
@@ -1226,7 +1235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/pycsr\.org\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1570,4 +1579,4 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/tlf-population.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/tlf-population.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
