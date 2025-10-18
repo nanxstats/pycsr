@@ -2,12 +2,17 @@ project:
   type: book
   resources:
     - CNAME
-
+    - slides/
+    
 book:
   title: "Python for Clinical Study Reports and Submission"
   author:
     - Yilong Zhang
     - Nan Xiao
+  description: |
+    Learn how to prepare tables, listings, and figures for
+    clinical study report and submit to regulatory agencies,
+    the essential part of clinical trial development.
   chapters:
     - index.qmd
     - intro.qmd
@@ -21,6 +26,11 @@ book:
         - tlf-efficacy-ancova.qmd
     - summary.qmd
     - references.qmd
+
+  site-url: https://pycsr.org/
+  repo-url: https://github.com/nanxstats/pycsr
+  repo-actions: [edit, issue, source]
+  reader-mode: true
 
 bibliography: references.bib
 
