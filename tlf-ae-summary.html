@@ -239,11 +239,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">5.1</span> Overview</a></li>
-  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports"><span class="header-section-number">5.2</span> Imports</a></li>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="header-section-number">5.3</span> Data Preparation</a></li>
-  <li><a href="#ae-summary-calculations" id="toc-ae-summary-calculations" class="nav-link" data-scroll-target="#ae-summary-calculations"><span class="header-section-number">5.4</span> AE Summary Calculations</a></li>
-  <li><a href="#format-ae-summary-table" id="toc-format-ae-summary-table" class="nav-link" data-scroll-target="#format-ae-summary-table"><span class="header-section-number">5.5</span> Format AE Summary Table</a></li>
-  <li><a href="#create-rtf-output" id="toc-create-rtf-output" class="nav-link" data-scroll-target="#create-rtf-output"><span class="header-section-number">5.6</span> Create RTF Output</a></li>
+  <li><a href="#step-1-load-data" id="toc-step-1-load-data" class="nav-link" data-scroll-target="#step-1-load-data"><span class="header-section-number">5.2</span> Step 1: Load Data</a></li>
+  <li><a href="#step-2-filter-safety-population" id="toc-step-2-filter-safety-population" class="nav-link" data-scroll-target="#step-2-filter-safety-population"><span class="header-section-number">5.3</span> Step 2: Filter Safety Population</a></li>
+  <li><a href="#step-3-define-ae-categories" id="toc-step-3-define-ae-categories" class="nav-link" data-scroll-target="#step-3-define-ae-categories"><span class="header-section-number">5.4</span> Step 3: Define AE Categories</a></li>
+  <li><a href="#step-4-combine-and-calculate-percentages" id="toc-step-4-combine-and-calculate-percentages" class="nav-link" data-scroll-target="#step-4-combine-and-calculate-percentages"><span class="header-section-number">5.5</span> Step 4: Combine and Calculate Percentages</a></li>
+  <li><a href="#step-5-format-for-display" id="toc-step-5-format-for-display" class="nav-link" data-scroll-target="#step-5-format-for-display"><span class="header-section-number">5.6</span> Step 5: Format for Display</a></li>
+  <li><a href="#step-6-create-final-table-structure" id="toc-step-6-create-final-table-structure" class="nav-link" data-scroll-target="#step-6-create-final-table-structure"><span class="header-section-number">5.7</span> Step 6: Create Final Table Structure</a></li>
+  <li><a href="#step-7-generate-publication-ready-output" id="toc-step-7-generate-publication-ready-output" class="nav-link" data-scroll-target="#step-7-generate-publication-ready-output"><span class="header-section-number">5.8</span> Step 7: Generate Publication-Ready Output</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/tlf-ae-summary.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/tlf-ae-summary.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
@@ -269,123 +271,606 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-<p>This article demonstrates how to create an adverse events (AE) summary table for clinical study reports using rtflite.</p>
 <section id="overview" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">5.1</span> Overview</h2>
-<p>Adverse events summary tables are critical safety assessments in clinical trials. They typically show the number and percentage of participants experiencing various categories of adverse events by treatment group.</p>
-</section>
-<section id="imports" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="imports"><span class="header-section-number">5.2</span> Imports</h2>
-<div id="97d646de" class="cell" data-execution_count="1">
+<p>Adverse events (AE) summary tables are critical safety assessments required in clinical study reports. Following <a href="https://database.ich.org/sites/default/files/E3_Guideline.pdf">ICH E3 guidance</a>, these tables summarize the overall safety profile by showing the number and percentage of participants experiencing various categories of adverse events across treatment groups.</p>
+<p>Key categories typically include:</p>
+<ul>
+<li><strong>Any adverse event</strong>: Total participants with at least one AE</li>
+<li><strong>Drug-related events</strong>: Events potentially related to study treatment</li>
+<li><strong>Serious adverse events</strong>: Events meeting regulatory criteria for seriousness</li>
+<li><strong>Deaths</strong>: Fatal outcomes</li>
+<li><strong>Discontinuations</strong>: Participants who stopped treatment due to AEs</li>
+</ul>
+<p>This tutorial shows you how to create an AE summary table using Python’s <code>rtflite</code> package.</p>
+<embed src="pdf/tlf_ae_summary.pdf" style="width:100%; height:600px" type="application/pdf">
+<div id="67920996" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="data-preparation" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">5.3</span> Data Preparation</h2>
-<div id="cb0e078e" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare safety population data</span></span>
+<section id="step-1-load-data" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">5.2</span> Step 1: Load Data</h2>
+<p>We need two datasets for AE analysis: the subject-level dataset (ADSL) and the adverse events dataset (ADAE).</p>
+<div id="e66125c1" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load datasets</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>adae <span class="op">=</span> pl.read_parquet(<span class="st">"data/adae.parquet"</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Safety population </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>adsl_safety <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>])</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>adae_safety <span class="op">=</span> adae.join(adsl_safety, on<span class="op">=</span><span class="st">"USUBJID"</span>).with_columns(pl.col(<span class="st">"TRT01A"</span>).alias(<span class="st">"TRTA"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display key variables from ADSL</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>adsl.select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>, <span class="st">"SAFFL"</span>]).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 3)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">SAFFL</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"Placebo"</td>
+<td>"Y"</td>
+</tr>
+<tr class="even">
+<td>"01-701-1023"</td>
+<td>"Placebo"</td>
+<td>"Y"</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1028"</td>
+<td>"Xanomeline High Dose"</td>
+<td>"Y"</td>
+</tr>
+<tr class="even">
+<td>"01-701-1033"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>"Y"</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1034"</td>
+<td>"Xanomeline High Dose"</td>
+<td>"Y"</td>
+</tr>
+</tbody>
+</table>
 </div>
-</section>
-<section id="ae-summary-calculations" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="ae-summary-calculations"><span class="header-section-number">5.4</span> AE Summary Calculations</h2>
-<div id="64a5c8bd" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define AE categories with their filter conditions</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ae_categories <span class="op">=</span> {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participants in population"</span>: <span class="va">None</span>,  <span class="co"># Special case - uses total N</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With any adverse event"</span>: pl.lit(<span class="va">True</span>),  <span class="co"># All AEs</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With drug-related adverse event"</span>: pl.col(<span class="st">"AEREL"</span>).is_in([<span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span>, <span class="st">"DEFINITE"</span>, <span class="st">"RELATED"</span>]),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With serious adverse event"</span>: pl.col(<span class="st">"AESER"</span>) <span class="op">==</span> <span class="st">"Y"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With serious drug-related adverse event"</span>: (</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"AESER"</span>) <span class="op">==</span> <span class="st">"Y"</span>) <span class="op">&amp;</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"AEREL"</span>).is_in([<span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span>, <span class="st">"DEFINITE"</span>, <span class="st">"RELATED"</span>])</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Who died"</span>: pl.col(<span class="st">"AEOUT"</span>) <span class="op">==</span> <span class="st">"FATAL"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Discontinued due to adverse event"</span>: pl.col(<span class="st">"AEACN"</span>) <span class="op">==</span> <span class="st">"DRUG WITHDRAWN"</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate population totals</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>pop_counts <span class="op">=</span> adsl_safety.group_by(<span class="st">"TRT01A"</span>).agg(pl.<span class="bu">len</span>().alias(<span class="st">"N"</span>))</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate AE counts for each category</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> category, filter_expr <span class="kw">in</span> ae_categories.items():</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> category <span class="op">==</span> <span class="st">"Participants in population"</span>:</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Special handling for population row</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> row <span class="kw">in</span> pop_counts.iter_rows(named<span class="op">=</span><span class="va">True</span>):</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Category"</span>: category,</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"TRT01A"</span>: row[<span class="st">"TRT01A"</span>],</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>: row[<span class="st">"N"</span>],</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">"pct_display"</span>: <span class="st">""</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Count unique subjects meeting criteria</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        ae_counts <span class="op">=</span> (</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>            adae_safety</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(filter_expr)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>            .group_by(<span class="st">"TRTA"</span>)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>            .agg(pl.col(<span class="st">"USUBJID"</span>).n_unique().alias(<span class="st">"n"</span>))</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Join with population to calculate percentages</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        merged <span class="op">=</span> (</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>            pop_counts</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>            .join(ae_counts, left_on<span class="op">=</span><span class="st">"TRT01A"</span>, right_on<span class="op">=</span><span class="st">"TRTA"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>            .with_columns([</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>                pl.col(<span class="st">"n"</span>).fill_null(<span class="dv">0</span>),</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>                (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>).fill_null(<span class="dv">0</span>) <span class="op">/</span> pl.col(<span class="st">"N"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"pct"</span>),</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>                pl.when(pl.col(<span class="st">"n"</span>).fill_null(<span class="dv">0</span>) <span class="op">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>                  .then(pl.concat_str([pl.lit(<span class="st">"("</span>), (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>).fill_null(<span class="dv">0</span>) <span class="op">/</span> pl.col(<span class="st">"N"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).cast(<span class="bu">str</span>), pl.lit(<span class="st">")"</span>)]))</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>                  .otherwise(pl.lit(<span class="st">"(0.0)"</span>))</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>                  .alias(<span class="st">"pct_display"</span>)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>            ])</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> row <span class="kw">in</span> merged.iter_rows(named<span class="op">=</span><span class="va">True</span>):</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Category"</span>: category,</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>                <span class="st">"TRT01A"</span>: row[<span class="st">"TRT01A"</span>],</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>: row[<span class="st">"n"</span>],</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>                <span class="st">"pct_display"</span>: row[<span class="st">"pct_display"</span>]</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>ae_summary <span class="op">=</span> pl.DataFrame(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div>
+<div id="cc6dc137" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display key variables from ADAE</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adae.select([<span class="st">"USUBJID"</span>, <span class="st">"AEREL"</span>, <span class="st">"AESER"</span>, <span class="st">"AEOUT"</span>, <span class="st">"AEACN"</span>]).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">AEREL</th>
+<th data-quarto-table-cell-role="th">AESER</th>
+<th data-quarto-table-cell-role="th">AEOUT</th>
+<th data-quarto-table-cell-role="th">AEACN</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"PROBABLE"</td>
+<td>"N"</td>
+<td>"NOT RECOVERED/NOT RESOLVED"</td>
+<td>""</td>
+</tr>
+<tr class="even">
+<td>"01-701-1015"</td>
+<td>"PROBABLE"</td>
+<td>"N"</td>
+<td>"NOT RECOVERED/NOT RESOLVED"</td>
+<td>""</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"REMOTE"</td>
+<td>"N"</td>
+<td>"RECOVERED/RESOLVED"</td>
+<td>""</td>
+</tr>
+<tr class="even">
+<td>"01-701-1023"</td>
+<td>"POSSIBLE"</td>
+<td>"N"</td>
+<td>"NOT RECOVERED/NOT RESOLVED"</td>
+<td>""</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1023"</td>
+<td>"PROBABLE"</td>
+<td>"N"</td>
+<td>"NOT RECOVERED/NOT RESOLVED"</td>
+<td>""</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Key ADAE variables used in this analysis:</p>
+<ul>
+<li><strong>USUBJID</strong>: Unique subject identifier to link with ADSL</li>
+<li><strong>AEREL</strong>: Relationship of adverse event to study drug (e.g., “RELATED”, “POSSIBLE”, “PROBABLE”, “DEFINITE”, “NOT RELATED”)</li>
+<li><strong>AESER</strong>: Serious adverse event flag (“Y” = serious, “N” = not serious)</li>
+<li><strong>AEOUT</strong>: Outcome of adverse event (e.g., “RECOVERED”, “RECOVERING”, “NOT RECOVERED”, “FATAL”)</li>
+<li><strong>AEACN</strong>: Action taken with study treatment (e.g., “DOSE NOT CHANGED”, “DRUG WITHDRAWN”, “DOSE REDUCED”)</li>
+</ul>
 </section>
-<section id="format-ae-summary-table" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="format-ae-summary-table"><span class="header-section-number">5.5</span> Format AE Summary Table</h2>
-<div id="65a98fc3" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define treatment order and category order for consistent display</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>category_order <span class="op">=</span> <span class="bu">list</span>(ae_categories.keys())</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot to wide format with separate n and (%) columns</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df_ae_summary <span class="op">=</span> (</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    ae_summary</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    .with_columns(pl.col(<span class="st">"Category"</span>).cast(pl.Enum(category_order)))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    .pivot(</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span>[<span class="st">"n"</span>, <span class="st">"pct_display"</span>],</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span><span class="st">"Category"</span>, </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        on<span class="op">=</span><span class="st">"TRT01A"</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    .with_columns([pl.col(<span class="ss">f"n_</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ss">"</span>).cast(<span class="bu">str</span>) <span class="cf">for</span> trt <span class="kw">in</span> treatments])</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    .select(</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        [<span class="st">"Category"</span>] <span class="op">+</span> </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        [col <span class="cf">for</span> trt <span class="kw">in</span> treatments <span class="cf">for</span> col <span class="kw">in</span> [<span class="ss">f"n_</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ss">"</span>, <span class="ss">f"pct_display_</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ss">"</span>]]</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    .rename({<span class="st">"Category"</span>: <span class="st">""</span>})</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>df_ae_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="step-2-filter-safety-population" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="step-2-filter-safety-population"><span class="header-section-number">5.3</span> Step 2: Filter Safety Population</h2>
+<p>For safety analyses, we focus on participants who received at least one dose of study treatment.</p>
+<div id="ae2afcf1" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to safety population</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adsl_safety <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get treatment counts for denominators</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pop_counts <span class="op">=</span> adsl_safety.group_by(<span class="st">"TRT01A"</span>).agg(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> pl.<span class="bu">len</span>()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>).sort(<span class="st">"TRT01A"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Preserve the treatment level order for downstream joins</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>treatment_levels <span class="op">=</span> pop_counts.select([<span class="st">"TRT01A"</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Safety population by treatment</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>pop_counts</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 2)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">N</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>86</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>84</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="18668e7a" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join treatment information to AE data</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>adae_safety <span class="op">=</span> adae.join(adsl_safety, on<span class="op">=</span><span class="st">"USUBJID"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Total AE records in safety population</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>adae_safety.height</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>1191</code></pre>
+</div>
+</div>
+</section>
+<section id="step-3-define-ae-categories" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="step-3-define-ae-categories"><span class="header-section-number">5.4</span> Step 3: Define AE Categories</h2>
+<p>We’ll calculate participant counts for standard AE categories used in regulatory submissions.</p>
+<div id="72badea7" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_participants(df, condition<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Count unique participants meeting a condition</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">        df: DataFrame with adverse events</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">        condition: polars expression for filtering (None = count all)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with counts by treatment</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> condition <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.<span class="bu">filter</span>(condition)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> df.group_by(<span class="st">"TRT01A"</span>).agg(</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> pl.col(<span class="st">"USUBJID"</span>).n_unique()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> treatment_levels.join(counts, on<span class="op">=</span><span class="st">"TRT01A"</span>, how<span class="op">=</span><span class="st">"left"</span>).with_columns(</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"n"</span>).fill_null(<span class="dv">0</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate each category</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> []</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Participants in population (no filtering)</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>pop_row <span class="op">=</span> pop_counts.with_columns(</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"Participants in population"</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>).rename({<span class="st">"N"</span>: <span class="st">"n"</span>})</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>categories.append(pop_row)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. With any adverse event</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>any_ae <span class="op">=</span> count_participants(adae_safety).with_columns(</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"With any adverse event"</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>categories.append(any_ae)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="34b69e76" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. With drug-related adverse event</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>drug_related <span class="op">=</span> count_participants(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AEREL"</span>).is_in([<span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span>, <span class="st">"DEFINITE"</span>, <span class="st">"RELATED"</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>).with_columns(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"With drug-related adverse event"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>categories.append(drug_related)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. With serious adverse event</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>serious <span class="op">=</span> count_participants(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AESER"</span>) <span class="op">==</span> <span class="st">"Y"</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>).with_columns(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"With serious adverse event"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>categories.append(serious)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="71641c98" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. With serious drug-related adverse event</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>serious_drug_related <span class="op">=</span> count_participants(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    (pl.col(<span class="st">"AESER"</span>) <span class="op">==</span> <span class="st">"Y"</span>) <span class="op">&amp;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AEREL"</span>).is_in([<span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span>, <span class="st">"DEFINITE"</span>, <span class="st">"RELATED"</span>])</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>).with_columns(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"With serious drug-related adverse event"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>categories.append(serious_drug_related)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Who died</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>deaths <span class="op">=</span> count_participants(</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AEOUT"</span>) <span class="op">==</span> <span class="st">"FATAL"</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>).with_columns(</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"Who died"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>categories.append(deaths)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Discontinued due to adverse event</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>discontinued <span class="op">=</span> count_participants(</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AEACN"</span>) <span class="op">==</span> <span class="st">"DRUG WITHDRAWN"</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>).with_columns(</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    category <span class="op">=</span> pl.lit(<span class="st">"Discontinued due to adverse event"</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>categories.append(discontinued)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="step-4-combine-and-calculate-percentages" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="step-4-combine-and-calculate-percentages"><span class="header-section-number">5.5</span> Step 4: Combine and Calculate Percentages</h2>
+<p>Now we combine all categories and calculate percentages based on the safety population.</p>
+<div id="ef174306" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all categories</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ae_summary <span class="op">=</span> pl.concat(categories, how<span class="op">=</span><span class="st">"diagonal"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add population totals and calculate percentages</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ae_summary <span class="op">=</span> ae_summary.join(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    pop_counts.select([<span class="st">"TRT01A"</span>, <span class="st">"N"</span>]),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"TRT01A"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">"left"</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>).with_columns([</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fill missing counts with 0</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"n"</span>).fill_null(<span class="dv">0</span>),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate percentage</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"category"</span>) <span class="op">==</span> <span class="st">"Participants in population"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        .then(<span class="va">None</span>)  <span class="co"># No percentage for population row</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        .otherwise((<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"n"</span>) <span class="op">/</span> pl.col(<span class="st">"N"</span>)).<span class="bu">round</span>(<span class="dv">1</span>))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        .alias(<span class="st">"pct"</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>ae_summary.sort([<span class="st">"category"</span>, <span class="st">"TRT01A"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (21, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">n</th>
+<th data-quarto-table-cell-role="th">category</th>
+<th data-quarto-table-cell-role="th">N</th>
+<th data-quarto-table-cell-role="th">pct</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+<td>str</td>
+<td>u32</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>0</td>
+<td>"Discontinued due to adverse ev…</td>
+<td>86</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>0</td>
+<td>"Discontinued due to adverse ev…</td>
+<td>84</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>0</td>
+<td>"Discontinued due to adverse ev…</td>
+<td>84</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>86</td>
+<td>"Participants in population"</td>
+<td>86</td>
+<td>null</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+<td>"Participants in population"</td>
+<td>84</td>
+<td>null</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>2</td>
+<td>"With serious adverse event"</td>
+<td>84</td>
+<td>2.4</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>1</td>
+<td>"With serious adverse event"</td>
+<td>84</td>
+<td>1.2</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>0</td>
+<td>"With serious drug-related adve…</td>
+<td>86</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>1</td>
+<td>"With serious drug-related adve…</td>
+<td>84</td>
+<td>1.2</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>1</td>
+<td>"With serious drug-related adve…</td>
+<td>84</td>
+<td>1.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-5-format-for-display" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="step-5-format-for-display"><span class="header-section-number">5.6</span> Step 5: Format for Display</h2>
+<p>We’ll format the counts and percentages for the final table display.</p>
+<div id="15df06e7" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format display values</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ae_formatted <span class="op">=</span> ae_summary.with_columns([</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show counts as strings, including zeros</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"n"</span>).cast(<span class="bu">str</span>).alias(<span class="st">"n_display"</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Format percentages with parentheses; blank out population row</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"category"</span>) <span class="op">==</span> <span class="st">"Participants in population"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      .then(pl.lit(<span class="st">""</span>))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      .otherwise(</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>          pl.<span class="bu">format</span>(<span class="st">"(</span><span class="sc">{}</span><span class="st">)"</span>, pl.col(<span class="st">"pct"</span>).fill_null(<span class="dv">0</span>).<span class="bu">round</span>(<span class="dv">1</span>).cast(<span class="bu">str</span>))</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      .alias(<span class="st">"pct_display"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>ae_formatted.select([<span class="st">"category"</span>, <span class="st">"TRT01A"</span>, <span class="st">"n_display"</span>, <span class="st">"pct_display"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (21, 4)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">category</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">n_display</th>
+<th data-quarto-table-cell-role="th">pct_display</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Participants in population"</td>
+<td>"Placebo"</td>
+<td>"86"</td>
+<td>""</td>
+</tr>
+<tr class="even">
+<td>"Participants in population"</td>
+<td>"Xanomeline High Dose"</td>
+<td>"84"</td>
+<td>""</td>
+</tr>
+<tr class="odd">
+<td>"Participants in population"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>"84"</td>
+<td>""</td>
+</tr>
+<tr class="even">
+<td>"With any adverse event"</td>
+<td>"Placebo"</td>
+<td>"69"</td>
+<td>"(80.2)"</td>
+</tr>
+<tr class="odd">
+<td>"With any adverse event"</td>
+<td>"Xanomeline High Dose"</td>
+<td>"79"</td>
+<td>"(94.0)"</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"Who died"</td>
+<td>"Xanomeline High Dose"</td>
+<td>"0"</td>
+<td>"(0.0)"</td>
+</tr>
+<tr class="even">
+<td>"Who died"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>"1"</td>
+<td>"(1.2)"</td>
+</tr>
+<tr class="odd">
+<td>"Discontinued due to adverse ev…</td>
+<td>"Placebo"</td>
+<td>"0"</td>
+<td>"(0.0)"</td>
+</tr>
+<tr class="even">
+<td>"Discontinued due to adverse ev…</td>
+<td>"Xanomeline High Dose"</td>
+<td>"0"</td>
+<td>"(0.0)"</td>
+</tr>
+<tr class="odd">
+<td>"Discontinued due to adverse ev…</td>
+<td>"Xanomeline Low Dose"</td>
+<td>"0"</td>
+<td>"(0.0)"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-6-create-final-table-structure" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="step-6-create-final-table-structure"><span class="header-section-number">5.7</span> Step 6: Create Final Table Structure</h2>
+<p>We reshape the data to create the final table with treatments as columns.</p>
+<div id="203a3005" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define category order for consistent display</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>category_order <span class="op">=</span> [</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participants in population"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With any adverse event"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With drug-related adverse event"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With serious adverse event"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"With serious drug-related adverse event"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Who died"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Discontinued due to adverse event"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot to wide format</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>ae_wide <span class="op">=</span> ae_formatted.pivot(</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span>[<span class="st">"n_display"</span>, <span class="st">"pct_display"</span>],</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">"category"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"TRT01A"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    maintain_order<span class="op">=</span><span class="va">True</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder columns for each treatment group</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>column_order <span class="op">=</span> [<span class="st">"category"</span>]</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    column_order.extend([<span class="ss">f"n_display_</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ss">"</span>, <span class="ss">f"pct_display_</span><span class="sc">{</span>trt<span class="sc">}</span><span class="ss">"</span>])</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Create final table with proper column order</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>final_table <span class="op">=</span> ae_wide.select(column_order).sort(</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"category"</span>).cast(pl.Enum(category_order))</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>final_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div><style>
 .dataframe > thead > tr,
 .dataframe > tbody > tr {
@@ -397,16 +882,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">n_Placebo</th>
+<th data-quarto-table-cell-role="th">category</th>
+<th data-quarto-table-cell-role="th">n_display_Placebo</th>
 <th data-quarto-table-cell-role="th">pct_display_Placebo</th>
-<th data-quarto-table-cell-role="th">n_Xanomeline Low Dose</th>
+<th data-quarto-table-cell-role="th">n_display_Xanomeline Low Dose</th>
 <th data-quarto-table-cell-role="th">pct_display_Xanomeline Low Dose</th>
-<th data-quarto-table-cell-role="th">n_Xanomeline High Dose</th>
+<th data-quarto-table-cell-role="th">n_display_Xanomeline High Dose</th>
 <th data-quarto-table-cell-role="th">pct_display_Xanomeline High Dose</th>
 </tr>
 <tr class="even">
-<td>enum</td>
+<td>str</td>
 <td>str</td>
 <td>str</td>
 <td>str</td>
@@ -485,64 +970,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="create-rtf-output" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">5.6</span> Create RTF Output</h2>
-<div id="15988042" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create RTF document</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>doc_ae_summary <span class="op">=</span> rtf.RTFDocument(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_ae_summary,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Analysis of Adverse Event Summary"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"(Safety Analysis Population)"</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        ]</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>[</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> [<span class="st">""</span>] <span class="op">+</span> treatments,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>], </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            text<span class="op">=</span>[</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">""</span>,          <span class="co"># Empty for first column</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>, <span class="st">"(%)"</span>,  <span class="co"># Placebo columns</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>, <span class="st">"(%)"</span>,  <span class="co"># Low Dose columns</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>, <span class="st">"(%)"</span>   <span class="co"># High Dose columns</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            ],</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">4</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            border_left <span class="op">=</span> [<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            border_top <span class="op">=</span> [<span class="st">""</span>] <span class="op">+</span> [<span class="st">"single"</span>] <span class="op">*</span> <span class="dv">6</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">4</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        border_left <span class="op">=</span> [<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    rtf_footnote<span class="op">=</span>rtf.RTFFootnote(</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Every subject is counted a single time for each applicable row and column."</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        ]</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[<span class="st">"Source: ADSL and ADAE datasets"</span>],</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Write RTF file</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>doc_ae_summary.write_rtf(<span class="st">"rtf/tlf_ae_summary.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="step-7-generate-publication-ready-output" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="step-7-generate-publication-ready-output"><span class="header-section-number">5.8</span> Step 7: Generate Publication-Ready Output</h2>
+<p>Finally, we format the AE summary table for regulatory submission using the <code>rtflite</code> package.</p>
+<div id="ba523792" class="cell" data-message="false" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get population sizes for column headers</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>n_placebo <span class="op">=</span> pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> <span class="st">"Placebo"</span>)[<span class="st">"N"</span>][<span class="dv">0</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>n_low <span class="op">=</span> pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> <span class="st">"Xanomeline Low Dose"</span>)[<span class="st">"N"</span>][<span class="dv">0</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>n_high <span class="op">=</span> pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> <span class="st">"Xanomeline High Dose"</span>)[<span class="st">"N"</span>][<span class="dv">0</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>doc_ae_summary <span class="op">=</span> rtf.RTFDocument(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>final_table.rename({<span class="st">"category"</span>: <span class="st">""</span>}),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Analysis of Adverse Event Summary"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"(Safety Analysis Population)"</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>[</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> [</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">""</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Placebo"</span>,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Xanomeline Low Dose"</span>,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Xanomeline High Dose"</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>],</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>        rtf.RTFColumnHeader(</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>            text<span class="op">=</span>[</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">""</span>,          <span class="co"># Empty for first column</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>, <span class="st">"(%)"</span>,  <span class="co"># Placebo columns</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>, <span class="st">"(%)"</span>,  <span class="co"># Low Dose columns</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>                <span class="st">"n"</span>, <span class="st">"(%)"</span>   <span class="co"># High Dose columns</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">4</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>            border_left <span class="op">=</span> [<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>            border_top <span class="op">=</span> [<span class="st">""</span>] <span class="op">+</span> [<span class="st">"single"</span>] <span class="op">*</span> <span class="dv">6</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">4</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">6</span>,</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>        border_left <span class="op">=</span> [<span class="st">"single"</span>] <span class="op">+</span> [<span class="st">"single"</span>, <span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    rtf_footnote<span class="op">=</span>rtf.RTFFootnote(</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Every subject is counted a single time for each applicable row and column."</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[<span class="st">"Source: ADSL and ADAE datasets"</span>]</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>doc_ae_summary.write_rtf(<span class="st">"rtf/tlf_ae_summary.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_ae_summary.rtf</code></pre>
 </div>
 </div>
-<div id="9e13126e" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>PosixPath('pdf/tlf_ae_summary.pdf')</code></pre>
-</div>
-</div>
-<embed src="pdf/tlf_ae_summary.pdf" style="width:100%; height:600px" type="application/pdf">
 
 
 </section>
