@@ -1,136 +1,273 @@
 ---
 title: "Adverse Events Summary Table"
-format: gfm
 ---
-
-<!-- `.md` and `.py` files are generated from the `.qmd` file. Please edit that file. -->
-
-This article demonstrates how to create an adverse events (AE) summary table for clinical study reports using rtflite.
 
 ## Overview
 
-Adverse events summary tables are critical safety assessments in clinical trials. 
-They typically show the number and percentage of participants experiencing 
-various categories of adverse events by treatment group.
+Adverse events (AE) summary tables are critical safety assessments required in clinical study reports. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), these tables summarize the overall safety profile by showing the number and percentage of participants experiencing various categories of adverse events across treatment groups.
 
-## Imports
+Key categories typically include:
+
+- **Any adverse event**: Total participants with at least one AE
+- **Drug-related events**: Events potentially related to study treatment
+- **Serious adverse events**: Events meeting regulatory criteria for seriousness
+- **Deaths**: Fatal outcomes
+- **Discontinuations**: Participants who stopped treatment due to AEs
+
+This tutorial shows you how to create an AE summary table using Python's `rtflite` package.
+
+<embed src="pdf/tlf_ae_summary.pdf" style="width:100%; height:600px" type="application/pdf">
 
 ```{python}
 import polars as pl
 import rtflite as rtf
 ```
 
-## Data Preparation
+## Step 1: Load Data
+
+We need two datasets for AE analysis: the subject-level dataset (ADSL) and the adverse events dataset (ADAE).
 
 ```{python}
-# Load and prepare safety population data
+# Load datasets
 adsl = pl.read_parquet("data/adsl.parquet")
 adae = pl.read_parquet("data/adae.parquet")
 
-# Safety population 
+# Display key variables from ADSL
+adsl.select(["USUBJID", "TRT01A", "SAFFL"]).head()
+```
+
+```{python}
+# Display key variables from ADAE
+adae.select(["USUBJID", "AEREL", "AESER", "AEOUT", "AEACN"]).head()
+```
+
+Key ADAE variables used in this analysis:
+
+- **USUBJID**: Unique subject identifier to link with ADSL
+- **AEREL**: Relationship of adverse event to study drug (e.g., "RELATED", "POSSIBLE", "PROBABLE", "DEFINITE", "NOT RELATED")
+- **AESER**: Serious adverse event flag ("Y" = serious, "N" = not serious)
+- **AEOUT**: Outcome of adverse event (e.g., "RECOVERED", "RECOVERING", "NOT RECOVERED", "FATAL")
+- **AEACN**: Action taken with study treatment (e.g., "DOSE NOT CHANGED", "DRUG WITHDRAWN", "DOSE REDUCED")
+
+## Step 2: Filter Safety Population
+
+For safety analyses, we focus on participants who received at least one dose of study treatment.
+
+```{python}
+# Filter to safety population
 adsl_safety = adsl.filter(pl.col("SAFFL") == "Y").select(["USUBJID", "TRT01A"])
-adae_safety = adae.join(adsl_safety, on="USUBJID").with_columns(pl.col("TRT01A").alias("TRTA"))
+
+# Get treatment counts for denominators
+pop_counts = adsl_safety.group_by("TRT01A").agg(
+    N = pl.len()
+).sort("TRT01A")
+
+# Preserve the treatment level order for downstream joins
+treatment_levels = pop_counts.select(["TRT01A"])
+
+# Safety population by treatment
+pop_counts
 ```
 
-## AE Summary Calculations
-
 ```{python}
-# Define AE categories with their filter conditions
-ae_categories = {
-    "Participants in population": None,  # Special case - uses total N
-    "With any adverse event": pl.lit(True),  # All AEs
-    "With drug-related adverse event": pl.col("AEREL").is_in(["POSSIBLE", "PROBABLE", "DEFINITE", "RELATED"]),
-    "With serious adverse event": pl.col("AESER") == "Y",
-    "With serious drug-related adverse event": (
-        (pl.col("AESER") == "Y") & 
-        pl.col("AEREL").is_in(["POSSIBLE", "PROBABLE", "DEFINITE", "RELATED"])
-    ),
-    "Who died": pl.col("AEOUT") == "FATAL",
-    "Discontinued due to adverse event": pl.col("AEACN") == "DRUG WITHDRAWN"
-}
+# Join treatment information to AE data
+adae_safety = adae.join(adsl_safety, on="USUBJID")
 
-# Calculate population totals
-pop_counts = adsl_safety.group_by("TRT01A").agg(pl.len().alias("N"))
-
-# Calculate AE counts for each category
-results = []
-for category, filter_expr in ae_categories.items():
-    if category == "Participants in population":
-        # Special handling for population row
-        for row in pop_counts.iter_rows(named=True):
-            results.append({
-                "Category": category,
-                "TRT01A": row["TRT01A"],
-                "n": row["N"],
-                "pct_display": ""
-            })
-    else:
-        # Count unique subjects meeting criteria
-        ae_counts = (
-            adae_safety
-            .filter(filter_expr)
-            .group_by("TRTA")
-            .agg(pl.col("USUBJID").n_unique().alias("n"))
-        )
-        
-        # Join with population to calculate percentages
-        merged = (
-            pop_counts
-            .join(ae_counts, left_on="TRT01A", right_on="TRTA", how="left")
-            .with_columns([
-                pl.col("n").fill_null(0),
-                (100.0 * pl.col("n").fill_null(0) / pl.col("N")).round(1).alias("pct"),
-                pl.when(pl.col("n").fill_null(0) > 0)
-                  .then(pl.concat_str([pl.lit("("), (100.0 * pl.col("n").fill_null(0) / pl.col("N")).round(1).cast(str), pl.lit(")")]))
-                  .otherwise(pl.lit("(0.0)"))
-                  .alias("pct_display")
-            ])
-        )
-        
-        for row in merged.iter_rows(named=True):
-            results.append({
-                "Category": category,
-                "TRT01A": row["TRT01A"],
-                "n": row["n"],
-                "pct_display": row["pct_display"]
-            })
-
-ae_summary = pl.DataFrame(results)
+# Total AE records in safety population
+adae_safety.height
 ```
 
-## Format AE Summary Table
+## Step 3: Define AE Categories
+
+We'll calculate participant counts for standard AE categories used in regulatory submissions.
 
 ```{python}
-# Define treatment order and category order for consistent display
-treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
-category_order = list(ae_categories.keys())
+def count_participants(df, condition=None):
+    """
+    Count unique participants meeting a condition
 
-# Pivot to wide format with separate n and (%) columns
-df_ae_summary = (
-    ae_summary
-    .with_columns(pl.col("Category").cast(pl.Enum(category_order)))
-    .pivot(
-        values=["n", "pct_display"],
-        index="Category", 
-        on="TRT01A"
+    Args:
+        df: DataFrame with adverse events
+        condition: polars expression for filtering (None = count all)
+
+    Returns:
+        DataFrame with counts by treatment
+    """
+    if condition is not None:
+        df = df.filter(condition)
+
+    counts = df.group_by("TRT01A").agg(
+        n = pl.col("USUBJID").n_unique()
     )
-    .with_columns([pl.col(f"n_{trt}").cast(str) for trt in treatments])
-    .select(
-        ["Category"] + 
-        [col for trt in treatments for col in [f"n_{trt}", f"pct_display_{trt}"]]
+
+    return treatment_levels.join(counts, on="TRT01A", how="left").with_columns(
+        pl.col("n").fill_null(0)
     )
-    .rename({"Category": ""})
+
+# Calculate each category
+categories = []
+
+# 1. Participants in population (no filtering)
+pop_row = pop_counts.with_columns(
+    category = pl.lit("Participants in population")
+).rename({"N": "n"})
+categories.append(pop_row)
+
+# 2. With any adverse event
+any_ae = count_participants(adae_safety).with_columns(
+    category = pl.lit("With any adverse event")
+)
+categories.append(any_ae)
+```
+
+```{python}
+# 3. With drug-related adverse event
+drug_related = count_participants(
+    adae_safety,
+    pl.col("AEREL").is_in(["POSSIBLE", "PROBABLE", "DEFINITE", "RELATED"])
+).with_columns(
+    category = pl.lit("With drug-related adverse event")
+)
+categories.append(drug_related)
+
+# 4. With serious adverse event
+serious = count_participants(
+    adae_safety,
+    pl.col("AESER") == "Y"
+).with_columns(
+    category = pl.lit("With serious adverse event")
+)
+categories.append(serious)
+```
+
+```{python}
+# 5. With serious drug-related adverse event
+serious_drug_related = count_participants(
+    adae_safety,
+    (pl.col("AESER") == "Y") &
+    pl.col("AEREL").is_in(["POSSIBLE", "PROBABLE", "DEFINITE", "RELATED"])
+).with_columns(
+    category = pl.lit("With serious drug-related adverse event")
+)
+categories.append(serious_drug_related)
+
+# 6. Who died
+deaths = count_participants(
+    adae_safety,
+    pl.col("AEOUT") == "FATAL"
+).with_columns(
+    category = pl.lit("Who died")
+)
+categories.append(deaths)
+
+# 7. Discontinued due to adverse event
+discontinued = count_participants(
+    adae_safety,
+    pl.col("AEACN") == "DRUG WITHDRAWN"
+).with_columns(
+    category = pl.lit("Discontinued due to adverse event")
+)
+categories.append(discontinued)
+```
+
+## Step 4: Combine and Calculate Percentages
+
+Now we combine all categories and calculate percentages based on the safety population.
+
+```{python}
+# Combine all categories
+ae_summary = pl.concat(categories, how="diagonal")
+
+# Add population totals and calculate percentages
+ae_summary = ae_summary.join(
+    pop_counts.select(["TRT01A", "N"]),
+    on="TRT01A",
+    how="left"
+).with_columns([
+    # Fill missing counts with 0
+    pl.col("n").fill_null(0),
+    # Calculate percentage
+    pl.when(pl.col("category") == "Participants in population")
+        .then(None)  # No percentage for population row
+        .otherwise((100.0 * pl.col("n") / pl.col("N")).round(1))
+        .alias("pct")
+])
+
+ae_summary.sort(["category", "TRT01A"])
+```
+
+## Step 5: Format for Display
+
+We'll format the counts and percentages for the final table display.
+
+```{python}
+# Format display values
+ae_formatted = ae_summary.with_columns([
+    # Show counts as strings, including zeros
+    pl.col("n").cast(str).alias("n_display"),
+    # Format percentages with parentheses; blank out population row
+    pl.when(pl.col("category") == "Participants in population")
+      .then(pl.lit(""))
+      .otherwise(
+          pl.format("({})", pl.col("pct").fill_null(0).round(1).cast(str))
+      )
+      .alias("pct_display")
+])
+
+ae_formatted.select(["category", "TRT01A", "n_display", "pct_display"])
+```
+
+## Step 6: Create Final Table Structure
+
+We reshape the data to create the final table with treatments as columns.
+
+```{python}
+# Define category order for consistent display
+category_order = [
+    "Participants in population",
+    "With any adverse event",
+    "With drug-related adverse event",
+    "With serious adverse event",
+    "With serious drug-related adverse event",
+    "Who died",
+    "Discontinued due to adverse event"
+]
+
+# Pivot to wide format
+ae_wide = ae_formatted.pivot(
+    values=["n_display", "pct_display"],
+    index="category",
+    on="TRT01A",
+    maintain_order=True
 )
 
-df_ae_summary
+# Reorder columns for each treatment group
+treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+column_order = ["category"]
+for trt in treatments:
+    column_order.extend([f"n_display_{trt}", f"pct_display_{trt}"])
+
+# Create final table with proper column order
+final_table = ae_wide.select(column_order).sort(
+    pl.col("category").cast(pl.Enum(category_order))
+)
+
+final_table
 ```
 
-## Create RTF Output
+## Step 7: Generate Publication-Ready Output
+
+Finally, we format the AE summary table for regulatory submission using the `rtflite` package.
 
 ```{python}
-# Create RTF document
+#| message: false
+# Get population sizes for column headers
+n_placebo = pop_counts.filter(pl.col("TRT01A") == "Placebo")["N"][0]
+n_low = pop_counts.filter(pl.col("TRT01A") == "Xanomeline Low Dose")["N"][0]
+n_high = pop_counts.filter(pl.col("TRT01A") == "Xanomeline High Dose")["N"][0]
+
 doc_ae_summary = rtf.RTFDocument(
-    df=df_ae_summary,
+    df=final_table.rename({"category": ""}),
     rtf_title=rtf.RTFTitle(
         text=[
             "Analysis of Adverse Event Summary",
@@ -139,8 +276,13 @@ doc_ae_summary = rtf.RTFDocument(
     ),
     rtf_column_header=[
         rtf.RTFColumnHeader(
-            text = [""] + treatments,
-            col_rel_width=[4, 2, 2, 2], 
+            text = [
+                "",
+                "Placebo",
+                "Xanomeline Low Dose",
+                "Xanomeline High Dose"
+            ],
+            col_rel_width=[4, 2, 2, 2],
             text_justification=["l", "c", "c", "c"],
         ),
         rtf.RTFColumnHeader(
@@ -167,20 +309,17 @@ doc_ae_summary = rtf.RTFDocument(
         ]
     ),
     rtf_source=rtf.RTFSource(
-        text=["Source: ADSL and ADAE datasets"],
+        text=["Source: ADSL and ADAE datasets"]
     )
 )
 
-# Write RTF file
 doc_ae_summary.write_rtf("rtf/tlf_ae_summary.rtf")
 ```
 
 ```{python}
-#| echo: false
+#| include: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()
 converter.convert("rtf/tlf_ae_summary.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
-
-<embed src="pdf/tlf_ae_summary.pdf" style="width:100%; height:600px" type="application/pdf">
