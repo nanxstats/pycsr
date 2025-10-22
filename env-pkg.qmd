@@ -1,0 +1,29 @@
+---
+title: "Python package toolchain"
+---
+
+## uv
+
+Project environment management: devtools + usethis + renv + pak?
+
+## Ruff
+
+- Formatter: `ruff format`
+- Linter: `ruff check`
+
+## Type checker
+
+- mypy
+- Pyright
+
+## Unit testing
+
+- pytest
+- pytest-cov
+
+## Documentation website generation
+
+- mkdocs
+- mkdocs-material
+- mkdocstrings-python
+- markdown-exec

@@ -16,6 +16,11 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - part: "Project Environment Setup"
+      chapters:
+        - env-dev.qmd
+        - env-uv.qmd
+        - env-pkg.qmd
     - part: "Tables, Listings, and Figures"
       chapters:
         - tlf-disposition.qmd

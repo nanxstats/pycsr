@@ -1,0 +1,54 @@
+---
+title: "Manage Python projects with uv"
+---
+
+Explain that for good reasons, Python development must use virtual environment
+(like renv in R). uv is a emerging project environment management tool
+written in Rust (fast) with ambitious goals to replace the previous
+scattered toolchain.
+
+Touch base on Python packaging standard, but all driven by uv.
+
+Official Python packaging user guide at <https://packaging.python.org/>
+
+## Install uv
+
+See official guide
+
+`uv self update` for updating uv
+
+## Initialize project
+
+`uv init`
+
+Show and explain structure. Show important sections in `pyproject.toml`.
+
+## Pin Python version
+
+`uv python pin 3.13.9`
+
+## Add dependencies
+
+`uv add`
+
+hard deps and dev deps
+
+## Synchronize and lock file
+
+`uv sync`
+
+`uv.lock` file, `uv lock --upgrade` to refresh the lock file and installed packages.
+
+## Run
+
+You can `source .venv/bin/activate`, then run `python`, `pytest` etc. directly under shell.
+
+Or use `uv run`: `uv run python`, `uv run pytest`, etc.
+
+Explain the difference between `uvx` and `uv run` <https://docs.astral.sh/uv/guides/tools/>.
+
+## Build and publish
+
+Explain `[build-system]` in `pyproject.toml`.
+
+`uv build` and `uv publish`, not useful in this context but good to know.

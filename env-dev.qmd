@@ -1,0 +1,28 @@
+---
+title: "Python developer setup"
+---
+
+## GitHub Codespaces
+
+If possible. Easiest without local setup
+
+## Positron
+
+Check what is available by default
+
+## VS Code
+
+Some useful VS Code extensions:
+
+- Python
+- Pylance
+- Ruff
+- Even Better TOML
+
+## Terminal
+
+- zsh, Ghostty?
+
+## AI coding tools
+
+You know what to say
