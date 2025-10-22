@@ -2,46 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://pycsr.org/index.html</loc>
-    <lastmod>2025-10-22T03:20:02.382Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.427Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/intro.html</loc>
-    <lastmod>2025-10-22T03:20:02.382Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.427Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pycsr.org/intro-polars.html</loc>
+    <lastmod>2025-10-22T14:06:43.427Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-disposition.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.451Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-population.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.451Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-baseline.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.451Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-ae-summary.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.451Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-ae-specific.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.451Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-efficacy-ancova.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.451Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/summary.html</loc>
-    <lastmod>2025-10-22T03:20:02.405Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.450Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/references.html</loc>
-    <lastmod>2025-10-22T03:20:02.385Z</lastmod>
+    <lastmod>2025-10-22T14:06:43.430Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/Python-for-Clinical-Study-Reports-and-Submission.pdf</loc>
-    <lastmod>2025-10-22T03:25:36.888Z</lastmod>
+    <lastmod>2025-10-22T14:10:00.545Z</lastmod>
   </url>
 </urlset>

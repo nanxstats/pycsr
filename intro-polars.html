@@ -8,7 +8,7 @@
 
 <meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
-<title>1&nbsp; Introduction – Python for Clinical Study Reports and Submission</title>
+<title>2&nbsp; Polars – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,27 +56,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -86,8 +66,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./intro-polars.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./tlf-disposition.html" rel="next">
+<link href="./intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -142,7 +122,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro-polars.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Polars</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -185,13 +165,13 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro-polars.html" class="sidebar-item-text sidebar-link">
+  <a href="./intro-polars.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
   </div>
 </li>
@@ -259,15 +239,27 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#polars" id="toc-polars" class="nav-link active" data-scroll-target="#polars"><span class="header-section-number">2.1</span> Polars</a></li>
+  <li><a href="#io" id="toc-io" class="nav-link" data-scroll-target="#io"><span class="header-section-number">2.2</span> I/O</a></li>
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering"><span class="header-section-number">2.3</span> Filtering</a></li>
+  <li><a href="#deriving" id="toc-deriving" class="nav-link" data-scroll-target="#deriving"><span class="header-section-number">2.4</span> Deriving</a></li>
+  <li><a href="#grouping" id="toc-grouping" class="nav-link" data-scroll-target="#grouping"><span class="header-section-number">2.5</span> Grouping</a></li>
+  <li><a href="#joining" id="toc-joining" class="nav-link" data-scroll-target="#joining"><span class="header-section-number">2.6</span> Joining</a></li>
+  <li><a href="#pivoting" id="toc-pivoting" class="nav-link" data-scroll-target="#pivoting"><span class="header-section-number">2.7</span> Pivoting</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/intro-polars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/intro-polars.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Polars</span></h1>
 </div>
 
 
@@ -284,27 +276,430 @@ div.csl-indent {
 </header>
 
 
-<p>This is a book created from Markdown and executable code.</p>
-<p>See <span class="citation" data-cites="knuth84">Knuth (<a href="references.html#ref-knuth84" role="doc-biblioref">1984</a>)</span> for additional discussion of literate programming.</p>
-<div id="7bed72f3" class="cell" data-execution_count="1">
+<section id="polars" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="polars"><span class="header-section-number">2.1</span> Polars</h2>
+<p>We use <a href="https://pola.rs">Polars</a> in this book. The syntax aligns with tidyverse-style pipelines. The sections below cover basic examples. For deeper dives, see the <a href="https://docs.pola.rs/user-guide/getting-started">Polars user guide</a> or the book <a href="https://polarsguide.com/">Python Polars: The Definitive Guide</a>.</p>
+</section>
+<section id="io" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="io"><span class="header-section-number">2.2</span> I/O</h2>
+<p>Polars supports multiple data formats for input and output (see the <a href="https://docs.pola.rs/user-guide/io/">I/O guide</a>). For clinical development, we recommend the <code>.parquet</code> format because tools in Python, R, and Julia can read and write it without conversion. The example below loads subject-level ADSL data with Polars.</p>
+<div id="18ebee19" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pl.DataFrame(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"integer"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"date"</span>: [</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            datetime(<span class="dv">2025</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            datetime(<span class="dv">2025</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            datetime(<span class="dv">2025</span>, <span class="dv">1</span>, <span class="dv">3</span>),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"float"</span>: [<span class="fl">4.0</span>, <span class="fl">5.0</span>, <span class="fl">6.0</span>],</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"string"</span>: [<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>],</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> adsl.select(<span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>) <span class="co"># select columns</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>adsl.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">STUDYID</th>
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">SEX</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1015"</td>
+<td>"Placebo"</td>
+<td>63.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1023"</td>
+<td>"Placebo"</td>
+<td>64.0</td>
+<td>"Male"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1028"</td>
+<td>"Xanomeline High Dose"</td>
+<td>71.0</td>
+<td>"Male"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1033"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>74.0</td>
+<td>"Male"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1034"</td>
+<td>"Xanomeline High Dose"</td>
+<td>77.0</td>
+<td>"Female"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="filtering"><span class="header-section-number">2.3</span> Filtering</h2>
+<p>Filtering in Polars uses the <code>.filter()</code> method with column expressions. Below are examples applied to the ADSL data.</p>
+<div id="4d4fe8e9" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter female subjects</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SEX"</span>) <span class="op">==</span> <span class="st">"Female"</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">STUDYID</th>
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">SEX</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1015"</td>
+<td>"Placebo"</td>
+<td>63.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1034"</td>
+<td>"Xanomeline High Dose"</td>
+<td>77.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1047"</td>
+<td>"Placebo"</td>
+<td>85.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1111"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>81.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1133"</td>
+<td>"Xanomeline High Dose"</td>
+<td>81.0</td>
+<td>"Female"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="75d66abc" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter subjects with Age &gt;= 65</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adsl.<span class="bu">filter</span>(pl.col(<span class="st">"AGE"</span>) <span class="op">&gt;=</span> <span class="dv">65</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">STUDYID</th>
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">SEX</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1028"</td>
+<td>"Xanomeline High Dose"</td>
+<td>71.0</td>
+<td>"Male"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1033"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>74.0</td>
+<td>"Male"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1034"</td>
+<td>"Xanomeline High Dose"</td>
+<td>77.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1047"</td>
+<td>"Placebo"</td>
+<td>85.0</td>
+<td>"Female"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1097"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>68.0</td>
+<td>"Male"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="deriving"><span class="header-section-number">2.4</span> Deriving</h2>
+<p>Deriving new variables is common in clinical data analysis for creating age groups, BMI categories, or treatment flags. Polars uses <code>.with_columns()</code> to add new columns while keeping existing ones.</p>
+<div id="2fe8ddc4" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create age groups</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adsl.with_columns([</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"AGE"</span>) <span class="op">&lt;</span> <span class="dv">65</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      .then(pl.lit(<span class="st">"&lt;65"</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      .otherwise(pl.lit(<span class="st">"&gt;=65"</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      .alias(<span class="st">"AGECAT"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>]).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 6)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">STUDYID</th>
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">SEX</th>
+<th data-quarto-table-cell-role="th">AGECAT</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1015"</td>
+<td>"Placebo"</td>
+<td>63.0</td>
+<td>"Female"</td>
+<td>"&lt;65"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1023"</td>
+<td>"Placebo"</td>
+<td>64.0</td>
+<td>"Male"</td>
+<td>"&lt;65"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1028"</td>
+<td>"Xanomeline High Dose"</td>
+<td>71.0</td>
+<td>"Male"</td>
+<td>"&gt;=65"</td>
+</tr>
+<tr class="even">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1033"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>74.0</td>
+<td>"Male"</td>
+<td>"&gt;=65"</td>
+</tr>
+<tr class="odd">
+<td>"CDISCPILOT01"</td>
+<td>"01-701-1034"</td>
+<td>"Xanomeline High Dose"</td>
+<td>77.0</td>
+<td>"Female"</td>
+<td>"&gt;=65"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="grouping" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="grouping"><span class="header-section-number">2.5</span> Grouping</h2>
+<p>Grouping operations are fundamental for creating summary statistics in clinical reports. Polars uses <code>group_by()</code> followed by aggregation functions to compute counts, means, and other statistics by categorical variables like treatment groups.</p>
+<p>The <code>.count()</code> method provides a quick way to get subject counts by group.</p>
+<div id="8dbbef42" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count by treatment group</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>adsl.group_by(<span class="st">"TRT01A"</span>).count().sort(<span class="st">"TRT01A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_7325/3512064118.py:2: DeprecationWarning: `GroupBy.count` was renamed; use `GroupBy.len` instead
+  adsl.group_by("TRT01A").count().sort("TRT01A")</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 2)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">count</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>86</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>84</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>84</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>You can also use <code>.agg()</code> with multiple aggregation functions:</p>
+<div id="a0d01f72" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age statistics by treatment group</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>adsl.group_by(<span class="st">"TRT01A"</span>).agg([</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AGE"</span>).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean_age"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AGE"</span>).std().<span class="bu">round</span>(<span class="dv">2</span>).alias(<span class="st">"sd_age"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>]).sort(<span class="st">"TRT01A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 3)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">TRT01A</th>
+<th data-quarto-table-cell-role="th">mean_age</th>
+<th data-quarto-table-cell-role="th">sd_age</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>f64</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>75.2</td>
+<td>8.59</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>74.4</td>
+<td>7.89</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>75.7</td>
+<td>8.29</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="joining" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="joining"><span class="header-section-number">2.6</span> Joining</h2>
+<p>Joining datasets is essential for combining subject-level data (ADSL) with event-level data (e.g.&nbsp;ADAE, ADLB). Polars supports various join types including inner, left, and full joins.</p>
+<p>Here is a toy example that splits ADSL and joins it back by <code>USUBJID</code>.</p>
+<div id="1abd741a" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simple demographics subset</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>demo <span class="op">=</span> adsl.select(<span class="st">"USUBJID"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>).head(<span class="dv">3</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create treatment info subset</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>trt <span class="op">=</span> adsl.select(<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>).head(<span class="dv">3</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Left join to combine datasets</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>demo.join(trt, on<span class="op">=</span><span class="st">"USUBJID"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div><style>
 .dataframe > thead > tr,
 .dataframe > tbody > tr {
@@ -316,36 +711,94 @@ div.csl-indent {
 <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th">integer</th>
-<th data-quarto-table-cell-role="th">date</th>
-<th data-quarto-table-cell-role="th">float</th>
-<th data-quarto-table-cell-role="th">string</th>
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">SEX</th>
+<th data-quarto-table-cell-role="th">TRT01A</th>
 </tr>
 <tr class="even">
-<td>i64</td>
-<td>datetime[μs]</td>
+<td>str</td>
 <td>f64</td>
+<td>str</td>
 <td>str</td>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
-<td>2025-01-01 00:00:00</td>
-<td>4.0</td>
-<td>"a"</td>
+<td>"01-701-1015"</td>
+<td>63.0</td>
+<td>"Female"</td>
+<td>"Placebo"</td>
 </tr>
 <tr class="even">
-<td>2</td>
-<td>2025-01-02 00:00:00</td>
-<td>5.0</td>
-<td>"b"</td>
+<td>"01-701-1023"</td>
+<td>64.0</td>
+<td>"Male"</td>
+<td>"Placebo"</td>
 </tr>
 <tr class="odd">
-<td>3</td>
-<td>2025-01-03 00:00:00</td>
-<td>6.0</td>
-<td>"c"</td>
+<td>"01-701-1028"</td>
+<td>71.0</td>
+<td>"Male"</td>
+<td>"Xanomeline High Dose"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="pivoting" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="pivoting"><span class="header-section-number">2.7</span> Pivoting</h2>
+<p>Pivoting transforms data from long to wide format, commonly needed for creating tables. Use <code>.pivot()</code> to reshape grouped data into columns.</p>
+<div id="a2f4e8c6" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary by treatment and sex</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adsl</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        .group_by([<span class="st">"TRT01A"</span>, <span class="st">"SEX"</span>])</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        .agg(pl.<span class="bu">len</span>().alias(<span class="st">"n"</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        .pivot(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>            values<span class="op">=</span><span class="st">"n"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            index<span class="op">=</span><span class="st">"SEX"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            on<span class="op">=</span><span class="st">"TRT01A"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2, 4)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">SEX</th>
+<th data-quarto-table-cell-role="th">Xanomeline Low Dose</th>
+<th data-quarto-table-cell-role="th">Xanomeline High Dose</th>
+<th data-quarto-table-cell-role="th">Placebo</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>u32</td>
+<td>u32</td>
+<td>u32</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Male"</td>
+<td>34</td>
+<td>44</td>
+<td>33</td>
+</tr>
+<tr class="even">
+<td>"Female"</td>
+<td>50</td>
+<td>40</td>
+<td>53</td>
 </tr>
 </tbody>
 </table>
@@ -354,11 +807,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-knuth84" class="csl-entry" role="listitem">
-Knuth, Donald E. 1984. <span>“Literate Programming.”</span> <em>Comput. J.</em> 27 (2): 97–111.
-</div>
-</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -763,13 +1212,13 @@ Knuth, Donald E. 1984. <span>“Literate Programming.”</span> <em>Comput. J.</
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Welcome">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome</span>
+      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./intro-polars.html" class="pagination-link" aria-label="Polars">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Polars</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./tlf-disposition.html" class="pagination-link" aria-label="Disposition of Participants Table">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -778,4 +1227,4 @@ Knuth, Donald E. 1984. <span>“Literate Programming.”</span> <em>Comput. J.</
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/intro.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/intro-polars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/intro-polars.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
