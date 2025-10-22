@@ -16,6 +16,7 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - intro-polars.qmd
     - part: "Tables, Listings, and Figures"
       chapters:
         - tlf-disposition.qmd
