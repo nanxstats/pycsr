@@ -23,7 +23,16 @@ Project environment management: devtools + usethis + renv + pak?
 
 ## Documentation website generation
 
-- mkdocs
-- mkdocs-material
-- mkdocstrings-python
-- markdown-exec
+- Use `quartodoc` to build docs site here
+- For standard packages: mkdocs, mkdocs-material, mkdocstrings-python, markdown-exec
+
+## Project structure FAQ
+
+Dedicated Python package repo, dedicated eCTD project repo (Yilong will create).
+
+If you have to use both R and Python:
+Separate Python package directory and R package directory.
+Can share input and output paths.
+It's almost a mistake to mix language in a single project (John Carmack).
+
+We will focus on Python project only in this book.
