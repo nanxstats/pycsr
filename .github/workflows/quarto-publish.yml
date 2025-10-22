@@ -38,6 +38,12 @@ jobs:
       - name: Install LibreOffice
         run: sudo apt-get update && sudo apt-get install libreoffice --no-install-recommends
 
+      - name: Install ttf-mscorefonts-installer
+        run: |
+          echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+          sudo apt-get update && sudo apt-get install ttf-mscorefonts-installer
+          sudo fc-cache -f
+
       - name: Install uv
         uses: astral-sh/setup-uv@v3
 
