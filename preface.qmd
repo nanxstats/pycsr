@@ -2,7 +2,7 @@
 jupyter: python3
 ---
 
-# Introduction
+# Preface {.unnumbered}
 
 This is a book created from Markdown and executable code.
 

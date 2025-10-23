@@ -15,7 +15,7 @@ book:
     the essential part of clinical trial development.
   chapters:
     - index.qmd
-    - intro.qmd
+    - preface.qmd
     - part: "Environment and toolchain"
       chapters:
         - env-dev.qmd
