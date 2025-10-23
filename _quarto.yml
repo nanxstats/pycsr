@@ -21,6 +21,9 @@ book:
         - env-dev.qmd
         - env-uv.qmd
         - env-pkg.qmd
+    - part: "Reporting packages"
+      chapters:
+        - intro-polars.qmd
     - part: "Tables, Listings, and Figures"
       chapters:
         - tlf-disposition.qmd

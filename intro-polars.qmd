@@ -1,0 +1,116 @@
+---
+title: "Polars"
+---
+
+## Polars
+
+We use [Polars](https://pola.rs) in this book. 
+The syntax aligns with tidyverse-style pipelines. 
+The sections below cover basic examples. 
+For deeper dives, see the [Polars user guide](https://docs.pola.rs/user-guide/getting-started) 
+or the book [Python Polars: The Definitive Guide](https://polarsguide.com/).
+
+## I/O
+
+Polars supports multiple data formats for input and output (see the [I/O guide](https://docs.pola.rs/user-guide/io/)).
+For clinical development, we recommend the `.parquet` format because tools in Python, R, and Julia can read and write it without conversion.
+The example below loads subject-level ADSL data with Polars.
+
+```{python}
+import polars as pl
+adsl = pl.read_parquet("data/adsl.parquet")
+adsl = adsl.select("STUDYID", "USUBJID", "TRT01A", "AGE", "SEX") # select columns
+adsl.head()
+```
+
+## Filtering
+
+Filtering in Polars uses the `.filter()` method with column expressions.
+Below are examples applied to the ADSL data.
+
+```{python}
+# Filter female subjects
+adsl.filter(pl.col("SEX") == "Female").head()
+```
+
+```{python}
+# Filter subjects with Age >= 65
+adsl.filter(pl.col("AGE") >= 65).head()
+```
+
+## Deriving
+
+Deriving new variables is common in clinical data analysis for creating age groups, BMI categories, or treatment flags.
+Polars uses `.with_columns()` to add new columns while keeping existing ones.
+
+```{python}
+# Create age groups
+adsl.with_columns([
+    pl.when(pl.col("AGE") < 65)
+      .then(pl.lit("<65"))
+      .otherwise(pl.lit(">=65"))
+      .alias("AGECAT")
+]).head()
+```
+
+## Grouping
+
+Grouping operations are fundamental for creating summary statistics in clinical reports.
+Polars uses `group_by()` followed by aggregation functions to compute counts, means, and other statistics by categorical variables like treatment groups.
+
+The `.count()` method provides a quick way to get subject counts by group.
+
+```{python}
+# Count by treatment group
+adsl.group_by("TRT01A").count().sort("TRT01A")
+```
+
+You can also use `.agg()` with multiple aggregation functions:
+
+```{python}
+# Age statistics by treatment group
+adsl.group_by("TRT01A").agg([
+    pl.col("AGE").mean().round(1).alias("mean_age"),
+    pl.col("AGE").std().round(2).alias("sd_age")
+]).sort("TRT01A")
+```
+
+
+## Joining
+
+Joining datasets is essential for combining subject-level data (ADSL) 
+with event-level data (e.g. ADAE, ADLB).
+Polars supports various join types including inner, left, and full joins.
+
+Here is a toy example that splits ADSL and joins it back by `USUBJID`. 
+
+```{python}
+# Create a simple demographics subset
+demo = adsl.select("USUBJID", "AGE", "SEX").head(3)
+
+# Create treatment info subset
+trt = adsl.select("USUBJID", "TRT01A").head(3)
+
+# Left join to combine datasets
+demo.join(trt, on="USUBJID", how="left")
+```
+
+## Pivoting
+
+Pivoting transforms data from long to wide format,
+commonly needed for creating tables.
+Use `.pivot()` to reshape grouped data into columns.
+
+```{python}
+# Create summary by treatment and sex
+(
+    adsl
+        .group_by(["TRT01A", "SEX"])
+        .agg(pl.len().alias("n"))
+        .pivot(
+            values="n",
+            index="SEX",
+            on="TRT01A"
+        )
+)
+``` 
