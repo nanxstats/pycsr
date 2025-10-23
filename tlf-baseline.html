@@ -8,7 +8,7 @@
 
 <meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
-<title>5&nbsp; Baseline Characteristics Table – Python for Clinical Study Reports and Submission</title>
+<title>8&nbsp; Baseline Characteristics Table – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -169,16 +169,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./intro-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Tables, Listings, and Figures</span></a>
+ <span class="menu-text">Environment and toolchain</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -186,38 +180,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./env-dev.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python developer setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./env-uv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Python projects with uv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./env-pkg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python package toolchain</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Reporting packages</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Polars</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tables, Listings, and Figures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./tlf-disposition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Disposition of Participants Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-population.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Study Population Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Study Population Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-baseline.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-ae-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Adverse Events Summary Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Adverse Events Summary Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-ae-specific.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Specific Adverse Events Table</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Specific Adverse Events Table</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tlf-efficacy-ancova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">ANCOVA Efficacy Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">ANCOVA Efficacy Analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -225,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -244,29 +284,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">5.1</span> Overview</a></li>
-  <li><a href="#step-1-load-data" id="toc-step-1-load-data" class="nav-link" data-scroll-target="#step-1-load-data"><span class="header-section-number">5.2</span> Step 1: Load Data</a></li>
-  <li><a href="#step-2-calculate-summary-statistics" id="toc-step-2-calculate-summary-statistics" class="nav-link" data-scroll-target="#step-2-calculate-summary-statistics"><span class="header-section-number">5.3</span> Step 2: Calculate Summary Statistics</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">8.1</span> Overview</a></li>
+  <li><a href="#step-1-load-data" id="toc-step-1-load-data" class="nav-link" data-scroll-target="#step-1-load-data"><span class="header-section-number">8.2</span> Step 1: Load Data</a></li>
+  <li><a href="#step-2-calculate-summary-statistics" id="toc-step-2-calculate-summary-statistics" class="nav-link" data-scroll-target="#step-2-calculate-summary-statistics"><span class="header-section-number">8.3</span> Step 2: Calculate Summary Statistics</a>
   <ul class="collapse">
-  <li><a href="#continuous-variables-age" id="toc-continuous-variables-age" class="nav-link" data-scroll-target="#continuous-variables-age"><span class="header-section-number">5.3.1</span> Continuous Variables (Age)</a></li>
-  <li><a href="#categorical-variables-sex-race" id="toc-categorical-variables-sex-race" class="nav-link" data-scroll-target="#categorical-variables-sex-race"><span class="header-section-number">5.3.2</span> Categorical Variables (Sex, Race)</a></li>
+  <li><a href="#continuous-variables-age" id="toc-continuous-variables-age" class="nav-link" data-scroll-target="#continuous-variables-age"><span class="header-section-number">8.3.1</span> Continuous Variables (Age)</a></li>
+  <li><a href="#categorical-variables-sex-race" id="toc-categorical-variables-sex-race" class="nav-link" data-scroll-target="#categorical-variables-sex-race"><span class="header-section-number">8.3.2</span> Categorical Variables (Sex, Race)</a></li>
   </ul></li>
-  <li><a href="#step-3-format-results" id="toc-step-3-format-results" class="nav-link" data-scroll-target="#step-3-format-results"><span class="header-section-number">5.4</span> Step 3: Format Results</a>
+  <li><a href="#step-3-format-results" id="toc-step-3-format-results" class="nav-link" data-scroll-target="#step-3-format-results"><span class="header-section-number">8.4</span> Step 3: Format Results</a>
   <ul class="collapse">
-  <li><a href="#format-age-statistics" id="toc-format-age-statistics" class="nav-link" data-scroll-target="#format-age-statistics"><span class="header-section-number">5.4.1</span> Format Age Statistics</a></li>
-  <li><a href="#format-categorical-statistics" id="toc-format-categorical-statistics" class="nav-link" data-scroll-target="#format-categorical-statistics"><span class="header-section-number">5.4.2</span> Format Categorical Statistics</a></li>
+  <li><a href="#format-age-statistics" id="toc-format-age-statistics" class="nav-link" data-scroll-target="#format-age-statistics"><span class="header-section-number">8.4.1</span> Format Age Statistics</a></li>
+  <li><a href="#format-categorical-statistics" id="toc-format-categorical-statistics" class="nav-link" data-scroll-target="#format-categorical-statistics"><span class="header-section-number">8.4.2</span> Format Categorical Statistics</a></li>
   </ul></li>
-  <li><a href="#step-4-create-table-structure" id="toc-step-4-create-table-structure" class="nav-link" data-scroll-target="#step-4-create-table-structure"><span class="header-section-number">5.5</span> Step 4: Create Table Structure</a></li>
-  <li><a href="#step-5-generate-publication-ready-output" id="toc-step-5-generate-publication-ready-output" class="nav-link" data-scroll-target="#step-5-generate-publication-ready-output"><span class="header-section-number">5.6</span> Step 5: Generate Publication-Ready Output</a></li>
+  <li><a href="#step-4-create-table-structure" id="toc-step-4-create-table-structure" class="nav-link" data-scroll-target="#step-4-create-table-structure"><span class="header-section-number">8.5</span> Step 4: Create Table Structure</a></li>
+  <li><a href="#step-5-generate-publication-ready-output" id="toc-step-5-generate-publication-ready-output" class="nav-link" data-scroll-target="#step-5-generate-publication-ready-output"><span class="header-section-number">8.6</span> Step 5: Generate Publication-Ready Output</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/tlf-baseline.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/tlf-baseline.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tlf-disposition.html">Tables, Listings, and Figures</a></li><li class="breadcrumb-item"><a href="./tlf-baseline.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Baseline Characteristics Table</span></h1>
 </div>
 
 
@@ -283,20 +323,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="overview" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">5.1</span> Overview</h2>
+<section id="overview" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">8.1</span> Overview</h2>
 <p>Baseline characteristics tables summarize the demographic and clinical characteristics of study participants at enrollment. Following <a href="https://database.ich.org/sites/default/files/E3_Guideline.pdf">ICH E3 guidance</a>, these tables are essential for understanding the study population and assessing comparability between treatment groups.</p>
 <p>This tutorial shows you how to create a baseline characteristics table using Python’s <code>rtflite</code> package.</p>
 <embed src="pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">
-<div id="17c388fd" class="cell" data-execution_count="1">
+<div id="fb889c62" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl <span class="co"># Data manipulation</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf <span class="co"># RTF reporting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="step-1-load-data" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">5.2</span> Step 1: Load Data</h2>
+<section id="step-1-load-data" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">8.2</span> Step 1: Load Data</h2>
 <p>We start by loading the Subject-level Analysis Dataset (ADSL) and filtering to the safety population.</p>
-<div id="c0d1ee7a" class="cell" data-execution_count="2">
+<div id="b4f45dc9" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> (</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    .select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>])</span>
@@ -413,13 +453,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-2-calculate-summary-statistics" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="step-2-calculate-summary-statistics"><span class="header-section-number">5.3</span> Step 2: Calculate Summary Statistics</h2>
+<section id="step-2-calculate-summary-statistics" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="step-2-calculate-summary-statistics"><span class="header-section-number">8.3</span> Step 2: Calculate Summary Statistics</h2>
 <p>We’ll create separate functions to handle continuous and categorical variables.</p>
-<section id="continuous-variables-age" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="continuous-variables-age"><span class="header-section-number">5.3.1</span> Continuous Variables (Age)</h3>
+<section id="continuous-variables-age" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="continuous-variables-age"><span class="header-section-number">8.3.1</span> Continuous Variables (Age)</h3>
 <p>For continuous variables, we calculate mean (SD) and median [min, max].</p>
-<div id="b8710f72" class="cell" data-execution_count="3">
+<div id="12903ec0" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_continuous(df, var):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate summary statistics for continuous variables"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.group_by(<span class="st">"TRT01P"</span>).agg([</span>
@@ -465,15 +505,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>75.7</td>
-<td>8.29</td>
-<td>77.5</td>
-<td>51.0</td>
-<td>88.0</td>
-<td>84</td>
-</tr>
-<tr class="even">
 <td>"Placebo"</td>
 <td>75.2</td>
 <td>8.59</td>
@@ -481,6 +512,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>52.0</td>
 <td>89.0</td>
 <td>86</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>75.7</td>
+<td>8.29</td>
+<td>77.5</td>
+<td>51.0</td>
+<td>88.0</td>
+<td>84</td>
 </tr>
 <tr class="odd">
 <td>"Xanomeline High Dose"</td>
@@ -497,10 +537,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="categorical-variables-sex-race" class="level3" data-number="5.3.2">
-<h3 data-number="5.3.2" class="anchored" data-anchor-id="categorical-variables-sex-race"><span class="header-section-number">5.3.2</span> Categorical Variables (Sex, Race)</h3>
+<section id="categorical-variables-sex-race" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="categorical-variables-sex-race"><span class="header-section-number">8.3.2</span> Categorical Variables (Sex, Race)</h3>
 <p>For categorical variables, we calculate counts and percentages.</p>
-<div id="4251d922" class="cell" data-execution_count="4">
+<div id="659010f3" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_categorical(df, var):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate counts and percentages for categorical variables"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get counts by treatment and category</span></span>
@@ -546,32 +586,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"Female"</td>
-<td>50</td>
-<td>84</td>
-<td>59.5</td>
-</tr>
-<tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>"Male"</td>
-<td>34</td>
-<td>84</td>
-<td>40.5</td>
-</tr>
-<tr class="odd">
-<td>"Placebo"</td>
-<td>"Male"</td>
-<td>33</td>
-<td>86</td>
-<td>38.4</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
 <td>"Male"</td>
 <td>44</td>
 <td>84</td>
 <td>52.4</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>"Male"</td>
+<td>33</td>
+<td>86</td>
+<td>38.4</td>
 </tr>
 <tr class="odd">
 <td>"Placebo"</td>
@@ -587,12 +613,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>84</td>
 <td>47.6</td>
 </tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>"Male"</td>
+<td>34</td>
+<td>84</td>
+<td>40.5</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>"Female"</td>
+<td>50</td>
+<td>84</td>
+<td>59.5</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<div id="873f5b25" class="cell" data-execution_count="5">
+<div id="6860a063" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>race_stats <span class="op">=</span> summarize_categorical(adsl, <span class="st">"RACE"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>race_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
@@ -623,11 +663,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>"American Indian Or Alaska Nati…</td>
+<td>1</td>
+<td>84</td>
+<td>1.2</td>
+</tr>
+<tr class="even">
 <td>"Placebo"</td>
 <td>"Black Or African American"</td>
 <td>8</td>
 <td>86</td>
 <td>9.3</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>"White"</td>
+<td>78</td>
+<td>84</td>
+<td>92.9</td>
 </tr>
 <tr class="even">
 <td>"Xanomeline Low Dose"</td>
@@ -637,11 +691,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>7.1</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>"Black Or African American"</td>
-<td>9</td>
-<td>84</td>
-<td>10.7</td>
+<td>"Placebo"</td>
+<td>"White"</td>
+<td>78</td>
+<td>86</td>
+<td>90.7</td>
 </tr>
 <tr class="even">
 <td>"Xanomeline High Dose"</td>
@@ -652,24 +706,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td>"Xanomeline High Dose"</td>
-<td>"American Indian Or Alaska Nati…</td>
-<td>1</td>
+<td>"Black Or African American"</td>
+<td>9</td>
 <td>84</td>
-<td>1.2</td>
-</tr>
-<tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>"White"</td>
-<td>78</td>
-<td>84</td>
-<td>92.9</td>
-</tr>
-<tr class="odd">
-<td>"Placebo"</td>
-<td>"White"</td>
-<td>78</td>
-<td>86</td>
-<td>90.7</td>
+<td>10.7</td>
 </tr>
 </tbody>
 </table>
@@ -678,12 +718,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="step-3-format-results" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="step-3-format-results"><span class="header-section-number">5.4</span> Step 3: Format Results</h2>
+<section id="step-3-format-results" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="step-3-format-results"><span class="header-section-number">8.4</span> Step 3: Format Results</h2>
 <p>Now we format the statistics into the standard baseline table format.</p>
-<section id="format-age-statistics" class="level3" data-number="5.4.1">
-<h3 data-number="5.4.1" class="anchored" data-anchor-id="format-age-statistics"><span class="header-section-number">5.4.1</span> Format Age Statistics</h3>
-<div id="2801b37b" class="cell" data-execution_count="6">
+<section id="format-age-statistics" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="format-age-statistics"><span class="header-section-number">8.4.1</span> Format Age Statistics</h3>
+<div id="50526dec" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format age as "Mean (SD)" and "Median [Min, Max]"</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>age_formatted <span class="op">=</span> age_stats.with_columns([</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">)"</span>, pl.col(<span class="st">"mean"</span>), pl.col(<span class="st">"sd"</span>)).alias(<span class="st">"mean_sd"</span>),</span>
@@ -715,14 +755,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"75.7 (8.29)"</td>
-<td>"77.5 [51.0, 88.0]"</td>
-</tr>
-<tr class="even">
 <td>"Placebo"</td>
 <td>"75.2 (8.59)"</td>
 <td>"76.0 [52.0, 89.0]"</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>"75.7 (8.29)"</td>
+<td>"77.5 [51.0, 88.0]"</td>
 </tr>
 <tr class="odd">
 <td>"Xanomeline High Dose"</td>
@@ -735,9 +775,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="format-categorical-statistics" class="level3" data-number="5.4.2">
-<h3 data-number="5.4.2" class="anchored" data-anchor-id="format-categorical-statistics"><span class="header-section-number">5.4.2</span> Format Categorical Statistics</h3>
-<div id="7b3d829c" class="cell" data-execution_count="7">
+<section id="format-categorical-statistics" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="format-categorical-statistics"><span class="header-section-number">8.4.2</span> Format Categorical Statistics</h3>
+<div id="5d7e6b0f" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format categorical as "n (%)"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sex_formatted <span class="op">=</span> sex_stats.with_columns(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">%)"</span>, pl.col(<span class="st">"len"</span>), pl.col(<span class="st">"pct"</span>)).alias(<span class="st">"n_pct"</span>)</span>
@@ -772,24 +812,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"Female"</td>
-<td>"50 (59.5%)"</td>
-</tr>
-<tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>"Male"</td>
-<td>"34 (40.5%)"</td>
-</tr>
-<tr class="odd">
-<td>"Placebo"</td>
-<td>"Male"</td>
-<td>"33 (38.4%)"</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
 <td>"Male"</td>
 <td>"44 (52.4%)"</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>"Male"</td>
+<td>"33 (38.4%)"</td>
 </tr>
 <tr class="odd">
 <td>"Placebo"</td>
@@ -801,6 +831,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"Female"</td>
 <td>"40 (47.6%)"</td>
 </tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>"Male"</td>
+<td>"34 (40.5%)"</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>"Female"</td>
+<td>"50 (59.5%)"</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -808,10 +848,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="step-4-create-table-structure" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="step-4-create-table-structure"><span class="header-section-number">5.5</span> Step 4: Create Table Structure</h2>
+<section id="step-4-create-table-structure" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="step-4-create-table-structure"><span class="header-section-number">8.5</span> Step 4: Create Table Structure</h2>
 <p>We’ll build the table row by row following the standard baseline table format.</p>
-<div id="84119d88" class="cell" data-execution_count="8">
+<div id="4fd82059" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to get value for a treatment group</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_value(df, treatment):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get value for a specific treatment group or return default"""</span></span>
@@ -959,10 +999,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="step-5-generate-publication-ready-output" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="step-5-generate-publication-ready-output"><span class="header-section-number">5.6</span> Step 5: Generate Publication-Ready Output</h2>
+<section id="step-5-generate-publication-ready-output" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="step-5-generate-publication-ready-output"><span class="header-section-number">8.6</span> Step 5: Generate Publication-Ready Output</h2>
 <p>Finally, we format the baseline table for regulatory submission using the <code>rtflite</code> package.</p>
-<div id="a87c3d9e" class="cell" data-execution_count="9">
+<div id="8877aa00" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get treatment group sizes for column headers</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>treatment_n <span class="op">=</span> adsl.group_by(<span class="st">"TRT01P"</span>).<span class="bu">len</span>().sort(<span class="st">"TRT01P"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>n_placebo <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Placebo"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
@@ -1408,12 +1448,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./tlf-population.html" class="pagination-link" aria-label="Study Population Table">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Study Population Table</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Study Population Table</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./tlf-ae-summary.html" class="pagination-link" aria-label="Adverse Events Summary Table">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Adverse Events Summary Table</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Adverse Events Summary Table</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
