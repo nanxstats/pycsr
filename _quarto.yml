@@ -16,7 +16,14 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - intro-polars.qmd
+    - part: "Environment and toolchain"
+      chapters:
+        - env-dev.qmd
+        - env-uv.qmd
+        - env-pkg.qmd
+    - part: "Reporting packages"
+      chapters:
+        - intro-polars.qmd
     - part: "Tables, Listings, and Figures"
       chapters:
         - tlf-disposition.qmd

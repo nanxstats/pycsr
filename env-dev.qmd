@@ -1,0 +1,161 @@
+---
+title: "Python developer setup"
+---
+
+::: callout-tip
+## Objective
+
+Set up a productive Python development environment for clinical study reporting.
+Learn about IDE options, essential extensions, and workflow tools.
+:::
+
+## Development environments
+
+For this book, you have several options for your development environment.
+Choose the one that best fits your current setup and constraints.
+
+### GitHub Codespaces
+
+GitHub Codespaces provides a cloud-based development environment with
+everything pre-configured. This is the easiest option if you don't have
+a local Python setup.
+
+We will provide a dev container configuration that includes:
+
+- Python with uv pre-installed.
+- All necessary VS Code extensions.
+- Consistent environment across all readers, useable in the web browser.
+
+To use Codespaces, simply click the "Code" button in the repository and select
+"Create codespace on main".
+
+::: callout-note
+Codespaces currently offers [120 hours of free compute time per month
+](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-and-billed-use-by-personal-accounts)
+for personal accounts.
+This is more than sufficient for this book.
+:::
+
+### Positron
+
+Positron is Posit's next-generation data science IDE,
+built on Code OSS (the open source core of VS Code),
+with specific improvements for R and Python development.
+
+Key features for Python work:
+
+- Native notebook support.
+- Interactive variable explorer.
+- Integrated plot viewer.
+- Built-in data viewer for DataFrames.
+
+::: aside
+Positron uses Open VSX instead of the Microsoft VS Code marketplace.
+Most essential Python extensions are available, but the selection is more limited.
+:::
+
+Download Positron from <https://positron.posit.co/>.
+
+### VS Code
+
+Visual Studio Code remains the most popular choice for Python development.
+It offers a rich ecosystem of extensions and tools.
+
+Essential extensions for this book:
+
+- [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python):
+  Core Python language support.
+- [Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance):
+  Fast, feature-rich Python language server.
+- [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff):
+  Lightning-fast linting and formatting.
+- [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml):
+  Syntax highlighting for TOML files (`pyproject.toml`).
+- [Quarto](https://marketplace.visualstudio.com/items?itemName=quarto.quarto):
+  Authoring support for Quarto documents.
+
+## VS Code settings
+
+### Unicode highlighting
+
+Python allows Unicode characters in strings and identifiers.
+AI coding tools might also generate code with non-ASCII characters.
+For regulatory work, you should highlight non-ASCII characters
+to find these hidden issues early and avoid problems in submissions.
+
+**Via Settings UI:**
+
+1. Open Command Palette (Cmd/Ctrl + Shift + P)
+2. Search for "Preferences: Open Settings (UI)"
+3. Search for "Unicode Highlight"
+4. Enable "Non Basic ASCII" for both trusted and untrusted workspaces
+
+**Via Settings JSON:**
+
+Open Command Palette with Cmd/Ctrl + Shift + P,
+select "Preferences: Open User Settings (JSON)", then add:
+
+```json
+"editor.unicodeHighlight.nonBasicASCII": true
+```
+
+This highlights characters like curly quotes, em dashes, and other non-ASCII
+characters that could cause issues in eCTD submission packages.
+
+## Terminal setup
+
+For local development, you will interact with uv and Quarto through the terminal.
+
+### Shell
+
+Any modern shell works well:
+
+- macOS/Linux: zsh (default on macOS), bash
+- Windows: PowerShell, Windows Terminal
+
+### Terminal emulator
+
+If you are on macOS and want a faster terminal experience,
+consider [Ghostty](https://ghostty.org/).
+It is written in Zig for exceptional performance.
+
+## AI coding assistants
+
+Modern agentic AI coding tools can accelerate statistical and clinical
+coding tasks, especially for popular programming languages like Python.
+We encourage you to use them, for example:
+
+- Codex (command-line interface, VS Code extension)
+- Claude Code (command-line interface)
+- Cursor (AI-first editor)
+- GitHub Copilot (VS Code extension)
+
+### Effective use of AI tools
+
+To use AI assistants effectively for programming, you need:
+
+**Product manager mindset**:
+Know exactly what you want to build. In clinical reporting, this means
+understanding the table shell, statistical method, and regulatory requirements.
+
+**Software architect mindset**:
+Evaluate model outputs critically. Can you spot issues with
+data transformations? Do the statistical computations match the SAP?
+Is the output format submission-ready?
+
+::: callout-warning
+AI tools are assistants, not replacements for domain expertise.
+Always verify outputs against statistical analysis plans and regulatory guidance.
+:::
+
+## What's next
+
+With your development environment configured, you are ready to learn about uv,
+the modern project management tool for Python.
+
+In the next chapter, we will cover:
+
+- Creating and managing Python projects.
+- Pinning Python versions.
+- Installing dependencies.
+- Understanding the modern Python packaging ecosystem.

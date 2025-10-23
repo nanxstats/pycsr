@@ -1,0 +1,508 @@
+---
+title: "Python package toolchain"
+---
+
+::: callout-tip
+## Objective
+
+Learn the essential development tools for Python projects: formatting, linting, type checking, testing, and documentation. Build a professional development workflow for clinical reporting.
+:::
+
+## The modern Python toolchain
+
+In R, packages like `devtools`, `usethis`, `styler`, `lintr`, and `testthat`
+provide development infrastructure. Python's ecosystem distributes these
+functions across specialized tools.
+
+For clinical reporting projects, we recommend:
+
+- **uv**: Package and environment management.
+- **Ruff**: Code formatting and linting.
+- **mypy**: Static type checking.
+- **pytest**: Unit testing framework.
+- **quartodoc**: Documentation and reporting.
+
+::: aside
+For R users, think of this as: uv = renv + pak + devtools,
+Ruff = styler + lintr, pytest = testthat, mypy = (no direct R equivalent).
+:::
+
+All tools are installed as development dependencies and configured
+through `pyproject.toml`.
+
+## Ruff: Formatting and linting
+
+Ruff is an super fast linter and formatter written in Rust.
+It replaces multiple legacy tools (Black, isort, Flake8, pyupgrade)
+with a single, consistent interface.
+
+### Installation
+
+Add Ruff as a development dependency:
+
+```bash
+uv add --dev ruff
+```
+
+### Code formatting
+
+Format your code:
+
+```bash
+uv run ruff format
+```
+
+Or using `uvx`:
+
+```bash
+uvx ruff format
+```
+
+Ruff format:
+
+- Enforces consistent style (like Black).
+- Sorts imports automatically.
+- Removes trailing whitespace.
+- Ensures consistent line lengths.
+
+### Linting
+
+Check for linting issues:
+
+```bash
+uv run ruff check
+```
+
+Fix auto-fixable issues:
+
+```bash
+uv run ruff check --fix
+```
+
+Ruff detects:
+
+- Unused imports and variables.
+- Undefined names.
+- Style violations.
+- Common anti-patterns.
+- Security issues.
+
+### Configuration
+
+Add Ruff configuration to `pyproject.toml`:
+
+```toml
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",    # isort
+]
+ignore = []
+```
+
+::: callout-note
+Line length of 88 characters is the Python community standard.
+It balances readability with modern screen sizes.
+:::
+
+## Type checking with mypy
+
+Python supports optional type annotations through
+[PEP 484](https://peps.python.org/pep-0484/).
+Type annotations improve code clarity and catch errors before runtime.
+
+### Why type checking matters
+
+For clinical programming:
+
+- Catch data transformation errors at development time.
+- Document expected DataFrame structures.
+- Improve IDE autocomplete and refactoring.
+- Reduce runtime errors in production.
+
+### Installation
+
+Add mypy as a development dependency:
+
+```bash
+uv add --dev mypy
+```
+
+### Basic usage
+
+Check types in your code:
+
+```bash
+uv run mypy .
+```
+
+### Type annotation example
+
+Without types:
+
+```python
+def calculate_bmi(weight, height):
+    return weight / (height ** 2)
+```
+
+With types:
+
+```python
+def calculate_bmi(weight: float, height: float) -> float:
+    """Calculate BMI from weight (kg) and height (m)."""
+    return weight / (height ** 2)
+```
+
+The type checker verifies:
+
+- Arguments are the correct type.
+- Return value matches the declared type.
+- Operations are valid for the types used.
+
+### Configuration
+
+Add mypy settings to `pyproject.toml`:
+
+```toml
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+```
+
+::: aside
+Start with lenient settings (`disallow_untyped_defs = false`) and
+progressively tighten as you add type annotations to your codebase.
+:::
+
+### Type stubs for libraries
+
+Some libraries don't include type information. Install type stubs when available:
+
+```bash
+uv add --dev types-tabulate
+```
+
+::: callout-note
+Popular data science libraries like `polars` include built-in type annotations.
+Older libraries like `pandas` require separate stub packages (`pandas-stubs`).
+:::
+
+## Testing with pytest
+
+pytest is Python's de facto standard testing framework.
+It's more powerful and ergonomic than the built-in `unittest` module.
+
+### Installation
+
+Add pytest and coverage tools:
+
+```bash
+uv add --dev pytest pytest-cov
+```
+
+### Writing tests
+
+Create a `tests/` directory:
+
+```
+pycsr-example/
+├── src/
+│   └── pycsr_example/
+│       └── __init__.py
+└── tests/
+    └── test_calculations.py
+```
+
+Write a simple test in `tests/test_calculations.py`:
+
+```python
+from pycsr_example.calculations import calculate_bmi
+import pytest
+
+def test_calculate_bmi():
+    # Normal BMI calculation
+    assert calculate_bmi(70, 1.75) == pytest.approx(22.857142857142858)
+
+def test_calculate_bmi_underweight():
+    # BMI < 18.5 indicates underweight
+    assert calculate_bmi(50, 1.75) < 18.5
+```
+
+### Running tests
+
+Run all tests:
+
+```bash
+uv run pytest
+```
+
+Run with verbose output:
+
+```bash
+uv run pytest -v
+```
+
+Run specific test file:
+
+```bash
+uv run pytest tests/test_calculations.py
+```
+
+### Code coverage
+
+Generate coverage report:
+
+```bash
+uv run pytest --cov=pycsr_example --cov-report=term
+```
+
+Generate HTML coverage report:
+
+```bash
+uv run pytest --cov=pycsr_example --cov-report=html
+```
+
+This creates `htmlcov/index.html` showing which lines are tested.
+
+::: callout-important
+For regulatory submissions, high test coverage demonstrates code quality.
+Aim for >80% coverage for critical data transformation and
+statistical computation functions.
+:::
+
+### pytest configuration
+
+Add pytest settings to `pyproject.toml`:
+
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+```
+
+## Documentation generation
+
+For clinical reporting projects, documentation serves two purposes:
+
+1. **Code documentation**: Function and module documentation.
+2. **Report generation**: Analysis reports and TLFs.
+
+### Quarto for reports
+
+We use Quarto for creating reproducible analysis documents:
+
+```bash
+# Install Quarto separately (not via uv)
+# See: https://quarto.org/docs/get-started/
+```
+
+Quarto documents (`.qmd` files) combine:
+
+- Markdown text.
+- Python code cells.
+- Generated outputs (tables, listings, figures).
+
+This book itself is written in Quarto.
+
+### quartodoc for API documentation
+
+For packages that need API documentation (similar to R's `pkgdown`), use `quartodoc`:
+
+```bash
+uv add --dev quartodoc
+```
+
+quartodoc generates documentation from docstrings and integrates with Quarto
+for full website generation.
+
+::: aside
+For analysis projects (rather than reusable packages),
+Quarto alone is usually sufficient. Use `quartodoc` when building
+analysis packages for team to collaborate on.
+:::
+
+## Development workflow
+
+Putting it all together, a typical development cycle looks like:
+
+1. **Format code**: `uv run ruff format`
+2. **Check linting**: `uv run ruff check --fix`
+3. **Verify types**: `uv run mypy .`
+4. **Run tests**: `uv run pytest --cov=pycsr_example`
+5. **Generate reports**: `quarto render`
+
+### Pre-commit automation
+
+You can automate these checks using Git hooks (not covered in this book),
+but manual execution provides better learning and control during development.
+
+## Clinical project structure guidelines
+
+In case you need clinical reporting projects using both R and Python:
+
+**Separate R and Python directories:**
+
+```
+project/
+├── r-package/          # R package for R-based analyses
+│   ├── DESCRIPTION
+│   ├── R/
+│   └── tests/
+├── python-package/     # Python package for Python-based analyses
+│   ├── pyproject.toml
+│   ├── src/
+│   └── tests/
+├── data/               # Shared input data (SDTM, ADaM)
+└── output/             # Shared output (TLFs, reports)
+```
+
+**Why separate?**
+
+As John Carmack [noted](https://www.youtube.com/watch?v=I845O57ZSy4&t=1097s):
+"It's almost always a mistake to mix languages in a single project."
+
+Reasons:
+
+- Different build systems.
+- Different dependency management.
+- Different testing frameworks.
+- Different IDE configurations.
+
+**Shared resources:**
+
+- Input datasets (SDTM, ADaM) can be in a common `data/` directory.
+- Output deliverables can go to a common `output/` directory.
+- Documentation can reference both implementations.
+
+::: callout-note
+For this book, we focus exclusively on Python.
+Mixed R/Python workflows are beyond scope but follow the same principles.
+:::
+
+## Exercise
+
+Set up a complete development environment:
+
+1. Create a new project with `uv init dev-practice`.
+2. Add development dependencies: `ruff`, `mypy`, `pytest`, `pytest-cov`.
+3. Create a simple function in `src/dev_practice/stats.py`:
+   ```python
+   def mean(values: list[float]) -> float:
+       return sum(values) / len(values)
+   ```
+4. Write a test in `tests/test_stats.py`.
+5. Run Ruff format and check.
+6. Run mypy type checking.
+7. Run pytest with coverage.
+
+<details>
+<summary>View solution</summary>
+
+```bash
+# Create project
+uv init dev-practice
+cd dev-practice
+
+# Add dev dependencies
+uv add --dev ruff mypy pytest pytest-cov
+
+# Create stats module
+mkdir -p src/dev_practice
+cat > src/dev_practice/stats.py << 'EOF'
+def mean(values: list[float]) -> float:
+    """Calculate the arithmetic mean of a list of numbers."""
+    if not values:
+        raise ValueError("Cannot calculate mean of empty list")
+    return sum(values) / len(values)
+EOF
+
+# Create test file
+mkdir -p tests
+cat > tests/test_stats.py << 'EOF'
+import pytest
+from dev_practice.stats import mean
+
+def test_mean_basic():
+    assert mean([1.0, 2.0, 3.0]) == 2.0
+
+def test_mean_single_value():
+    assert mean([5.0]) == 5.0
+
+def test_mean_empty_raises():
+    with pytest.raises(ValueError):
+        mean([])
+EOF
+
+# Run checks
+uv run ruff format .
+uv run ruff check .
+uv run mypy src/
+uv run pytest --cov=dev_practice --cov-report=term
+```
+
+Expected output from pytest:
+
+```
+============================= test session starts ==============================
+collected 3 items
+
+tests/test_stats.py ...                                                  [100%]
+
+---------- coverage: platform darwin, python 3.13.9-final-0 ----------
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+src/dev_practice/__init__.py    0      0   100%
+src/dev_practice/stats.py       4      0   100%
+-----------------------------------------------
+TOTAL                           4      0   100%
+
+============================== 3 passed in 0.05s ===============================
+```
+
+</details>
+
+## Example repositories
+
+Demo project repositories have been created:
+
+- **Python package example**: [Link to be added]
+- **eCTD package example**: [Link to be added]
+
+With the knowledge from this chapter, you can understand how these projects are
+organized and develop similar professional Python packages for clinical reporting.
+
+## What's next
+
+You now have a complete Python development environment with:
+
+- uv for project and dependency management.
+- Ruff for code quality.
+- mypy for type safety.
+- pytest for testing.
+- Quarto for documentation.
+
+Part 2 of this book will use these tools to build real clinical study reports,
+demonstrating TLF generation with `polars` and `rtflite`.
