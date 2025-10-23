@@ -223,8 +223,8 @@ dependencies = [
     "rtflite>=1.0.2",
 ]
 
-[dependency-groups]
-dev = [
+[dependency-groups.dev]
+dependencies = [
     "ruff>=0.14.1",
     "pytest>=8.4.2",
     "mypy>=1.18.2",
