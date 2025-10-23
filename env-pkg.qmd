@@ -234,10 +234,11 @@ Write a simple test in `tests/test_calculations.py`:
 
 ```python
 from pycsr_example.calculations import calculate_bmi
+import pytest
 
 def test_calculate_bmi():
     # Normal BMI calculation
-    assert calculate_bmi(70, 1.75) == 22.857142857142858
+    assert calculate_bmi(70, 1.75) == pytest.approx(22.857142857142858)
 
 def test_calculate_bmi_underweight():
     # BMI < 18.5 indicates underweight
