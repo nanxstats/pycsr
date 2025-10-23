@@ -16,7 +16,7 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - part: "Project Environment Setup"
+    - part: "Environment and toolchain"
       chapters:
         - env-dev.qmd
         - env-uv.qmd

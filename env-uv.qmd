@@ -1,73 +1,363 @@
 ---
-title: "Manage Python projects with uv"
+title: "Python projects with uv"
 ---
 
-Explain that for good reasons that Python package and project development
-**must** use virtual environment (unlike renv which is optional in R).
+::: callout-tip
+## Objective
 
-uv is a emerging project environment management tool written in Rust (fast)
-with ambitious goals to replace the previous scattered toolchain.
-In this book, entire development workflow is driven by uv.
+Learn how to use uv to create, manage, and maintain Python projects.
+Understand virtual environments, dependency management, and the
+modern Python packaging ecosystem.
+:::
 
-Touch on Python packaging standard, which is good to know in general.
-Official Python packaging user guide at <https://packaging.python.org/>.
-`pyproject.toml` is the modern Python standard of setting up package metadata
-like the `DESCRIPTION` file for R packages. uv fully leverages `pyproject.toml`.
+## Why virtual environments
 
-## Install uv
+In Python, virtual environments are not optional.
+They are essential for any serious project work.
 
-See official guide at <https://docs.astral.sh/uv/getting-started/installation/>
+Unlike R's renv (which primarily helps with reproducibility),
+Python virtual environments serve a fundamental purpose:
+**isolating project dependencies from the system Python**.
 
-## Update uv
+Here is why this matters:
 
-`uv self update` for updating uv, important for pinning new Python versions.
+- Different projects need different package versions.
+- System Python library should never be modified directly.
+- Dependency conflicts are common and destructive.
+- Reproducibility requires exact version control.
 
-Quarto callout block to mentioned that uv uses Python distributions from the
-[python-build-standalone](https://github.com/astral-sh/python-build-standalone)
-project.
+::: callout-warning
+Installing packages globally with `pip install` without a virtual environment
+will cause conflicts and break system tools. Always use virtual environments.
+To install Python packages as global command-line tools, use `pipx`.
+:::
 
-## Initialize project
+## What is uv
 
-`uv init`
+uv is a modern Python package and project manager written in Rust.
+It replaces and improves upon a scattered toolchain:
 
-Show and explain the basic scaffolded package structure.
+- `pip` (package installation)
+- `venv` (virtual environment creation)
+- `pyenv` (Python version management)
+- `pip-tools` (dependency locking)
+- `setuptools` (package building)
 
-Show important sections in `pyproject.toml`.
+Benefits of uv:
+
+- **Fast**: 10-100x faster than pip due to Rust implementation.
+- **Complete**: Manages Python versions, dependencies, and builds.
+- **Modern**: Uses `pyproject.toml` as the single source of truth.
+- **Reliable**: Automatic dependency resolution and lock files.
+
+::: aside
+In R terms, uv combines functionality from renv, devtools, usethis, and pak
+into a single, cohesive tool.
+:::
+
+## Python packaging standards
+
+Python has standardized on `pyproject.toml` as the configuration file
+for all projects. This is similar to R's `DESCRIPTION` file but uses TOML format.
+
+The Official Python packaging guide is available at <https://packaging.python.org/>.
+
+Key concepts:
+
+- `pyproject.toml` defines project metadata and dependencies.
+- `uv.lock` records exact versions (like `renv.lock`).
+- Build backends (like `hatchling`) create distributable packages.
+
+## Installing uv
+
+Follow the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+**macOS and Linux:**
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows:**
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Via Homebrew (macOS):**
+
+```bash
+brew install uv
+```
+
+Verify installation:
+
+```bash
+uv --version
+```
+
+## Updating uv
+
+uv can update itself:
+
+```bash
+uv self update
+```
+
+Regular updates are important because uv frequently adds support for
+new Python versions and features.
+
+::: callout-note
+uv uses Python distributions from the [python-build-standalone
+](https://github.com/astral-sh/python-build-standalone) project.
+These are optimized, portable Python builds that work consistently across platforms.
+:::
+
+## Initialize a project
+
+Create a new Python project:
+
+```bash
+uv init pycsr-example
+cd pycsr-example
+```
+
+This creates a basic structure:
+
+```
+pycsr-example/
+├── .python-version    # Pinned Python version
+├── pyproject.toml     # Project metadata and dependencies
+├── README.md          # Project documentation
+└── src/
+    └── pycsr_example/
+        └── __init__.py
+```
+
+::: aside
+Notice the directory name uses hyphens (`pycsr-example`) while the package name
+uses underscores (`pycsr_example`). This is Python convention.
+:::
+
+### Project structure
+
+The `pyproject.toml` file contains project configuration:
+
+```toml
+[project]
+name = "pycsr-example"
+version = "0.1.0"
+description = "Example clinical study report project"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+Key sections:
+
+- `[project]`: Package metadata.
+- `[project.dependencies]`: Hard, runtime dependencies.
+- `[dependency-groups.dev]`: Development dependencies.
+- `[build-system]`: How to build the package.
 
 ## Pin Python version
 
-`uv python pin 3.13.9`
+Specify the exact Python version for your project:
 
-It is useful to include `PATCH` here because we wanted to be specific (`MAJOR.MINOR` might drift quickly).
+```bash
+uv python pin 3.13.9
+```
 
-## Add dependencies
+This updates `.python-version` file so everyone uses the same Python version
+when they restore the environment.
 
-`uv add`
-`uv add --dev`
+::: callout-important
+Use the full `MAJOR.MINOR.PATCH` version (for example, `3.13.9`) rather than
+just `MAJOR.MINOR` (for example, `3.13`). This prevents drift as new patch
+versions are released.
+:::
 
-Hard dependencies in and development dependencies, how things will be reflected in `pyproject.toml`.
+Why pin the exact version:
 
-`uv remove` to remove dependencies.
+- Patch releases can introduce subtle behavior changes.
+- Reproducibility requires exact version matching.
+- Regulatory submissions should document the exact Python version.
 
-## Synchronize and lock file
+Check which Python versions are available:
 
-`uv sync` generates `uv.lock` file.
-Refreshes it if changes made via `uv python pin` or `uv add/remove`.
+```bash
+uv python list
+```
 
-`uv lock --upgrade` to refresh the lock file satisfying the dependency version requirement s (set to dep>=x.y.z at the moment of adding by default). Run `uv sync` to sync.
+Install a specific Python version if needed:
 
-## Run
+```bash
+uv python install 3.13.9
+```
 
-Like in virtualenv, you can `source .venv/bin/activate`, then run `python`, `pytest` etc. directly under shell.
+## Managing dependencies
 
-Or, use `uv run`: `uv run python`, `uv run pytest`, etc.
+### Adding dependencies
 
-Explain the difference between `uvx` and `uv run`: <https://docs.astral.sh/uv/guides/tools/>.
+Add runtime dependencies:
 
-## Build and publish
+```bash
+uv add polars plotnine rtflite
+```
 
-Explain `[build-system]` in `pyproject.toml`.
-For simplicity, we just use hatchling here:
+Add development-only dependencies:
+
+```bash
+uv add --dev ruff pytest mypy
+```
+
+This updates `pyproject.toml`:
+
+```toml
+[project]
+dependencies = [
+    "polars>=1.34.0",
+    "plotnine>=0.15.0",
+    "rtflite>=1.0.2",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.1",
+    "pytest>=8.4.2",
+    "mypy>=1.18.2",
+]
+```
+
+::: callout-note
+By default, uv adds dependencies with `>=` constraints. This allows updates
+within compatible versions. The lock file ensures exact versions are used.
+:::
+
+### Removing dependencies
+
+Remove a package:
+
+```bash
+uv remove pandas
+```
+
+This removes the package from both `pyproject.toml` and the environment.
+
+## Lock files and syncing
+
+### Creating and updating the lock file
+
+Generate or update the lock file:
+
+```bash
+uv sync
+```
+
+This creates `uv.lock`, which records:
+
+- Exact version of every package.
+- All transitive dependencies.
+- Package hashes for verification.
+
+The lock file ensures reproducibility across different machines and over time.
+
+### Upgrading dependencies
+
+To update packages while respecting constraints in `pyproject.toml`:
+
+```bash
+uv lock --upgrade
+```
+
+Then synchronize the environment:
+
+```bash
+uv sync
+```
+
+This is similar to:
+
+- R: `renv::update()` followed by `renv::snapshot()`.
+- Node.js: `npm update` followed by `npm install`.
+
+::: aside
+The two-step process (lock & sync) gives you control: you can review
+lock file changes before updating your environment.
+:::
+
+## Running commands
+
+You have two options for running commands in your project environment.
+
+### Option 1: Activate the virtual environment
+
+```bash
+source .venv/bin/activate  # macOS/Linux
+# or
+.venv\Scripts\activate     # Windows
+```
+
+Then run commands directly:
+
+```bash
+python -m pycsr_example
+pytest
+ruff check
+```
+
+Deactivate when done:
+
+```bash
+deactivate
+```
+
+### Option 2: Use `uv run`
+
+Run commands without activation:
+
+```bash
+uv run python -m pycsr_example
+uv run pytest
+uv run ruff check
+```
+
+::: callout-tip
+`uv run` is convenient for one-off commands and CI/CD scripts.
+For interactive work, activating the environment is often more ergonomic.
+:::
+
+### `uv run` and `uvx`
+
+`uvx` runs tools in isolated, temporary environments:
+
+```bash
+uvx ruff check .
+uvx black --check .
+```
+
+Use `uvx` when:
+
+- Running tools you don't want to install in the project.
+- Trying packages without adding them as dependencies.
+- Running scripts that declare their own dependencies.
+
+Use `uv run` when:
+
+- Running project code.
+- Running tests.
+- Using project dependencies.
+
+See [using tools in uv](https://docs.astral.sh/uv/guides/tools/) for details.
+
+## Building and publishing
+
+For creating distributable packages, you need a build backend.
+The simplest option is `hatchling`.
+
+Add to `pyproject.toml`:
 
 ```toml
 [build-system]
@@ -75,4 +365,98 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 ```
 
-You can do `uv build` to build wheels (similar to R CMD build) and `uv publish` to upload to PyPI. These are not too useful in this book's context but good to know.
+### Build wheel
+
+Create distribution files:
+
+```bash
+uv build
+```
+
+This creates:
+- `dist/pycsr_example-0.1.0.tar.gz` (source distribution)
+- `dist/pycsr_example-0.1.0-py3-none-any.whl` (wheel)
+
+### Publish to PyPI
+
+Publish to the Python Package Index:
+
+```bash
+uv publish
+```
+
+::: callout-note
+Building and publishing are not typically needed for internal clinical
+reporting projects. However, if you develop reusable tools like table
+generation packages, open sourcing in a GitHub repository and
+publishing on PyPI will make them more visible.
+:::
+
+## Exercise
+
+Create a small project to practice uv commands:
+
+1. Initialize a new project called `csr-practice`.
+2. Pin Python to version 3.13.9 (or latest available).
+3. Add `polars` as a dependency.
+4. Add `pytest` as a development dependency.
+5. Examine the generated `pyproject.toml` and `uv.lock` files.
+6. Run Python using `uv run python --version`.
+
+<details>
+<summary>View solution</summary>
+
+```bash
+# Initialize project
+uv init csr-practice
+cd csr-practice
+
+# Pin Python version
+uv python pin 3.13.9
+
+# Add dependencies
+uv add polars
+uv add --dev pytest
+
+# View configuration
+cat pyproject.toml
+
+# Check lock file
+cat uv.lock
+
+# Run Python
+uv run python --version
+```
+
+Your `pyproject.toml` should look similar to:
+
+```toml
+[project]
+name = "csr-practice"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = [
+    "polars>=1.18.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+</details>
+
+## What's next
+
+Now that you understand uv basics, the next chapter covers the Python package toolchain:
+
+- Formatting and linting with Ruff.
+- Type checking with mypy.
+- Testing with pytest.
+- Documentation generation.
+- Development workflows for clinical reporting.
