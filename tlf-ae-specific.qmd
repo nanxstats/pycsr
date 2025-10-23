@@ -1,5 +1,5 @@
 ---
-title: "Specific Adverse Events Table"
+title: "Specific adverse events"
 ---
 
 This article demonstrates how to create a specific adverse events table by System Organ Class and Preferred Term.

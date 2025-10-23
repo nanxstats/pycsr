@@ -1,5 +1,5 @@
 ---
-title: "ANCOVA Efficacy Analysis"
+title: "ANCOVA efficacy analysis"
 ---
 
 This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.

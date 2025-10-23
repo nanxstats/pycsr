@@ -1,5 +1,5 @@
 ---
-title: "Study Population Table"
+title: "Study population"
 ---
 
 ## Overview
