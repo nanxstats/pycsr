@@ -1,5 +1,5 @@
 ---
-title: "Disposition of Participants Table"
+title: "Disposition of participants"
 ---
 
 ## Overview
