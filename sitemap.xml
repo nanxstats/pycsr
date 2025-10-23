@@ -2,62 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://pycsr.org/index.html</loc>
-    <lastmod>2025-10-23T03:20:27.640Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.457Z</lastmod>
   </url>
   <url>
-    <loc>https://pycsr.org/intro.html</loc>
-    <lastmod>2025-10-23T03:20:27.640Z</lastmod>
+    <loc>https://pycsr.org/preface.html</loc>
+    <lastmod>2025-10-23T05:24:04.459Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/env-dev.html</loc>
-    <lastmod>2025-10-23T03:20:27.637Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.454Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/env-uv.html</loc>
-    <lastmod>2025-10-23T03:20:27.637Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.454Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/env-pkg.html</loc>
-    <lastmod>2025-10-23T03:20:27.637Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.454Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/intro-polars.html</loc>
-    <lastmod>2025-10-23T03:20:27.640Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.457Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-disposition.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-population.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-baseline.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-ae-summary.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-ae-specific.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/tlf-efficacy-ancova.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/summary.html</loc>
-    <lastmod>2025-10-23T03:20:27.663Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.479Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/references.html</loc>
-    <lastmod>2025-10-23T03:20:27.643Z</lastmod>
+    <lastmod>2025-10-23T05:24:04.459Z</lastmod>
   </url>
   <url>
     <loc>https://pycsr.org/Python-for-Clinical-Study-Reports-and-Submission.pdf</loc>
-    <lastmod>2025-10-23T03:25:38.315Z</lastmod>
+    <lastmod>2025-10-23T05:29:11.182Z</lastmod>
   </url>
 </urlset>
