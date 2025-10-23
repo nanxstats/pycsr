@@ -4,35 +4,54 @@ title: "Python package toolchain"
 
 ## uv
 
-Project environment management: devtools + usethis + renv + pak?
+All-in-one solution for project environment management solution. Dual licensed under Apache 2 and MIT.
+
+Using an R analogy: uv for Python = styler/air + lintr + devtools + usethis + renv + pak in R?
 
 ## Ruff
+
+```
+uv add --dev ruff
+```
 
 - Formatter: `ruff format`
 - Linter: `ruff check`
 
 ## Type checker
 
+Modern Python supports [type annotations](https://typing.python.org/en/latest/spec/annotations.html). Common options for static type checks:
+
 - mypy
 - Pyright
+- etc.
+
+We will use a typical option mypy here:
+
+```
+uv add --dev mypy
+```
 
 ## Unit testing
 
-- pytest
-- pytest-cov
+Use pytest. For Python, pytest is like testthat for R, but has 1,000+ plugins (Python packages that extend it).
+
+```
+uv add --dev pytest pytest-cov
+```
+
+Run `pytest` directly. rtflite uses `pytest --cov=rtflite --cov-report=html:docs/coverage/` in GitHub Actions workflow to generate HTML pages for inspecting detailed code coverage.
 
 ## Documentation website generation
 
-- Use `quartodoc` to build docs site here
-- For standard packages: mkdocs, mkdocs-material, mkdocstrings-python, markdown-exec
+- Use `quartodoc` to build docs site here because it's closer to pkgdown (for running code in vignettes): <https://machow.github.io/quartodoc/>
+- For standard packages: we can use mkdocs, mkdocs-material, mkdocstrings-python, markdown-exec to build more sophisticated (documentation) websites.
 
 ## Project structure FAQ
 
-Dedicated Python package repo, dedicated eCTD project repo (Yilong will create).
+Yilong has created two other dedicated demo repos for this workshop: the Python package repo (insert link), the eCTD package repo (insert link). With the knowlegde you learned in this part 1, you can reasonably see how they are organized.
 
-If you have to use both R and Python:
-Separate Python package directory and R package directory.
-Can share input and output paths.
-It's almost a mistake to mix language in a single project (John Carmack).
-
-We will focus on Python project only in this book.
+In a single submissions project, if you have to use both R and Python:
+Separate the Python package directory and R package directory.
+They can share certain input (data) and output (deliverable) paths outside of them, though.
+As John Carmack said: "It's almost always a mistake to mix language in a single project."
+That said, we will focus on Python project only in this book.

@@ -2,53 +2,77 @@
 title: "Manage Python projects with uv"
 ---
 
-Explain that for good reasons, Python development must use virtual environment
-(like renv in R). uv is a emerging project environment management tool
-written in Rust (fast) with ambitious goals to replace the previous
-scattered toolchain.
+Explain that for good reasons that Python package and project development
+**must** use virtual environment (unlike renv which is optional in R).
 
-Touch base on Python packaging standard, but all driven by uv.
+uv is a emerging project environment management tool written in Rust (fast)
+with ambitious goals to replace the previous scattered toolchain.
+In this book, entire development workflow is driven by uv.
 
-Official Python packaging user guide at <https://packaging.python.org/>
+Touch on Python packaging standard, which is good to know in general.
+Official Python packaging user guide at <https://packaging.python.org/>.
+`pyproject.toml` is the modern Python standard of setting up package metadata
+like the `DESCRIPTION` file for R packages. uv fully leverages `pyproject.toml`.
 
 ## Install uv
 
-See official guide
+See official guide at <https://docs.astral.sh/uv/getting-started/installation/>
 
-`uv self update` for updating uv
+## Update uv
+
+`uv self update` for updating uv, important for pinning new Python versions.
+
+Quarto callout block to mentioned that uv uses Python distributions from the
+[python-build-standalone](https://github.com/astral-sh/python-build-standalone)
+project.
 
 ## Initialize project
 
 `uv init`
 
-Show and explain structure. Show important sections in `pyproject.toml`.
+Show and explain the basic scaffolded package structure.
+
+Show important sections in `pyproject.toml`.
 
 ## Pin Python version
 
 `uv python pin 3.13.9`
 
+It is useful to include `PATCH` here because we wanted to be specific (`MAJOR.MINOR` might drift quickly).
+
 ## Add dependencies
 
 `uv add`
+`uv add --dev`
 
-hard deps and dev deps
+Hard dependencies in and development dependencies, how things will be reflected in `pyproject.toml`.
+
+`uv remove` to remove dependencies.
 
 ## Synchronize and lock file
 
-`uv sync`
+`uv sync` generates `uv.lock` file.
+Refreshes it if changes made via `uv python pin` or `uv add/remove`.
 
-`uv.lock` file, `uv lock --upgrade` to refresh the lock file and installed packages.
+`uv lock --upgrade` to refresh the lock file satisfying the dependency version requirement s (set to dep>=x.y.z at the moment of adding by default). Run `uv sync` to sync.
 
 ## Run
 
-You can `source .venv/bin/activate`, then run `python`, `pytest` etc. directly under shell.
+Like in virtualenv, you can `source .venv/bin/activate`, then run `python`, `pytest` etc. directly under shell.
 
-Or use `uv run`: `uv run python`, `uv run pytest`, etc.
+Or, use `uv run`: `uv run python`, `uv run pytest`, etc.
 
-Explain the difference between `uvx` and `uv run` <https://docs.astral.sh/uv/guides/tools/>.
+Explain the difference between `uvx` and `uv run`: <https://docs.astral.sh/uv/guides/tools/>.
 
 ## Build and publish
 
 Explain `[build-system]` in `pyproject.toml`.
+For simplicity, we just use hatchling here:
 
-`uv build` and `uv publish`, not useful in this context but good to know.
+```toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+You can do `uv build` to build wheels (similar to R CMD build) and `uv publish` to upload to PyPI. These are not too useful in this book's context but good to know.

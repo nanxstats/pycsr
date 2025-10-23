@@ -4,25 +4,45 @@ title: "Python developer setup"
 
 ## GitHub Codespaces
 
-If possible. Easiest without local setup
+If possible, we will set up devcontains on GitHub so you can use the same development environment as we do during the workshop (in case you don't have proper local environment to install uv & all). This is the easiest without local setup.
 
 ## Positron
 
-Check what is available by default
+Positron is Posit's VS Code fork with specific improvements for R and Python data science development.
+
+(Need to check what extensions are available by default as it can only install from VSX marketplace, not Microsoft VS Code extension marketplace)
 
 ## VS Code
 
 Some useful VS Code extensions:
 
 - Python
-- Pylance
+- Pylance (if available)
 - Ruff
 - Even Better TOML
+- Markdown Stupefy (https://nanx.me/blog/post/vscode-markdown-stupefy/)
+
+### VS Code settings
+
+You can enable it via Code > Settings... > Settings, then search "Unicode Highlight". I set the "Non Basic ASCII" option to true so VS Code always highlights non-basic ASCII characters in both untrusted workspaces and trusted workspaces. By default, they are only highlighted in untrusted workspaces.
+
+Alternatively, open the Command Palette and choose "Preferences: Open User Settings (JSON)", then add this key-value pair to settings.json:
+
+```json
+"editor.unicodeHighlight.nonBasicASCII": true
+```
 
 ## Terminal
 
-- zsh, Ghostty?
+- Regular shell like zsh
+- Ghostty as terminal emulation (macOS only, written in Zig so very fast)
 
 ## AI coding tools
 
-You know what to say
+Encourage you to use agentic AI coding tools like
+Claude Code, Codex, Cursor, VS Code GitHub Copilot extension, etc.
+
+To use them effectively for any programming language, personal opinion - two prerequisites:
+
+- Knowing exactly what you want (product manager).
+- Knowing how to evaluate the model output critically (software architect).
