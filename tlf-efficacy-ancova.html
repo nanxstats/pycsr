@@ -68,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./summary.html" rel="next">
 <link href="./tlf-ae-specific.html" rel="prev">
+<link href="./assets/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -108,6 +109,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
+<meta property="og:title" content="10&nbsp; ANCOVA efficacy analysis – Python for Clinical Study Reports and Submission">
+<meta property="og:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
+<meta property="og:image" content="https://pycsr.org/assets/preview.png">
+<meta property="og:site_name" content="Python for Clinical Study Reports and Submission">
+<meta property="og:image:height" content="640">
+<meta property="og:image:width" content="1280">
+<meta name="twitter:title" content="10&nbsp; ANCOVA efficacy analysis – Python for Clinical Study Reports and Submission">
+<meta name="twitter:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
+<meta name="twitter:image" content="https://pycsr.org/assets/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="640">
+<meta name="twitter:image-width" content="1280">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -137,8 +150,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Python for Clinical Study Reports and Submission</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/nanxstats/pycsr" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -313,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.</p>
 <section id="setup" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">10.1</span> Setup</h2>
-<div id="67fc4630" class="cell" data-execution_count="1">
+<div id="ea5d69ef" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -329,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="prepare-analysis-data" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="prepare-analysis-data"><span class="header-section-number">10.2</span> Prepare Analysis Data</h2>
-<div id="ccfbcab7" class="cell" data-execution_count="2">
+<div id="5a0cb728" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean data types and filter for efficacy population</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adlbc_clean <span class="op">=</span> adlbc.with_columns(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    [pl.col(c).cast(<span class="bu">str</span>).<span class="bu">str</span>.strip_chars() <span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span>, <span class="st">"AVISIT"</span>, <span class="st">"TRTP"</span>]]</span>
@@ -398,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-tables-for-rtf-output" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="create-tables-for-rtf-output"><span class="header-section-number">10.3</span> Create Tables for RTF Output</h2>
-<div id="c502ce62" class="cell" data-execution_count="3">
+<div id="5f40fcd9" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1: Descriptive Statistics</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tbl1_data <span class="op">=</span> [</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    [</span>
@@ -439,7 +469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-rtf-document" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="create-rtf-document"><span class="header-section-number">10.4</span> Create RTF Document</h2>
-<div id="b8f00989" class="cell" data-execution_count="4">
+<div id="de1795ac" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create RTF document with two sections</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>doc_ancova <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>[tbl1, tbl2],</span>
@@ -475,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_efficacy_ancova.rtf</code></pre>
 </div>
 </div>
-<div id="b6c3ddf7" class="cell" data-execution_count="5">
+<div id="915b0848" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>PosixPath('pdf/tlf_efficacy_ancova.pdf')</code></pre>
 </div>

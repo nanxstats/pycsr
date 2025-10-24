@@ -68,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./tlf-disposition.html" rel="next">
 <link href="./env-pkg.html" rel="prev">
+<link href="./assets/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -111,6 +112,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
+<meta property="og:title" content="4&nbsp; Polars – Python for Clinical Study Reports and Submission">
+<meta property="og:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
+<meta property="og:image" content="https://pycsr.org/assets/preview.png">
+<meta property="og:site_name" content="Python for Clinical Study Reports and Submission">
+<meta property="og:image:height" content="640">
+<meta property="og:image:width" content="1280">
+<meta name="twitter:title" content="4&nbsp; Polars – Python for Clinical Study Reports and Submission">
+<meta name="twitter:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
+<meta name="twitter:image" content="https://pycsr.org/assets/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="640">
+<meta name="twitter:image-width" content="1280">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -140,8 +153,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Python for Clinical Study Reports and Submission</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/nanxstats/pycsr" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -323,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="io" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="io"><span class="header-section-number">4.2</span> I/O</h2>
 <p>Polars supports multiple data formats for input and output (see the <a href="https://docs.pola.rs/user-guide/io/">I/O guide</a>). For clinical development, we recommend the <code>.parquet</code> format because tools in Python, R, and Julia can read and write it without conversion. The example below loads subject-level ADSL data with Polars.</p>
-<div id="b13ccda2" class="cell" data-execution_count="1">
+<div id="8a20ad7b" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> adsl.select(<span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>) <span class="co"># select columns</span></span>
@@ -399,7 +429,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="filtering" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="filtering"><span class="header-section-number">4.3</span> Filtering</h2>
 <p>Filtering in Polars uses the <code>.filter()</code> method with column expressions. Below are examples applied to the ADSL data.</p>
-<div id="1e9c6bb5" class="cell" data-execution_count="2">
+<div id="0f0955e2" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter female subjects</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SEX"</span>) <span class="op">==</span> <span class="st">"Female"</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
@@ -469,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="167ec535" class="cell" data-execution_count="3">
+<div id="5f2fec89" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter subjects with Age &gt;= 65</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adsl.<span class="bu">filter</span>(pl.col(<span class="st">"AGE"</span>) <span class="op">&gt;=</span> <span class="dv">65</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
@@ -543,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="deriving" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="deriving"><span class="header-section-number">4.4</span> Deriving</h2>
 <p>Deriving new variables is common in clinical data analysis for creating age groups, BMI categories, or treatment flags. Polars uses <code>.with_columns()</code> to add new columns while keeping existing ones.</p>
-<div id="eac83fd3" class="cell" data-execution_count="4">
+<div id="9aad6876" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create age groups</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adsl.with_columns([</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"AGE"</span>) <span class="op">&lt;</span> <span class="dv">65</span>)</span>
@@ -630,11 +660,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.5" class="anchored" data-anchor-id="grouping"><span class="header-section-number">4.5</span> Grouping</h2>
 <p>Grouping operations are fundamental for creating summary statistics in clinical reports. Polars uses <code>group_by()</code> followed by aggregation functions to compute counts, means, and other statistics by categorical variables like treatment groups.</p>
 <p>The <code>.count()</code> method provides a quick way to get subject counts by group.</p>
-<div id="b053a5fb" class="cell" data-execution_count="5">
+<div id="437a0aaf" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count by treatment group</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>adsl.group_by(<span class="st">"TRT01A"</span>).count().sort(<span class="st">"TRT01A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_6311/3512064118.py:2: DeprecationWarning: `GroupBy.count` was renamed; use `GroupBy.len` instead
+<pre><code>/tmp/ipykernel_6380/3512064118.py:2: DeprecationWarning: `GroupBy.count` was renamed; use `GroupBy.len` instead
   adsl.group_by("TRT01A").count().sort("TRT01A")</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
@@ -676,7 +706,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>You can also use <code>.agg()</code> with multiple aggregation functions:</p>
-<div id="a82ddb64" class="cell" data-execution_count="6">
+<div id="776cec5a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age statistics by treatment group</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>adsl.group_by(<span class="st">"TRT01A"</span>).agg([</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AGE"</span>).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean_age"</span>),</span>
@@ -730,7 +760,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.6" class="anchored" data-anchor-id="joining"><span class="header-section-number">4.6</span> Joining</h2>
 <p>Joining datasets is essential for combining subject-level data (ADSL) with event-level data (e.g.&nbsp;ADAE, ADLB). Polars supports various join types including inner, left, and full joins.</p>
 <p>Here is a toy example that splits ADSL and joins it back by <code>USUBJID</code>.</p>
-<div id="22204327" class="cell" data-execution_count="7">
+<div id="d88589f1" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simple demographics subset</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>demo <span class="op">=</span> adsl.select(<span class="st">"USUBJID"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>).head(<span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -791,7 +821,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="pivoting" class="level2" data-number="4.7">
 <h2 data-number="4.7" class="anchored" data-anchor-id="pivoting"><span class="header-section-number">4.7</span> Pivoting</h2>
 <p>Pivoting transforms data from long to wide format, commonly needed for creating tables. Use <code>.pivot()</code> to reshape grouped data into columns.</p>
-<div id="633bf776" class="cell" data-execution_count="8">
+<div id="8386a95d" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary by treatment and sex</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adsl</span>
@@ -817,8 +847,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="header">
 <th data-quarto-table-cell-role="th">SEX</th>
 <th data-quarto-table-cell-role="th">Xanomeline High Dose</th>
-<th data-quarto-table-cell-role="th">Placebo</th>
 <th data-quarto-table-cell-role="th">Xanomeline Low Dose</th>
+<th data-quarto-table-cell-role="th">Placebo</th>
 </tr>
 <tr class="even">
 <td>str</td>
@@ -829,16 +859,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Male"</td>
-<td>44</td>
-<td>33</td>
-<td>34</td>
-</tr>
-<tr class="even">
 <td>"Female"</td>
 <td>40</td>
-<td>53</td>
 <td>50</td>
+<td>53</td>
+</tr>
+<tr class="even">
+<td>"Male"</td>
+<td>44</td>
+<td>34</td>
+<td>33</td>
 </tr>
 </tbody>
 </table>
