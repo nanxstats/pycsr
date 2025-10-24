@@ -15,7 +15,13 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Disable man-db triggers
+        run: |
+          # <https://github.com/actions/runner-images/issues/10977>
+          echo "set man-db/auto-update false" | sudo debconf-communicate
+          sudo dpkg-reconfigure man-db
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -27,11 +33,9 @@ jobs:
           # uncomment below and fill to pin a version
           # version: SPECIFIC-QUARTO-VERSION-HERE
 
-      # add software dependencies here and any libraries
-
       # Setup Python and install dependencies using uv
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 
@@ -45,16 +49,13 @@ jobs:
           sudo fc-cache -f
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7
 
       - name: Install dependencies and activate virtual environment
         run: |
           uv sync
           echo "VIRTUAL_ENV=.venv" >> $GITHUB_ENV
           echo "$PWD/.venv/bin" >> $GITHUB_PATH
-
-      # To publish to Netlify, RStudio Connect, or GitHub Pages, uncomment
-      # the appropriate block below
 
       - name: Publish to GitHub Pages (and render)
         uses: quarto-dev/quarto-actions/publish@v2
