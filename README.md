@@ -10,11 +10,6 @@ uv sync
 Update dependencies:
 
 ```bash
-uv sync
 uv lock --upgrade
-source .venv/bin/activate
-pip-compile --generate-hashes
+uv sync
 ```
-
-`pip-compile` is part of pip-tools and is used to generate the
-`requirements.txt` file used by the Quarto GitHub Actions workflow.
