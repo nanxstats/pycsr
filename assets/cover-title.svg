@@ -1,0 +1,16 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @font-face {
+        font-family: "Lato";
+        src: url("https://pycsr.org/site_libs/bootstrap/fonts/Lato-VF.woff2") format("woff2");
+        font-weight: 300 700;
+        font-style: normal;
+      }
+    </style>
+  </defs>
+  <text x="50%" y="40%" font-family="Lato" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle"
+    dominant-baseline="middle">Python for Clinical Study</text>
+  <text x="49.7%" y="44%" font-family="Lato" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle"
+    dominant-baseline="middle">Reports and Submission</text>
+</svg>
