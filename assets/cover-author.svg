@@ -1,0 +1,14 @@
+<svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @font-face {
+        font-family: "Lato";
+        src: url("https://pycsr.org/site_libs/bootstrap/fonts/Lato-VF.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+    </style>
+  </defs>
+  <text x="50%" y="50%" font-family="Lato" font-size="19" font-weight="400" fill="#FFFFFF" text-anchor="left"
+    dominant-baseline="middle">Yilong Zhang, Nan Xiao</text>
+</svg>

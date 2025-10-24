@@ -3,7 +3,7 @@ project:
   resources:
     - CNAME
     - slides/
-    
+
 book:
   title: "Python for Clinical Study Reports and Submission"
   author:
@@ -13,6 +13,33 @@ book:
     Learn how to prepare tables, listings, and figures for
     clinical study report and submit to regulatory agencies,
     the essential part of clinical trial development.
+
+  output-file: "pycsr"
+
+  cover-image: "assets/cover.jpg"
+  image: "assets/preview.png"
+  favicon: "assets/favicon.png"
+
+  site-url: https://pycsr.org/
+  repo-url: https://github.com/nanxstats/pycsr
+  repo-actions: [edit, issue, source]
+  sharing: [twitter, linkedin]
+  reader-mode: true
+
+  open-graph:
+    image: assets/preview.png
+    description: |
+      Learn how to prepare tables, listings, and figures for
+      clinical study report and submit to regulatory agencies,
+      the essential part of clinical trial development.
+  twitter-card:
+    image: assets/preview.png
+    description: |
+      Learn how to prepare tables, listings, and figures for
+      clinical study report and submit to regulatory agencies,
+      the essential part of clinical trial development.
+    card-style: summary_large_image
+
   chapters:
     - index.qmd
     - preface.qmd
@@ -34,11 +61,6 @@ book:
         - tlf-efficacy-ancova.qmd
     - summary.qmd
     - references.qmd
-
-  site-url: https://pycsr.org/
-  repo-url: https://github.com/nanxstats/pycsr
-  repo-actions: [edit, issue, source]
-  reader-mode: true
 
 bibliography: references.bib
 
