@@ -6,26 +6,25 @@ This book is designed for people who are interested in using Python for clinical
 Each part of the book makes certain assumptions about the readers' background:
 
 - Part 1, titled "Environment and toolchain" and "Reporting packages", provides general
-  information on setting up Python development environments for clinical reporting and
-  introduces key packages like Polars for data manipulation and rtflite for creating
+  information on setting up Python development environments for clinical reporting.
+  
+- Part 2, titled "Reporting packages" introduces key packages like Polars for data manipulation and rtflite for creating
   regulatory-compliant tables. It assumes minimal Python experience and focuses on
   foundational concepts. Recommended references for this part include
-  [Python Polars: The Definitive Guide](https://polarsguide.com/) and the
-  [Polars user guide](https://docs.pola.rs/user-guide/getting-started). 
+  [Python Polars: The Definitive Guide](https://polarsguide.com/), the
+  [Polars user guide](https://docs.pola.rs/user-guide/getting-started) and the
+  [rtflite documentation](https://rtflite.readthedocs.io/).
 
-- Part 2, titled "Delivering TLFs in CSR", provides general information and
+- Part 3, titled "Delivering TLFs in CSR", provides general information and
   examples on creating tables, listings, and figures using Python. It assumes that readers
   are individual contributors to a clinical project with prior experience in
   Python. Familiarity with data manipulation using Polars is expected.
-  Some recommended references for this part include
-  [Python Polars: The Definitive Guide](https://polarsguide.com/) and
-  [rtflite documentation](https://rtflite.readthedocs.io/).
-
-- Part 3, titled "Clinical trial project", provides general information and
+  
+- Part 4, titled "Clinical trial project", provides general information and
   examples on managing a clinical trial A&R project using Python. It assumes that readers
   are project leads who have experience in Python package development.
 
-- Part 4, titled "eCTD submission package", provides general information on
+- Part 5, titled "eCTD submission package", provides general information on
   preparing submission packages related to the CSR in the
   electronic Common Technical Document (eCTD) format using Python.
   It assumes that readers are project leads of clinical projects who possess
