@@ -16,8 +16,7 @@ fi
 
 alias chrome="\"$CHROME_BIN\""
 
-# https://unsplash.com/photos/NjjONA3K0-k
-BACKGROUND_URL="https://unsplash.com/photos/NjjONA3K0-k/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYxMjc2MTQ0fA&force=true&w=2400"
+BACKGROUND_URL="https://unsplash.com/photos/v6asLq_dYzw/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8ODB8fGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8MXx8fDE3NjEzNjI4ODN8Mg&force=true&w=2400"
 BACKGROUND_FILE="assets/cover-background.jpg"
 PROCESSED_BACKGROUND="assets/background.png"
 
@@ -74,7 +73,7 @@ magick "$BACKGROUND_FILE" \
 
 # Compose text and name over background, then downscale
 magick "$PROCESSED_BACKGROUND" \
-	assets/cover-title.png -geometry -150-300 \
+	assets/cover-title.png -geometry -150-450 \
 	-gravity center -composite \
 	assets/cover-author.png -geometry -350-950 \
 	-gravity center -composite \
