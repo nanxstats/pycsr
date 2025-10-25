@@ -6,7 +6,7 @@ jupyter: python3
 
 Welcome to Python for Clinical Study Reports and Submission.
 Clinical study reports (CSR) are crucial components in clinical trial development.
-A CSR is an "integrated" full scientific report of an individual clinical trials.
+A CSR is an "integrated" full scientific report of an individual clinical trial.
 
 The [ICH E3: Structure and Content of Clinical Study Reports](https://database.ich.org/sites/default/files/E3_Guideline.pdf)
 offers comprehensive instructions to sponsors on the creation of a CSR.
@@ -22,12 +22,8 @@ clinical reporting toolkit.
 
 ## Events {.unnumbered}
 
-```{python}
-#| echo: False
-
-import polars as pl
-
-pl.read_csv("events.tsv", separator="\t")
-```
+| Venue | Type | Date | Materials |
+|-------|------|------|-----------|
+| R/Pharma Conference | Workshop | 2025-11-07 | [Slides](https://pycsr.org/slides/workshop-slides.html) |
 
 :::
