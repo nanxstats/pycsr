@@ -343,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.</p>
 <section id="setup" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">10.1</span> Setup</h2>
-<div id="04a1f1a3" class="cell" data-execution_count="1">
+<div id="1b20ac82" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="prepare-analysis-data" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="prepare-analysis-data"><span class="header-section-number">10.2</span> Prepare Analysis Data</h2>
-<div id="b45f1888" class="cell" data-execution_count="2">
+<div id="5352b079" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean data types and filter for efficacy population</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adlbc_clean <span class="op">=</span> adlbc.with_columns(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    [pl.col(c).cast(<span class="bu">str</span>).<span class="bu">str</span>.strip_chars() <span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span>, <span class="st">"AVISIT"</span>, <span class="st">"TRTP"</span>]]</span>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-tables-for-rtf-output" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="create-tables-for-rtf-output"><span class="header-section-number">10.3</span> Create Tables for RTF Output</h2>
-<div id="244c48b5" class="cell" data-execution_count="3">
+<div id="3a29924e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1: Descriptive Statistics</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tbl1_data <span class="op">=</span> [</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    [</span>
@@ -469,7 +469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="create-rtf-document" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="create-rtf-document"><span class="header-section-number">10.4</span> Create RTF Document</h2>
-<div id="ca4b5323" class="cell" data-execution_count="4">
+<div id="10dc5bd5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create RTF document with two sections</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>doc_ancova <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>[tbl1, tbl2],</span>
@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_efficacy_ancova.rtf</code></pre>
 </div>
 </div>
-<div id="0333a434" class="cell" data-execution_count="5">
+<div id="2feacf50" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>PosixPath('pdf/tlf_efficacy_ancova.pdf')</code></pre>
 </div>
