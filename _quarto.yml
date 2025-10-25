@@ -51,7 +51,7 @@ book:
     - part: "Reporting packages"
       chapters:
         - intro-polars.qmd
-    - part: "Tables, Listings, and Figures"
+    - part: "Clinical trial project"
       chapters:
         - tlf-disposition.qmd
         - tlf-population.qmd
@@ -59,7 +59,7 @@ book:
         - tlf-ae-summary.qmd
         - tlf-ae-specific.qmd
         - tlf-efficacy-ancova.qmd
-    - summary.qmd
+    - part: "eCTD submission package"
     - references.qmd
 
 bibliography: references.bib
