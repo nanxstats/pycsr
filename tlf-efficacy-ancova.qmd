@@ -9,7 +9,21 @@ Create ANCOVA efficacy analysis tables to evaluate treatment effects while contr
 Learn to perform ANCOVA modeling with missing data imputation using Python statistical libraries and present results in regulatory format with rtflite.
 :::
 
-This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.
+## Overview
+
+Analysis of Covariance (ANCOVA) is the primary statistical method for efficacy evaluation in clinical trials. Following [ICH E9 guidance](https://database.ich.org/sites/default/files/E9_Guideline.pdf) on statistical principles for clinical trials, ANCOVA provides a robust framework for comparing treatment effects while controlling for baseline covariates.
+
+Key features of ANCOVA efficacy analysis include:
+
+- **Covariate adjustment**: Controls for baseline values to reduce variability
+- **Least squares means**: Provides treatment effect estimates adjusted for covariates
+- **Missing data handling**: Implements appropriate imputation strategies (e.g., LOCF, MMRM)
+- **Pairwise comparisons**: Tests specific treatment contrasts with confidence intervals
+- **Regulatory compliance**: Follows statistical analysis plan specifications
+
+This tutorial demonstrates how to create a comprehensive ANCOVA efficacy table for glucose change from baseline using Python's statistical libraries and `rtflite` for regulatory-compliant formatting.
+
+<embed src="pdf/tlf_efficacy_ancova.pdf" style="width:100%; height:600px" type="application/pdf">
 
 ## Setup
 
@@ -34,149 +48,354 @@ adlbc = pl.read_parquet("data/adlbc.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
-## Prepare Analysis Data
+## Step 1: Explore Laboratory Data Structure
+
+We start by understanding the glucose data structure and endpoint definitions.
 
 ```{python}
-# Clean data types and filter for efficacy population
-adlbc_clean = adlbc.with_columns(
-    [pl.col(c).cast(str).str.strip_chars() for c in ["USUBJID", "PARAMCD", "AVISIT", "TRTP"]]
-)
-adsl_eff = adsl.filter(pl.col("EFFFL") == "Y").select(["USUBJID"])
-adlbc_eff = adlbc_clean.join(adsl_eff, on="USUBJID", how="inner")
+# Display key laboratory variables
+# Key ADLBC variables for efficacy analysis
+lab_vars = adlbc.select(["USUBJID", "PARAMCD", "PARAM", "AVISIT", "AVISITN", "AVAL", "BASE", "CHG"])
+lab_vars
+```
 
-# Apply LOCF for glucose data up to Week 24
+```{python}
+# Focus on glucose parameter
+gluc_visits = adlbc.filter(pl.col("PARAMCD") == "GLUC").select("AVISIT", "AVISITN").unique().sort("AVISITN")
+# Available glucose measurement visits
+gluc_visits
+```
+
+## Step 2: Define Analysis Population and Endpoint
+
+Following the Statistical Analysis Plan, we focus on the efficacy population for the primary endpoint.
+
+```{python}
+# Clean data types and prepare datasets
+adlbc_clean = adlbc.with_columns([
+    pl.col(c).cast(str).str.strip_chars()
+    for c in ["USUBJID", "PARAMCD", "AVISIT", "TRTP"]
+])
+
+# Define efficacy population
+adsl_eff = adsl.filter(pl.col("EFFFL") == "Y").select(["USUBJID"])
+# Efficacy population size
+adsl_eff.height
+
+# Filter laboratory data to efficacy population
+adlbc_eff = adlbc_clean.join(adsl_eff, on="USUBJID", how="inner")
+# Laboratory records in efficacy population
+adlbc_eff.height
+```
+
+```{python}
+# Examine glucose data availability by visit and treatment
+gluc_availability = (
+    adlbc_eff.filter(pl.col("PARAMCD") == "GLUC")
+    .group_by(["TRTP", "AVISIT"])
+    .agg(n_subjects=pl.col("USUBJID").n_unique())
+    .sort(["TRTP", "AVISIT"])
+)
+# Glucose data availability by visit
+gluc_availability
+```
+
+## Step 3: Implement LOCF Imputation Strategy
+
+We apply Last Observation Carried Forward (LOCF) for missing Week 24 glucose values.
+
+```{python}
+# Prepare glucose data with LOCF for Week 24 endpoint
 gluc_data = (
-    adlbc_eff.filter((pl.col("PARAMCD") == "GLUC") & (pl.col("AVISITN") <= 24))
+    adlbc_eff
+    .filter((pl.col("PARAMCD") == "GLUC") & (pl.col("AVISITN") <= 24))
     .sort(["USUBJID", "AVISITN"])
     .group_by("USUBJID")
     .agg([
         pl.col("TRTP").first(),
         pl.col("BASE").first(),
         pl.col("AVAL").filter(pl.col("AVISITN") == 0).first().alias("Baseline"),
-        pl.col("AVAL").last().alias("Week 24")
+        pl.col("AVAL").last().alias("Week_24_LOCF"),  # LOCF: last available value <= Week 24
+        pl.col("AVISITN").max().alias("Last_Visit")   # Track actual last visit
     ])
-    .filter(pl.col("Baseline").is_not_null() & pl.col("Week 24").is_not_null())
-    .with_columns((pl.col("Week 24") - pl.col("Baseline")).alias("CHG"))
+    .filter(pl.col("Baseline").is_not_null() & pl.col("Week_24_LOCF").is_not_null())
+    .with_columns((pl.col("Week_24_LOCF") - pl.col("Baseline")).alias("CHG"))
 )
 
-# Calculate descriptive statistics
+# Subjects with baseline and Week 24 (LOCF) glucose
+gluc_data.height
+# Sample of prepared analysis data
+gluc_data
+```
+
+```{python}
+# Assess LOCF imputation impact
+locf_summary = (
+    gluc_data
+    .group_by(["TRTP", "Last_Visit"])
+    .agg(n_subjects=pl.len())
+    .sort(["TRTP", "Last_Visit"])
+)
+# LOCF imputation summary (last actual visit used)
+locf_summary
+```
+
+## Step 4: Calculate Descriptive Statistics
+
+We compute baseline, Week 24, and change from baseline statistics by treatment group.
+
+```{python}
+# Calculate comprehensive descriptive statistics
 desc_stats = []
 for trt in treatments:
+    # Analysis data for this treatment
     trt_data = gluc_data.filter(pl.col("TRTP") == trt)
+
+    # Original baseline data (all subjects with baseline)
     baseline_full = adlbc_eff.filter(
-        (pl.col("PARAMCD") == "GLUC") & (pl.col("AVISIT") == "Baseline") & (pl.col("TRTP") == trt)
+        (pl.col("PARAMCD") == "GLUC") &
+        (pl.col("AVISIT") == "Baseline") &
+        (pl.col("TRTP") == trt)
     )
-    
+
     desc_stats.append({
         "Treatment": trt,
         "N_Baseline": baseline_full.height,
         "Baseline_Mean": baseline_full["AVAL"].mean() if baseline_full.height > 0 else np.nan,
         "Baseline_SD": baseline_full["AVAL"].std() if baseline_full.height > 0 else np.nan,
         "N_Week24": trt_data.height,
-        "Week24_Mean": trt_data["Week 24"].mean() if trt_data.height > 0 else np.nan,
-        "Week24_SD": trt_data["Week 24"].std() if trt_data.height > 0 else np.nan,
+        "Week24_Mean": trt_data["Week_24_LOCF"].mean() if trt_data.height > 0 else np.nan,
+        "Week24_SD": trt_data["Week_24_LOCF"].std() if trt_data.height > 0 else np.nan,
         "N_Change": trt_data.height,
         "Change_Mean": trt_data["CHG"].mean() if trt_data.height > 0 else np.nan,
         "Change_SD": trt_data["CHG"].std() if trt_data.height > 0 else np.nan
     })
 
-# Perform ANCOVA
+# Display descriptive statistics
+desc_df = pl.DataFrame(desc_stats)
+# Descriptive statistics by treatment
+desc_df
+```
+
+## Step 5: Perform ANCOVA Analysis
+
+We fit the ANCOVA model with treatment and baseline glucose as covariates.
+
+```{python}
+# Convert to pandas for statsmodels compatibility
 ancova_df = gluc_data.to_pandas()
 ancova_df["TRTP"] = pd.Categorical(ancova_df["TRTP"], categories=treatments)
+
+# Fit ANCOVA model: Change = Treatment + Baseline
 model = smf.ols("CHG ~ TRTP + BASE", data=ancova_df).fit()
 
-# Calculate LS means and confidence intervals
+# Display model summary
+# ANCOVA Model Summary
+model.rsquared
+model.fvalue, model.f_pvalue
+# Model coefficients
+model.summary().tables[1]
+```
+
+```{python}
+# Calculate adjusted means (LS means) at mean baseline value
 base_mean = ancova_df["BASE"].mean()
 var_cov = model.cov_params()
 ls_means = []
 
+# LS means calculated at baseline mean
+base_mean
+
 for i, trt in enumerate(treatments):
+    # Create prediction vector for LS mean calculation
+    # Model: CHG = intercept + trt_effect1*(trt==1) + trt_effect2*(trt==2) + base_effect*baseline
     x_pred = np.array([1, int(i==1), int(i==2), base_mean])
+
+    # Calculate LS mean
     ls_mean = model.predict(pd.DataFrame({"TRTP": [trt], "BASE": [base_mean]}))[0]
+
+    # Calculate standard error for confidence interval
     se_pred = np.sqrt(x_pred @ var_cov @ x_pred.T)
-    
+
     ls_means.append({
         "Treatment": trt,
         "LS_Mean": ls_mean,
+        "SE": se_pred,
         "CI_Lower": ls_mean - 1.96 * se_pred,
         "CI_Upper": ls_mean + 1.96 * se_pred
     })
+
+ls_means_df = pl.DataFrame(ls_means)
+# LS Means (95% CI)
+ls_means_df
 ```
 
-## Create Tables for RTF Output
+## Step 6: Pairwise Treatment Comparisons
+
+We calculate treatment differences and their statistical significance.
 
 ```{python}
-# Table 1: Descriptive Statistics
-tbl1_data = [
-    [
-        s["Treatment"],
-        str(s["N_Baseline"]),
-        f"{s['Baseline_Mean']:.1f} ({s['Baseline_SD']:.2f})",
-        str(s["N_Week24"]),
-        f"{s['Week24_Mean']:.1f} ({s['Week24_SD']:.2f})",
-        str(s["N_Change"]),
-        f"{s['Change_Mean']:.1f} ({s['Change_SD']:.2f})",
-        f"{ls['LS_Mean']:.2f} ({ls['CI_Lower']:.2f}, {ls['CI_Upper']:.2f})"
-    ]
-    for s, ls in zip(desc_stats, ls_means)
+# Calculate pairwise comparisons vs. placebo
+tbl2_data = []
+comparisons = [
+    ("Xanomeline Low Dose vs. Placebo", "TRTP[T.Xanomeline Low Dose]"),
+    ("Xanomeline High Dose vs. Placebo", "TRTP[T.Xanomeline High Dose]")
 ]
 
+for comp_name, trt_coef in comparisons:
+    # Extract coefficient estimates
+    coef = model.params[trt_coef]
+    se = model.bse[trt_coef]
+    t_stat = coef / se
+    df = model.df_resid
+    p_value = 2 * (1 - scipy_stats.t.cdf(abs(t_stat), df))
+
+    # Calculate confidence interval
+    ci_lower = coef - scipy_stats.t.ppf(0.975, df) * se
+    ci_upper = coef + scipy_stats.t.ppf(0.975, df) * se
+
+    tbl2_data.append({
+        "Comparison": comp_name,
+        "Estimate": coef,
+        "SE": se,
+        "CI_Lower": ci_lower,
+        "CI_Upper": ci_upper,
+        "t_stat": t_stat,
+        "p_value": p_value
+    })
+
+comparison_df = pl.DataFrame(tbl2_data)
+# Treatment comparisons vs. placebo
+comparison_df
+```
+
+## Step 7: Prepare Tables for RTF Output
+
+We format the analysis results into publication-ready tables.
+
+```{python}
+# Table 1: Descriptive Statistics and LS Means
+tbl1_data = []
+for s, ls in zip(desc_stats, ls_means):
+    tbl1_data.append([
+        s["Treatment"],
+        str(s["N_Baseline"]),
+        f"{s['Baseline_Mean']:.1f} ({s['Baseline_SD']:.2f})" if not np.isnan(s['Baseline_Mean']) else "",
+        str(s["N_Week24"]),
+        f"{s['Week24_Mean']:.1f} ({s['Week24_SD']:.2f})" if not np.isnan(s['Week24_Mean']) else "",
+        str(s["N_Change"]),
+        f"{s['Change_Mean']:.1f} ({s['Change_SD']:.2f})" if not np.isnan(s['Change_Mean']) else "",
+        f"{ls['LS_Mean']:.2f} ({ls['CI_Lower']:.2f}, {ls['CI_Upper']:.2f})"
+    ])
+
 tbl1 = pl.DataFrame(tbl1_data, orient="row", schema=[
-    "Treatment", "N_Base", "Mean_SD_Base", "N_Wk24", "Mean_SD_Wk24", 
+    "Treatment", "N_Base", "Mean_SD_Base", "N_Wk24", "Mean_SD_Wk24",
     "N_Chg", "Mean_SD_Chg", "LS_Mean_CI"
 ])
 
-# Table 2: Pairwise Comparisons
-tbl2_data = []
-for comp_name, trt_name in [("Xanomeline Low Dose - Placebo", "TRTP[T.Xanomeline Low Dose]"),
-                             ("Xanomeline High Dose - Placebo", "TRTP[T.Xanomeline High Dose]")] :
-    coef = model.params[trt_name]
-    se = model.bse[trt_name]
-    t_stat = coef / se
-    p_value = 2 * (1 - scipy_stats.t.cdf(abs(t_stat), model.df_resid))
-    
-    tbl2_data.append([
-        comp_name,
-        f"{coef:.2f} ({coef - 1.96*se:.2f}, {coef + 1.96*se:.2f})",
-        f"{p_value:.3f}"
-    ])
-
-tbl2 = pl.DataFrame(tbl2_data, orient="row", schema=["Comparison", "Diff_CI", "P_Value"])
+# Table 1 - Descriptive Statistics and LS Means
+tbl1
 ```
 
-## Create RTF Document
+```{python}
+# Table 2: Pairwise Comparisons (formatted for output)
+tbl2_formatted = []
+for row in tbl2_data:
+    tbl2_formatted.append([
+        row["Comparison"],
+        f"{row['Estimate']:.2f} ({row['CI_Lower']:.2f}, {row['CI_Upper']:.2f})",
+        f"{row['p_value']:.4f}" if row['p_value'] >= 0.0001 else "<0.0001"
+    ])
+
+tbl2 = pl.DataFrame(tbl2_formatted, orient="row", schema=["Comparison", "Diff_CI", "P_Value"])
+
+# Table 2 - Pairwise Comparisons
+tbl2
+```
+
+## Step 8: Create Regulatory-Compliant RTF Document
+
+We generate a comprehensive efficacy table following regulatory submission standards.
 
 ```{python}
-# Create RTF document with two sections
+# Create comprehensive RTF document with multiple table sections
 doc_ancova = rtf.RTFDocument(
     df=[tbl1, tbl2],
-    rtf_title=rtf.RTFTitle(text=[
-        "ANCOVA of Change from Baseline Glucose (mmol/L) at Week 24", "LOCF", 
-        "Efficacy Analysis Population"
-    ]),
+    rtf_title=rtf.RTFTitle(
+        text=[
+            "Analysis of Covariance (ANCOVA) of Change from Baseline in",
+            "Fasting Glucose (mmol/L) at Week 24 (LOCF)",
+            "Efficacy Analysis Population"
+        ]
+    ),
     rtf_column_header=[
-        [rtf.RTFColumnHeader(text=["", "Baseline", "Week 24", "Change from Baseline"],
-                           col_rel_width=[3, 2, 2, 4], text_justification=["l", "c", "c", "c"]),
-         rtf.RTFColumnHeader(text=["Treatment", "N", "Mean (SD)", "N", "Mean (SD)", "N", 
-                                  "Mean (SD)", "LS Mean (95% CI){^a}"],
-                           col_rel_width=[3, 0.7, 1.3, 0.7, 1.3, 0.7, 1.3, 2],
-                           text_justification=["l"] + ["c"] * 7, border_bottom="single")],
-        [rtf.RTFColumnHeader(text=["Pairwise Comparison", "Difference in LS Mean (95% CI){^a}", "p-Value"],
-                           col_rel_width=[5, 4, 2], text_justification=["l", "c", "c"])]
+        # Header for descriptive statistics table
+        [
+            rtf.RTFColumnHeader(
+                text=["", "Baseline", "Week 24 (LOCF)", "Change from Baseline", ""],
+                col_rel_width=[3, 2, 2, 3, 2],
+                text_justification=["l", "c", "c", "c", "c"],
+                text_format="b"
+            ),
+            rtf.RTFColumnHeader(
+                text=[
+                    "Treatment Group",
+                    "N", "Mean (SD)",
+                    "N", "Mean (SD)",
+                    "N", "Mean (SD)",
+                    "LS Mean (95% CI){^a}"
+                ],
+                col_rel_width=[3, 0.7, 1.3, 0.7, 1.3, 0.7, 1.3, 2],
+                text_justification=["l"] + ["c"] * 7,
+                border_bottom="single",
+                text_format="b"
+            )
+        ],
+        # Header for pairwise comparisons table
+        [
+            rtf.RTFColumnHeader(
+                text=[
+                    "Pairwise Comparison",
+                    "Difference in LS Mean (95% CI){^a}",
+                    "p-Value{^b}"
+                ],
+                col_rel_width=[5, 4, 2],
+                text_justification=["l", "c", "c"],
+                text_format="b",
+                border_bottom="single"
+            )
+        ]
     ],
     rtf_body=[
-        rtf.RTFBody(col_rel_width=[3, 0.7, 1.3, 0.7, 1.3, 0.7, 1.3, 2], 
-                   text_justification=["l"] + ["c"] * 7),
-        rtf.RTFBody(col_rel_width=[5, 4, 2], text_justification=["l", "c", "c"])
+        # Body for descriptive statistics
+        rtf.RTFBody(
+            col_rel_width=[3, 0.7, 1.3, 0.7, 1.3, 0.7, 1.3, 2],
+            text_justification=["l"] + ["c"] * 7
+        ),
+        # Body for pairwise comparisons
+        rtf.RTFBody(
+            col_rel_width=[5, 4, 2],
+            text_justification=["l", "c", "c"]
+        )
     ],
-    rtf_footnote=rtf.RTFFootnote(text=[
-        "{^a}Based on an ANCOVA model after adjusting baseline value. LOCF approach is used to impute missing values.",
-        "ANCOVA = Analysis of Covariance, LOCF = Last Observation Carried Forward",
-        "CI = Confidence Interval, LS = Least Squares, SD = Standard Deviation"
-    ]),
-    rtf_source=rtf.RTFSource(text=["Source: ADLBC dataset"])
+    rtf_footnote=rtf.RTFFootnote(
+        text=[
+            "{^a}LS means and differences in LS means are based on an ANCOVA model with treatment and baseline glucose as covariates.",
+            f"{{^b}}p-values are from the ANCOVA model testing treatment effects (overall F-test p-value: {model.f_pvalue:.4f}).",
+            "LOCF (Last Observation Carried Forward) approach is used for missing Week 24 values.",
+            "ANCOVA = Analysis of Covariance; CI = Confidence Interval; LS = Least Squares; SD = Standard Deviation"
+        ]
+    ),
+    rtf_source=rtf.RTFSource(
+        text=[
+            "Source: ADLBC Analysis Dataset",
+            f"Analysis conducted: {pd.Timestamp.now().strftime('%d%b%Y').upper()}",
+            "Statistical software: Python (statsmodels)"
+        ]
+    )
 )
 
+# Generate RTF file
 doc_ancova.write_rtf("rtf/tlf_efficacy_ancova.rtf")
 ```
 
