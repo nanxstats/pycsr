@@ -504,5 +504,5 @@ You now have a complete Python development environment with:
 - pytest for testing.
 - Quarto for documentation.
 
-Part 2 of this book will use these tools to build real clinical study reports,
+Next part will introduce how to create real clinical study reports,
 demonstrating TLF generation with `polars` and `rtflite`.

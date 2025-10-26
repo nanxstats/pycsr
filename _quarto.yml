@@ -48,11 +48,9 @@ book:
         - env-dev.qmd
         - env-uv.qmd
         - env-pkg.qmd
-    - part: "Reporting packages"
-      chapters:
-        - intro-polars.qmd
     - part: "Clinical trial project"
       chapters:
+        - tlf-overview.qmd
         - tlf-disposition.qmd
         - tlf-population.qmd
         - tlf-baseline.qmd
