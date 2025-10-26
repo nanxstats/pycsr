@@ -160,7 +160,7 @@ The `.count()` method provides a quick way to get subject counts by group.
 
 ```{python}
 # Count by treatment group
-adsl.group_by("TRT01A").count().sort("TRT01A")
+adsl.group_by("TRT01A").len().sort("TRT01A")
 ```
 
 You can also use `.agg()` with multiple aggregation functions:
@@ -254,11 +254,6 @@ Below is the meaning of relevant variables.
 - `AEDECOD`: Dictionary-Derived Term
 
 ```{python}
-import polars as pl
-import rtflite as rtf
-```
-
-```{python}
 # Load adverse events data
 df = pl.read_parquet("data/adae.parquet")
 
@@ -308,6 +303,7 @@ A minimal example below illustrates how to combine components to create an RTF t
 - `write_rtf()` saves encoded RTF into a `.rtf` file.
 
 ```{python}
+#| echo: false
 # Create simple RTF document
 doc = rtf.RTFDocument(
     df=tbl.head(6),
@@ -325,7 +321,7 @@ converter.convert("rtf/tlf_overview1.rtf", output_dir="pdf/", format="pdf", over
 
 <embed src="pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
 
-## Column width
+### Column width
 
 If we want to adjust the width of each column to provide more space to the first column,
 this can be achieved by updating `col_rel_width` in `RTFBody`.
@@ -338,6 +334,7 @@ Only the ratio of `col_rel_width` is used.
 Therefore it is equivalent to use `col_rel_width = [6,4,4,4]` or `col_rel_width = [1.5,1,1,1]`.
 
 ```{python}
+#| echo: false
 # Create RTF document with custom column widths
 doc = rtf.RTFDocument(
     df=tbl.head(6),
@@ -356,12 +353,13 @@ converter.convert("rtf/tlf_overview2.rtf", output_dir="pdf/", format="pdf", over
 
 <embed src="pdf/tlf_overview2.pdf" style="width:100%; height:400px" type="application/pdf">
 
-## Column headers
+### Column headers
 
 In `RTFColumnHeader`, the `text` argument provides the column header content
 as a list of strings.
 
 ```{python}
+#| echo: false
 # Create RTF document with column headers
 doc = rtf.RTFDocument(
     df=tbl.head(6),
@@ -397,6 +395,7 @@ By using `RTFColumnHeader` with `col_rel_width`, one can customize complicated c
 If there are multiple pages, column header will repeat at each page by default.
 
 ```{python}
+#| echo: false
 # Create RTF document with multi-line column headers
 doc = rtf.RTFDocument(
     df=tbl.head(50),
@@ -426,7 +425,7 @@ converter.convert("rtf/tlf_overview4.rtf", output_dir="pdf/", format="pdf", over
 
 <embed src="pdf/tlf_overview4.pdf" style="width:100%; height:400px" type="application/pdf">
 
-## Titles, footnotes, and data source
+### Titles, footnotes, and data source
 
 RTF documents can include additional components to provide context and documentation:
 
@@ -435,6 +434,7 @@ RTF documents can include additional components to provide context and documenta
 - `RTFSource`: Add data source attribution
 
 ```{python}
+#| echo: false
 # Create RTF document with titles, footnotes, and source
 doc = rtf.RTFDocument(
     df=tbl.head(15),
@@ -471,7 +471,7 @@ converter.convert("rtf/tlf_overview5.rtf", output_dir="pdf/", format="pdf", over
 
 Note the use of `\\line` in column headers to create line breaks within cells.
 
-## Text formatting and alignment
+### Text formatting and alignment
 
 rtflite supports various text formatting options:
 
@@ -480,6 +480,7 @@ rtflite supports various text formatting options:
 - **Font properties**: Font size, font family
 
 ```{python}
+#| echo: false
 # Create RTF document with text formatting and alignment
 doc = rtf.RTFDocument(
     df=tbl.head(10),
@@ -509,7 +510,7 @@ converter.convert("rtf/tlf_overview6.rtf", output_dir="pdf/", format="pdf", over
 
 <embed src="pdf/tlf_overview6.pdf" style="width:100%; height:400px" type="application/pdf">
 
-## Border customization
+### Border customization
 
 Table borders can be customized extensively:
 
@@ -518,6 +519,7 @@ Table borders can be customized extensively:
 - **Page borders**: `border_first`, `border_last` for first/last rows across pages
 
 ```{python}
+#| echo: false
 # Create RTF document with custom borders
 doc = rtf.RTFDocument(
     df=tbl.head(8),
@@ -545,128 +547,3 @@ converter.convert("rtf/tlf_overview7.rtf", output_dir="pdf/", format="pdf", over
 ```
 
 <embed src="pdf/tlf_overview7.pdf" style="width:100%; height:400px" type="application/pdf">
-
-## Page headers and footers
-
-RTF documents can include page headers and footers that appear on every page, positioned outside the main content area (compatible with r2rtf):
-
-- `RTFPageHeader`: Add headers with page numbering and custom text
-- `RTFPageFooter`: Add footers with attribution or confidentiality notices
-
-```{python}
-# Create RTF document with page headers and footers
-doc = rtf.RTFDocument(
-    df=tbl.head(15),
-    rtf_page_header=rtf.RTFPageHeader(
-        # Default: "Page \chpgn of {\field{\*\fldinst NUMPAGES }}"
-        # Uses r2rtf-compatible RTF field codes
-    ),
-    rtf_page_footer=rtf.RTFPageFooter(text="Confidential - Clinical Study Report"),
-    rtf_title=rtf.RTFTitle(
-        text=[
-            "Summary of Adverse Events by Treatment Group",
-            "With Page Headers and Footers",
-        ]
-    ),
-    rtf_column_header=rtf.RTFColumnHeader(
-        text=[
-            "Adverse Events",
-            "Placebo (N=86)",
-            "Xanomeline High Dose (N=84)",
-            "Xanomeline Low Dose (N=84)",
-        ],
-    ),
-    rtf_body=rtf.RTFBody(col_rel_width=[3, 2, 2, 2]),
-)
-
-doc.write_rtf("rtf/tlf_overview8.rtf")
-```
-
-```{python}
-#| include: false
-converter.convert("rtf/tlf_overview8.rtf", output_dir="pdf/", format="pdf", overwrite=True)
-```
-
-<embed src="pdf/tlf_overview8.pdf" style="width:100%; height:400px" type="application/pdf">
-
-### Custom header and footer formatting
-
-Headers and footers support full text formatting including custom alignment, font sizes, and styling:
-
-```{python}
-# Create RTF document with custom formatted headers and footers
-doc = rtf.RTFDocument(
-    df=tbl.head(10),
-    rtf_page_header=rtf.RTFPageHeader(
-        text="Study XYZ-123 | Page \\chpgn",
-        text_font_size=10,
-        text_justification="c",  # Center aligned
-        text_format="b",  # Bold
-    ),
-    rtf_page_footer=rtf.RTFPageFooter(
-        text=["Company Confidential"],
-        text_font_size=8,
-        text_justification="l",  # Left aligned
-    ),
-    rtf_title=rtf.RTFTitle(text="Adverse Events with Custom Headers/Footers"),
-    rtf_column_header=rtf.RTFColumnHeader(
-        text=[
-            "Adverse Events",
-            "Placebo",
-            "Xanomeline High Dose",
-            "Xanomeline Low Dose",
-        ],
-    ),
-    rtf_body=rtf.RTFBody(col_rel_width=[3, 2, 2, 2]),
-)
-
-doc.write_rtf("rtf/tlf_overview8b.rtf")
-```
-
-```{python}
-#| include: false
-converter.convert("rtf/tlf_overview8b.rtf", output_dir="pdf/", format="pdf", overwrite=True)
-```
-
-<embed src="pdf/tlf_overview8b.pdf" style="width:100%; height:400px" type="application/pdf">
-
-## Page layout and orientation
-
-`RTFPage` provides control over page layout:
-
-- **Orientation**: `portrait` or `landscape`
-- **Page size**: Custom width and height
-- **Margins**: Left, right, top, bottom, header, footer margins
-- **Rows per page**: Control pagination with `nrow`
-
-```{python}
-# Create RTF document with landscape layout
-doc = rtf.RTFDocument(
-    df=tbl.head(20),
-    rtf_page=rtf.RTFPage(
-        orientation="landscape",  # Landscape for wider tables
-        nrow=10,
-        border_first="dashed",  # Dash border for first/last pages
-        border_last="dashed",
-    ),
-    rtf_title=rtf.RTFTitle(text="Adverse Events Summary - Landscape Layout"),
-    rtf_column_header=rtf.RTFColumnHeader(
-        text=[
-            "Adverse Events",
-            "Placebo (N=86)",
-            "Xanomeline High Dose (N=84)",
-            "Xanomeline Low Dose (N=84)",
-        ],
-    ),
-    rtf_body=rtf.RTFBody(col_rel_width=[4, 2, 2, 2]),
-)
-
-doc.write_rtf("rtf/tlf_overview10.rtf")
-```
-
-```{python}
-#| include: false
-converter.convert("rtf/tlf_overview10.rtf", output_dir="pdf/", format="pdf", overwrite=True)
-```
-
-<embed src="pdf/tlf_overview10.pdf" style="width:100%; height:400px" type="application/pdf">
