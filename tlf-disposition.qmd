@@ -27,7 +27,7 @@ import rtflite as rtf # Reporting in RTF format
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Configure Polars to show only first 5 rows
 pl.Config.set_tbl_rows(5)
 ```
@@ -234,7 +234,7 @@ doc_disp.write_rtf("rtf/tlf_disposition.rtf")  # Save as RTF for submission
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()
