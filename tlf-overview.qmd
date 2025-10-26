@@ -1,0 +1,664 @@
+---
+title: "TLF overview"
+---
+
+## Overview
+
+Tables, listings, and figures (TLFs) are essential components of clinical study reports (CSRs) and regulatory submissions. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), 
+TLFs provide standardized summaries of clinical trial data that support regulatory decision-making.
+
+This chapter provides an overview of creating TLFs using Python, 
+focusing on the tools and workflows demonstrated throughout this book.
+
+## Background
+
+Submitting clinical trial results to regulatory agencies is a crucial aspect of clinical development. 
+The [Electronic Common Technical Document (eCTD)](https://en.wikipedia.org/wiki/Electronic_common_technical_document) 
+has emerged as the global standard format for regulatory submissions. 
+For instance, the United States Food and Drug Administration (US FDA) [mandates the use of eCTD](https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/electronic-common-technical-document-ectd) for new drug applications and biologics license applications.
+
+A CSR provides comprehensive information about the methods and results of an individual clinical study. 
+To support the statistical analysis, numerous tables, listings, 
+and figures are included within the main text and appendices. 
+The creation of CSR is a collaborative effort that involves 
+various professionals such as clinicians, medical writers, statisticians, and statistical programmers.
+
+Within an organization, these professionals typically collaborate to define, develop, validate, and deliver the necessary TLFs for a CSR. These TLFs serve to summarize the efficacy and/or safety of the pharmaceutical product under study. 
+In the pharmaceutical industry, Microsoft Word is widely utilized for CSR preparation. 
+As a result, the deliverables from statisticians and statistical programmers are commonly provided in formats such as `.rtf`, `.doc`, `.docx` to align with industry standards and requirements.
+
+::: {.callout-note}
+Each organization may define specific TLF format requirements that differ from the examples in this book. It is advisable to consult and adhere to the guidelines and specifications set by your respective organization when preparing TLFs for submission.
+:::
+
+By following the ICH E3 guidance, most TLFs in a CSR are located at:
+
+- Section 10: Study participants
+- Section 11: Efficacy evaluation
+- Section 12: Safety evaluation
+- Section 14: Tables, listings, and figures referrals but not included in the text
+- Section 16: Appendices
+
+## Datasets
+
+The dataset structure follows [CDISC Analysis Data Model (ADaM)](https://www.cdisc.org/standards/foundational/adam).
+
+In this project, we use publicly available CDISC pilot study data, which is accessible through the [CDISC GitHub repository](https://github.com/cdisc-org/sdtm-adam-pilot-project/tree/master/updated-pilot-submission-package/900172/m5/datasets/cdiscpilot01/analysis/adam/datasets).
+
+We have converted these datasets from the `.xpt` format to the `.parquet` format for ease of use and compatibility with Python tools. The dataset structure adheres to the CDISC [Analysis Data Model (ADaM)](https://www.cdisc.org/standards/foundational/adam) standard.
+
+## Tools
+
+To exemplify the generation of TLFs in RTF format, we rely on the functionality provided by two Python packages:
+
+- [Polars](https://pola.rs): preparation of datasets in a format suitable for reporting purposes. Polars offers a comprehensive suite of tools and functions for data manipulation and transformation, ensuring that the data is structured appropriately.
+- [rtflite](https://github.com/pharmaverse/rtflite): creation of RTF files. The rtflite package offers functions specifically designed for generating RTF files, allowing us to produce TLFs in the desired format.
+
+## Polars
+
+Polars is an open-source library for data manipulation implemented in Rust
+with Python bindings.
+It offers exceptional performance while maintaining a user-friendly interface for interactive data analysis.
+
+Key advantages of Polars include:
+
+- **Performance**: 10-100x faster than pandas for most operations due to Rust implementation
+- **Memory efficiency**: Lazy evaluation and columnar storage reduce memory usage
+- **Familiar syntax**: Similar to tidyverse-style pipelines, making it accessible to R users
+- **Type safety**: Strong typing system that catches errors early in development
+
+The creators of Polars have provided exceptional 
+[documentation](https://docs.pola.rs/api/python/stable/reference/index.html) and [tutorials](https://docs.pola.rs/user-guide/getting-started) that serve as valuable resources for learning and mastering the functionalities of the library.
+
+Furthermore, there are several books available that serve as introductions to Polars:
+
+- [Python Polars: The Definitive Guide](https://polarsguide.com/)
+
+::: {.callout-note}
+In this book, we assume that the reader has some experience with data manipulation concepts.
+This prior knowledge enables a more efficient and focused exploration of the clinical reporting
+concepts presented throughout the book.
+:::
+
+To illustrate the basic usage of Polars, let's work with a sample ADSL dataset. 
+This dataset contains subject-level information from a clinical trial, 
+which will serve as a practical example for generating summaries using Polars.
+
+```{python}
+import polars as pl
+
+# Read clinical data
+adsl = pl.read_parquet("data/adsl.parquet")
+
+# Select columns 
+adsl = adsl.select(["USUBJID", "TRT01A", "AGE", "SEX"])
+
+# Basic data exploration
+adsl.head()
+```
+
+Key Polars operations for clinical reporting include:
+
+
+### I/O
+
+Polars supports multiple data formats for input and output (see the [I/O guide](https://docs.pola.rs/user-guide/io/)).
+For clinical development, we recommend the `.parquet` format because tools in Python, R, and Julia can read and write it without conversion.
+The example below loads subject-level ADSL data with Polars.
+
+```{python}
+import polars as pl
+adsl = pl.read_parquet("data/adsl.parquet")
+adsl = adsl.select("STUDYID", "USUBJID", "TRT01A", "AGE", "SEX") # select columns
+adsl.head()
+```
+
+### Filtering
+
+Filtering in Polars uses the `.filter()` method with column expressions.
+Below are examples applied to the ADSL data.
+
+```{python}
+# Filter female subjects
+adsl.filter(pl.col("SEX") == "Female").head()
+```
+
+```{python}
+# Filter subjects with Age >= 65
+adsl.filter(pl.col("AGE") >= 65).head()
+```
+
+### Deriving
+
+Deriving new variables is common in clinical data analysis for creating age groups, BMI categories, or treatment flags.
+Polars uses `.with_columns()` to add new columns while keeping existing ones.
+
+```{python}
+# Create age groups
+adsl.with_columns([
+    pl.when(pl.col("AGE") < 65)
+      .then(pl.lit("<65"))
+      .otherwise(pl.lit(">=65"))
+      .alias("AGECAT")
+]).head()
+```
+
+### Grouping
+
+Grouping operations are fundamental for creating summary statistics in clinical reports.
+Polars uses `group_by()` followed by aggregation functions to compute counts, means, and other statistics by categorical variables like treatment groups.
+
+The `.count()` method provides a quick way to get subject counts by group.
+
+```{python}
+# Count by treatment group
+adsl.group_by("TRT01A").count().sort("TRT01A")
+```
+
+You can also use `.agg()` with multiple aggregation functions:
+
+```{python}
+# Age statistics by treatment group
+adsl.group_by("TRT01A").agg([
+    pl.col("AGE").mean().round(1).alias("mean_age"),
+    pl.col("AGE").std().round(2).alias("sd_age")
+]).sort("TRT01A")
+```
+
+
+### Joining
+
+Joining datasets is essential for combining subject-level data (ADSL) 
+with event-level data (e.g. ADAE, ADLB).
+Polars supports various join types including inner, left, and full joins.
+
+Here is a toy example that splits ADSL and joins it back by `USUBJID`. 
+
+```{python}
+# Create a simple demographics subset
+demo = adsl.select("USUBJID", "AGE", "SEX").head(3)
+
+# Create treatment info subset
+trt = adsl.select("USUBJID", "TRT01A").head(3)
+
+# Left join to combine datasets
+demo.join(trt, on="USUBJID", how="left")
+```
+
+### Pivoting
+
+Pivoting transforms data from long to wide format,
+commonly needed for creating tables.
+Use `.pivot()` to reshape grouped data into columns.
+
+```{python}
+# Create summary by treatment and sex
+(
+    adsl
+        .group_by(["TRT01A", "SEX"])
+        .agg(pl.len().alias("n"))
+        .pivot(
+            values="n",
+            index="SEX",
+            on="TRT01A"
+        )
+)
+``` 
+
+## rtflite
+
+```{python}
+#| include: false
+from rtflite import LibreOfficeConverter
+
+converter = LibreOfficeConverter()
+```
+
+rtflite is a Python package for creating production-ready tables and figures
+in RTF format. The package is designed to:
+
+- Provide simple Python classes that map to table elements
+  (title, headers, body, footnotes) for intuitive table construction.
+- Offer a canonical Python API with a clear, composable interface.
+- Focus exclusively on **table formatting and layout**,
+  leaving data manipulation to dataframe libraries like polars or pandas.
+- Minimize external dependencies for maximum portability and reliability.
+
+Creating an RTF table involves three steps:
+
+- Design the desired table layout and structure.
+- Configure the appropriate rtflite components.
+- Generate and save the RTF document.
+
+This guide introduces rtflite's core components and demonstrates how to turn
+dataframes into Tables, Listings, and Figures (TLFs) for clinical reporting.
+
+### Data: adverse events
+
+To explore the RTF generation capabilities in rtflite, we will use the
+dataset `data/adae.parquet`. This dataset contains adverse events (AE) information
+from a clinical trial.
+
+Below is the meaning of relevant variables.
+
+- `USUBJID`: Unique Subject Identifier
+- `TRTA`: Actual Treatment
+- `AEDECOD`: Dictionary-Derived Term
+
+```{python}
+import polars as pl
+import rtflite as rtf
+```
+
+```{python}
+# Load adverse events data
+df = pl.read_parquet("data/adae.parquet")
+
+df.select(["USUBJID", "TRTA", "AEDECOD"])
+```
+
+### Table-ready data
+
+In this AE example, we provide the number of subjects with each type of AE by treatment group.
+
+```{python}
+tbl = (
+    df.group_by(["TRTA", "AEDECOD"])
+    .agg(pl.len().alias("n"))
+    .sort("TRTA")
+    .pivot(values="n", index="AEDECOD", on="TRTA")
+    .fill_null(0)
+    .sort("AEDECOD")  # Sort by adverse event name to match R output
+)
+
+tbl
+```
+
+### Table component classes
+
+rtflite provides dedicated classes for each table component. Commonly used classes include:
+
+- `RTFPage`: RTF page information (orientation, margins, pagination).
+- `RTFPageHeader`: Page headers with page numbering (compatible with r2rtf).
+- `RTFPageFooter`: Page footers for attribution and notices.
+- `RTFTitle`: RTF title information.
+- `RTFColumnHeader`: RTF column header information.
+- `RTFBody`: RTF table body information.
+- `RTFFootnote`: RTF footnote information.
+- `RTFSource`: RTF data source information.
+
+These component classes work together to build complete RTF documents.
+A full list of all classes and their parameters can be found in the
+[API reference](https://merck.github.io/rtflite/reference/).
+
+### Simple example
+
+A minimal example below illustrates how to combine components to create an RTF table.
+
+- `RTFBody()` defines table body layout.
+- `RTFDocument()` transfers table layout information into RTF syntax.
+- `write_rtf()` saves encoded RTF into a `.rtf` file.
+
+```{python}
+# Create simple RTF document
+doc = rtf.RTFDocument(
+    df=tbl.head(6),
+    rtf_body=rtf.RTFBody(),  # Step 1: Add table attributes
+)
+
+# Step 2 & 3: Convert to RTF and write to file
+doc.write_rtf("rtf/tlf_overview1.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview1.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Column width
+
+If we want to adjust the width of each column to provide more space to the first column,
+this can be achieved by updating `col_rel_width` in `RTFBody`.
+
+The input of `col_rel_width` is a list with same length for number of columns.
+This argument defines the relative length of each column within a pre-defined total column width.
+
+In this example, the defined relative width is 3:2:2:2.
+Only the ratio of `col_rel_width` is used.
+Therefore it is equivalent to use `col_rel_width = [6,4,4,4]` or `col_rel_width = [1.5,1,1,1]`.
+
+```{python}
+# Create RTF document with custom column widths
+doc = rtf.RTFDocument(
+    df=tbl.head(6),
+    rtf_body=rtf.RTFBody(
+        col_rel_width=[3, 2, 2, 2]  # Define relative width
+    ),
+)
+
+doc.write_rtf("rtf/tlf_overview2.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview2.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview2.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Column headers
+
+In `RTFColumnHeader`, the `text` argument provides the column header content
+as a list of strings.
+
+```{python}
+# Create RTF document with column headers
+doc = rtf.RTFDocument(
+    df=tbl.head(6),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo",
+            "Xanomeline High Dose",
+            "Xanomeline Low Dose",
+        ],
+    ),
+    rtf_body=rtf.RTFBody(col_rel_width=[3, 2, 2, 2]),
+)
+
+doc.write_rtf("rtf/tlf_overview3.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview3.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview3.pdf" style="width:100%; height:400px" type="application/pdf">
+
+We also allow column headers be displayed in multiple lines.
+If an empty column name is needed for a column,
+you can insert an empty string. For example, `["name 1", "", "name 3"]`.
+
+In `RTFColumnHeader`, the `col_rel_width` can be used to align column header
+with different number of columns.
+
+By using `RTFColumnHeader` with `col_rel_width`, one can customize complicated column headers.
+If there are multiple pages, column header will repeat at each page by default.
+
+```{python}
+# Create RTF document with multi-line column headers
+doc = rtf.RTFDocument(
+    df=tbl.head(50),
+    rtf_page=rtf.RTFPage(nrow=15),
+    rtf_column_header=[
+        rtf.RTFColumnHeader(text=[" ", "Treatment"], col_rel_width=[3, 3]),
+        rtf.RTFColumnHeader(
+            text=[
+                "Adverse Events",
+                "Placebo",
+                "Xanomeline High Dose",
+                "Xanomeline Low Dose",
+            ],
+            col_rel_width=[3, 1, 1, 1],
+        ),
+    ],
+    rtf_body=rtf.RTFBody(col_rel_width=[3, 1, 1, 1]),
+)
+
+doc.write_rtf("rtf/tlf_overview4.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview4.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview4.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Titles, footnotes, and data source
+
+RTF documents can include additional components to provide context and documentation:
+
+- `RTFTitle`: Add document titles and subtitles
+- `RTFFootnote`: Add explanatory footnotes
+- `RTFSource`: Add data source attribution
+
+```{python}
+# Create RTF document with titles, footnotes, and source
+doc = rtf.RTFDocument(
+    df=tbl.head(15),
+    rtf_title=rtf.RTFTitle(
+        text=["Summary of Adverse Events by Treatment Group", "Safety Analysis Set"]
+    ),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo\\line (N=86)",
+            "Xanomeline High Dose\\line (N=84)",
+            "Xanomeline Low Dose\\line (N=84)",
+        ],
+    ),
+    rtf_body=rtf.RTFBody(col_rel_width=[3, 2, 2, 2]),
+    rtf_footnote=rtf.RTFFootnote(
+        text=[
+            "Adverse events are coded using MedDRA version 25.0.",
+            "Events are sorted alphabetically by preferred term.",
+        ]
+    ),
+    rtf_source=rtf.RTFSource(text="Source: ADAE dataset, Data cutoff: 01JAN2023"),
+)
+
+doc.write_rtf("rtf/tlf_overview5.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview5.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview5.pdf" style="width:100%; height:400px" type="application/pdf">
+
+Note the use of `\\line` in column headers to create line breaks within cells.
+
+## Text formatting and alignment
+
+rtflite supports various text formatting options:
+
+- **Text formatting**: Bold (`b`), italic (`i`), underline (`u`), strikethrough (`s`)
+- **Text alignment**: Left (`l`), center (`c`), right (`r`), justify (`j`)
+- **Font properties**: Font size, font family
+
+```{python}
+# Create RTF document with text formatting and alignment
+doc = rtf.RTFDocument(
+    df=tbl.head(10),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo",
+            "Xanomeline High Dose",
+            "Xanomeline Low Dose",
+        ],
+        text_format="b",  # Bold headers
+        text_justification=["l", "c", "c", "c"],
+    ),
+    rtf_body=rtf.RTFBody(
+        col_rel_width=[3, 1, 1, 1],
+        text_justification=["l", "c", "c", "c"],
+    ),
+)
+
+doc.write_rtf("rtf/tlf_overview6.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview6.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview6.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Border customization
+
+Table borders can be customized extensively:
+
+- **Border styles**: `single`, `double`, `thick`, `dotted`, `dashed`
+- **Border sides**: `border_top`, `border_bottom`, `border_left`, `border_right`
+- **Page borders**: `border_first`, `border_last` for first/last rows across pages
+
+```{python}
+# Create RTF document with custom borders
+doc = rtf.RTFDocument(
+    df=tbl.head(8),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo",
+            "Xanomeline High Dose",
+            "Xanomeline Low Dose",
+        ],
+        border_bottom=["single", "double", "single", "single"],
+    ),
+    rtf_body=rtf.RTFBody(
+        col_rel_width=[3, 2, 2, 2],
+        border_left=["single", "", "", ""],
+    ),
+)
+
+doc.write_rtf("rtf/tlf_overview7.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview7.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview7.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Page headers and footers
+
+RTF documents can include page headers and footers that appear on every page, positioned outside the main content area (compatible with r2rtf):
+
+- `RTFPageHeader`: Add headers with page numbering and custom text
+- `RTFPageFooter`: Add footers with attribution or confidentiality notices
+
+```{python}
+# Create RTF document with page headers and footers
+doc = rtf.RTFDocument(
+    df=tbl.head(15),
+    rtf_page_header=rtf.RTFPageHeader(
+        # Default: "Page \chpgn of {\field{\*\fldinst NUMPAGES }}"
+        # Uses r2rtf-compatible RTF field codes
+    ),
+    rtf_page_footer=rtf.RTFPageFooter(text="Confidential - Clinical Study Report"),
+    rtf_title=rtf.RTFTitle(
+        text=[
+            "Summary of Adverse Events by Treatment Group",
+            "With Page Headers and Footers",
+        ]
+    ),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo (N=86)",
+            "Xanomeline High Dose (N=84)",
+            "Xanomeline Low Dose (N=84)",
+        ],
+    ),
+    rtf_body=rtf.RTFBody(col_rel_width=[3, 2, 2, 2]),
+)
+
+doc.write_rtf("rtf/tlf_overview8.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview8.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview8.pdf" style="width:100%; height:400px" type="application/pdf">
+
+### Custom header and footer formatting
+
+Headers and footers support full text formatting including custom alignment, font sizes, and styling:
+
+```{python}
+# Create RTF document with custom formatted headers and footers
+doc = rtf.RTFDocument(
+    df=tbl.head(10),
+    rtf_page_header=rtf.RTFPageHeader(
+        text="Study XYZ-123 | Page \\chpgn",
+        text_font_size=10,
+        text_justification="c",  # Center aligned
+        text_format="b",  # Bold
+    ),
+    rtf_page_footer=rtf.RTFPageFooter(
+        text=["Company Confidential"],
+        text_font_size=8,
+        text_justification="l",  # Left aligned
+    ),
+    rtf_title=rtf.RTFTitle(text="Adverse Events with Custom Headers/Footers"),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo",
+            "Xanomeline High Dose",
+            "Xanomeline Low Dose",
+        ],
+    ),
+    rtf_body=rtf.RTFBody(col_rel_width=[3, 2, 2, 2]),
+)
+
+doc.write_rtf("rtf/tlf_overview8b.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview8b.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview8b.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Page layout and orientation
+
+`RTFPage` provides control over page layout:
+
+- **Orientation**: `portrait` or `landscape`
+- **Page size**: Custom width and height
+- **Margins**: Left, right, top, bottom, header, footer margins
+- **Rows per page**: Control pagination with `nrow`
+
+```{python}
+# Create RTF document with landscape layout
+doc = rtf.RTFDocument(
+    df=tbl.head(20),
+    rtf_page=rtf.RTFPage(
+        orientation="landscape",  # Landscape for wider tables
+        nrow=10,
+        border_first="dashed",  # Dash border for first/last pages
+        border_last="dashed",
+    ),
+    rtf_title=rtf.RTFTitle(text="Adverse Events Summary - Landscape Layout"),
+    rtf_column_header=rtf.RTFColumnHeader(
+        text=[
+            "Adverse Events",
+            "Placebo (N=86)",
+            "Xanomeline High Dose (N=84)",
+            "Xanomeline Low Dose (N=84)",
+        ],
+    ),
+    rtf_body=rtf.RTFBody(col_rel_width=[4, 2, 2, 2]),
+)
+
+doc.write_rtf("rtf/tlf_overview10.rtf")
+```
+
+```{python}
+#| include: false
+converter.convert("rtf/tlf_overview10.rtf", output_dir="pdf/", format="pdf", overwrite=True)
+```
+
+<embed src="pdf/tlf_overview10.pdf" style="width:100%; height:400px" type="application/pdf">

@@ -140,7 +140,7 @@ understanding the table shell, statistical method, and regulatory requirements.
 
 **Software architect mindset**:
 Evaluate model outputs critically. Can you spot issues with
-data transformations? Do the statistical computations match the SAP?
+data transformations? Do the statistical computations match the statistical analysis plan?
 Is the output format submission-ready?
 
 ::: callout-warning

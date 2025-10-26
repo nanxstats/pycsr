@@ -48,18 +48,16 @@ book:
         - env-dev.qmd
         - env-uv.qmd
         - env-pkg.qmd
-    - part: "Reporting packages"
+    - part: "Clinical trial project"
       chapters:
-        - intro-polars.qmd
-    - part: "Tables, Listings, and Figures"
-      chapters:
+        - tlf-overview.qmd
         - tlf-disposition.qmd
         - tlf-population.qmd
         - tlf-baseline.qmd
         - tlf-ae-summary.qmd
         - tlf-ae-specific.qmd
         - tlf-efficacy-ancova.qmd
-    - summary.qmd
+    - part: "eCTD submission package"
     - references.qmd
 
 bibliography: references.bib
