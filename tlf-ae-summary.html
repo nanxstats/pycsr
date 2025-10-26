@@ -360,11 +360,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>This tutorial shows you how to create an AE summary table using Python’s <code>rtflite</code> package.</p>
 <embed src="pdf/tlf_ae_summary.pdf" style="width:100%; height:600px" type="application/pdf">
-<div id="ab64ad63" class="cell" data-execution_count="1">
+<div id="4c5d2ab8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9435f13d" class="cell" data-execution_count="2">
+<div id="b29ebf6e" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>polars.config.Config</code></pre>
 </div>
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-load-data" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">8.2</span> Step 1: Load Data</h2>
 <p>We need two datasets for AE analysis: the subject-level dataset (ADSL) and the adverse events dataset (ADAE).</p>
-<div id="390f59a6" class="cell" data-execution_count="3">
+<div id="dc0eac79" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load datasets</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>adae <span class="op">=</span> pl.read_parquet(<span class="st">"data/adae.parquet"</span>)</span>
@@ -438,7 +438,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="dbba92dd" class="cell" data-execution_count="4">
+<div id="a3394fb9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display key variables from ADAE</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adae.select([<span class="st">"USUBJID"</span>, <span class="st">"AEREL"</span>, <span class="st">"AESER"</span>, <span class="st">"AEOUT"</span>, <span class="st">"AEACN"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -527,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-filter-safety-population" class="level2" data-number="8.3">
 <h2 data-number="8.3" class="anchored" data-anchor-id="step-2-filter-safety-population"><span class="header-section-number">8.3</span> Step 2: Filter Safety Population</h2>
 <p>For safety analyses, we focus on participants who received at least one dose of study treatment.</p>
-<div id="662bcb6c" class="cell" data-execution_count="5">
+<div id="e034868f" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to safety population</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>adsl_safety <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>])</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -579,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="832b7a74" class="cell" data-execution_count="6">
+<div id="bc9825c9" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join treatment information to AE data</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adae_safety <span class="op">=</span> adae.join(adsl_safety, on<span class="op">=</span><span class="st">"USUBJID"</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -593,7 +593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-define-ae-categories" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="step-3-define-ae-categories"><span class="header-section-number">8.4</span> Step 3: Define AE Categories</h2>
 <p>We’ll calculate participant counts for standard AE categories used in regulatory submissions.</p>
-<div id="a3432786" class="cell" data-execution_count="7">
+<div id="57cfd026" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_participants(df, condition<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Count unique participants meeting a condition</span></span>
@@ -631,7 +631,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>categories.append(any_ae)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ce4ec449" class="cell" data-execution_count="8">
+<div id="bcb21396" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. With drug-related adverse event</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>drug_related <span class="op">=</span> count_participants(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
@@ -650,7 +650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>categories.append(serious)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ba95cac7" class="cell" data-execution_count="9">
+<div id="d634ca13" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. With serious drug-related adverse event</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>serious_drug_related <span class="op">=</span> count_participants(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    adae_safety,</span>
@@ -683,7 +683,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-4-combine-and-calculate-percentages" class="level2" data-number="8.5">
 <h2 data-number="8.5" class="anchored" data-anchor-id="step-4-combine-and-calculate-percentages"><span class="header-section-number">8.5</span> Step 4: Combine and Calculate Percentages</h2>
 <p>Now we combine all categories and calculate percentages based on the safety population.</p>
-<div id="e1b365cc" class="cell" data-execution_count="10">
+<div id="062a807e" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all categories</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ae_summary <span class="op">=</span> pl.concat(categories, how<span class="op">=</span><span class="st">"diagonal"</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -781,7 +781,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-format-for-display" class="level2" data-number="8.6">
 <h2 data-number="8.6" class="anchored" data-anchor-id="step-5-format-for-display"><span class="header-section-number">8.6</span> Step 5: Format for Display</h2>
 <p>We’ll format the counts and percentages for the final table display.</p>
-<div id="5da7c4ea" class="cell" data-execution_count="11">
+<div id="8f223c22" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format display values</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ae_formatted <span class="op">=</span> ae_summary.with_columns([</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show counts as strings, including zeros</span></span>
@@ -866,7 +866,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-6-create-final-table-structure" class="level2" data-number="8.7">
 <h2 data-number="8.7" class="anchored" data-anchor-id="step-6-create-final-table-structure"><span class="header-section-number">8.7</span> Step 6: Create Final Table Structure</h2>
 <p>We reshape the data to create the final table with treatments as columns.</p>
-<div id="07508607" class="cell" data-execution_count="12">
+<div id="e3a5f986" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define category order for consistent display</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>category_order <span class="op">=</span> [</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Participants in population"</span>,</span>
@@ -992,7 +992,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-7-generate-publication-ready-output" class="level2" data-number="8.8">
 <h2 data-number="8.8" class="anchored" data-anchor-id="step-7-generate-publication-ready-output"><span class="header-section-number">8.8</span> Step 7: Generate Publication-Ready Output</h2>
 <p>Finally, we format the AE summary table for regulatory submission using the <code>rtflite</code> package.</p>
-<div id="eed9b816" class="cell" data-message="false" data-execution_count="13">
+<div id="d76e2297" class="cell" data-message="false" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get population sizes for column headers</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>n_placebo <span class="op">=</span> pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> <span class="st">"Placebo"</span>)[<span class="st">"N"</span>][<span class="dv">0</span>]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>n_low <span class="op">=</span> pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> <span class="st">"Xanomeline Low Dose"</span>)[<span class="st">"N"</span>][<span class="dv">0</span>]</span>
@@ -1050,7 +1050,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_ae_summary.rtf</code></pre>
 </div>
 </div>
-<div id="bed64d71" class="cell" data-execution_count="14">
+<div id="90c72f88" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>PosixPath('pdf/tlf_ae_summary.pdf')</code></pre>
 </div>

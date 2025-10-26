@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -107,6 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <meta property="og:title" content="10&nbsp; ANCOVA efficacy analysis – Python for Clinical Study Reports and Submission">
@@ -298,10 +301,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup"><span class="header-section-number">10.1</span> Setup</a></li>
-  <li><a href="#prepare-analysis-data" id="toc-prepare-analysis-data" class="nav-link" data-scroll-target="#prepare-analysis-data"><span class="header-section-number">10.2</span> Prepare Analysis Data</a></li>
-  <li><a href="#create-tables-for-rtf-output" id="toc-create-tables-for-rtf-output" class="nav-link" data-scroll-target="#create-tables-for-rtf-output"><span class="header-section-number">10.3</span> Create Tables for RTF Output</a></li>
-  <li><a href="#create-rtf-document" id="toc-create-rtf-document" class="nav-link" data-scroll-target="#create-rtf-document"><span class="header-section-number">10.4</span> Create RTF Document</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">10.1</span> Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">10.2</span> Setup</a></li>
+  <li><a href="#step-1-explore-laboratory-data-structure" id="toc-step-1-explore-laboratory-data-structure" class="nav-link" data-scroll-target="#step-1-explore-laboratory-data-structure"><span class="header-section-number">10.3</span> Step 1: Explore Laboratory Data Structure</a></li>
+  <li><a href="#step-2-define-analysis-population-and-endpoint" id="toc-step-2-define-analysis-population-and-endpoint" class="nav-link" data-scroll-target="#step-2-define-analysis-population-and-endpoint"><span class="header-section-number">10.4</span> Step 2: Define Analysis Population and Endpoint</a></li>
+  <li><a href="#step-3-implement-locf-imputation-strategy" id="toc-step-3-implement-locf-imputation-strategy" class="nav-link" data-scroll-target="#step-3-implement-locf-imputation-strategy"><span class="header-section-number">10.5</span> Step 3: Implement LOCF Imputation Strategy</a></li>
+  <li><a href="#step-4-calculate-descriptive-statistics" id="toc-step-4-calculate-descriptive-statistics" class="nav-link" data-scroll-target="#step-4-calculate-descriptive-statistics"><span class="header-section-number">10.6</span> Step 4: Calculate Descriptive Statistics</a></li>
+  <li><a href="#step-5-perform-ancova-analysis" id="toc-step-5-perform-ancova-analysis" class="nav-link" data-scroll-target="#step-5-perform-ancova-analysis"><span class="header-section-number">10.7</span> Step 5: Perform ANCOVA Analysis</a></li>
+  <li><a href="#step-6-pairwise-treatment-comparisons" id="toc-step-6-pairwise-treatment-comparisons" class="nav-link" data-scroll-target="#step-6-pairwise-treatment-comparisons"><span class="header-section-number">10.8</span> Step 6: Pairwise Treatment Comparisons</a></li>
+  <li><a href="#step-7-prepare-tables-for-rtf-output" id="toc-step-7-prepare-tables-for-rtf-output" class="nav-link" data-scroll-target="#step-7-prepare-tables-for-rtf-output"><span class="header-section-number">10.9</span> Step 7: Prepare Tables for RTF Output</a></li>
+  <li><a href="#step-8-create-regulatory-compliant-rtf-document" id="toc-step-8-create-regulatory-compliant-rtf-document" class="nav-link" data-scroll-target="#step-8-create-regulatory-compliant-rtf-document"><span class="header-section-number">10.10</span> Step 8: Create Regulatory-Compliant RTF Document</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/tlf-efficacy-ancova.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/tlf-efficacy-ancova.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
@@ -340,10 +349,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create ANCOVA efficacy analysis tables to evaluate treatment effects while controlling for baseline covariates. Learn to perform ANCOVA modeling with missing data imputation using Python statistical libraries and present results in regulatory format with rtflite.</p>
 </div>
 </div>
-<p>This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.</p>
-<section id="setup" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">10.1</span> Setup</h2>
-<div id="ec91706b" class="cell" data-execution_count="1">
+<section id="overview" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">10.1</span> Overview</h2>
+<p>Analysis of Covariance (ANCOVA) is the primary statistical method for efficacy evaluation in clinical trials. Following <a href="https://database.ich.org/sites/default/files/E9_Guideline.pdf">ICH E9 guidance</a> on statistical principles for clinical trials, ANCOVA provides a robust framework for comparing treatment effects while controlling for baseline covariates.</p>
+<p>Key features of ANCOVA efficacy analysis include:</p>
+<ul>
+<li><strong>Covariate adjustment</strong>: Controls for baseline values to reduce variability</li>
+<li><strong>Least squares means</strong>: Provides treatment effect estimates adjusted for covariates</li>
+<li><strong>Missing data handling</strong>: Implements appropriate imputation strategies (e.g., LOCF, MMRM)</li>
+<li><strong>Pairwise comparisons</strong>: Tests specific treatment contrasts with confidence intervals</li>
+<li><strong>Regulatory compliance</strong>: Follows statistical analysis plan specifications</li>
+</ul>
+<p>This tutorial demonstrates how to create a comprehensive ANCOVA efficacy table for glucose change from baseline using Python’s statistical libraries and <code>rtflite</code> for regulatory-compliant formatting.</p>
+<embed src="pdf/tlf_efficacy_ancova.pdf" style="width:100%; height:600px" type="application/pdf">
+</section>
+<section id="setup" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">10.2</span> Setup</h2>
+<div id="f83ba8e6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -351,167 +373,1048 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats <span class="im">as</span> scipy_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="6efa05e9" class="cell" data-execution_count="2">
+<div id="35041153" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>polars.config.Config</code></pre>
 </div>
 </div>
-<div id="b039f3bb" class="cell" data-execution_count="3">
+<div id="9a997212" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adlbc <span class="op">=</span> pl.read_parquet(<span class="st">"data/adlbc.parquet"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="prepare-analysis-data" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="prepare-analysis-data"><span class="header-section-number">10.2</span> Prepare Analysis Data</h2>
-<div id="f343a547" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean data types and filter for efficacy population</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adlbc_clean <span class="op">=</span> adlbc.with_columns(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    [pl.col(c).cast(<span class="bu">str</span>).<span class="bu">str</span>.strip_chars() <span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span>, <span class="st">"AVISIT"</span>, <span class="st">"TRTP"</span>]]</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>adsl_eff <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"EFFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>])</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>adlbc_eff <span class="op">=</span> adlbc_clean.join(adsl_eff, on<span class="op">=</span><span class="st">"USUBJID"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply LOCF for glucose data up to Week 24</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>gluc_data <span class="op">=</span> (</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    adlbc_eff.<span class="bu">filter</span>((pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>) <span class="op">&amp;</span> (pl.col(<span class="st">"AVISITN"</span>) <span class="op">&lt;=</span> <span class="dv">24</span>))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"USUBJID"</span>, <span class="st">"AVISITN"</span>])</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"USUBJID"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    .agg([</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"TRTP"</span>).first(),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"BASE"</span>).first(),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"AVAL"</span>).<span class="bu">filter</span>(pl.col(<span class="st">"AVISITN"</span>) <span class="op">==</span> <span class="dv">0</span>).first().alias(<span class="st">"Baseline"</span>),</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"AVAL"</span>).last().alias(<span class="st">"Week 24"</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"Baseline"</span>).is_not_null() <span class="op">&amp;</span> pl.col(<span class="st">"Week 24"</span>).is_not_null())</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    .with_columns((pl.col(<span class="st">"Week 24"</span>) <span class="op">-</span> pl.col(<span class="st">"Baseline"</span>)).alias(<span class="st">"CHG"</span>))</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate descriptive statistics</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> []</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    trt_data <span class="op">=</span> gluc_data.<span class="bu">filter</span>(pl.col(<span class="st">"TRTP"</span>) <span class="op">==</span> trt)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    baseline_full <span class="op">=</span> adlbc_eff.<span class="bu">filter</span>(</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>) <span class="op">&amp;</span> (pl.col(<span class="st">"AVISIT"</span>) <span class="op">==</span> <span class="st">"Baseline"</span>) <span class="op">&amp;</span> (pl.col(<span class="st">"TRTP"</span>) <span class="op">==</span> trt)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    desc_stats.append({</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Treatment"</span>: trt,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N_Baseline"</span>: baseline_full.height,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Baseline_Mean"</span>: baseline_full[<span class="st">"AVAL"</span>].mean() <span class="cf">if</span> baseline_full.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Baseline_SD"</span>: baseline_full[<span class="st">"AVAL"</span>].std() <span class="cf">if</span> baseline_full.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N_Week24"</span>: trt_data.height,</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Week24_Mean"</span>: trt_data[<span class="st">"Week 24"</span>].mean() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Week24_SD"</span>: trt_data[<span class="st">"Week 24"</span>].std() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N_Change"</span>: trt_data.height,</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Change_Mean"</span>: trt_data[<span class="st">"CHG"</span>].mean() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Change_SD"</span>: trt_data[<span class="st">"CHG"</span>].std() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform ANCOVA</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>ancova_df <span class="op">=</span> gluc_data.to_pandas()</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>ancova_df[<span class="st">"TRTP"</span>] <span class="op">=</span> pd.Categorical(ancova_df[<span class="st">"TRTP"</span>], categories<span class="op">=</span>treatments)</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(<span class="st">"CHG ~ TRTP + BASE"</span>, data<span class="op">=</span>ancova_df).fit()</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate LS means and confidence intervals</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>base_mean <span class="op">=</span> ancova_df[<span class="st">"BASE"</span>].mean()</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>var_cov <span class="op">=</span> model.cov_params()</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>ls_means <span class="op">=</span> []</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, trt <span class="kw">in</span> <span class="bu">enumerate</span>(treatments):</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    x_pred <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="bu">int</span>(i<span class="op">==</span><span class="dv">1</span>), <span class="bu">int</span>(i<span class="op">==</span><span class="dv">2</span>), base_mean])</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    ls_mean <span class="op">=</span> model.predict(pd.DataFrame({<span class="st">"TRTP"</span>: [trt], <span class="st">"BASE"</span>: [base_mean]}))[<span class="dv">0</span>]</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    se_pred <span class="op">=</span> np.sqrt(x_pred <span class="op">@</span> var_cov <span class="op">@</span> x_pred.T)</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    ls_means.append({</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Treatment"</span>: trt,</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        <span class="st">"LS_Mean"</span>: ls_mean,</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI_Lower"</span>: ls_mean <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> se_pred,</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI_Upper"</span>: ls_mean <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> se_pred</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="step-1-explore-laboratory-data-structure" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="step-1-explore-laboratory-data-structure"><span class="header-section-number">10.3</span> Step 1: Explore Laboratory Data Structure</h2>
+<p>We start by understanding the glucose data structure and endpoint definitions.</p>
+<div id="9557b6b3" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display key laboratory variables</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Key ADLBC variables for efficacy analysis</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lab_vars <span class="op">=</span> adlbc.select([<span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span>, <span class="st">"PARAM"</span>, <span class="st">"AVISIT"</span>, <span class="st">"AVISITN"</span>, <span class="st">"AVAL"</span>, <span class="st">"BASE"</span>, <span class="st">"CHG"</span>])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>lab_vars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (74_264, 8)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">PARAMCD</th>
+<th data-quarto-table-cell-role="th">PARAM</th>
+<th data-quarto-table-cell-role="th">AVISIT</th>
+<th data-quarto-table-cell-role="th">AVISITN</th>
+<th data-quarto-table-cell-role="th">AVAL</th>
+<th data-quarto-table-cell-role="th">BASE</th>
+<th data-quarto-table-cell-role="th">CHG</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"SODIUM"</td>
+<td>"Sodium (mmol/L)"</td>
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Baseline"</td>
+<td>0.0</td>
+<td>140.0</td>
+<td>140.0</td>
+<td>null</td>
+</tr>
+<tr class="even">
+<td>"01-701-1015"</td>
+<td>"K"</td>
+<td>"Potassium (mmol/L)"</td>
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Baseline"</td>
+<td>0.0</td>
+<td>4.5</td>
+<td>4.5</td>
+<td>null</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"CL"</td>
+<td>"Chloride (mmol/L)"</td>
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Baseline"</td>
+<td>0.0</td>
+<td>106.0</td>
+<td>106.0</td>
+<td>null</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"01-718-1427"</td>
+<td>"_CK"</td>
+<td>"Creatine Kinase (U/L) change f…</td>
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8"</td>
+<td>8.0</td>
+<td>-0.5</td>
+<td>null</td>
+<td>null</td>
+</tr>
+<tr class="even">
+<td>"01-718-1427"</td>
+<td>"_CK"</td>
+<td>"Creatine Kinase (U/L) change f…</td>
+<td>"End of Treatment"</td>
+<td>99.0</td>
+<td>-0.5</td>
+<td>null</td>
+<td>null</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="0c6eff4c" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Focus on glucose parameter</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gluc_visits <span class="op">=</span> adlbc.<span class="bu">filter</span>(pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>).select(<span class="st">"AVISIT"</span>, <span class="st">"AVISITN"</span>).unique().sort(<span class="st">"AVISITN"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Available glucose measurement visits</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>gluc_visits</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (12, 2)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">AVISIT</th>
+<th data-quarto-table-cell-role="th">AVISITN</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;."</td>
+<td>null</td>
+</tr>
+<tr class="even">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Baseline"</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 2"</td>
+<td>2.0</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 26"</td>
+<td>26.0</td>
+</tr>
+<tr class="even">
+<td>"End of Treatment"</td>
+<td>99.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </section>
-<section id="create-tables-for-rtf-output" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="create-tables-for-rtf-output"><span class="header-section-number">10.3</span> Create Tables for RTF Output</h2>
-<div id="b2255f39" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1: Descriptive Statistics</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tbl1_data <span class="op">=</span> [</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        s[<span class="st">"Treatment"</span>],</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span>(s[<span class="st">"N_Baseline"</span>]),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>s[<span class="st">'Baseline_Mean'</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>s[<span class="st">'Baseline_SD'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span>(s[<span class="st">"N_Week24"</span>]),</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>s[<span class="st">'Week24_Mean'</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>s[<span class="st">'Week24_SD'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span>(s[<span class="st">"N_Change"</span>]),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>s[<span class="st">'Change_Mean'</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>s[<span class="st">'Change_SD'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>ls[<span class="st">'LS_Mean'</span>]<span class="sc">:.2f}</span><span class="ss"> (</span><span class="sc">{</span>ls[<span class="st">'CI_Lower'</span>]<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>ls[<span class="st">'CI_Upper'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s, ls <span class="kw">in</span> <span class="bu">zip</span>(desc_stats, ls_means)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>tbl1 <span class="op">=</span> pl.DataFrame(tbl1_data, orient<span class="op">=</span><span class="st">"row"</span>, schema<span class="op">=</span>[</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Treatment"</span>, <span class="st">"N_Base"</span>, <span class="st">"Mean_SD_Base"</span>, <span class="st">"N_Wk24"</span>, <span class="st">"Mean_SD_Wk24"</span>, </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"N_Chg"</span>, <span class="st">"Mean_SD_Chg"</span>, <span class="st">"LS_Mean_CI"</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 2: Pairwise Comparisons</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>tbl2_data <span class="op">=</span> []</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> comp_name, trt_name <span class="kw">in</span> [(<span class="st">"Xanomeline Low Dose - Placebo"</span>, <span class="st">"TRTP[T.Xanomeline Low Dose]"</span>),</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                             (<span class="st">"Xanomeline High Dose - Placebo"</span>, <span class="st">"TRTP[T.Xanomeline High Dose]"</span>)] :</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    coef <span class="op">=</span> model.params[trt_name]</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    se <span class="op">=</span> model.bse[trt_name]</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    t_stat <span class="op">=</span> coef <span class="op">/</span> se</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    p_value <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> scipy_stats.t.cdf(<span class="bu">abs</span>(t_stat), model.df_resid))</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    tbl2_data.append([</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        comp_name,</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>coef<span class="sc">:.2f}</span><span class="ss"> (</span><span class="sc">{</span>coef <span class="op">-</span> <span class="fl">1.96</span><span class="op">*</span>se<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>coef <span class="op">+</span> <span class="fl">1.96</span><span class="op">*</span>se<span class="sc">:.2f}</span><span class="ss">)"</span>,</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>p_value<span class="sc">:.3f}</span><span class="ss">"</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>tbl2 <span class="op">=</span> pl.DataFrame(tbl2_data, orient<span class="op">=</span><span class="st">"row"</span>, schema<span class="op">=</span>[<span class="st">"Comparison"</span>, <span class="st">"Diff_CI"</span>, <span class="st">"P_Value"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="step-2-define-analysis-population-and-endpoint" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="step-2-define-analysis-population-and-endpoint"><span class="header-section-number">10.4</span> Step 2: Define Analysis Population and Endpoint</h2>
+<p>Following the Statistical Analysis Plan, we focus on the efficacy population for the primary endpoint.</p>
+<div id="137b6424" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean data types and prepare datasets</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adlbc_clean <span class="op">=</span> adlbc.with_columns([</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    pl.col(c).cast(<span class="bu">str</span>).<span class="bu">str</span>.strip_chars()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span>, <span class="st">"AVISIT"</span>, <span class="st">"TRTP"</span>]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define efficacy population</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>adsl_eff <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"EFFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Efficacy population size</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>adsl_eff.height</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter laboratory data to efficacy population</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>adlbc_eff <span class="op">=</span> adlbc_clean.join(adsl_eff, on<span class="op">=</span><span class="st">"USUBJID"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Laboratory records in efficacy population</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>adlbc_eff.height</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>71882</code></pre>
+</div>
+</div>
+<div id="152c4247" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine glucose data availability by visit and treatment</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gluc_availability <span class="op">=</span> (</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    adlbc_eff.<span class="bu">filter</span>(pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"TRTP"</span>, <span class="st">"AVISIT"</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    .agg(n_subjects<span class="op">=</span>pl.col(<span class="st">"USUBJID"</span>).n_unique())</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"TRTP"</span>, <span class="st">"AVISIT"</span>])</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Glucose data availability by visit</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>gluc_availability</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (36, 3)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">TRTP</th>
+<th data-quarto-table-cell-role="th">AVISIT</th>
+<th data-quarto-table-cell-role="th">n_subjects</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>u32</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>"."</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>"Baseline"</td>
+<td>79</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>"End of Treatment"</td>
+<td>79</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>"Week 6"</td>
+<td>62</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>"Week 8"</td>
+<td>59</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </section>
-<section id="create-rtf-document" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="create-rtf-document"><span class="header-section-number">10.4</span> Create RTF Document</h2>
-<div id="a943cfae" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create RTF document with two sections</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>doc_ancova <span class="op">=</span> rtf.RTFDocument(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>[tbl1, tbl2],</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(text<span class="op">=</span>[</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ANCOVA of Change from Baseline Glucose (mmol/L) at Week 24"</span>, <span class="st">"LOCF"</span>, </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Efficacy Analysis Population"</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    ]),</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>[</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        [rtf.RTFColumnHeader(text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"Baseline"</span>, <span class="st">"Week 24"</span>, <span class="st">"Change from Baseline"</span>],</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                           col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">4</span>], text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>]),</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>         rtf.RTFColumnHeader(text<span class="op">=</span>[<span class="st">"Treatment"</span>, <span class="st">"N"</span>, <span class="st">"Mean (SD)"</span>, <span class="st">"N"</span>, <span class="st">"Mean (SD)"</span>, <span class="st">"N"</span>, </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"Mean (SD)"</span>, <span class="st">"LS Mean (95% CI){^a}"</span>],</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                           col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="dv">2</span>],</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                           text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">7</span>, border_bottom<span class="op">=</span><span class="st">"single"</span>)],</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        [rtf.RTFColumnHeader(text<span class="op">=</span>[<span class="st">"Pairwise Comparison"</span>, <span class="st">"Difference in LS Mean (95% CI){^a}"</span>, <span class="st">"p-Value"</span>],</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                           col_rel_width<span class="op">=</span>[<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>], text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>])]</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>[</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        rtf.RTFBody(col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="dv">2</span>], </span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                   text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">7</span>),</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        rtf.RTFBody(col_rel_width<span class="op">=</span>[<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>], text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>])</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    rtf_footnote<span class="op">=</span>rtf.RTFFootnote(text<span class="op">=</span>[</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"{^a}Based on an ANCOVA model after adjusting baseline value. LOCF approach is used to impute missing values."</span>,</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ANCOVA = Analysis of Covariance, LOCF = Last Observation Carried Forward"</span>,</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI = Confidence Interval, LS = Least Squares, SD = Standard Deviation"</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    ]),</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADLBC dataset"</span>])</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>doc_ancova.write_rtf(<span class="st">"rtf/tlf_efficacy_ancova.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="step-3-implement-locf-imputation-strategy" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="step-3-implement-locf-imputation-strategy"><span class="header-section-number">10.5</span> Step 3: Implement LOCF Imputation Strategy</h2>
+<p>We apply Last Observation Carried Forward (LOCF) for missing Week 24 glucose values.</p>
+<div id="c478daad" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare glucose data with LOCF for Week 24 endpoint</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gluc_data <span class="op">=</span> (</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adlbc_eff</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>((pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>) <span class="op">&amp;</span> (pl.col(<span class="st">"AVISITN"</span>) <span class="op">&lt;=</span> <span class="dv">24</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"USUBJID"</span>, <span class="st">"AVISITN"</span>])</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    .group_by(<span class="st">"USUBJID"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    .agg([</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"TRTP"</span>).first(),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"BASE"</span>).first(),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"AVAL"</span>).<span class="bu">filter</span>(pl.col(<span class="st">"AVISITN"</span>) <span class="op">==</span> <span class="dv">0</span>).first().alias(<span class="st">"Baseline"</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"AVAL"</span>).last().alias(<span class="st">"Week_24_LOCF"</span>),  <span class="co"># LOCF: last available value &lt;= Week 24</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"AVISITN"</span>).<span class="bu">max</span>().alias(<span class="st">"Last_Visit"</span>)   <span class="co"># Track actual last visit</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"Baseline"</span>).is_not_null() <span class="op">&amp;</span> pl.col(<span class="st">"Week_24_LOCF"</span>).is_not_null())</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    .with_columns((pl.col(<span class="st">"Week_24_LOCF"</span>) <span class="op">-</span> pl.col(<span class="st">"Baseline"</span>)).alias(<span class="st">"CHG"</span>))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Subjects with baseline and Week 24 (LOCF) glucose</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>gluc_data.height</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample of prepared analysis data</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>gluc_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (232, 7)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">USUBJID</th>
+<th data-quarto-table-cell-role="th">TRTP</th>
+<th data-quarto-table-cell-role="th">BASE</th>
+<th data-quarto-table-cell-role="th">Baseline</th>
+<th data-quarto-table-cell-role="th">Week_24_LOCF</th>
+<th data-quarto-table-cell-role="th">Last_Visit</th>
+<th data-quarto-table-cell-role="th">CHG</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"01-701-1015"</td>
+<td>"Placebo"</td>
+<td>4.71835</td>
+<td>4.71835</td>
+<td>4.49631</td>
+<td>24.0</td>
+<td>-0.22204</td>
+</tr>
+<tr class="even">
+<td>"01-701-1023"</td>
+<td>"Placebo"</td>
+<td>5.32896</td>
+<td>5.32896</td>
+<td>5.43998</td>
+<td>4.0</td>
+<td>0.11102</td>
+</tr>
+<tr class="odd">
+<td>"01-701-1028"</td>
+<td>"Xanomeline High Dose"</td>
+<td>4.77386</td>
+<td>4.77386</td>
+<td>5.43998</td>
+<td>24.0</td>
+<td>0.66612</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"01-718-1371"</td>
+<td>"Xanomeline High Dose"</td>
+<td>6.27263</td>
+<td>6.27263</td>
+<td>5.10692</td>
+<td>12.0</td>
+<td>-1.16571</td>
+</tr>
+<tr class="even">
+<td>"01-718-1427"</td>
+<td>"Xanomeline High Dose"</td>
+<td>4.55182</td>
+<td>4.55182</td>
+<td>3.71917</td>
+<td>8.0</td>
+<td>-0.83265</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="1adfd1b6" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assess LOCF imputation impact</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>locf_summary <span class="op">=</span> (</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    gluc_data</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"TRTP"</span>, <span class="st">"Last_Visit"</span>])</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    .agg(n_subjects<span class="op">=</span>pl.<span class="bu">len</span>())</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"TRTP"</span>, <span class="st">"Last_Visit"</span>])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># LOCF imputation summary (last actual visit used)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>locf_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (26, 3)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">TRTP</th>
+<th data-quarto-table-cell-role="th">Last_Visit</th>
+<th data-quarto-table-cell-role="th">n_subjects</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>f64</td>
+<td>u32</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>2.0</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>4.0</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>6.0</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>20.0</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>24.0</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-4-calculate-descriptive-statistics" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="step-4-calculate-descriptive-statistics"><span class="header-section-number">10.6</span> Step 4: Calculate Descriptive Statistics</h2>
+<p>We compute baseline, Week 24, and change from baseline statistics by treatment group.</p>
+<div id="9364660d" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate comprehensive descriptive statistics</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> []</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Analysis data for this treatment</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    trt_data <span class="op">=</span> gluc_data.<span class="bu">filter</span>(pl.col(<span class="st">"TRTP"</span>) <span class="op">==</span> trt)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Original baseline data (all subjects with baseline)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    baseline_full <span class="op">=</span> adlbc_eff.<span class="bu">filter</span>(</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>) <span class="op">&amp;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"AVISIT"</span>) <span class="op">==</span> <span class="st">"Baseline"</span>) <span class="op">&amp;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"TRTP"</span>) <span class="op">==</span> trt)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    desc_stats.append({</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Treatment"</span>: trt,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N_Baseline"</span>: baseline_full.height,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Baseline_Mean"</span>: baseline_full[<span class="st">"AVAL"</span>].mean() <span class="cf">if</span> baseline_full.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Baseline_SD"</span>: baseline_full[<span class="st">"AVAL"</span>].std() <span class="cf">if</span> baseline_full.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N_Week24"</span>: trt_data.height,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Week24_Mean"</span>: trt_data[<span class="st">"Week_24_LOCF"</span>].mean() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Week24_SD"</span>: trt_data[<span class="st">"Week_24_LOCF"</span>].std() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N_Change"</span>: trt_data.height,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Change_Mean"</span>: trt_data[<span class="st">"CHG"</span>].mean() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Change_SD"</span>: trt_data[<span class="st">"CHG"</span>].std() <span class="cf">if</span> trt_data.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Display descriptive statistics</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>desc_df <span class="op">=</span> pl.DataFrame(desc_stats)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Descriptive statistics by treatment</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>desc_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 10)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Treatment</th>
+<th data-quarto-table-cell-role="th">N_Baseline</th>
+<th data-quarto-table-cell-role="th">Baseline_Mean</th>
+<th data-quarto-table-cell-role="th">Baseline_SD</th>
+<th data-quarto-table-cell-role="th">N_Week24</th>
+<th data-quarto-table-cell-role="th">Week24_Mean</th>
+<th data-quarto-table-cell-role="th">Week24_SD</th>
+<th data-quarto-table-cell-role="th">N_Change</th>
+<th data-quarto-table-cell-role="th">Change_Mean</th>
+<th data-quarto-table-cell-role="th">Change_SD</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>i64</td>
+<td>f64</td>
+<td>f64</td>
+<td>i64</td>
+<td>f64</td>
+<td>f64</td>
+<td>i64</td>
+<td>f64</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>79</td>
+<td>5.656399</td>
+<td>2.229324</td>
+<td>79</td>
+<td>5.639535</td>
+<td>1.651807</td>
+<td>79</td>
+<td>-0.016864</td>
+<td>2.31841</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>79</td>
+<td>5.419603</td>
+<td>0.946102</td>
+<td>79</td>
+<td>5.352148</td>
+<td>1.058004</td>
+<td>79</td>
+<td>-0.067455</td>
+<td>1.015715</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>74</td>
+<td>5.388971</td>
+<td>1.374893</td>
+<td>74</td>
+<td>5.831551</td>
+<td>2.214668</td>
+<td>74</td>
+<td>0.44258</td>
+<td>1.645179</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-5-perform-ancova-analysis" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="step-5-perform-ancova-analysis"><span class="header-section-number">10.7</span> Step 5: Perform ANCOVA Analysis</h2>
+<p>We fit the ANCOVA model with treatment and baseline glucose as covariates.</p>
+<div id="7c4c7d5b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to pandas for statsmodels compatibility</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ancova_df <span class="op">=</span> gluc_data.to_pandas()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ancova_df[<span class="st">"TRTP"</span>] <span class="op">=</span> pd.Categorical(ancova_df[<span class="st">"TRTP"</span>], categories<span class="op">=</span>treatments)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit ANCOVA model: Change = Treatment + Baseline</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(<span class="st">"CHG ~ TRTP + BASE"</span>, data<span class="op">=</span>ancova_df).fit()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Display model summary</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ANCOVA Model Summary</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>model.rsquared</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>model.fvalue, model.f_pvalue</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Model coefficients</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>model.summary().tables[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<table class="simpletable caption-top table table-sm table-striped small">
+<tbody>
+<tr class="odd">
+<td></td>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+<th data-quarto-table-cell-role="th">[0.025</th>
+<th data-quarto-table-cell-role="th">0.975]</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Intercept</th>
+<td>2.9972</td>
+<td>0.392</td>
+<td>7.642</td>
+<td>0.000</td>
+<td>2.224</td>
+<td>3.770</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">TRTP[T.Xanomeline Low Dose]</th>
+<td>-0.1768</td>
+<td>0.243</td>
+<td>-0.729</td>
+<td>0.467</td>
+<td>-0.655</td>
+<td>0.301</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">TRTP[T.Xanomeline High Dose]</th>
+<td>0.3169</td>
+<td>0.247</td>
+<td>1.284</td>
+<td>0.200</td>
+<td>-0.169</td>
+<td>0.803</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">BASE</th>
+<td>-0.5329</td>
+<td>0.062</td>
+<td>-8.543</td>
+<td>0.000</td>
+<td>-0.656</td>
+<td>-0.410</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="8bedf96d" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate adjusted means (LS means) at mean baseline value</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>base_mean <span class="op">=</span> ancova_df[<span class="st">"BASE"</span>].mean()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>var_cov <span class="op">=</span> model.cov_params()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ls_means <span class="op">=</span> []</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># LS means calculated at baseline mean</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>base_mean</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, trt <span class="kw">in</span> <span class="bu">enumerate</span>(treatments):</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create prediction vector for LS mean calculation</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Model: CHG = intercept + trt_effect1*(trt==1) + trt_effect2*(trt==2) + base_effect*baseline</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    x_pred <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="bu">int</span>(i<span class="op">==</span><span class="dv">1</span>), <span class="bu">int</span>(i<span class="op">==</span><span class="dv">2</span>), base_mean])</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate LS mean</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    ls_mean <span class="op">=</span> model.predict(pd.DataFrame({<span class="st">"TRTP"</span>: [trt], <span class="st">"BASE"</span>: [base_mean]}))[<span class="dv">0</span>]</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate standard error for confidence interval</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    se_pred <span class="op">=</span> np.sqrt(x_pred <span class="op">@</span> var_cov <span class="op">@</span> x_pred.T)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    ls_means.append({</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Treatment"</span>: trt,</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"LS_Mean"</span>: ls_mean,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"SE"</span>: se_pred,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI_Lower"</span>: ls_mean <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> se_pred,</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI_Upper"</span>: ls_mean <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> se_pred</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>ls_means_df <span class="op">=</span> pl.DataFrame(ls_means)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co"># LS Means (95% CI)</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>ls_means_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Treatment</th>
+<th data-quarto-table-cell-role="th">LS_Mean</th>
+<th data-quarto-table-cell-role="th">SE</th>
+<th data-quarto-table-cell-role="th">CI_Lower</th>
+<th data-quarto-table-cell-role="th">CI_Upper</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>0.071554</td>
+<td>0.171563</td>
+<td>-0.264709</td>
+<td>0.407818</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>-0.105215</td>
+<td>0.171308</td>
+<td>-0.440977</td>
+<td>0.230548</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>0.388498</td>
+<td>0.177055</td>
+<td>0.041471</td>
+<td>0.735525</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-6-pairwise-treatment-comparisons" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="step-6-pairwise-treatment-comparisons"><span class="header-section-number">10.8</span> Step 6: Pairwise Treatment Comparisons</h2>
+<p>We calculate treatment differences and their statistical significance.</p>
+<div id="e758c46a" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate pairwise comparisons vs. placebo</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>tbl2_data <span class="op">=</span> []</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>comparisons <span class="op">=</span> [</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Xanomeline Low Dose vs. Placebo"</span>, <span class="st">"TRTP[T.Xanomeline Low Dose]"</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Xanomeline High Dose vs. Placebo"</span>, <span class="st">"TRTP[T.Xanomeline High Dose]"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> comp_name, trt_coef <span class="kw">in</span> comparisons:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract coefficient estimates</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    coef <span class="op">=</span> model.params[trt_coef]</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    se <span class="op">=</span> model.bse[trt_coef]</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    t_stat <span class="op">=</span> coef <span class="op">/</span> se</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> model.df_resid</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    p_value <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> scipy_stats.t.cdf(<span class="bu">abs</span>(t_stat), df))</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate confidence interval</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    ci_lower <span class="op">=</span> coef <span class="op">-</span> scipy_stats.t.ppf(<span class="fl">0.975</span>, df) <span class="op">*</span> se</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    ci_upper <span class="op">=</span> coef <span class="op">+</span> scipy_stats.t.ppf(<span class="fl">0.975</span>, df) <span class="op">*</span> se</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    tbl2_data.append({</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Comparison"</span>: comp_name,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Estimate"</span>: coef,</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"SE"</span>: se,</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI_Lower"</span>: ci_lower,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CI_Upper"</span>: ci_upper,</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"t_stat"</span>: t_stat,</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p_value"</span>: p_value</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>comparison_df <span class="op">=</span> pl.DataFrame(tbl2_data)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Treatment comparisons vs. placebo</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>comparison_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2, 7)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Comparison</th>
+<th data-quarto-table-cell-role="th">Estimate</th>
+<th data-quarto-table-cell-role="th">SE</th>
+<th data-quarto-table-cell-role="th">CI_Lower</th>
+<th data-quarto-table-cell-role="th">CI_Upper</th>
+<th data-quarto-table-cell-role="th">t_stat</th>
+<th data-quarto-table-cell-role="th">p_value</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+<td>f64</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Xanomeline Low Dose vs. Placeb…</td>
+<td>-0.176769</td>
+<td>0.242635</td>
+<td>-0.654862</td>
+<td>0.301324</td>
+<td>-0.728539</td>
+<td>0.467031</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose vs. Place…</td>
+<td>0.316943</td>
+<td>0.246806</td>
+<td>-0.169369</td>
+<td>0.803256</td>
+<td>1.284179</td>
+<td>0.200383</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-7-prepare-tables-for-rtf-output" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="step-7-prepare-tables-for-rtf-output"><span class="header-section-number">10.9</span> Step 7: Prepare Tables for RTF Output</h2>
+<p>We format the analysis results into publication-ready tables.</p>
+<div id="8ced0802" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1: Descriptive Statistics and LS Means</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tbl1_data <span class="op">=</span> []</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s, ls <span class="kw">in</span> <span class="bu">zip</span>(desc_stats, ls_means):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    tbl1_data.append([</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        s[<span class="st">"Treatment"</span>],</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span>(s[<span class="st">"N_Baseline"</span>]),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>s[<span class="st">'Baseline_Mean'</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>s[<span class="st">'Baseline_SD'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span> <span class="cf">if</span> <span class="kw">not</span> np.isnan(s[<span class="st">'Baseline_Mean'</span>]) <span class="cf">else</span> <span class="st">""</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span>(s[<span class="st">"N_Week24"</span>]),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>s[<span class="st">'Week24_Mean'</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>s[<span class="st">'Week24_SD'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span> <span class="cf">if</span> <span class="kw">not</span> np.isnan(s[<span class="st">'Week24_Mean'</span>]) <span class="cf">else</span> <span class="st">""</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span>(s[<span class="st">"N_Change"</span>]),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>s[<span class="st">'Change_Mean'</span>]<span class="sc">:.1f}</span><span class="ss"> (</span><span class="sc">{</span>s[<span class="st">'Change_SD'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span> <span class="cf">if</span> <span class="kw">not</span> np.isnan(s[<span class="st">'Change_Mean'</span>]) <span class="cf">else</span> <span class="st">""</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>ls[<span class="st">'LS_Mean'</span>]<span class="sc">:.2f}</span><span class="ss"> (</span><span class="sc">{</span>ls[<span class="st">'CI_Lower'</span>]<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>ls[<span class="st">'CI_Upper'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>tbl1 <span class="op">=</span> pl.DataFrame(tbl1_data, orient<span class="op">=</span><span class="st">"row"</span>, schema<span class="op">=</span>[</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Treatment"</span>, <span class="st">"N_Base"</span>, <span class="st">"Mean_SD_Base"</span>, <span class="st">"N_Wk24"</span>, <span class="st">"Mean_SD_Wk24"</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"N_Chg"</span>, <span class="st">"Mean_SD_Chg"</span>, <span class="st">"LS_Mean_CI"</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1 - Descriptive Statistics and LS Means</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>tbl1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 8)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Treatment</th>
+<th data-quarto-table-cell-role="th">N_Base</th>
+<th data-quarto-table-cell-role="th">Mean_SD_Base</th>
+<th data-quarto-table-cell-role="th">N_Wk24</th>
+<th data-quarto-table-cell-role="th">Mean_SD_Wk24</th>
+<th data-quarto-table-cell-role="th">N_Chg</th>
+<th data-quarto-table-cell-role="th">Mean_SD_Chg</th>
+<th data-quarto-table-cell-role="th">LS_Mean_CI</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>"79"</td>
+<td>"5.7 (2.23)"</td>
+<td>"79"</td>
+<td>"5.6 (1.65)"</td>
+<td>"79"</td>
+<td>"-0.0 (2.32)"</td>
+<td>"0.07 (-0.26, 0.41)"</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>"79"</td>
+<td>"5.4 (0.95)"</td>
+<td>"79"</td>
+<td>"5.4 (1.06)"</td>
+<td>"79"</td>
+<td>"-0.1 (1.02)"</td>
+<td>"-0.11 (-0.44, 0.23)"</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>"74"</td>
+<td>"5.4 (1.37)"</td>
+<td>"74"</td>
+<td>"5.8 (2.21)"</td>
+<td>"74"</td>
+<td>"0.4 (1.65)"</td>
+<td>"0.39 (0.04, 0.74)"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="cc91a4c1" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 2: Pairwise Comparisons (formatted for output)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>tbl2_formatted <span class="op">=</span> []</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> tbl2_data:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    tbl2_formatted.append([</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        row[<span class="st">"Comparison"</span>],</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'Estimate'</span>]<span class="sc">:.2f}</span><span class="ss"> (</span><span class="sc">{</span>row[<span class="st">'CI_Lower'</span>]<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>row[<span class="st">'CI_Upper'</span>]<span class="sc">:.2f}</span><span class="ss">)"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'p_value'</span>]<span class="sc">:.4f}</span><span class="ss">"</span> <span class="cf">if</span> row[<span class="st">'p_value'</span>] <span class="op">&gt;=</span> <span class="fl">0.0001</span> <span class="cf">else</span> <span class="st">"&lt;0.0001"</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>tbl2 <span class="op">=</span> pl.DataFrame(tbl2_formatted, orient<span class="op">=</span><span class="st">"row"</span>, schema<span class="op">=</span>[<span class="st">"Comparison"</span>, <span class="st">"Diff_CI"</span>, <span class="st">"P_Value"</span>])</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 2 - Pairwise Comparisons</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>tbl2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2, 3)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Comparison</th>
+<th data-quarto-table-cell-role="th">Diff_CI</th>
+<th data-quarto-table-cell-role="th">P_Value</th>
+</tr>
+<tr class="even">
+<td>str</td>
+<td>str</td>
+<td>str</td>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"Xanomeline Low Dose vs. Placeb…</td>
+<td>"-0.18 (-0.65, 0.30)"</td>
+<td>"0.4670"</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose vs. Place…</td>
+<td>"0.32 (-0.17, 0.80)"</td>
+<td>"0.2004"</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-8-create-regulatory-compliant-rtf-document" class="level2" data-number="10.10">
+<h2 data-number="10.10" class="anchored" data-anchor-id="step-8-create-regulatory-compliant-rtf-document"><span class="header-section-number">10.10</span> Step 8: Create Regulatory-Compliant RTF Document</h2>
+<p>We generate a comprehensive efficacy table following regulatory submission standards.</p>
+<div id="f5b889db" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create comprehensive RTF document with multiple table sections</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>doc_ancova <span class="op">=</span> rtf.RTFDocument(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>[tbl1, tbl2],</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Analysis of Covariance (ANCOVA) of Change from Baseline in"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Fasting Glucose (mmol/L) at Week 24 (LOCF)"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Efficacy Analysis Population"</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>[</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Header for descriptive statistics table</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>            rtf.RTFColumnHeader(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"Baseline"</span>, <span class="st">"Week 24 (LOCF)"</span>, <span class="st">"Change from Baseline"</span>, <span class="st">""</span>],</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>                col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                text_format<span class="op">=</span><span class="st">"b"</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>            rtf.RTFColumnHeader(</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>                text<span class="op">=</span>[</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Treatment Group"</span>,</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"N"</span>, <span class="st">"Mean (SD)"</span>,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"N"</span>, <span class="st">"Mean (SD)"</span>,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"N"</span>, <span class="st">"Mean (SD)"</span>,</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"LS Mean (95% CI){^a}"</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>                ],</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>                col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="dv">2</span>],</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>                text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">7</span>,</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>                border_bottom<span class="op">=</span><span class="st">"single"</span>,</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>                text_format<span class="op">=</span><span class="st">"b"</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Header for pairwise comparisons table</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>            rtf.RTFColumnHeader(</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>                text<span class="op">=</span>[</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Pairwise Comparison"</span>,</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Difference in LS Mean (95% CI){^a}"</span>,</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"p-Value{^b}"</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>                ],</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>                col_rel_width<span class="op">=</span>[<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>],</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>                text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>                text_format<span class="op">=</span><span class="st">"b"</span>,</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>                border_bottom<span class="op">=</span><span class="st">"single"</span></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>[</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Body for descriptive statistics</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>        rtf.RTFBody(</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>, <span class="fl">1.3</span>, <span class="dv">2</span>],</span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>] <span class="op">+</span> [<span class="st">"c"</span>] <span class="op">*</span> <span class="dv">7</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Body for pairwise comparisons</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>        rtf.RTFBody(</span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>            col_rel_width<span class="op">=</span>[<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>],</span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>            text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>]</span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>    rtf_footnote<span class="op">=</span>rtf.RTFFootnote(</span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a>            <span class="st">"{^a}LS means and differences in LS means are based on an ANCOVA model with treatment and baseline glucose as covariates."</span>,</span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="ch">{{</span><span class="ss">^b</span><span class="ch">}}</span><span class="ss">p-values are from the ANCOVA model testing treatment effects (overall F-test p-value: </span><span class="sc">{</span>model<span class="sc">.</span>f_pvalue<span class="sc">:.4f}</span><span class="ss">)."</span>,</span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a>            <span class="st">"LOCF (Last Observation Carried Forward) approach is used for missing Week 24 values."</span>,</span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ANCOVA = Analysis of Covariance; CI = Confidence Interval; LS = Least Squares; SD = Standard Deviation"</span></span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(</span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Source: ADLBC Analysis Dataset"</span>,</span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Analysis conducted: </span><span class="sc">{</span>pd<span class="sc">.</span>Timestamp<span class="sc">.</span>now()<span class="sc">.</span>strftime(<span class="st">'</span><span class="sc">%d</span><span class="st">%b%Y'</span>)<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Statistical software: Python (statsmodels)"</span></span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate RTF file</span></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>doc_ancova.write_rtf(<span class="st">"rtf/tlf_efficacy_ancova.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_efficacy_ancova.rtf</code></pre>
 </div>
 </div>
-<div id="6153b426" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div id="b00b7c61" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>PosixPath('pdf/tlf_efficacy_ancova.pdf')</code></pre>
 </div>
 </div>
