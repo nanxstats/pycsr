@@ -326,82 +326,100 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Objective
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create detailed adverse event tables organized by System Organ Class and Preferred Term to support safety evaluation. Learn to process ADAE data with hierarchical grouping using Polars and generate regulatory-compliant AE listings with rtflite.</p>
+</div>
+</div>
 <p>This article demonstrates how to create a specific adverse events table by System Organ Class and Preferred Term.</p>
 <section id="setup" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">9.1</span> Setup</h2>
-<div id="195c62e8" class="cell" data-execution_count="1">
+<div id="ae07e149" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="5eeeb5ad" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adae <span class="op">=</span> pl.read_parquet(<span class="st">"data/adae.parquet"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2f437ea6" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>polars.config.Config</code></pre>
+</div>
+</div>
+<div id="d73cf401" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adae <span class="op">=</span> pl.read_parquet(<span class="st">"data/adae.parquet"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="prepare-ae-summary-data" class="level2" data-number="9.2">
 <h2 data-number="9.2" class="anchored" data-anchor-id="prepare-ae-summary-data"><span class="header-section-number">9.2</span> Prepare AE Summary Data</h2>
-<div id="e9800df4" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get safety population counts and AE data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adsl_safety <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>])</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>adae_safety <span class="op">=</span> adae.join(adsl_safety, on<span class="op">=</span><span class="st">"USUBJID"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pop_counts <span class="op">=</span> adsl_safety.group_by(<span class="st">"TRT01A"</span>).agg(N<span class="op">=</span>pl.<span class="bu">len</span>()).sort(<span class="st">"TRT01A"</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate AE counts by SOC and term</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ae_counts <span class="op">=</span> (</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    adae_safety.with_columns(pl.col(<span class="st">"AEDECOD"</span>).<span class="bu">str</span>.to_titlecase())</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"TRT01A"</span>, <span class="st">"AEBODSYS"</span>, <span class="st">"AEDECOD"</span>])</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    .agg(n<span class="op">=</span>pl.col(<span class="st">"USUBJID"</span>).n_unique())</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"AEBODSYS"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"TRT01A"</span>])</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build table rows</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>table_data <span class="op">=</span> [</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"Participants in population"</span>] <span class="op">+</span> [<span class="bu">str</span>(pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> t)[<span class="st">"N"</span>][<span class="dv">0</span>]) <span class="cf">for</span> t <span class="kw">in</span> treatments],</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    [<span class="st">""</span>] <span class="op">*</span> <span class="dv">4</span>  <span class="co"># Blank row</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add SOC and AE term rows</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> soc <span class="kw">in</span> ae_counts[<span class="st">"AEBODSYS"</span>].unique().sort():</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    table_data.append([soc] <span class="op">+</span> [<span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span>)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    soc_data <span class="op">=</span> ae_counts.<span class="bu">filter</span>(pl.col(<span class="st">"AEBODSYS"</span>) <span class="op">==</span> soc)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ae <span class="kw">in</span> soc_data[<span class="st">"AEDECOD"</span>].unique().sort():</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        row <span class="op">=</span> [<span class="ss">f"  </span><span class="sc">{</span>ae<span class="sc">}</span><span class="ss">"</span>]</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            count <span class="op">=</span> soc_data.<span class="bu">filter</span>((pl.col(<span class="st">"AEDECOD"</span>) <span class="op">==</span> ae) <span class="op">&amp;</span> (pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> trt))</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>            row.append(<span class="bu">str</span>(count[<span class="st">"n"</span>][<span class="dv">0</span>]) <span class="cf">if</span> count.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"0"</span>)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        table_data.append(row)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>df_ae_specific <span class="op">=</span> pl.DataFrame(table_data, schema<span class="op">=</span>[<span class="st">""</span>] <span class="op">+</span> treatments, orient<span class="op">=</span><span class="st">"row"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="04b7bbcb" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get safety population counts and AE data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adsl_safety <span class="op">=</span> adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SAFFL"</span>) <span class="op">==</span> <span class="st">"Y"</span>).select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>adae_safety <span class="op">=</span> adae.join(adsl_safety, on<span class="op">=</span><span class="st">"USUBJID"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>pop_counts <span class="op">=</span> adsl_safety.group_by(<span class="st">"TRT01A"</span>).agg(N<span class="op">=</span>pl.<span class="bu">len</span>()).sort(<span class="st">"TRT01A"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate AE counts by SOC and term</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ae_counts <span class="op">=</span> (</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    adae_safety.with_columns(pl.col(<span class="st">"AEDECOD"</span>).<span class="bu">str</span>.to_titlecase())</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    .group_by([<span class="st">"TRT01A"</span>, <span class="st">"AEBODSYS"</span>, <span class="st">"AEDECOD"</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    .agg(n<span class="op">=</span>pl.col(<span class="st">"USUBJID"</span>).n_unique())</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"AEBODSYS"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"TRT01A"</span>])</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build table rows</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>table_data <span class="op">=</span> [</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"Participants in population"</span>] <span class="op">+</span> [<span class="bu">str</span>(pop_counts.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> t)[<span class="st">"N"</span>][<span class="dv">0</span>]) <span class="cf">for</span> t <span class="kw">in</span> treatments],</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    [<span class="st">""</span>] <span class="op">*</span> <span class="dv">4</span>  <span class="co"># Blank row</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add SOC and AE term rows</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> soc <span class="kw">in</span> ae_counts[<span class="st">"AEBODSYS"</span>].unique().sort():</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    table_data.append([soc] <span class="op">+</span> [<span class="st">""</span>] <span class="op">*</span> <span class="dv">3</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    soc_data <span class="op">=</span> ae_counts.<span class="bu">filter</span>(pl.col(<span class="st">"AEBODSYS"</span>) <span class="op">==</span> soc)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ae <span class="kw">in</span> soc_data[<span class="st">"AEDECOD"</span>].unique().sort():</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        row <span class="op">=</span> [<span class="ss">f"  </span><span class="sc">{</span>ae<span class="sc">}</span><span class="ss">"</span>]</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            count <span class="op">=</span> soc_data.<span class="bu">filter</span>((pl.col(<span class="st">"AEDECOD"</span>) <span class="op">==</span> ae) <span class="op">&amp;</span> (pl.col(<span class="st">"TRT01A"</span>) <span class="op">==</span> trt))</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>            row.append(<span class="bu">str</span>(count[<span class="st">"n"</span>][<span class="dv">0</span>]) <span class="cf">if</span> count.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"0"</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        table_data.append(row)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>df_ae_specific <span class="op">=</span> pl.DataFrame(table_data, schema<span class="op">=</span>[<span class="st">""</span>] <span class="op">+</span> treatments, orient<span class="op">=</span><span class="st">"row"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="create-rtf-output" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="create-rtf-output"><span class="header-section-number">9.3</span> Create RTF Output</h2>
-<div id="86ef9994" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>doc_ae_specific <span class="op">=</span> rtf.RTFDocument(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_ae_specific,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(text<span class="op">=</span>[<span class="st">"Specific Adverse Events"</span>, <span class="st">"(Safety Analysis Population)"</span>]),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>rtf.RTFColumnHeader(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"Placebo</span><span class="ch">\n</span><span class="st">n"</span>, <span class="st">"Xanomeline Low Dose</span><span class="ch">\n</span><span class="st">n"</span>, <span class="st">"Xanomeline High Dose</span><span class="ch">\n</span><span class="st">n"</span>],</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        text_font_style<span class="op">=</span><span class="kw">lambda</span> df, i, j: <span class="st">"bold"</span> <span class="cf">if</span> j <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> <span class="st">"  "</span> <span class="kw">not</span> <span class="kw">in</span> <span class="bu">str</span>(df[i, j]) <span class="cf">else</span> <span class="st">""</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    rtf_footnote<span class="op">=</span>rtf.RTFFootnote(text<span class="op">=</span>[<span class="st">"Number of participants with specific adverse events."</span>]),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL and ADAE datasets"</span>])</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>doc_ae_specific.write_rtf(<span class="st">"rtf/tlf_ae_specific.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a7284d29" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>doc_ae_specific <span class="op">=</span> rtf.RTFDocument(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>df_ae_specific,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(text<span class="op">=</span>[<span class="st">"Specific Adverse Events"</span>, <span class="st">"(Safety Analysis Population)"</span>]),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>rtf.RTFColumnHeader(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[<span class="st">""</span>, <span class="st">"Placebo</span><span class="ch">\n</span><span class="st">n"</span>, <span class="st">"Xanomeline Low Dose</span><span class="ch">\n</span><span class="st">n"</span>, <span class="st">"Xanomeline High Dose</span><span class="ch">\n</span><span class="st">n"</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        text_font_style<span class="op">=</span><span class="kw">lambda</span> df, i, j: <span class="st">"bold"</span> <span class="cf">if</span> j <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> <span class="st">"  "</span> <span class="kw">not</span> <span class="kw">in</span> <span class="bu">str</span>(df[i, j]) <span class="cf">else</span> <span class="st">""</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    rtf_footnote<span class="op">=</span>rtf.RTFFootnote(text<span class="op">=</span>[<span class="st">"Number of participants with specific adverse events."</span>]),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL and ADAE datasets"</span>])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>doc_ae_specific.write_rtf(<span class="st">"rtf/tlf_ae_specific.rtf"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_ae_specific.rtf</code></pre>
 </div>
 </div>
-<div id="8d554bb2" class="cell" data-execution_count="6">
+<div id="e6726072" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>PosixPath('pdf/tlf_ae_specific.pdf')</code></pre>
 </div>

@@ -340,26 +340,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Objective
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create baseline characteristics tables to summarize demographic and clinical characteristics of study participants at enrollment. Learn to calculate descriptive statistics by treatment group using Polars and format regulatory-compliant tables with rtflite.</p>
+</div>
+</div>
 <section id="overview" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">7.1</span> Overview</h2>
 <p>Baseline characteristics tables summarize the demographic and clinical characteristics of study participants at enrollment. Following <a href="https://database.ich.org/sites/default/files/E3_Guideline.pdf">ICH E3 guidance</a>, these tables are essential for understanding the study population and assessing comparability between treatment groups.</p>
 <p>This tutorial shows you how to create a baseline characteristics table using Python’s <code>rtflite</code> package.</p>
 <embed src="pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">
-<div id="42d7c1e8" class="cell" data-execution_count="1">
+<div id="affcefd7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl <span class="co"># Data manipulation</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf <span class="co"># RTF reporting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="92b3bcca" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>polars.config.Config</code></pre>
+</div>
 </div>
 </section>
 <section id="step-1-load-data" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">7.2</span> Step 1: Load Data</h2>
 <p>We start by loading the Subject-level Analysis Dataset (ADSL) and filtering to the safety population.</p>
-<div id="a4309d77" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> (</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    .select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>])</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>adsl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="670543bc" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    .select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>adsl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div><style>
 .dataframe > thead > tr,
@@ -441,20 +459,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="continuous-variables-age" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="continuous-variables-age"><span class="header-section-number">7.3.1</span> Continuous Variables (Age)</h3>
 <p>For continuous variables, we calculate mean (SD) and median [min, max].</p>
-<div id="e356b6da" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_continuous(df, var):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate summary statistics for continuous variables"""</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.group_by(<span class="st">"TRT01P"</span>).agg([</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        pl.col(var).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean"</span>),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        pl.col(var).std().<span class="bu">round</span>(<span class="dv">2</span>).alias(<span class="st">"sd"</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        pl.col(var).median().alias(<span class="st">"median"</span>),</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        pl.col(var).<span class="bu">min</span>().alias(<span class="st">"min"</span>),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        pl.col(var).<span class="bu">max</span>().alias(<span class="st">"max"</span>),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        pl.<span class="bu">len</span>().alias(<span class="st">"n"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>age_stats <span class="op">=</span> summarize_continuous(adsl, <span class="st">"AGE"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>age_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0816abaa" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_continuous(df, var):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate summary statistics for continuous variables"""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.group_by(<span class="st">"TRT01P"</span>).agg([</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        pl.col(var).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean"</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        pl.col(var).std().<span class="bu">round</span>(<span class="dv">2</span>).alias(<span class="st">"sd"</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        pl.col(var).median().alias(<span class="st">"median"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        pl.col(var).<span class="bu">min</span>().alias(<span class="st">"min"</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        pl.col(var).<span class="bu">max</span>().alias(<span class="st">"max"</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        pl.<span class="bu">len</span>().alias(<span class="st">"n"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>age_stats <span class="op">=</span> summarize_continuous(adsl, <span class="st">"AGE"</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>age_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div><style>
 .dataframe > thead > tr,
@@ -496,15 +514,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>84</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>75.7</td>
-<td>8.29</td>
-<td>77.5</td>
-<td>51.0</td>
-<td>88.0</td>
-<td>84</td>
-</tr>
-<tr class="odd">
 <td>"Placebo"</td>
 <td>75.2</td>
 <td>8.59</td>
@@ -512,6 +521,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>52.0</td>
 <td>89.0</td>
 <td>86</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>75.7</td>
+<td>8.29</td>
+<td>77.5</td>
+<td>51.0</td>
+<td>88.0</td>
+<td>84</td>
 </tr>
 </tbody>
 </table>
@@ -522,24 +540,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="categorical-variables-sex-race" class="level3" data-number="7.3.2">
 <h3 data-number="7.3.2" class="anchored" data-anchor-id="categorical-variables-sex-race"><span class="header-section-number">7.3.2</span> Categorical Variables (Sex, Race)</h3>
 <p>For categorical variables, we calculate counts and percentages.</p>
-<div id="e4c7dcd5" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_categorical(df, var):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate counts and percentages for categorical variables"""</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get counts by treatment and category</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> df.group_by([<span class="st">"TRT01P"</span>, var]).<span class="bu">len</span>()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get treatment totals for percentage calculations</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    totals <span class="op">=</span> df.group_by(<span class="st">"TRT01P"</span>).<span class="bu">len</span>().rename({<span class="st">"len"</span>: <span class="st">"total"</span>})</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate percentages</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> counts.join(totals, on<span class="op">=</span><span class="st">"TRT01P"</span>).with_columns([</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"len"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"pct"</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>sex_stats <span class="op">=</span> summarize_categorical(adsl, <span class="st">"SEX"</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>sex_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="806982a7" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_categorical(df, var):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate counts and percentages for categorical variables"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get counts by treatment and category</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> df.group_by([<span class="st">"TRT01P"</span>, var]).<span class="bu">len</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get treatment totals for percentage calculations</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    totals <span class="op">=</span> df.group_by(<span class="st">"TRT01P"</span>).<span class="bu">len</span>().rename({<span class="st">"len"</span>: <span class="st">"total"</span>})</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate percentages</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> counts.join(totals, on<span class="op">=</span><span class="st">"TRT01P"</span>).with_columns([</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        (<span class="fl">100.0</span> <span class="op">*</span> pl.col(<span class="st">"len"</span>) <span class="op">/</span> pl.col(<span class="st">"total"</span>)).<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"pct"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>sex_stats <span class="op">=</span> summarize_categorical(adsl, <span class="st">"SEX"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>sex_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div><style>
 .dataframe > thead > tr,
@@ -568,39 +586,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>"Female"</td>
-<td>53</td>
-<td>86</td>
-<td>61.6</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
-<td>"Male"</td>
-<td>44</td>
+<td>"Female"</td>
+<td>40</td>
 <td>84</td>
-<td>52.4</td>
-</tr>
-<tr class="odd">
-<td>"Placebo"</td>
-<td>"Male"</td>
-<td>33</td>
-<td>86</td>
-<td>38.4</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-<tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"Male"</td>
-<td>34</td>
-<td>84</td>
-<td>40.5</td>
+<td>47.6</td>
 </tr>
 <tr class="even">
 <td>"Xanomeline Low Dose"</td>
@@ -609,14 +599,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>84</td>
 <td>59.5</td>
 </tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>"Male"</td>
+<td>44</td>
+<td>84</td>
+<td>52.4</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>"Female"</td>
+<td>53</td>
+<td>86</td>
+<td>61.6</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>"Male"</td>
+<td>33</td>
+<td>86</td>
+<td>38.4</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<div id="cbb13d3f" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>race_stats <span class="op">=</span> summarize_categorical(adsl, <span class="st">"RACE"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>race_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="1bda4e98" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>race_stats <span class="op">=</span> summarize_categorical(adsl, <span class="st">"RACE"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>race_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div><style>
 .dataframe > thead > tr,
@@ -645,20 +663,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>"White"</td>
-<td>74</td>
-<td>84</td>
-<td>88.1</td>
-</tr>
-<tr class="even">
-<td>"Xanomeline High Dose"</td>
-<td>"American Indian Or Alaska Nati…</td>
-<td>1</td>
-<td>84</td>
-<td>1.2</td>
-</tr>
-<tr class="odd">
 <td>"Placebo"</td>
 <td>"White"</td>
 <td>78</td>
@@ -666,6 +670,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>90.7</td>
 </tr>
 <tr class="even">
+<td>"Placebo"</td>
+<td>"Black Or African American"</td>
+<td>8</td>
+<td>86</td>
+<td>9.3</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>"Black Or African American"</td>
+<td>6</td>
+<td>84</td>
+<td>7.1</td>
+</tr>
+<tr class="even">
 <td>…</td>
 <td>…</td>
 <td>…</td>
@@ -673,18 +691,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"White"</td>
-<td>78</td>
-<td>84</td>
-<td>92.9</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
 <td>"Black Or African American"</td>
 <td>9</td>
 <td>84</td>
 <td>10.7</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>"White"</td>
+<td>74</td>
+<td>84</td>
+<td>88.1</td>
 </tr>
 </tbody>
 </table>
@@ -698,14 +716,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now we format the statistics into the standard baseline table format.</p>
 <section id="format-age-statistics" class="level3" data-number="7.4.1">
 <h3 data-number="7.4.1" class="anchored" data-anchor-id="format-age-statistics"><span class="header-section-number">7.4.1</span> Format Age Statistics</h3>
-<div id="9820668a" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format age as "Mean (SD)" and "Median [Min, Max]"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>age_formatted <span class="op">=</span> age_stats.with_columns([</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">)"</span>, pl.col(<span class="st">"mean"</span>), pl.col(<span class="st">"sd"</span>)).alias(<span class="st">"mean_sd"</span>),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> [</span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">]"</span>, pl.col(<span class="st">"median"</span>), pl.col(<span class="st">"min"</span>), pl.col(<span class="st">"max"</span>)).alias(<span class="st">"median_range"</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>]).select([<span class="st">"TRT01P"</span>, <span class="st">"mean_sd"</span>, <span class="st">"median_range"</span>])</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>age_formatted</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="16069a99" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format age as "Mean (SD)" and "Median [Min, Max]"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>age_formatted <span class="op">=</span> age_stats.with_columns([</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">)"</span>, pl.col(<span class="st">"mean"</span>), pl.col(<span class="st">"sd"</span>)).alias(<span class="st">"mean_sd"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> [</span><span class="sc">{}</span><span class="st">, </span><span class="sc">{}</span><span class="st">]"</span>, pl.col(<span class="st">"median"</span>), pl.col(<span class="st">"min"</span>), pl.col(<span class="st">"max"</span>)).alias(<span class="st">"median_range"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>]).select([<span class="st">"TRT01P"</span>, <span class="st">"mean_sd"</span>, <span class="st">"median_range"</span>])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>age_formatted</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div><style>
 .dataframe > thead > tr,
@@ -735,14 +753,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"76.0 [56.0, 88.0]"</td>
 </tr>
 <tr class="even">
-<td>"Xanomeline Low Dose"</td>
-<td>"75.7 (8.29)"</td>
-<td>"77.5 [51.0, 88.0]"</td>
-</tr>
-<tr class="odd">
 <td>"Placebo"</td>
 <td>"75.2 (8.59)"</td>
 <td>"76.0 [52.0, 89.0]"</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline Low Dose"</td>
+<td>"75.7 (8.29)"</td>
+<td>"77.5 [51.0, 88.0]"</td>
 </tr>
 </tbody>
 </table>
@@ -752,17 +770,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="format-categorical-statistics" class="level3" data-number="7.4.2">
 <h3 data-number="7.4.2" class="anchored" data-anchor-id="format-categorical-statistics"><span class="header-section-number">7.4.2</span> Format Categorical Statistics</h3>
-<div id="f2b349d8" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format categorical as "n (%)"</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sex_formatted <span class="op">=</span> sex_stats.with_columns(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">%)"</span>, pl.col(<span class="st">"len"</span>), pl.col(<span class="st">"pct"</span>)).alias(<span class="st">"n_pct"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>).select([<span class="st">"TRT01P"</span>, <span class="st">"SEX"</span>, <span class="st">"n_pct"</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>race_formatted <span class="op">=</span> race_stats.with_columns(</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">%)"</span>, pl.col(<span class="st">"len"</span>), pl.col(<span class="st">"pct"</span>)).alias(<span class="st">"n_pct"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>).select([<span class="st">"TRT01P"</span>, <span class="st">"RACE"</span>, <span class="st">"n_pct"</span>])</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>sex_formatted</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b327f4d8" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format categorical as "n (%)"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sex_formatted <span class="op">=</span> sex_stats.with_columns(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">%)"</span>, pl.col(<span class="st">"len"</span>), pl.col(<span class="st">"pct"</span>)).alias(<span class="st">"n_pct"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>).select([<span class="st">"TRT01P"</span>, <span class="st">"SEX"</span>, <span class="st">"n_pct"</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>race_formatted <span class="op">=</span> race_stats.with_columns(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">%)"</span>, pl.col(<span class="st">"len"</span>), pl.col(<span class="st">"pct"</span>)).alias(<span class="st">"n_pct"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>).select([<span class="st">"TRT01P"</span>, <span class="st">"RACE"</span>, <span class="st">"n_pct"</span>])</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>sex_formatted</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div><style>
 .dataframe > thead > tr,
@@ -787,34 +805,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>"Female"</td>
-<td>"53 (61.6%)"</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
-<td>"Male"</td>
-<td>"44 (52.4%)"</td>
-</tr>
-<tr class="odd">
-<td>"Placebo"</td>
-<td>"Male"</td>
-<td>"33 (38.4%)"</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-<tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"Male"</td>
-<td>"34 (40.5%)"</td>
+<td>"Female"</td>
+<td>"40 (47.6%)"</td>
 </tr>
 <tr class="even">
 <td>"Xanomeline Low Dose"</td>
 <td>"Female"</td>
 <td>"50 (59.5%)"</td>
+</tr>
+<tr class="odd">
+<td>"Xanomeline High Dose"</td>
+<td>"Male"</td>
+<td>"44 (52.4%)"</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"Placebo"</td>
+<td>"Female"</td>
+<td>"53 (61.6%)"</td>
+</tr>
+<tr class="even">
+<td>"Placebo"</td>
+<td>"Male"</td>
+<td>"33 (38.4%)"</td>
 </tr>
 </tbody>
 </table>
@@ -826,63 +844,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-4-create-table-structure" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="step-4-create-table-structure"><span class="header-section-number">7.5</span> Step 4: Create Table Structure</h2>
 <p>We’ll build the table row by row following the standard baseline table format.</p>
-<div id="a057b5bf" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to get value for a treatment group</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_value(df, treatment):</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get value for a specific treatment group or return default"""</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> df.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> treatment)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result[result.columns[<span class="op">-</span><span class="dv">1</span>]][<span class="dv">0</span>] <span class="cf">if</span> result.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"0 (0.0%)"</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the baseline table structure</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>table_rows <span class="op">=</span> []</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Age section</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>table_rows.append([<span class="st">"Age (years)"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Age Mean (SD) row</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>age_mean_row <span class="op">=</span> [<span class="st">"  Mean (SD)"</span>] <span class="op">+</span> [</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    get_value(age_formatted.select([<span class="st">"TRT01P"</span>, <span class="st">"mean_sd"</span>]), trt).replace(<span class="st">"0 (0.0%)"</span>, <span class="st">""</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>table_rows.append(age_mean_row)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Age Median [Min, Max] row</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>age_median_row <span class="op">=</span> [<span class="st">"  Median [Min, Max]"</span>] <span class="op">+</span> [</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    get_value(age_formatted.select([<span class="st">"TRT01P"</span>, <span class="st">"median_range"</span>]), trt).replace(<span class="st">"0 (0.0%)"</span>, <span class="st">""</span>)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>table_rows.append(age_median_row)</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Sex section</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>table_rows.append([<span class="st">"Sex"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sex_cat <span class="kw">in</span> [<span class="st">"Female"</span>, <span class="st">"Male"</span>]:</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    sex_data <span class="op">=</span> sex_formatted.<span class="bu">filter</span>(pl.col(<span class="st">"SEX"</span>) <span class="op">==</span> sex_cat)</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    sex_row <span class="op">=</span> [<span class="ss">f"  </span><span class="sc">{</span>sex_cat<span class="sc">}</span><span class="ss">"</span>] <span class="op">+</span> [</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        get_value(sex_data, trt)</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    table_rows.append(sex_row)</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Race section</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>table_rows.append([<span class="st">"Race"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> race_cat <span class="kw">in</span> [<span class="st">"White"</span>, <span class="st">"Black Or African American"</span>, <span class="st">"American Indian Or Alaska Native"</span>]:</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    race_data <span class="op">=</span> race_formatted.<span class="bu">filter</span>(pl.col(<span class="st">"RACE"</span>) <span class="op">==</span> race_cat)</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    race_row <span class="op">=</span> [<span class="ss">f"  </span><span class="sc">{</span>race_cat<span class="sc">}</span><span class="ss">"</span>] <span class="op">+</span> [</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        get_value(race_data, trt)</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    table_rows.append(race_row)</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create DataFrame from table rows</span></span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>baseline_table <span class="op">=</span> pl.DataFrame(</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    table_rows,</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    schema<span class="op">=</span>[<span class="st">"Characteristic"</span>, <span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>],</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    orient<span class="op">=</span><span class="st">"row"</span></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>baseline_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="c66ab6b6" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to get value for a treatment group</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_value(df, treatment):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get value for a specific treatment group or return default"""</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> df.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> treatment)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result[result.columns[<span class="op">-</span><span class="dv">1</span>]][<span class="dv">0</span>] <span class="cf">if</span> result.height <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"0 (0.0%)"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the baseline table structure</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>table_rows <span class="op">=</span> []</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Age section</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>table_rows.append([<span class="st">"Age (years)"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Age Mean (SD) row</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>age_mean_row <span class="op">=</span> [<span class="st">"  Mean (SD)"</span>] <span class="op">+</span> [</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    get_value(age_formatted.select([<span class="st">"TRT01P"</span>, <span class="st">"mean_sd"</span>]), trt).replace(<span class="st">"0 (0.0%)"</span>, <span class="st">""</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>table_rows.append(age_mean_row)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Age Median [Min, Max] row</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>age_median_row <span class="op">=</span> [<span class="st">"  Median [Min, Max]"</span>] <span class="op">+</span> [</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    get_value(age_formatted.select([<span class="st">"TRT01P"</span>, <span class="st">"median_range"</span>]), trt).replace(<span class="st">"0 (0.0%)"</span>, <span class="st">""</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>table_rows.append(age_median_row)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Sex section</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>table_rows.append([<span class="st">"Sex"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sex_cat <span class="kw">in</span> [<span class="st">"Female"</span>, <span class="st">"Male"</span>]:</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    sex_data <span class="op">=</span> sex_formatted.<span class="bu">filter</span>(pl.col(<span class="st">"SEX"</span>) <span class="op">==</span> sex_cat)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    sex_row <span class="op">=</span> [<span class="ss">f"  </span><span class="sc">{</span>sex_cat<span class="sc">}</span><span class="ss">"</span>] <span class="op">+</span> [</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        get_value(sex_data, trt)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    table_rows.append(sex_row)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Race section</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>table_rows.append([<span class="st">"Race"</span>, <span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span>])</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> race_cat <span class="kw">in</span> [<span class="st">"White"</span>, <span class="st">"Black Or African American"</span>, <span class="st">"American Indian Or Alaska Native"</span>]:</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    race_data <span class="op">=</span> race_formatted.<span class="bu">filter</span>(pl.col(<span class="st">"RACE"</span>) <span class="op">==</span> race_cat)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    race_row <span class="op">=</span> [<span class="ss">f"  </span><span class="sc">{</span>race_cat<span class="sc">}</span><span class="ss">"</span>] <span class="op">+</span> [</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>        get_value(race_data, trt)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> trt <span class="kw">in</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    table_rows.append(race_row)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create DataFrame from table rows</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>baseline_table <span class="op">=</span> pl.DataFrame(</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    table_rows,</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    schema<span class="op">=</span>[<span class="st">"Characteristic"</span>, <span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>],</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    orient<span class="op">=</span><span class="st">"row"</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>baseline_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div><style>
 .dataframe > thead > tr,
@@ -953,41 +971,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-generate-publication-ready-output" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="step-5-generate-publication-ready-output"><span class="header-section-number">7.6</span> Step 5: Generate Publication-Ready Output</h2>
 <p>Finally, we format the baseline table for regulatory submission using the <code>rtflite</code> package.</p>
-<div id="6b68d71a" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get treatment group sizes for column headers</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>treatment_n <span class="op">=</span> adsl.group_by(<span class="st">"TRT01P"</span>).<span class="bu">len</span>().sort(<span class="st">"TRT01P"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>n_placebo <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Placebo"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>n_low <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Xanomeline Low Dose"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>n_high <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Xanomeline High Dose"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>doc_baseline <span class="op">=</span> rtf.RTFDocument(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>baseline_table,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Baseline Characteristics of Participants"</span>, </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"(All Participants Randomized)"</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        ]</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>rtf.RTFColumnHeader(</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Characteristic"</span>,</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Placebo</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>n_placebo<span class="sc">}</span><span class="ss">)"</span>,</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Xanomeline Low Dose</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>n_low<span class="sc">}</span><span class="ss">)"</span>,</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Xanomeline High Dose</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>n_high<span class="sc">}</span><span class="ss">)"</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL dataset"</span>])</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>doc_baseline.write_rtf(<span class="st">"rtf/tlf_baseline.rtf"</span>) <span class="co"># Save as RTF for submission</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cf4cbccd" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get treatment group sizes for column headers</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>treatment_n <span class="op">=</span> adsl.group_by(<span class="st">"TRT01P"</span>).<span class="bu">len</span>().sort(<span class="st">"TRT01P"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>n_placebo <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Placebo"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>n_low <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Xanomeline Low Dose"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>n_high <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Xanomeline High Dose"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>doc_baseline <span class="op">=</span> rtf.RTFDocument(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>baseline_table,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    rtf_title<span class="op">=</span>rtf.RTFTitle(</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Baseline Characteristics of Participants"</span>, </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"(All Participants Randomized)"</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    rtf_column_header<span class="op">=</span>rtf.RTFColumnHeader(</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span>[</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Characteristic"</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Placebo</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>n_placebo<span class="sc">}</span><span class="ss">)"</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Xanomeline Low Dose</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>n_low<span class="sc">}</span><span class="ss">)"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Xanomeline High Dose</span><span class="ch">\n</span><span class="ss">(N=</span><span class="sc">{</span>n_high<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    rtf_body<span class="op">=</span>rtf.RTFBody(</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        text_justification<span class="op">=</span>[<span class="st">"l"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>, <span class="st">"c"</span>],</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        col_rel_width<span class="op">=</span>[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    rtf_source<span class="op">=</span>rtf.RTFSource(text<span class="op">=</span>[<span class="st">"Source: ADSL dataset"</span>])</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>doc_baseline.write_rtf(<span class="st">"rtf/tlf_baseline.rtf"</span>) <span class="co"># Save as RTF for submission</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_baseline.rtf</code></pre>
+</div>
+</div>
+<div id="1c5cd807" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>PosixPath('pdf/tlf_baseline.pdf')</code></pre>
 </div>
 </div>
 <embed src="pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">
