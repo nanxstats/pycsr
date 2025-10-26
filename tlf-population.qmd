@@ -2,6 +2,13 @@
 title: "Study population"
 ---
 
+::: callout-tip
+## Objective
+
+Create study population summary tables to document participant counts across different analysis populations.
+Learn to use population flags in ADSL data and generate regulatory-compliant population tables with rtflite.
+:::
+
 ## Overview
 
 Clinical trials define multiple analysis populations based on different inclusion criteria. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), regulatory submissions must clearly document the number of participants in each analysis population to support the validity of statistical analyses.
@@ -23,7 +30,7 @@ import rtflite as rtf # RTF reporting
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Configure Polars to show only first 5 rows
 pl.Config.set_tbl_rows(5)
 ```
@@ -219,7 +226,7 @@ doc_overview.write_rtf("rtf/tlf_population.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()

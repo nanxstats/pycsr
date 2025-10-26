@@ -2,6 +2,13 @@
 title: "Disposition of participants"
 ---
 
+::: callout-tip
+## Objective
+
+Create participant disposition tables to track how participants flow through the study from enrollment to completion.
+Learn to analyze completion status and discontinuation reasons using Polars and create regulatory-compliant disposition tables with rtflite.
+:::
+
 ## Overview
 
 Clinical trials needs to track how participants flow through a study from enrollment to completion. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), regulatory submissions require a disposition table in Section 10.1 that summarizes:
@@ -20,7 +27,7 @@ import rtflite as rtf # Reporting in RTF format
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Configure Polars to show only first 5 rows
 pl.Config.set_tbl_rows(5)
 ```
@@ -227,7 +234,7 @@ doc_disp.write_rtf("rtf/tlf_disposition.rtf")  # Save as RTF for submission
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()

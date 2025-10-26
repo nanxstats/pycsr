@@ -2,6 +2,13 @@
 title: "Baseline characteristics"
 ---
 
+::: callout-tip
+## Objective
+
+Create baseline characteristics tables to summarize demographic and clinical characteristics of study participants at enrollment.
+Learn to calculate descriptive statistics by treatment group using Polars and format regulatory-compliant tables with rtflite.
+:::
+
 ## Overview
 
 Baseline characteristics tables summarize the demographic and clinical characteristics of study participants at enrollment. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), these tables are essential for understanding the study population and assessing comparability between treatment groups.
@@ -16,7 +23,7 @@ import rtflite as rtf # RTF reporting
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Configure Polars to show only first 5 rows
 pl.Config.set_tbl_rows(5)
 ```
@@ -221,7 +228,7 @@ doc_baseline.write_rtf("rtf/tlf_baseline.rtf") # Save as RTF for submission
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Convert RTF to PDF
 from rtflite import LibreOfficeConverter
 converter = LibreOfficeConverter()

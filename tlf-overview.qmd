@@ -96,7 +96,7 @@ import polars as pl
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 # Configure Polars to show only first 5 rows
 pl.Config.set_tbl_rows(5)
 ```
@@ -232,7 +232,7 @@ import rtflite as rtf
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 from rtflite import LibreOfficeConverter
 
 pl.Config.set_tbl_rows(5)
@@ -332,7 +332,7 @@ doc.write_rtf("rtf/tlf_overview1.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview1.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
@@ -364,7 +364,7 @@ doc.write_rtf("rtf/tlf_overview2.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview2.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
@@ -395,7 +395,7 @@ doc.write_rtf("rtf/tlf_overview3.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview3.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
@@ -436,7 +436,7 @@ doc.write_rtf("rtf/tlf_overview4.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview4.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
@@ -480,7 +480,7 @@ doc.write_rtf("rtf/tlf_overview5.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview5.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
@@ -521,7 +521,7 @@ doc.write_rtf("rtf/tlf_overview6.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview6.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
@@ -559,7 +559,7 @@ doc.write_rtf("rtf/tlf_overview7.rtf")
 ```
 
 ```{python}
-#| include: false
+#| echo: false
 converter.convert("rtf/tlf_overview7.rtf", output_dir="pdf/", format="pdf", overwrite=True)
 ```
 
