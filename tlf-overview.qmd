@@ -86,15 +86,23 @@ which will serve as a practical example for generating summaries using Polars.
 
 ```{python}
 import polars as pl
+```
 
+```{python}
+#| include: false
+# Configure Polars to show only first 5 rows
+pl.Config.set_tbl_rows(5)
+```
+
+```{python}
 # Read clinical data
 adsl = pl.read_parquet("data/adsl.parquet")
 
-# Select columns 
+# Select columns
 adsl = adsl.select(["USUBJID", "TRT01A", "AGE", "SEX"])
 
 # Basic data exploration
-adsl.head()
+adsl
 ```
 
 Key Polars operations for clinical reporting include:
@@ -110,7 +118,7 @@ The example below loads subject-level ADSL data with Polars.
 import polars as pl
 adsl = pl.read_parquet("data/adsl.parquet")
 adsl = adsl.select("STUDYID", "USUBJID", "TRT01A", "AGE", "SEX") # select columns
-adsl.head()
+adsl
 ```
 
 ### Filtering
@@ -120,12 +128,12 @@ Below are examples applied to the ADSL data.
 
 ```{python}
 # Filter female subjects
-adsl.filter(pl.col("SEX") == "Female").head()
+adsl.filter(pl.col("SEX") == "Female")
 ```
 
 ```{python}
 # Filter subjects with Age >= 65
-adsl.filter(pl.col("AGE") >= 65).head()
+adsl.filter(pl.col("AGE") >= 65)
 ```
 
 ### Deriving
@@ -140,7 +148,7 @@ adsl.with_columns([
       .then(pl.lit("<65"))
       .otherwise(pl.lit(">=65"))
       .alias("AGECAT")
-]).head()
+])
 ```
 
 ### Grouping

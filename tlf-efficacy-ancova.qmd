@@ -13,8 +13,15 @@ import pandas as pd
 import numpy as np
 import statsmodels.formula.api as smf
 from scipy import stats as scipy_stats
-from importlib.resources import files
+```
 
+```{python}
+#| include: false
+# Configure Polars to show only first 5 rows
+pl.Config.set_tbl_rows(5)
+```
+
+```{python}
 adsl = pl.read_parquet("data/adsl.parquet")
 adlbc = pl.read_parquet("data/adlbc.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
