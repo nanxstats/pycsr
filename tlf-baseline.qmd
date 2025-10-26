@@ -2,6 +2,13 @@
 title: "Baseline characteristics"
 ---
 
+::: callout-tip
+## Objective
+
+Create baseline characteristics tables to summarize demographic and clinical characteristics of study participants at enrollment.
+Learn to calculate descriptive statistics by treatment group using Polars and format regulatory-compliant tables with rtflite.
+:::
+
 ## Overview
 
 Baseline characteristics tables summarize the demographic and clinical characteristics of study participants at enrollment. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), these tables are essential for understanding the study population and assessing comparability between treatment groups.

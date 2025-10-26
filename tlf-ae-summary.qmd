@@ -2,6 +2,13 @@
 title: "Adverse events summary"
 ---
 
+::: callout-tip
+## Objective
+
+Create adverse event summary tables to provide high-level safety overview across treatment groups.
+Learn to calculate AE rates and percentages using Polars and create comprehensive safety summary tables with rtflite.
+:::
+
 ## Overview
 
 Adverse events (AE) summary tables are critical safety assessments required in clinical study reports. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), these tables summarize the overall safety profile by showing the number and percentage of participants experiencing various categories of adverse events across treatment groups.

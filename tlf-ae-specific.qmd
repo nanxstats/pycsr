@@ -2,6 +2,13 @@
 title: "Specific adverse events"
 ---
 
+::: callout-tip
+## Objective
+
+Create detailed adverse event tables organized by System Organ Class and Preferred Term to support safety evaluation.
+Learn to process ADAE data with hierarchical grouping using Polars and generate regulatory-compliant AE listings with rtflite.
+:::
+
 This article demonstrates how to create a specific adverse events table by System Organ Class and Preferred Term.
 
 ## Setup

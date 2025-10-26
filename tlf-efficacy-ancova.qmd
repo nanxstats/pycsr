@@ -2,6 +2,13 @@
 title: "ANCOVA efficacy analysis"
 ---
 
+::: callout-tip
+## Objective
+
+Create ANCOVA efficacy analysis tables to evaluate treatment effects while controlling for baseline covariates.
+Learn to perform ANCOVA modeling with missing data imputation using Python statistical libraries and present results in regulatory format with rtflite.
+:::
+
 This article demonstrates how to create an ANCOVA efficacy table for glucose levels at Week 24 with LOCF imputation.
 
 ## Setup
