@@ -9,7 +9,15 @@ This article demonstrates how to create a specific adverse events table by Syste
 ```{python}
 import polars as pl
 import rtflite as rtf
+```
 
+```{python}
+#| include: false
+# Configure Polars to show only first 5 rows
+pl.Config.set_tbl_rows(5)
+```
+
+```{python}
 adsl = pl.read_parquet("data/adsl.parquet")
 adae = pl.read_parquet("data/adae.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]

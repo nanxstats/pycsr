@@ -23,6 +23,12 @@ import polars as pl
 import rtflite as rtf
 ```
 
+```{python}
+#| include: false
+# Configure Polars to show only first 5 rows
+pl.Config.set_tbl_rows(5)
+```
+
 ## Step 1: Load Data
 
 We need two datasets for AE analysis: the subject-level dataset (ADSL) and the adverse events dataset (ADAE).
@@ -33,12 +39,12 @@ adsl = pl.read_parquet("data/adsl.parquet")
 adae = pl.read_parquet("data/adae.parquet")
 
 # Display key variables from ADSL
-adsl.select(["USUBJID", "TRT01A", "SAFFL"]).head()
+adsl.select(["USUBJID", "TRT01A", "SAFFL"])
 ```
 
 ```{python}
 # Display key variables from ADAE
-adae.select(["USUBJID", "AEREL", "AESER", "AEOUT", "AEACN"]).head()
+adae.select(["USUBJID", "AEREL", "AESER", "AEOUT", "AEACN"])
 ```
 
 Key ADAE variables used in this analysis:

@@ -22,6 +22,12 @@ import polars as pl # Data manipulation
 import rtflite as rtf # RTF reporting
 ```
 
+```{python}
+#| include: false
+# Configure Polars to show only first 5 rows
+pl.Config.set_tbl_rows(5)
+```
+
 ## Step 1: Load Data
 
 We start by loading the Subject-level Analysis Dataset (ADSL), which contains population flags for each participant.
