@@ -2,12 +2,19 @@
 title: "TLF overview"
 ---
 
+::: callout-tip
+## Objective
+
+Understand the regulatory context and importance of TLFs in clinical study reports.
+Learn basic concepts of Polars and rtflite for TLF generation.
+:::
+
 ## Overview
 
-Tables, listings, and figures (TLFs) are essential components of clinical study reports (CSRs) and regulatory submissions. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf), 
+Tables, listings, and figures (TLFs) are essential components of clinical study reports (CSRs) and regulatory submissions. Following [ICH E3 guidance](https://database.ich.org/sites/default/files/E3_Guideline.pdf),
 TLFs provide standardized summaries of clinical trial data that support regulatory decision-making.
 
-This chapter provides an overview of creating TLFs using Python, 
+This chapter provides an overview of creating TLFs using Python,
 focusing on the tools and workflows demonstrated throughout this book.
 
 ## Background
@@ -36,7 +43,7 @@ By following the ICH E3 guidance, most TLFs in a CSR are located at:
 - Section 10: Study participants
 - Section 11: Efficacy evaluation
 - Section 12: Safety evaluation
-- Section 14: Tables, listings, and figures referrals but not included in the text
+- Section 14: Tables, listings, and figures referenced but not included in the text
 - Section 16: Appendices
 
 ## Datasets
@@ -51,8 +58,8 @@ We have converted these datasets from the `.xpt` format to the `.parquet` format
 
 To exemplify the generation of TLFs in RTF format, we rely on the functionality provided by two Python packages:
 
-- [Polars](https://pola.rs): preparation of datasets in a format suitable for reporting purposes. Polars offers a comprehensive suite of tools and functions for data manipulation and transformation, ensuring that the data is structured appropriately.
-- [rtflite](https://github.com/pharmaverse/rtflite): creation of RTF files. The rtflite package offers functions specifically designed for generating RTF files, allowing us to produce TLFs in the desired format.
+- **[Polars](https://pola.rs)**: Preparation of datasets in a format suitable for reporting purposes. Polars offers a comprehensive suite of tools and functions for data manipulation and transformation, ensuring that the data is structured appropriately.
+- **[rtflite](https://github.com/pharmaverse/rtflite)**: Creation of RTF files. The rtflite package offers functions specifically designed for generating RTF files, allowing us to produce TLFs in the desired format.
 
 ## Polars
 
@@ -116,6 +123,9 @@ The example below loads subject-level ADSL data with Polars.
 
 ```{python}
 import polars as pl
+```
+
+```{python}
 adsl = pl.read_parquet("data/adsl.parquet")
 adsl = adsl.select("STUDYID", "USUBJID", "TRT01A", "AGE", "SEX") # select columns
 adsl
@@ -211,19 +221,26 @@ Use `.pivot()` to reshape grouped data into columns.
             on="TRT01A"
         )
 )
-``` 
+```
+
+Having covered the essential Polars operations for data manipulation, we now turn to the second component of our clinical reporting workflow: formatting and presenting the processed data in regulatory-compliant RTF format.
 
 ## rtflite
+
+```{python}
+import rtflite as rtf 
+```
 
 ```{python}
 #| include: false
 from rtflite import LibreOfficeConverter
 
+pl.Config.set_tbl_rows(5)
 converter = LibreOfficeConverter()
 ```
 
 rtflite is a Python package for creating production-ready tables and figures
-in RTF format. The package is designed to:
+in RTF format. While Polars handles the data processing and statistical calculations, rtflite focuses exclusively on the presentation layer. The package is designed to:
 
 - Provide simple Python classes that map to table elements
   (title, headers, body, footnotes) for intuitive table construction.
@@ -244,10 +261,10 @@ dataframes into Tables, Listings, and Figures (TLFs) for clinical reporting.
 ### Data: adverse events
 
 To explore the RTF generation capabilities in rtflite, we will use the
-dataset `data/adae.parquet`. This dataset contains adverse events (AE) information
+dataset `data/adae.parquet`. This dataset contains adverse event (AE) information
 from a clinical trial.
 
-Below is the meaning of relevant variables.
+Below are the meanings of relevant variables:
 
 - `USUBJID`: Unique Subject Identifier
 - `TRTA`: Actual Treatment
@@ -388,8 +405,8 @@ We also allow column headers to be displayed in multiple lines.
 If an empty column name is needed for a column,
 you can insert an empty string. For example, `["name 1", "", "name 3"]`.
 
-In `RTFColumnHeader`, the `col_rel_width` can be used to align column header
-with different number of columns.
+In `RTFColumnHeader`, the `col_rel_width` can be used to align column headers
+with different numbers of columns.
 
 By using `RTFColumnHeader` with `col_rel_width`, one can customize complex column headers.
 If there are multiple pages, the column header will repeat on each page by default.
@@ -547,3 +564,9 @@ converter.convert("rtf/tlf_overview7.rtf", output_dir="pdf/", format="pdf", over
 ```
 
 <embed src="pdf/tlf_overview7.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Next Steps
+
+Having covered the fundamental concepts and tools for creating clinical TLFs with Python, readers can explore specific implementations based on their requirements:
+
+Each chapter provides step-by-step tutorials with reproducible code examples that can be adapted for specific clinical reporting requirements.
