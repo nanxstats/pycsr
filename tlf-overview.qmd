@@ -20,7 +20,7 @@ For instance, the United States Food and Drug Administration (US FDA) [mandates 
 A CSR provides comprehensive information about the methods and results of an individual clinical study. 
 To support the statistical analysis, numerous tables, listings, 
 and figures are included within the main text and appendices. 
-The creation of CSR is a collaborative effort that involves 
+The creation of a CSR is a collaborative effort that involves 
 various professionals such as clinicians, medical writers, statisticians, and statistical programmers.
 
 Within an organization, these professionals typically collaborate to define, develop, validate, and deliver the necessary TLFs for a CSR. These TLFs serve to summarize the efficacy and/or safety of the pharmaceutical product under study. 
@@ -70,7 +70,7 @@ Key advantages of Polars include:
 The creators of Polars have provided exceptional 
 [documentation](https://docs.pola.rs/api/python/stable/reference/index.html) and [tutorials](https://docs.pola.rs/user-guide/getting-started) that serve as valuable resources for learning and mastering the functionalities of the library.
 
-Furthermore, there are several books available that serve as introductions to Polars:
+Furthermore, several books are available that serve as introductions to Polars:
 
 - [Python Polars: The Definitive Guide](https://polarsguide.com/)
 
@@ -326,7 +326,7 @@ converter.convert("rtf/tlf_overview1.rtf", output_dir="pdf/", format="pdf", over
 If we want to adjust the width of each column to provide more space to the first column,
 this can be achieved by updating `col_rel_width` in `RTFBody`.
 
-The input of `col_rel_width` is a list with same length for number of columns.
+The input of `col_rel_width` is a list with the same length as the number of columns.
 This argument defines the relative length of each column within a pre-defined total column width.
 
 In this example, the defined relative width is 3:2:2:2.
@@ -384,15 +384,15 @@ converter.convert("rtf/tlf_overview3.rtf", output_dir="pdf/", format="pdf", over
 
 <embed src="pdf/tlf_overview3.pdf" style="width:100%; height:400px" type="application/pdf">
 
-We also allow column headers be displayed in multiple lines.
+We also allow column headers to be displayed in multiple lines.
 If an empty column name is needed for a column,
 you can insert an empty string. For example, `["name 1", "", "name 3"]`.
 
 In `RTFColumnHeader`, the `col_rel_width` can be used to align column header
 with different number of columns.
 
-By using `RTFColumnHeader` with `col_rel_width`, one can customize complicated column headers.
-If there are multiple pages, column header will repeat at each page by default.
+By using `RTFColumnHeader` with `col_rel_width`, one can customize complex column headers.
+If there are multiple pages, the column header will repeat on each page by default.
 
 ```{python}
 #| echo: false
