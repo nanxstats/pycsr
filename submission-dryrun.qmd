@@ -392,6 +392,12 @@ The Python clinical reporting ecosystem continues to evolve.
 Stay engaged with the community to learn best practices and contribute improvements.
 Here we list the important resources to explore:
 
+::: callout-caution
+In case you used GitHub Codespaces, remember to [stop (and maybe delete) your Codespace](
+https://docs.github.com/en/codespaces/developing-in-a-codespace/stopping-and-starting-a-codespace)
+to avoid unnecessary usage.
+:::
+
 **Regulatory guidance:**
 
 - [FDA Study Data Technical Conformance Guide](https://www.fda.gov/media/88173/download)
