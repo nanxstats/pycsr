@@ -488,8 +488,8 @@ TOTAL                           4      0   100%
 
 Demo project repositories have been created:
 
-- **Python package example**: [Link to be added]
-- **eCTD package example**: [Link to be added]
+- **Python package example**: <https://github.com/elong0527/demo-py-esub>
+- **eCTD package example**: <https://github.com/elong0527/demo-py-ectd>
 
 With the knowledge from this chapter, you can understand how these projects are
 organized and develop similar professional Python packages for clinical reporting.
