@@ -34,8 +34,9 @@
 				"editor.inlineSuggest.enabled": true,
 				"editor.copyWithSyntaxHighlighting": false,
 				"editor.unicodeHighlight.nonBasicASCII": true,
-				"diffEditor.ignoreTrimWhitespace": false,
 				"editor.renderWhitespace": "trailing",
+				"diffEditor.ignoreTrimWhitespace": false,
+				"terminal.integrated.fontSize": 18,
 				"workbench.preferredLightColorTheme": "textmate.rstheme",
 				"workbench.preferredDarkColorTheme": "textmate.rstheme"
 			}
