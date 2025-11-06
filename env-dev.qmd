@@ -23,17 +23,30 @@ a local Python setup.
 We will provide a dev container configuration that includes:
 
 - Python with uv pre-installed.
+- Quarto pre-installed for document rendering.
 - All necessary VS Code extensions.
 - Consistent environment across all readers, useable in the web browser.
 
-To use Codespaces, simply click the "Code" button in the repository and select
-"Create codespace on main".
+To use a pre-configured Codespaces for this book,
+use the "Open in GitHub Codespaces" button below.
+
+[![](https://github.com/codespaces/badge.svg)](https://codespaces.new/nanxstats/pycsr?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+
+Click "Create new Codespace", you will see a notification
+"Setting up remote connection: Building codespace..."
+After two or three minutes, your Codespace will be ready with everything set up.
 
 ::: callout-note
 Codespaces currently offers [120 hours of free compute time per month
 ](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-and-billed-use-by-personal-accounts)
 for personal accounts.
 This is more than sufficient for this book.
+:::
+
+::: callout-caution
+Remember to [stop your Codespace](
+https://docs.github.com/en/codespaces/developing-in-a-codespace/stopping-and-starting-a-codespace) after this workshop to avoid unnecessary usage.
+We will remind you at the end of this book.
 :::
 
 ### Positron
