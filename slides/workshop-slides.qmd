@@ -12,7 +12,7 @@ format:
     smaller: true
     embed-resources: true
     slide-number: true
-title-slide-attributes: 
+title-slide-attributes:
   data-background-color: "#385898"
 ---
 
@@ -27,7 +27,7 @@ Four parts of this workshop:
 
 2. **Python packages for clinical reporting (Yilong)**\
    A guided tour of essential packages such as `polars`, `plotnine`, and `rtflite`, with demonstrations of creating TLFs commonly used in clinical trials.
-  
+
 3. **Manage clinical trial A&R projects (Yilong)**\
    Practical project structure, conventions, and execution from data to deliverables.
 4. **Prepare eCTD submission packages (Nan)**\
@@ -246,11 +246,73 @@ In a CSR, most of TLFs are located in:
 
 - rtflite: Python package for creating production-ready tables and figures in RTF format similar to R package r2rtf
 
-# polars introduction {background-color="#385898"}
+# polars intro {background-color="#385898"}
 
-> TBD
+## Why polars?
 
-# rtflite introduction {background-color="#385898"}
+Modern Python dataframe library designed for performance and expressiveness.
+
+**Key advantages:**
+
+- **Fast**: Written in Rust with parallel execution
+- **Memory efficient**: Lazy evaluation and streaming support
+- **Type-safe**: Strong type system prevents common errors
+- **Modern API**: Method chaining with clear, readable syntax
+
+**Core operations:**
+
+```python
+df.filter(pl.col("AGE") > 65)
+df.group_by("TRT01P").agg(n = pl.len())
+df.pivot(index="row", on="TRT01PN", values="n")
+```
+
+## Essential patterns for TLFs
+
+**Counting participants:**
+
+```python
+df.group_by("TRT01P").agg(n = pl.len())
+```
+
+**Calculating percentages:**
+
+```python
+.join(totals, on="TRT01P")
+.with_columns(
+    pct = (100.0 * pl.col("n") / pl.col("total")).round(1)
+)
+```
+
+**Pivoting to wide format:**
+
+```python
+.pivot(index="category", on="TRT01P", values="n")
+```
+
+## Handling missing data
+
+**Fill nulls for categorical counts:**
+
+```python
+.with_columns(
+    pl.col(["n_0", "n_54", "n_81"]).fill_null(0)
+)
+```
+
+**Use typed literals for schema consistency:**
+
+```python
+pl.lit(None, dtype=pl.Float64).alias("pct")
+```
+
+**Count unique subjects (not events):**
+
+```python
+pl.col("USUBJID").n_unique()
+```
+
+# rtflite intro {background-color="#385898"}
 
 ## Motivation
 
@@ -288,9 +350,25 @@ Before creating an RTF table, we need to:
 
 - Execute the program.
 
-## Minimal example
+## Basic workflow
 
-> TBD
+Three-step process:
+
+1. **Prepare data**: Use polars to calculate statistics
+2. **Define structure**: Create rtflite components (title, headers, body, footnotes)
+3. **Generate RTF**: Write output file for submission
+
+```python
+doc = rtf.RTFDocument(
+    df=your_dataframe,
+    rtf_title=rtf.RTFTitle(text=["Your Table Title"]),
+    rtf_column_header=rtf.RTFColumnHeader(...),
+    rtf_body=rtf.RTFBody(...),
+    rtf_source=rtf.RTFSource(text=["Source: ADSL"])
+)
+
+doc.write_rtf("output.rtf")
+```
 
 ## Package overview
 
@@ -305,47 +383,243 @@ rtflite package also provides the flexibility to convert figures in RTF format.
 
 ## Simple example: adverse events
 
-rtflite only focus on **table format**.
-Data manipulation and analysis should be handled by other python libraries.
+rtflite only focuses on **table format**.
+Data manipulation and analysis should be handled by other Python packages.
 
-## Function summary
+## Key rtflite components
 
-rtflite provides simple simple Python classes that map to table elements.
-  The goal is to help you translate data frame to tables in RTF file.
+`RTFTitle`: Main and subtitle lines
 
-> add code example
+```python
+rtf.RTFTitle(text=["Main Title", "Subtitle"])
+```
 
-## Function illustration
+`RTFColumnHeader`: Define column structure
 
-> add figure
+```python
+rtf.RTFColumnHeader(
+    text=["", "Placebo", "Low Dose", "High Dose"],
+    col_rel_width=[3, 2, 2, 2],
+    text_justification=["l", "c", "c", "c"]
+)
+```
 
-# Break and/or exercise (5 min)
+`RTFBody`: Table content formatting
+
+```python
+rtf.RTFBody(col_rel_width=[3, 2, 2, 2])
+```
+
+## Multi-level headers
+
+Create hierarchical column headers:
+
+```python
+rtf_column_header=[
+    rtf.RTFColumnHeader(
+        text=["", "Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"],
+        col_rel_width=[3] + [2] * 3
+    ),
+    rtf.RTFColumnHeader(
+        text=["", "n", "(%)", "n", "(%)", "n", "(%)"],
+        col_rel_width=[3] + [1] * 6,
+        border_top=[""] + ["single"] * 6,
+        border_left=["single"] + ["single", ""] * 3
+    )
+]
+```
+
+## Advanced features
+
+**Multiple tables in one document:**
+
+```python
+doc = rtf.RTFDocument(
+    df=[table1, table2],  # List of DataFrames
+    rtf_column_header=[header1, header2],
+    rtf_body=[body1, body2]
+)
+```
+
+**Conditional formatting:**
+
+```python
+rtf.RTFBody(
+    text_font_style=lambda df, i, j:
+        "b" if not df[i, j].startswith("  ") else ""
+)
+```
+
+## Typical TLF workflow
+
+Seven-step pattern seen across all examples:
+
+1. **Load data**: Read Parquet datasets (ADSL, ADAE, ADLBC)
+2. **Filter population**: Apply analysis population flags
+3. **Calculate statistics**: Group, aggregate, join
+4. **Format values**: Create display strings (Mean (SD), n (%))
+5. **Reshape data**: Pivot to wide format if needed
+6. **Combine sections**: Stack multiple result tables
+7. **Generate RTF**: Create publication-ready output
+
+**Focus on one step at a time** - break complex tables into manageable pieces.
+
+# Common patterns {background-color="#385898"}
+
+## Reusable helper functions
+
+**Create functions for repeated operations:**
+
+```python
+def count_by_treatment(data, population_name):
+    """Count participants by treatment group"""
+    return data.group_by("TRT01P").agg(
+        n = pl.len()
+    ).with_columns(
+        population = pl.lit(population_name)
+    )
+```
+
+**Benefits:**
+
+- Reduce code duplication
+- Easier to maintain and test
+- Clear, self-documenting code
+
+## Handling hierarchical structures
+
+**Use indentation for subcategories:**
+
+```python
+pl.concat_str([pl.lit("    "), pl.col("DCREASCD")])
+```
+
+**Build tables row by row when needed:**
+
+```python
+table_rows = []
+table_rows.append(["Section Header", "", "", ""])
+table_rows.append([f"  {category}", value1, value2, value3])
+```
+
+**Maintain sort order with Enum:**
+
+```python
+.sort(pl.col("category").cast(pl.Enum(category_order)))
+```
+
+## Statistical analysis integration
+
+**Use pandas bridge for statsmodels:**
+
+```python
+# Convert for analysis
+ancova_df = gluc_data.to_pandas()
+
+# Fit model
+model = smf.ols("CHG ~ TRTP + BASE", data=ancova_df).fit()
+
+# Convert back to polars for formatting
+results_df = pl.DataFrame(results_dict)
+```
+
+**Key libraries:**
+
+- `statsmodels`: Linear models, ANCOVA
+- `scipy.stats`: Statistical tests, distributions
+
+## Best practices & pitfalls
+
+::: {style="font-size: 85%;"}
+
+**Do:**
+
+- Use `.n_unique()` to count unique subjects (not `.len()` on event data)
+- Fill nulls with typed literals: `pl.lit(None, dtype=pl.Float64)`
+- Sort pivoted results to ensure consistent column order
+- Use left joins with treatment levels to preserve all groups
+- Test with safety population (SAFFL == "Y") for AE tables
+
+**Avoid:**
+
+- Counting events when you need subject counts
+- Missing categories in pivoted data (use `.fill_null(0)`)
+- Inconsistent data types causing schema errors
+- Forgetting to filter to analysis population
+- Hard-coded column names (treatment groups may vary)
+
+:::
+
+# Break and/or exercise (5 min) {background-color="#385898"}
 
 # CSR examples {background-color="#385898"}
 
 ## Disposition table
 
-<https://pycsr.org/tlf-disposition.html>
+**Key concepts:**
+
+- Track participant flow (enrolled -> completed/discontinued)
+- Use `.pivot()` to reshape data to wide format
+- Handle missing categories with `.fill_null(0)`
+- Multi-level headers with borders
+
+**Link:** <https://pycsr.org/tlf-disposition.html>
 
 ## Analysis population
 
-<https://pycsr.org/tlf-population.html>
+**Key concepts:**
+
+- Document multiple analysis populations (ITT, efficacy, safety)
+- Population flags: ITTFL, EFFFL, SAFFL
+- Reusable helper functions
+- Conditional formatting: N for totals, N (%) for subsets
+
+**Link:** <https://pycsr.org/tlf-population.html>
 
 ## Baseline characteristics
 
-<https://pycsr.org/tlf-baseline.html>
+**Key concepts:**
+
+- Separate functions for continuous vs categorical
+- Continuous: Mean (SD), Median [Min, Max]
+- Categorical: n (%)
+- Build tables with proper indentation
+
+**Link:** <https://pycsr.org/tlf-baseline.html>
 
 ## Efficacy table
 
-<https://pycsr.org/tlf-efficacy-ancova.html>
+**Key concepts:**
+
+- LOCF imputation for missing data
+- ANCOVA with statsmodels
+- LS means at baseline mean
+- Multiple table sections in one document
+- Comprehensive footnotes
+
+**Link:** <https://pycsr.org/tlf-efficacy-ancova.html>
 
 ## AE Summary table
 
-<https://pycsr.org/tlf-ae-summary.html>
+**Key concepts:**
+
+- Count unique participants with `.n_unique()`
+- Standard AE categories (any, drug-related, serious, deaths)
+- Join with population totals for percentages
+- Multi-level column headers
+
+**Link:** <https://pycsr.org/tlf-ae-summary.html>
 
 ## Specific AE table
 
-<https://pycsr.org/tlf-ae-specific.html>
+**Key concepts:**
+
+- Hierarchical structure: SOC -> Preferred Terms
+- Standardize terms with `.str.to_titlecase()`
+- Conditional formatting with lambda functions
+- Bold headers for top-level categories
+
+**Link:** <https://pycsr.org/tlf-ae-specific.html>
 
 # Break (5 min) {background-color="#385898"}
 
