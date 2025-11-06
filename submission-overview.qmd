@@ -1,0 +1,296 @@
+# Submission overview {#sec-submission-overview}
+
+::: callout-tip
+## Objective
+
+Understand FDA requirements for submitting analysis programs.
+Learn about the eCTD structure and how pkglite enables Python package submissions.
+:::
+
+## Electronic Common Technical Document
+
+The electronic Common Technical Document (eCTD) provides a standard format for regulatory submissions.
+
+The eCTD organizes submission documents in a defined directory structure:
+
+- **Module 1**: Administrative information and prescribing information
+- **Module 2**: Common Technical Document summaries
+- **Module 3**: Quality (CMC)
+- **Module 4**: Nonclinical study reports
+- **Module 5**: Clinical study reports
+
+For analysis programs, we focus on **Module 5** (clinical study reports).
+
+::: aside
+Full eCTD specifications are available from the
+[ICH website](https://www.ich.org/page/multidisciplinary-guidelines).
+:::
+
+## FDA requirements for analysis programs
+
+The [FDA Study Data Technical Conformance Guide](https://www.fda.gov/media/88173/download)
+(Section 4.1.2.10) specifies:
+
+> Sponsors should provide the software programs used to create all ADaM
+> datasets and **generate tables and figures associated with primary and
+> secondary efficacy analyses**. Furthermore, sponsors should submit software
+> programs used to generate additional information included in Section 14
+> CLINICAL STUDIES of the Prescribing Information (PI) if applicable.
+> **The specific software utilized should be specified in the ADRG**.
+> The main purpose of requesting the submission of these programs
+> **is to understand the process by which the variables for the respective
+> analyses were created and to confirm the analysis algorithms**.
+> Sponsors should submit software programs in **ASCII text format**;
+> however, executable file extensions should not be used.
+
+Key requirements:
+
+1. Submit programs for primary and secondary efficacy analyses
+2. Specify software and versions in ADRG
+3. Use ASCII text format
+4. No executable extensions
+
+## eCTD Module 5 structure
+
+Analysis datasets and programs are organized under Module 5:
+
+```
+m5/datasets/<study-id>/analysis/adam/
+```
+
+Within the `adam/` folder, two directories are critical:
+
+```
+m5/datasets/<study-id>/analysis/adam/
+├── datasets/
+│   ├── *.xpt                   # ADaM datasets in SAS format
+│   ├── define.xml              # Dataset definitions
+│   ├── adrg.pdf                # Analysis Data Reviewer's Guide
+│   └── analysis-results-metadata.pdf  # Analysis Results Metadata
+└── programs/
+    ├── py0pkgs.txt             # Packed Python packages
+    ├── tlf-01-disposition.txt  # Analysis program 1
+    ├── tlf-02-population.txt   # Analysis program 2
+    └── ...                     # Additional programs
+```
+
+## The ASCII text requirement
+
+Why ASCII text?
+
+**Platform independence:**
+
+- Works on any operating system
+- No special software needed to view
+- Future-proof format
+
+**Review process:**
+
+- Reviewers can read code without running it
+- Easy to search and navigate
+- Can copy code snippets for testing
+
+**Compliance verification:**
+
+- Plain text prevents hidden code
+- No macros or embedded executables
+- Transparent to automated scanning
+
+This creates a challenge: how to submit a Python package (which has directory structure, binary files, etc.) as ASCII text files?
+
+## The solution: pkglite for Python
+
+[pkglite for Python](https://pharmaverse.github.io/py-pkglite/) solves the
+text file requirement by packing Python projects into portable text files.
+Key capabilities:
+
+- Pack entire project directory structure into single text file
+- Preserve file paths and metadata
+- Exclude unnecessary files with `.pkgliteignore`
+- Unpack to restore original structure
+- Support multiple projects in one file
+
+::: callout-note
+pkglite for Python extends the original pkglite for R with:
+
+- Support for any programming language (not just R)
+- Content-based file classification (text vs binary)
+- Command-line interface for automation
+- `.pkgliteignore` configuration support
+:::
+
+### How pkglite works
+
+**Packing:**
+
+1. Scan project directory
+2. Classify files (text vs binary)
+3. Encode file paths and contents
+4. Write to single `.txt` file
+
+**Unpacking:**
+
+1. Read `.txt` file
+2. Parse file paths and contents
+3. Recreate directory structure
+4. Write files to disk
+
+The packed text file follows the Debian Control File (DCF) format,
+similar to the R package pkglite output.
+
+## Python language considerations
+
+As of the
+[August 30, 2025 FDA guidance update](https://www.fda.gov/media/85816/download),
+the eCTD Module 5 specification explicitly allows `.zip` files "for delivering R packages."
+
+However, Python (and other languages) are not explicitly mentioned.
+
+**Our approach:**
+
+Use pkglite to pack Python packages into portable text files.
+This follows the **spirit** of the FDA guidance:
+
+- Provides ASCII text format programs
+- Enables reproducibility
+- Documents software versions
+- Allows reviewer verification
+
+::: aside
+We developed pkglite for Python specifically to enable submission of
+source projects in **any** programming language following the same principles.
+:::
+
+## Submission workflow overview
+
+The complete submission workflow:
+
+**1. Develop analysis package:**
+
+- Create Python package with uv
+- Write analysis code in Quarto documents
+- Validate outputs and functions
+
+**2. Prepare submission package:**
+
+- Pack Python package with pkglite
+- Convert Quarto documents to Python scripts
+- Place files in eCTD Module 5 structure
+
+**3. Update documentation:**
+
+- Update ADRG with software versions
+- Provide reproduction instructions
+- Update ARM with program metadata
+
+**4. Verify reproducibility:**
+
+- Perform dry run test
+- Unpack and install packages
+- Reproduce analysis results
+
+The next chapters detail steps 2-4.
+
+## What goes in the submission
+
+**Python packages** (`programs/py0pkgs.txt`):
+
+All study-specific Python packages.
+These contain helper functions used across multiple analyses.
+
+**Analysis programs** (`programs/tlf-*.txt`):
+
+Individual analysis scripts.
+Each generates one or more TLFs.
+
+**ADaM datasets** (`datasets/*.xpt`):
+
+Analysis datasets in SAS transport format.
+Required by CDISC standards.
+
+**Documentation** (`datasets/adrg.pdf`, `datasets/analysis-results-metadata.pdf`):
+
+ADRG provides:
+
+- Python version and package versions
+- Reproduction instructions
+- Platform requirements
+
+ARM provides:
+
+- Links between programs and outputs
+- Program metadata
+- Analysis descriptions
+
+## Dependencies and package management
+
+**Public packages:**
+
+Packages available on PyPI (e.g., `polars`, `rtflite`) do not need submission.
+Document versions in ADRG.
+
+**Proprietary packages:**
+
+Internal packages (e.g., company-specific utilities) should be included
+if they are:
+
+- Hosted in private repositories (not public)
+- Required to run the analyses
+- Not available to reviewers
+
+Pack proprietary packages together with analysis packages using pkglite.
+
+**Python version:**
+
+Specify the exact Python version in ADRG.
+Use `uv python pin` to lock the version in the project.
+
+**Package snapshots:**
+
+If your organization uses a package snapshot (similar to Posit Package Manager),
+provide the snapshot date in ADRG.
+
+## Platform considerations
+
+**Cross-platform compatibility:**
+
+Python code should work on Windows, macOS, and Linux.
+
+Avoid:
+
+- Platform-specific paths (`C:\` vs `/usr/`)
+- Platform-specific system calls
+- Binary dependencies that require compilation
+
+Use:
+
+- `pathlib` for path handling
+- Pure Python packages when possible
+- Wheels for platform-independent distribution
+
+**External dependencies:**
+
+Minimize external dependencies beyond Python packages.
+
+If required (e.g., system libraries), document clearly in ADRG.
+
+::: callout-warning
+Each external dependency increases the complexity of environment recreation.
+Keep it simple.
+:::
+
+## Next steps
+
+The following chapters provide detailed instructions for:
+
+- **Submission package** (@sec-submission-package):
+  Using pkglite to pack Python packages and analysis programs.
+  Converting Quarto documents to Python scripts.
+  Organizing files in eCTD structure.
+
+- **Submission dryrun** (@sec-submission-dryrun):
+  Simulating the reviewer experience.
+  Unpacking and installing packages.
+  Reproducing analysis results.
+
+With this foundation, you're ready to prepare your first Python submission package.

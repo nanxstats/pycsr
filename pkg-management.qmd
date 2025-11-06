@@ -1,0 +1,390 @@
+# Project management {#sec-pkg-management}
+
+::: callout-tip
+## Objective
+
+Learn Git-centric workflows for managing clinical analysis projects.
+Understand agile development practices and validation strategies for regulatory compliance.
+:::
+
+## Git-centric workflow
+
+Clinical analysis projects require rigorous tracking and collaboration.
+A Git-centric workflow provides the foundation for reproducible, auditable work.
+
+**Core principle:**
+
+All project assets live in version control.
+Work is tracked through issues, pull requests, and project boards.
+
+This applies whether you use:
+
+- GitHub Enterprise
+- GitLab
+- Bitbucket
+- Azure DevOps
+
+The specific platform matters less than the workflow discipline.
+
+## Plain text workflow
+
+Favor plain text formats for all project artifacts:
+
+**Use:**
+
+- `.qmd` files for analysis scripts (not Jupyter notebooks for final deliverables)
+- `.md` files for documentation
+- `.toml` files for configuration
+- `.txt` files for submission packages
+
+**Avoid:**
+
+- `.xlsx` files for tracking (no audit trail, merge conflicts)
+- Binary formats when text alternatives exist
+- Proprietary formats that require special tools
+
+::: callout-note
+Plain text enables:
+
+- Clear diff views in pull requests
+- Meaningful merge conflict resolution
+- Searchable code history
+- Command-line friendly workflows
+:::
+
+## Project tracking
+
+Use properly labeled issues and pull requests to drive work.
+Follow [Tidyteam code review principles](https://code-review.tidyverse.org/)
+for detailed operational advices.
+
+### Issues for requirements
+
+Create issues to capture:
+
+- Individual TLF specifications
+- Bug reports
+- Feature requests
+- Validation tasks
+
+Example issue template:
+
+```markdown
+**Title**: Implement Table 14.1.1 - Disposition of Patients
+
+**Description**:
+Create disposition table following ICH E3 guidelines
+
+**Deliverables**:
+- [ ] Quarto document: analysis/tlf-01-disposition.qmd
+- [ ] Output table: output/tlf-disposition.rtf
+- [ ] Unit tests: tests/test_disposition.py
+
+**Validation**: Independent review required
+```
+
+### Pull requests for review
+
+**ALL** code changes must go through pull requests before getting into `main`:
+
+- Developer creates feature branch
+- Implements changes
+- Opens pull request for review
+- Reviewer validates code and outputs
+- Changes merged after approval
+
+This creates an audit trail of who did what and when.
+
+### Project boards
+
+Use Kanban-style project boards to visualize work:
+
+**Columns:**
+
+- Backlog: Planned work
+- In Progress: Active development
+- Review: Awaiting validation
+- Done: Completed and validated
+
+**Example board:**
+
+| Backlog | In Progress | Review | Done |
+|---------|-------------|--------|------|
+| Table 14.3.5 | Table 14.1.1 | Table 14.2.1 | Table 14.1.2 |
+| Figure 14.4.1 | | Table 14.3.1 | Table 14.2.2 |
+
+This makes project status transparent to all stakeholders.
+
+::: aside
+GitHub Projects, GitLab Boards, and Jira all support this workflow.
+Choose based on your organization's infrastructure.
+:::
+
+## Development lifecycle
+
+Clinical analysis projects follow a structured development lifecycle similar to software development.
+
+### Planning
+
+Define scope and requirements:
+
+- List all TLFs from Statistical Analysis Plan (SAP)
+- Create mock tables/shells
+- Assign validation levels (independent review vs double programming)
+- Set up validation tracking
+
+Create a validation tracker (plain text format):
+
+```markdown
+| TLF | Type | Developer | Dev Status | Reviewer | Review Status |
+|-----|------|-----------|------------|----------|---------------|
+| tlf-01-disposition | Table | Alice | Complete | Bob | In Progress |
+| tlf-02-population | Table | Charlie | In Progress | Diana | Pending |
+```
+
+::: callout-important
+Lock down the Python version and package repository snapshot during planning.
+Changing these mid-project breaks reproducibility.
+:::
+
+### Development
+
+Team members implement assigned TLFs:
+
+**1. Create feature branch:**
+
+```bash
+git checkout -b feature/tlf-01-disposition
+```
+
+**2. Implement analysis:**
+
+- Write Quarto document in `analysis/`
+- Create helper functions in `src/` if needed
+- Generate output in `output/`
+
+**3. Self-test:**
+
+- Verify against mock table
+- Check calculations manually
+- Run automated tests
+
+**4. Commit and push:**
+
+```bash
+git add analysis/tlf-01-disposition.qmd
+git commit -m "Implement disposition table (Table 14.1.1)"
+git push origin feature/tlf-01-disposition
+```
+
+**5. Open pull request:**
+
+Request review from assigned validator.
+
+### Validation
+
+Independent reviewers verify deliverables:
+
+**For tables:**
+
+- Compare output against specifications
+- Verify calculations independently
+- Check formatting requirements
+- Review code for errors
+
+**For analysis functions:**
+
+- Write unit tests in `tests/`
+- Verify edge cases
+- Check type annotations
+- Review docstrings
+
+**Validation testing example:**
+
+```python
+# tests/test_disposition.py
+import polars as pl
+from demo001.disposition import create_disposition_table
+
+def test_disposition_counts():
+    """Verify disposition table calculations."""
+    # Load test data
+    df = pl.read_parquet("tests/data/adsl_subset.parquet")
+
+    # Generate table
+    result = create_disposition_table(df)
+
+    # Verify counts
+    assert result["Screened"][0] == 254
+    assert result["Randomized"][0] == 254
+    assert result["Completed"][0] == 238
+```
+
+Run tests with pytest:
+
+```bash
+uv run pytest
+```
+
+### Delivery
+
+Project lead ensures completion:
+
+**1. Run compliance checks:**
+
+```bash
+uv run ruff check .
+uv run mypy src/
+uv run pytest --cov=demo001
+```
+
+**2. Generate all outputs in batch:**
+
+```bash
+quarto render
+```
+
+**3. Review validation tracker:**
+
+Ensure all TLFs have completed validation.
+
+**4. Prepare submission package:**
+
+Pack for eCTD (covered in @sec-submission-package).
+
+## Agile practices
+
+Clinical trials benefit from agile project management:
+
+**Iterative development:**
+
+- Work in 2-week sprints
+- Deliver subset of TLFs each sprint
+- Get stakeholder feedback early
+
+**Continuous integration:**
+
+- Automated testing on every push
+- Catch errors before review
+- Maintain code quality
+
+**Regular retrospectives:**
+
+- What went well?
+- What needs improvement?
+- Adjust process accordingly
+
+::: callout-note
+Agile doesn't mean uncontrolled.
+The validation requirements remain the same.
+Agile provides faster feedback loops within those constraints.
+:::
+
+## Automation with CI/CD
+
+Automate repetitive tasks using continuous integration:
+
+**GitHub Actions example:**
+
+```yaml
+name: Validation
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync
+      - run: uv run pytest tests/
+      - run: uv run ruff check .
+      - run: uv run mypy src/
+```
+
+This runs tests automatically on every pull request.
+
+**Benefits:**
+
+- Catch errors before manual review
+- Ensure consistent code quality
+- Reduce reviewer burden
+- Document test results
+
+::: aside
+CI/CD is optional but highly recommended for projects with multiple developers.
+:::
+
+## Collaboration best practices
+
+**Work as a team:**
+
+- Take project management training
+- Understand your role in the lifecycle
+- Communicate blockers early
+
+**Design clean architecture:**
+
+- Separate business logic from data processing
+- Write reusable components in `src/`
+- Keep analysis scripts in `analysis/` focused
+
+**Set capability boundaries:**
+
+- Know what your team can deliver
+- Avoid complex integrations (e.g., mixing R and Python in same package)
+- Prefer simple, robust solutions
+
+**Contribute to community:**
+
+- Share reusable components internally
+- Open source when possible
+- Learn from others' approaches
+
+## Version control discipline
+
+**Branch strategy:**
+
+- `main`: Stable, validated code
+- `feature/*`: Development branches
+- `hotfix/*`: Emergency fixes
+
+**Commit messages:**
+
+Write clear, descriptive commits:
+
+```bash
+# Good
+git commit -m "Add ANCOVA analysis for primary endpoint (Table 14.2.1)"
+
+# Bad
+git commit -m "Update code"
+```
+
+**Never commit:**
+
+- Sensitive data
+- Large binary files
+- Generated outputs (use `.gitignore`)
+- Temporary files
+
+**Always commit:**
+
+- Source code (`.py`, `.qmd`)
+- Configuration (`pyproject.toml`, `_quarto.yml`)
+- Documentation (`README.md`)
+- Tests (`tests/*.py`)
+
+## What's next
+
+You've learned Git-centric project management workflows.
+
+The next chapter covers the detailed package structure:
+
+- Directory layout for analysis packages
+- Organizing code and content
+- Integrating Quarto with Python packages
+- Essential configuration files
+
+These practices ensure consistent, reproducible, collaborative clinical analysis projects.

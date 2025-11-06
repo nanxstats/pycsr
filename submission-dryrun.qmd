@@ -1,0 +1,410 @@
+# Submission dryrun {#sec-submission-dryrun}
+
+::: callout-tip
+## Objective
+
+Learn how to perform a dry run test of your submission package.
+Simulate the reviewer experience to verify that your analysis can be reproduced from the submitted materials.
+:::
+
+## Why dry run testing
+
+Before submitting to regulatory agencies, you must verify that reviewers can reproduce your analysis.
+
+A dry run test simulates the reviewer workflow:
+
+1. Start with a clean environment
+2. Follow ADRG instructions exactly
+3. Unpack and install packages
+4. Run analysis programs
+5. Verify outputs match original results
+
+This catches issues before submission:
+
+- Missing dependencies
+- Incorrect file paths
+- Platform-specific code
+- Documentation gaps
+- Version mismatches
+
+::: callout-important
+Dry run testing is not optional.
+It's the only way to ensure your submission package actually works.
+:::
+
+## Prerequisites
+
+You need the eCTD submission package prepared in @sec-submission-package:
+
+```bash
+git clone https://github.com/elong0527/demo-py-ectd.git
+cd demo-py-ectd
+```
+
+The structure:
+
+```
+demo-py-ectd/m5/datasets/ectddemo/analysis/adam/
+├── datasets/
+│   ├── *.xpt
+│   ├── adrg.pdf
+│   └── analysis-results-metadata.pdf
+└── programs/
+    ├── py0pkgs.txt
+    └── tlf-*.txt
+```
+
+## Setting up the test environment
+
+### Create a clean directory
+
+Simulate a reviewer's fresh environment:
+
+```bash
+# Create temporary directory
+mkdir ~/dryrun-test
+cd ~/dryrun-test
+
+# Copy submission materials
+cp -r ~/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/* .
+
+# Verify structure
+ls -R
+```
+
+You should see:
+
+```
+datasets programs
+
+./datasets:
+adadas.xpt      adlbc.xpt       adlbhpv.xpt     adrg.pdf        advs.xpt
+adae.xpt        adlbcpv.xpt     adlbhy.xpt      adsl.xpt        define.xml
+adcibc.xpt      adlbh.xpt       adnpix.xpt      adtte.xpt       define2-0-0.xsl
+
+./programs:
+py0pkgs.txt                tlf-03-baseline.txt        tlf-06-specific.txt
+tlf-01-disposition.txt     tlf-04-efficacy-ancova.txt
+tlf-02-population.txt      tlf-05-ae-summary.txt
+```
+
+::: callout-note
+Use a completely separate directory, not your development environment.
+This ensures you are testing from a clean state.
+:::
+
+### Install uv
+
+Follow the ADRG instructions exactly.
+
+```bash
+# Verify
+uv --version
+```
+
+```
+uv 0.9.7 (0adb44480 2025-10-30)
+```
+
+## Unpacking the Python package
+
+### Unpack with py-pkglite
+
+Use pkglite to restore the package structure:
+
+```bash
+uvx pkglite unpack programs/py0pkgs.txt -o .
+```
+
+```
+Unpacking demo-py-esub
+Writing _quarto.yml
+Writing uv.lock
+Writing .pkgliteignore
+Writing pyproject.toml
+Writing index.qmd
+Writing README.md
+Writing .gitignore
+Writing .python-version
+Writing analysis/tlf-05-ae-summary.qmd
+Writing analysis/tlf-02-population.qmd
+Writing analysis/tlf-03-baseline.qmd
+Writing analysis/.gitignore
+Writing analysis/tlf-06-specific.qmd
+Writing analysis/tlf-01-disposition.qmd
+Writing analysis/tlf-04-efficacy-ancova.qmd
+Writing tests/test_utils.py
+Writing tests/__init__.py
+Writing output/tlf_ae_specific.rtf
+Writing output/tlf_baseline.rtf
+Writing output/tlf_population.rtf
+Writing output/tlf_disposition.rtf
+Writing output/tlf_ae_summary.rtf
+Writing output/tlf_efficacy_ancova.rtf
+Writing .github/.gitignore
+Writing .github/workflows/quarto-publish.yml
+Writing data/adae.parquet
+Writing data/adlbhy.parquet
+Writing data/adsl.parquet
+Writing data/adtte.parquet
+Writing data/adlbc.parquet
+Writing data/adlbh.parquet
+Writing data/advs.parquet
+Writing src/demo001/baseline.py
+Writing src/demo001/population.py
+Writing src/demo001/__init__.py
+Writing src/demo001/utils.py
+Writing src/demo001/safety.py
+Writing src/demo001/efficacy.py
+✓ Unpacked 1 packages from programs/py0pkgs.txt into .
+```
+
+This should create:
+
+```
+demo-py-esub
+├── _quarto.yml
+├── analysis
+│   ├── tlf-01-disposition.qmd
+│   ├── tlf-02-population.qmd
+│   ├── tlf-03-baseline.qmd
+│   ├── tlf-04-efficacy-ancova.qmd
+│   ├── tlf-05-ae-summary.qmd
+│   └── tlf-06-specific.qmd
+├── data
+│   ├── adae.parquet
+│   ├── adlbc.parquet
+│   ├── adlbh.parquet
+...
+```
+
+Verify the structure:
+
+```bash
+ls -la demo-py-esub/
+```
+
+Or:
+
+```bash
+tree demo-py-esub/
+```
+
+::: aside
+The unpacked directory name comes from the packed package.
+It should match the original analysis project name.
+:::
+
+## Installing dependencies
+
+### Sync environment
+
+Navigate to the unpacked package and install:
+
+```bash
+cd demo-py-esub
+uv sync
+```
+
+This creates:
+
+- `.venv/` virtual environment
+- Installs all dependencies from `uv.lock`
+- Installs the `demo001` package in editable mode
+
+### Verify installation
+
+Check Python version in virtual environment:
+
+```bash
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate   # Windows
+
+python --version
+```
+
+List installed packages:
+
+```bash
+uv pip list
+```
+
+Verify the demo001 package:
+
+```bash
+python -c "import demo001; print(demo001.__version__)"
+```
+
+The output should be `0.1.0`.
+
+::: callout-note
+If any imports fail, check:
+
+- Python version matches `.python-version`
+- All dependencies installed from `uv.lock`
+- Package installed in editable mode
+:::
+
+## Running analysis programs
+
+### Execute programs
+
+Run each analysis program:
+
+```bash
+# Run first program
+python ../programs/tlf-01-disposition.txt
+```
+
+You should see:
+
+```
+/home/user/dryrun-test/demo-py-esub/output/tlf_disposition.rtf
+```
+
+The program should:
+
+1. Load data from `../datasets/`
+2. Perform analysis
+3. Generate RTF output in `output/`
+
+Run remaining programs:
+
+```bash
+python ../programs/tlf-02-population.txt
+python ../programs/tlf-03-baseline.txt
+python ../programs/tlf-04-efficacy-ancova.txt
+python ../programs/tlf-05-ae-summary.txt
+python ../programs/tlf-06-specific.txt
+```
+
+### Verify outputs
+
+Check that all RTF files were created:
+
+```bash
+ls -lh output/
+```
+
+```
+total 456
+-rw-r--r--@ 1 user  staff   170K Nov  6 21:59 tlf_ae_specific.rtf
+-rw-r--r--@ 1 user  staff   9.6K Nov  6 21:59 tlf_ae_summary.rtf
+-rw-r--r--@ 1 user  staff   7.6K Nov  6 21:58 tlf_baseline.rtf
+-rw-r--r--@ 1 user  staff    14K Nov  6 21:57 tlf_disposition.rtf
+-rw-r--r--@ 1 user  staff   8.7K Nov  6 21:59 tlf_efficacy_ancova.rtf
+-rw-r--r--@ 1 user  staff   4.0K Nov  6 21:58 tlf_population.rtf
+```
+
+## Comparing outputs
+
+### Manual comparison
+
+Open RTF files in a word processor and compare with original outputs,
+check if:
+
+- Table structure matches
+- Numbers are identical
+- Formatting is correct
+- Headers and footers present
+
+Since RTF files are plaintext files, you can also automate this comparison
+with diff-based workflows.
+
+## Testing checklist
+
+Complete dry run test checklist:
+
+````markdown
+Environment setup:
+
+- [ ] Clean directory created
+- [ ] Correct Python version installed
+- [ ] uv installed and working
+
+Package restoration:
+
+- [ ] `py0pkgs.txt` unpacked successfully
+- [ ] Package structure restored
+- [ ] All files present
+
+Dependency installation:
+
+- [ ] `uv sync` completed without errors
+- [ ] All packages installed
+- [ ] Correct package versions
+
+Program execution:
+
+- [ ] All analysis programs run without errors
+- [ ] RTF outputs generated
+- [ ] No missing data errors
+
+Output verification:
+
+- [ ] All expected outputs present
+- [ ] Numbers match original results
+- [ ] Tables formatted correctly
+- [ ] No corruption or errors in RTF files
+
+Documentation:
+
+- [ ] ADRG instructions followed successfully
+- [ ] No undocumented steps required
+- [ ] Instructions are clear and complete
+````
+
+For projects with many programs, you can automate the dry run with a shell script.
+We will leave that as an exercise for the reader.
+
+## Best practices
+
+**Test early, test often:**
+
+Don't wait until the last minute.
+Run dry run tests throughout development.
+
+**Test on fresh systems:**
+
+Use virtual machines or Docker containers for truly clean environments.
+
+**Document everything:**
+
+Record commands, outputs, and any issues encountered.
+
+**Version control dry run scripts:**
+
+Keep test scripts in version control alongside analysis code.
+
+**Automate where possible:**
+
+Automated tests are faster and more reliable than manual testing.
+
+**Test on reviewer platforms:**
+
+If you know reviewers use Windows, test on Windows.
+
+## What's next
+
+Congratulations! You've learned the complete workflow for Python-based clinical submissions.
+You're now ready to apply these practices to real clinical trial projects.
+The Python clinical reporting ecosystem continues to evolve.
+Stay engaged with the community to learn best practices and contribute improvements.
+Here we list the important resources to explore:
+
+**Regulatory guidance:**
+
+- [FDA Study Data Technical Conformance Guide](https://www.fda.gov/media/88173/download)
+- [eCTD specifications](https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/electronic-common-technical-document-ectd)
+
+**Technical documentation:**
+
+- [rtflite documentation](https://pharmaverse.github.io/rtflite/)
+- [pkglite for Python documentation](https://pharmaverse.github.io/py-pkglite/)
+- [uv documentation](https://docs.astral.sh/uv/)
+- [Python Packaging User Guide](https://packaging.python.org/)
+
+**Example repositories:**
+
+- [demo-py-esub](https://github.com/elong0527/demo-py-esub): Analysis package
+- [demo-py-ectd](https://github.com/elong0527/demo-py-ectd): Submission package

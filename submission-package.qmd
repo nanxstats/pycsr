@@ -1,0 +1,576 @@
+# Submission package {#sec-submission-package}
+
+::: callout-tip
+## Objective
+
+Learn how to pack Python analysis packages into eCTD-ready text files.
+Know the workflow for converting Quarto documents to Python scripts and
+organizing files in Module 5 structure.
+:::
+
+## Prerequisites
+
+This chapter uses two demo repositories:
+
+**Analysis project:** [demo-py-esub](https://github.com/elong0527/demo-py-esub)
+
+```bash
+git clone https://github.com/elong0527/demo-py-esub.git
+```
+
+**Submission package:** [demo-py-ectd](https://github.com/elong0527/demo-py-ectd)
+
+```bash
+git clone https://github.com/elong0527/demo-py-ectd.git
+```
+
+We assume paths `demo-py-esub/` and `demo-py-ectd/` below.
+
+**Install pkglite:**
+
+pkglite is not needed as a project dependency.
+Use `uvx` to run without installation:
+
+```bash
+uvx pkglite --help
+```
+
+Or install globally with pipx:
+
+```bash
+pipx install pkglite
+```
+
+::: callout-note
+`uvx` and `pipx` both run command-line tools in isolated environments.
+Use `uvx` for one-off commands or `pipx` for frequently used tools.
+:::
+
+## The whole game
+
+The eCTD Module 5 structure for Python submissions:
+
+```
+demo-py-ectd/m5/datasets/ectddemo/analysis/adam/
+├── datasets/
+│   ├── adsl.xpt
+│   ├── adae.xpt
+│   ├── ...
+│   ├── adrg.pdf
+│   ├── analysis-results-metadata.pdf
+│   ├── define.xml
+│   └── define2-0-0.xsl
+└── programs/
+    ├── py0pkgs.txt
+    ├── tlf-01-disposition.txt
+    ├── tlf-02-population.txt
+    ├── tlf-03-baseline.txt
+    ├── tlf-04-efficacy.txt
+    ├── tlf-05-ae-summary.txt
+    └── tlf-06-ae-specific.txt
+```
+
+**datasets/ folder:**
+
+- ADaM datasets in `.xpt` format (SAS transport)
+- `define.xml` metadata (created by Pinnacle 21 or similar tools)
+- ADRG and ARM documentation
+
+**programs/ folder:**
+
+- `py0pkgs.txt`: Packed Python package(s)
+- `tlf-*.txt`: Individual analysis programs
+
+All files in `programs/` must be ASCII text files.
+
+::: callout-important
+File naming conventions:
+
+- Use lowercase letters only
+- No underscores or special characters
+- Use hyphens for separators
+- No executable extensions (`.py`, `.exe`)
+:::
+
+## Packing Python packages with py-pkglite
+
+### Create .pkgliteignore
+
+First, create a `.pkgliteignore` file to exclude unnecessary files:
+
+```bash
+uvx pkglite use demo-py-esub/
+```
+
+```
+✓ Created .pkgliteignore in /home/user/demo-py-esub
+```
+
+This generates `demo-py-esub/.pkgliteignore` with default exclusions:
+
+```gitignore
+# Git
+.git/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Quarto
+.quarto/
+```
+
+The `.pkgliteignore` file follows gitignore syntax.
+
+**What to excluded:**
+
+- Generated files (`__pycache__`, `.venv`)
+- Data and outputs (submitted separately)
+- Version control metadata
+- Quarto book content (if converted to scripts separately)
+
+**What to include:**
+
+- Source code (`src/`)
+- Configuration (`pyproject.toml`, `uv.lock`, `.python-version`)
+- Tests (`tests/`)
+- Essential documentation for package installation
+
+::: aside
+pkglite uses content-based file classification.
+Text files are packed directly. Binary files trigger warnings.
+:::
+
+### Pack the package
+
+Pack the analysis package into a text file:
+
+```bash
+uvx pkglite pack demo-py-esub/ \
+  -o demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt
+```
+
+```
+Packing demo-py-esub
+Reading _quarto.yml
+Reading uv.lock
+Reading .pkgliteignore
+Reading pyproject.toml
+Reading index.qmd
+Reading README.md
+Reading .gitignore
+Reading .python-version
+Reading analysis/tlf-05-ae-summary.qmd
+Reading analysis/tlf-02-population.qmd
+Reading analysis/tlf-03-baseline.qmd
+Reading analysis/.gitignore
+Reading analysis/tlf-06-specific.qmd
+Reading analysis/tlf-01-disposition.qmd
+Reading analysis/tlf-04-efficacy-ancova.qmd
+Reading tests/test_utils.py
+Reading tests/__init__.py
+Reading output/tlf_ae_specific.rtf
+Reading output/tlf_baseline.rtf
+Reading output/tlf_population.rtf
+Reading output/tlf_disposition.rtf
+Reading output/tlf_ae_summary.rtf
+Reading output/tlf_efficacy_ancova.rtf
+Reading .github/.gitignore
+Reading .github/workflows/quarto-publish.yml
+Reading data/adae.parquet
+Reading data/adlbhy.parquet
+Reading data/adsl.parquet
+Reading data/adtte.parquet
+Reading data/adlbc.parquet
+Reading data/adlbh.parquet
+Reading data/advs.parquet
+Reading src/demo001/baseline.py
+Reading src/demo001/population.py
+Reading src/demo001/__init__.py
+Reading src/demo001/utils.py
+Reading src/demo001/safety.py
+Reading src/demo001/efficacy.py
+✓ Packed 1 packages into /Users/nanx/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt
+```
+
+This creates a single text file containing:
+
+- `pyproject.toml`
+- `.python-version`
+- `uv.lock`
+- All files in `src/`
+- All files in `tests/`
+
+### Inspect the packed file
+
+View the first few lines:
+
+```bash
+head -n 20 demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt
+```
+
+```
+# Generated by py-pkglite: do not edit by hand
+# Use `pkglite unpack` to restore the packages
+
+Package: demo-py-esub
+File: _quarto.yml
+Format: text
+Content:
+  project:
+    type: book
+
+  book:
+    title: "DEMO-001 Analysis Results"
+    chapters:
+      - index.qmd
+      - analysis/tlf-01-disposition.qmd
+      - analysis/tlf-02-population.qmd
+      - analysis/tlf-03-baseline.qmd
+      - analysis/tlf-04-efficacy-ancova.qmd
+      - analysis/tlf-05-ae-summary.qmd
+      - analysis/tlf-06-specific.qmd
+```
+
+### Packing multiple packages
+
+If you have dependencies in private repositories:
+
+```bash
+uvx pkglite pack internal-utils/ demo-py-esub/ \
+  -o demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt
+```
+
+Packages are packed in order specified.
+Always pack dependencies first (low-level before high-level).
+
+::: callout-note
+Unpacking will restore packages in the same order.
+Depending on how you reinstall them, the order may matter.
+:::
+
+## Converting Quarto to Python scripts
+
+Analysis programs must be plain Python scripts, not Quarto documents.
+
+### The conversion workflow
+
+For each `.qmd` file in `analysis/`:
+
+1. Render to verify it works
+2. Convert `.qmd` to `.ipynb` (Jupyter notebook)
+3. Convert `.ipynb` to `.py` (Python script)
+4. Clean up comments and formatting
+5. Save as `.txt` file
+
+### Automated conversion script
+
+This shell script automates the conversion:
+
+```bash
+#!/bin/bash
+
+cd demo-py-esub/
+uv sync
+source .venv/bin/activate
+
+convert_analysis() {
+    local analysis_name=$1
+    local analysis_path="analysis/$analysis_name.qmd"
+    local output_path="$HOME/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs"
+
+    # Render .qmd to verify it works
+    quarto render "$analysis_path" --quiet
+
+    # Convert .qmd to .ipynb
+    quarto convert "$analysis_path"
+
+    # Convert .ipynb to .py using nbconvert
+    uvx --from nbconvert jupyter-nbconvert \
+        --to python "analysis/$analysis_name.ipynb" \
+        --output "$output_path/$analysis_name.py"
+
+    # Remove all comments (lines starting with #)
+    awk '!/^#/' "$output_path/$analysis_name.py" > temp && \
+        mv temp "$output_path/$analysis_name.py"
+
+    # Consolidate consecutive blank lines
+    awk 'NF {p = 0} !NF {p++} p < 2' "$output_path/$analysis_name.py" > temp && \
+        mv temp "$output_path/$analysis_name.py"
+
+    # Clean up intermediate files
+    rm "analysis/$analysis_name.ipynb"
+
+    # Format with ruff
+    uvx ruff format "$output_path/$analysis_name.py"
+
+    # Rename .py to .txt (no executable extension)
+    mv "$output_path/$analysis_name.py" "$output_path/$analysis_name.txt"
+}
+
+# Convert all analysis files
+for qmd_file in analysis/*.qmd; do
+    analysis=$(basename "$qmd_file" .qmd)
+    convert_analysis "$analysis"
+done
+```
+
+Save as `convert_analyses.sh` and run:
+
+```bash
+chmod +x convert_analyses.sh
+./convert_analyses.sh
+```
+
+### Add reviewer instructions
+
+Optionally, add a header to each `.txt` file:
+
+```python
+# Note to Reviewer
+#
+# To rerun this analysis program, please refer to the ADRG appendix.
+```
+
+This helps reviewers understand how to execute the code.
+
+Automated insertion:
+
+```bash
+header='# Note to Reviewer
+#
+# To rerun this analysis program, please refer to the ADRG appendix.
+#
+'
+
+add_header() {
+    local file=$1
+    echo "$header" | cat - "$file" > temp && mv temp "$file"
+}
+
+for txt_file in demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/tlf-*.txt; do
+    add_header "$txt_file"
+done
+```
+
+## Verifying ASCII compliance
+
+Non-ASCII characters (curly quotes, em dashes, Unicode symbols) will cause
+submission issues. Always verify before submission.
+
+Currently, there is no built-in py-pkglite utility to check for ASCII compliance,
+so contributions are welcome! A example verification script is available in
+rtflite: [verify_ascii.py](https://github.com/pharmaverse/rtflite/blob/main/scripts/verify_ascii.py).
+
+## Compliance checklist
+
+Before finalizing the submission package:
+
+```markdown
+File naming:
+
+- [ ] All filenames are lowercase
+- [ ] No underscores or special characters
+- [ ] No `.py` extensions (use `.txt`)
+
+Content:
+
+- [ ] All `.txt` files are ASCII compliant
+- [ ] Python package unpacks correctly
+- [ ] Analysis programs run without errors
+
+Structure:
+
+- [ ] Files in correct eCTD Module 5 directories
+- [ ] `py0pkgs.txt` in `programs/`
+- [ ] Analysis programs in `programs/`
+- [ ] ADaM datasets in `datasets/`
+
+Documentation:
+
+- [ ] ADRG includes Python version
+- [ ] ADRG includes package versions
+- [ ] ADRG includes reproduction instructions
+- [ ] ARM links programs to outputs
+```
+
+## Updating ADRG
+
+The ADRG must document the Python environment and provide reproduction instructions.
+
+### Section: Macro Programs
+
+Example content:
+
+````markdown
+7.x Macro Programs
+
+Submitted Python programs follow the naming pattern `tlf-##-*.txt`.
+All study-specific Python functions are saved in the `py0pkgs.txt` file.
+
+The recommended steps to unpack and use these functions are described in the Appendix.
+
+The table below contains the software version and program metadata:
+
+**Analysis programs table:**
+
+| Program Name | Output Table | Title |
+|--------------|--------------|-------|
+| tlf-01-disposition.txt | Table 14.1.1 | Disposition of Patients |
+| tlf-02-population.txt | Table 14.1.2 | Analysis Population |
+| tlf-03-baseline.txt | Table 14.1.3 | Baseline Characteristics |
+| tlf-04-efficacy.txt | Table 14.2.1 | Efficacy Analysis (ANCOVA) |
+| tlf-05-ae-summary.txt | Table 14.3.1 | Adverse Events Summary |
+| tlf-06-ae-specific.txt | Table 14.3.2 | Specific Adverse Events |
+
+**Python environment table:**
+
+| Software | Version | Description |
+|----------|---------|-------------|
+| Python | 3.13.9 | Programming language |
+| uv | 0.5.18 | Package manager |
+
+**Python packages table:**
+
+| Package | Version | Description |
+|---------|---------|-------------|
+| polars | 1.35.1 | Data manipulation |
+| plotnine | 0.15.1 | Data visualization |
+| rtflite | 1.0.2 | RTF table generation |
+| statsmodels | 0.14.0 | Statistical models |
+
+**Proprietary packages table:**
+
+| Package | Version | Description |
+|---------|---------|-------------|
+| demo001 | 0.1.0 | DEMO-001 study analysis functions |
+````
+
+::: aside
+Package versions can be extracted from `uv.lock` or by running `uv pip list`.
+:::
+
+### Appendix: Reproduction instructions
+
+Provide step-by-step instructions for reviewers:
+
+````markdown
+Appendix: Instructions to Execute Analysis Programs
+
+1. Install uv
+
+Follow instructions at https://docs.astral.sh/uv/getting-started/installation/
+
+2. Create working directory
+
+Create a temporary directory (e.g., `C:/tempwork/` on Windows).
+Copy all files from `m5/datasets/ectddemo/analysis/adam/` to this directory.
+
+3. Unpack and install Python packages
+
+Navigate to the working directory and run:
+
+```bash
+uvx pkglite unpack programs/py0pkgs.txt -o .
+```
+
+This restores the package structure in the current directory.
+
+Install the package:
+
+```bash
+cd demo-py-esub
+uv sync
+```
+
+This installs all dependencies and the demo001 package.
+
+5. Copy data to the correct location
+
+Ensure the `datasets/` folder with ADaM datasets is in the working directory.
+
+6. Execute analysis programs
+
+Run each program in order:
+
+```bash
+cd demo-py-esub
+source .venv/bin/activate    # macOS/Linux
+# or .venv\Scripts\activate  # Windows
+
+python ../programs/tlf-01-disposition.txt
+python ../programs/tlf-02-population.txt
+python ../programs/tlf-03-baseline.txt
+python ../programs/tlf-04-efficacy.txt
+python ../programs/tlf-05-ae-summary.txt
+python ../programs/tlf-06-ae-specific.txt
+```
+
+Each program generates RTF output in the specified output directory.
+````
+
+::: callout-note
+Tailor the instructions to your organization's environment.
+Include any special configuration (e.g., proxy settings, internal package indexes).
+:::
+
+## Updating ARM
+
+The Analysis Results Metadata (ARM) documents the relationship between programs and outputs.
+
+### Section 2: Analysis Results Metadata Summary
+
+Example table:
+
+| Table Reference | Table Title | Programming Language | Program Name | Input Files |
+|----------------|-------------|---------------------|--------------|-------------|
+| Table 14.1.1 | Disposition of Patients | Python | tlf-01-disposition.txt | adsl.xpt |
+| Table 14.1.2 | Analysis Population | Python | tlf-02-population.txt | adsl.xpt |
+| Table 14.1.3 | Baseline Characteristics | Python | tlf-03-baseline.txt | adsl.xpt |
+
+### Section 3: Analysis Results Metadata Details
+
+For each table, provide:
+
+```markdown
+Table Reference: Table 14.1.1
+Analysis Result: Disposition counts by treatment group
+Analysis Reason: Describe study population
+Analysis Purpose: Primary
+Programming Statements: (Python version 3.13.9), [programs/tlf-01-disposition.txt]
+```
+
+## Testing the submission package
+
+Before finalizing, test the complete workflow:
+
+1. Unpack `py0pkgs.txt` in a clean directory
+2. Install packages per ADRG instructions
+3. Run each analysis program
+4. Verify outputs match original results
+
+This is covered in detail in @sec-submission-dryrun.
+
+## What's next
+
+You've learned how to prepare Python submission packages.
+
+The next chapter covers dry run testing:
+
+- Simulating the reviewer workflow
+- Unpacking and installing from text files
+- Reproducing analysis results
+- Verifying compliance
+
+Dry run testing ensures your submission package works correctly.

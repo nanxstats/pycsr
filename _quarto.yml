@@ -57,7 +57,16 @@ book:
         - tlf-ae-summary.qmd
         - tlf-ae-specific.qmd
         - tlf-efficacy-ancova.qmd
-    - part: "eCTD submission package"
+    - part: "Analysis package"
+      chapters:
+        - pkg-overview.qmd
+        - pkg-structure.qmd
+        - pkg-management.qmd
+    - part: "eCTD submission"
+      chapters: 
+        - submission-overview.qmd
+        - submission-package.qmd
+        - submission-dryrun.qmd
     - references.qmd
 
 bibliography: references.bib
