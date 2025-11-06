@@ -115,6 +115,16 @@ These are optimized, portable Python builds that work consistently across platfo
 
 ## Initialize a project
 
+::: callout-warning
+## For GitHub Codespaces users
+
+If you are using GitHub Codespaces, the pycsr project folder is opened by default.
+Before creating a new practice project, close this folder via **File > Close Folder**
+so your shell returns to the home directory. This prevents `uv` from getting confused
+about which `uv.lock` file to write when you "initialize a new project within
+an existing project".
+:::
+
 Create a new Python project:
 
 ```bash
