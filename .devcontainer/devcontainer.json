@@ -4,22 +4,43 @@
 	"name": "Python 3",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:2-3.13-trixie",
-
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers-extra/features/uv:1": {},
 		"ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {}
-	}
-
+	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install --user -r requirements.txt",
-
 	// Configure tool-specific properties.
-	// "customizations": {},
-
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"charliermarsh.ruff",
+				"tamasfe.even-better-toml",
+				"quarto.quarto",
+				"nanxstats.textmate-rstheme"
+			],
+			"settings": {
+				"editor.fontSize": 20,
+				"editor.rulers": [
+					80
+				],
+				"editor.inlineSuggest.enabled": true,
+				"editor.copyWithSyntaxHighlighting": false,
+				"editor.unicodeHighlight.nonBasicASCII": true,
+				"diffEditor.ignoreTrimWhitespace": false,
+				"editor.renderWhitespace": "trailing",
+				"workbench.preferredLightColorTheme": "textmate.rstheme",
+				"workbench.preferredDarkColorTheme": "textmate.rstheme"
+			}
+		}
+	}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
