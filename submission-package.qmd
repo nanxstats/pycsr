@@ -133,7 +133,7 @@ __pycache__/
 
 The `.pkgliteignore` file follows gitignore syntax.
 
-**What to excluded:**
+**What to exclude:**
 
 - Generated files (`__pycache__`, `.venv`)
 - Data and outputs (submitted separately)
@@ -201,7 +201,7 @@ Reading src/demo001/__init__.py
 Reading src/demo001/utils.py
 Reading src/demo001/safety.py
 Reading src/demo001/efficacy.py
-✓ Packed 1 packages into /Users/nanx/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt
+✓ Packed 1 packages into /home/user/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt
 ```
 
 This creates a single text file containing:
@@ -370,7 +370,7 @@ Non-ASCII characters (curly quotes, em dashes, Unicode symbols) will cause
 submission issues. Always verify before submission.
 
 Currently, there is no built-in py-pkglite utility to check for ASCII compliance,
-so contributions are welcome! A example verification script is available in
+so contributions are welcome! An example verification script is available in
 rtflite: [verify_ascii.py](https://github.com/pharmaverse/rtflite/blob/main/scripts/verify_ascii.py).
 
 ## Compliance checklist
@@ -414,7 +414,7 @@ The ADRG must document the Python environment and provide reproduction instructi
 Example content:
 
 ````markdown
-7.x Macro Programs
+7.X Macro Programs
 
 Submitted Python programs follow the naming pattern `tlf-##-*.txt`.
 All study-specific Python functions are saved in the `py0pkgs.txt` file.
@@ -496,11 +496,11 @@ uv sync
 
 This installs all dependencies and the demo001 package.
 
-5. Copy data to the correct location
+4. Copy data to the correct location
 
 Ensure the `datasets/` folder with ADaM datasets is in the working directory.
 
-6. Execute analysis programs
+5. Execute analysis programs
 
 Run each program in order:
 
