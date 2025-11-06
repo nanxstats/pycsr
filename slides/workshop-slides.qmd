@@ -1,52 +1,71 @@
 ---
 title: "Python for Clinical Study Reports and Submission"
-subtitle: "R / Pharma Workshop 2025"
+subtitle: "R/Pharma 2025 Workshop"
 author: "Yilong Zhang, Nan Xiao"
-date: "Novermber 2025"
-format: 
-    revealjs:
-        embed-resources: true
+date: "November 7, 2025"
+self-contained: true
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    mainfont: "Lato, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
+    monofont: "JetBrains Mono, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace"
+    smaller: true
+    embed-resources: true
+    slide-number: true
+title-slide-attributes: 
+  data-background-color: "#385898"
 ---
 
-# Welcome
+# Welcome {background-color="#385898"}
 
 ## Outline
 
-In this workshop, we have four parts:
+Four parts of this workshop:
 
-1. **Python environment setup (Nan)**: Use `uv` to create and manage reproducible Python projects. Develop and collaborate in GitHub Codespaces, Visual Studio Code, or Positron.
-2. **Python packages for clinical reporting (Yilong)**: A guided tour of essential packages such as `polars`, `plotnine`, and `rtflite`, with demonstrations of creating TLFs commonly used in clinical trials.
-3. **Manage a clinical trial A&R project (Yilong)**: Practical project structure, conventions, and execution from data to deliverables.
-4. **Preparing eCTD submission packages (Nan)**: An example workflow for assembling submission-ready source code and outputs using `py-pkglite`, aligned with eCTD requirements.
+1. **Python environment setup (Nan)**\
+   Use `uv` to create and manage reproducible Python projects. Develop and collaborate in GitHub Codespaces, Visual Studio Code, or Positron.
+
+2. **Python packages for clinical reporting (Yilong)**\
+   A guided tour of essential packages such as `polars`, `plotnine`, and `rtflite`, with demonstrations of creating TLFs commonly used in clinical trials.
+  
+3. **Manage clinical trial A&R projects (Yilong)**\
+   Practical project structure, conventions, and execution from data to deliverables.
+4. **Prepare eCTD submission packages (Nan)**\
+   An example workflow for assembling submission-ready source code and outputs using `py-pkglite`, aligned with eCTD requirements.
 
 ## Disclaimer
 
-- The views and opinions expressed in this presentation are those of the individual presenters and do not necessarily represent those of their affiliated organizations or institutions.
-
-- Some slides need to be scrolled down to see the full content.
+The views and opinions expressed in this presentation are those of the
+individual presenters and do not represent those of their affiliated
+organizations or institutions.
 
 ## Training objective
 
-- With Python, learning how to
-    - create tables for clinical study reports.
-    - organize a clinical development project.
-    - prepare eCTD submission package to FDA.
+With Python, learning how to:
 
-> The toolchain, process, and formats may be different in different organizations.
-> We only provide a recommended way to address them.
+- Create tables for clinical study reports
+- Organize clinical development projects effectively
+- Prepare eCTD submission packages to regulatory agencies
 
-> Interested in R? check <https://r4csr.org/> 
+::: callout-note
+The toolchain, process, and formats may be different in different organizations.
+We only provide one common way to address them.
+:::
 
-## Acknowledgement
+::: callout-note
+Interested in R? check <https://r4csr.org/>
+:::
+
+## Acknowledgements
 
 - R / Pharma organizers
-  + It is a fun and productive annual gathering.
-  + Please consider sharing stories and use cases to expand the community.
+  - It is a fun and productive annual gathering
+  - Please consider sharing stories and use cases to expand the community
 
-- Team members from Meta and Merck & Co.
+- Team members from Meta Platforms and Merck & Co., Inc., Rahway, NJ, USA
 
-- Contributors of pycsr and r4csr training materials.
-  - Please consider submitting issues or PR in the repo.
+- Contributors of pycsr and r4csr training materials
+  - Please consider submitting issues or PR in the repo
 
 ## Preparation
 
@@ -54,15 +73,15 @@ In this workshop, we assume you have
 basic Python programming experience and clinical development knowledge.
 
 - Data manipulation: polars, plotnine, rtflite.
-- ADaM data: `adsl`, `adae` etc.
+- ADaM data: `adsl`, `adae`, etc.
 
 ## Resource
 
-- Training Material: <https://pycsr.org/>
+- Training material: <https://pycsr.org/>
 
-- During the workshop, we will use `pycsr` project.
+- During the workshop, we will use the `pycsr` project
   - Project link will be shared in chat
-  - Post questions in group chat.
+  - Post questions in group chat
 
 ## Philosophy
 
@@ -74,13 +93,138 @@ We share the same philosophy described in
 - "The goal is to spend your time thinking about what you want to do
 rather than thinking about the minutiae of package structure."
 
-# Delivering TLFs in CSR
+# Python environment setup {background-color="#385898"}
+
+## Development environments
+
+::: {style="font-size: 75%;"}
+
+Three recommended options:
+
+**GitHub Codespaces**
+
+- Cloud-based, pre-configured
+- No local setup needed
+- 120 free hours/month
+
+**Positron**
+
+- Posit's next-gen IDE
+- Native notebook support
+- Built-in data viewer
+
+**VS Code**
+
+- Most popular choice
+- Rich extension ecosystem
+- Essential extensions: Python, Pylance, Ruff, Quarto
+
+:::
+
+## Why uv?
+
+uv is a modern Python package and project manager written in Rust.
+
+Replaces scattered toolchain:
+
+- `pip` + `venv` + `pyenv` + `pip-tools` + `setuptools`
+
+Benefits:
+
+- **Fast**: 10-100x faster than pip
+- **Complete**: Manages Python versions, dependencies, builds
+- **Modern**: Uses `pyproject.toml` as single source of truth
+- **Reliable**: Automatic dependency resolution and lock files
+
+## Installing uv
+
+**macOS/Linux:**
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows:**
+
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Verify:**
+
+```bash
+uv --version
+```
+
+## Quick start with uv
+
+```bash
+# Create new project
+uv init pycsr-example
+cd pycsr-example
+
+# Pin Python version
+uv python pin 3.13.9
+
+# Add dependencies
+uv add polars plotnine rtflite
+
+# Add dev dependencies
+uv add --dev ruff pytest mypy
+
+# Sync environment
+uv sync
+```
+
+## Python toolchain essentials
+
+**Ruff** - Code formatting and linting
+
+```bash
+uv run ruff format .
+uv run ruff check .
+```
+
+**mypy** - Type checking
+
+```bash
+uv run mypy src/
+```
+
+**pytest** - Testing framework
+
+```bash
+uv run pytest tests/
+```
+
+All configured in `pyproject.toml`.
+
+## Key concepts
+
+**Virtual environments are mandatory in Python**
+
+- Isolate project dependencies
+- Prevent conflicts
+- Enable reproducibility
+
+**Dependency locking**
+
+- `uv.lock` pins exact versions
+- Ensures reproducible environments
+- Similar to R's `renv.lock`
+
+**`.python-version` file**
+
+- Specifies exact Python version (e.g., `3.13.9`)
+- Critical for regulatory submissions
+
+# Delivering TLFs in CSR {background-color="#385898"}
 
 ## ICH E3 guidance
 
 The [ICH E3: structure and content of clinical study reports](https://database.ich.org/sites/default/files/E3_Guideline.pdf) provide guidance to assist sponsors in the development of a CSR.
 
-In a CSR, most of TLFs are located in
+In a CSR, most of TLFs are located in:
 
 - Section 10: Study patients
 - Section 11: Efficacy evaluation
@@ -94,21 +238,23 @@ In a CSR, most of TLFs are located in
 
 - The dataset structure follows the [CDISC Analysis Data Model (ADaM)](https://www.cdisc.org/standards/foundational/adam).
 
-- Source data: <https://github.com/elong0527/r4csr/tree/master/data-adam>
+- Source data: <https://github.com/elong0527/r4csr/tree/main/data-adam>
 
 ## Tools
 
-- polars: a python library for data manipulation similar to dplyr/tidyr R packages.
+- polars: Python package for data manipulation similar to dplyr/tidyr R packages
 
-- rtflite: a python library to create production-ready tables and figures in RTF format similar to r2rtf R package.
+- rtflite: Python package for creating production-ready tables and figures in RTF format similar to R package r2rtf
 
-# polars introduction 
+# polars introduction {background-color="#385898"}
 
-> TBD 
+> TBD
 
-# rtflite introduction
+# rtflite introduction {background-color="#385898"}
 
 ## Motivation
+
+::: {style="font-size: 70%;"}
 
 In the pharmaceutical industry, RTF/Microsoft Word play a central role
 in preparing clinical study reports
@@ -117,9 +263,9 @@ in preparing clinical study reports
 
 Different organizations can have different table standards
 
-- E.g., Table layout, Font size, Border type, Footnote, Data source
+- For example, table layout, font size, border type, footnote, data source
 
-- rtflite is a Python library to create production-ready tables and figures in RTF format.
+- rtflite is a Python package to create production-ready tables and figures in RTF format.
 
 rtflite is designed to:
 
@@ -129,6 +275,8 @@ rtflite is designed to:
 - Focus exclusively on **table formatting and layout**,
   leaving data manipulation to dataframe libraries like polars or pandas.
 - Minimize external dependencies for maximum portability and reliability.
+
+:::
 
 ## Workflow
 
@@ -169,11 +317,11 @@ rtflite provides simple simple Python classes that map to table elements.
 
 ## Function illustration
 
-> add figure 
+> add figure
 
 # Break and/or exercise (5 min)
 
-# CSR examples
+# CSR examples {background-color="#385898"}
 
 ## Disposition table
 
@@ -199,138 +347,308 @@ rtflite provides simple simple Python classes that map to table elements.
 
 <https://pycsr.org/tlf-ae-specific.html>
 
-# Break (5 min)
+# Break (5 min) {background-color="#385898"}
 
-# Clinical trial project
+# Analysis package {background-color="#385898"}
 
-## Overview
+## What is an analysis package?
 
-In a late-stage clinical trial, the number of A&R deliverables can easily be in the hundreds.
+A **Python package** designed specifically to organize analysis scripts and code for a clinical trial project.
 
-For an organization, it is also common to have multiple ongoing clinical trials in a clinical program.
+**Purpose:**
 
-In this part, let's consider how to organize a clinical trial project as an A&R lead.
+- Project containers for clinical trial deliverables
+- Reproducible environments for analyses
+- Submission-ready structures for regulatory review
 
-## Folder structure
+**Combines:**
 
-Our primary focus is creating a standard Python folder structure to organize the
-project, with 4 goals in mind:
+- Python package structure (code organization)
+- Quarto project (report generation)
+- Regulatory requirements (eCTD submission)
 
-- Consistency
-- Reproducibility
-- Automation
-- Compliance
+## Package structure
 
-> add a folder
+::: {style="font-size: 150%;"}
 
-## Project management
-
-- Setting up for success
-  - Teamwork
-  - Architecture
-  - Boundaries
-  - Community
-
-- The SDLC
-  - Planning
-  - Development
-  - Validation
-  - Operation
-
-> add link
-
-# Break (5 min)
-
-# eCTD submission
-
-## Overview
-
-> add a link
-
-## Submission package
-
-We will discuss strategies to prepare proprietary Python project and analysis code
-into proper formats for submission:
-
-- The whole game
-- Practical considerations
-- Prepare submission package using `py-pkglite`
-- Prepare analysis programs
-- Update ADRG and ARM
-
-> add a link
-
-# pkglite
-
-> To be updated. 
-
-## pkglite: compact package representations
-
-- To provide a **tool** for packing and restoring R packages as plaintext
-assets that are easy to store, transfer, and review.
-- To provide a **grammar** for specifying the file packing scope that is
-functional, precise, and extendable.
-- To provide a **standard** for exchanging the packed asset that is
-unambiguous, human-friendly, and machine-readable.
-
-## Pipe-friendly workflow
-
-```{r, eval=FALSE, echo=TRUE}
-library("pkglite")
-
-"/path/to/pkg/" %>%
-  collate(file_ectd()) %>%
-  pack()
-
-pack(
-  "/path/to/pkg1/" %>% collate(file_ectd()),
-  "/path/to/pkg2/" %>% collate(file_ectd()),
-  output = "/path/to/pkglite.txt"
-)
-
-"/path/to/pkglite.txt" %>%
-  unpack(output = "/path/to/output/")
+```
+demo-py-esub/
+├── pyproject.toml          # Project metadata
+├── .python-version         # Python version
+├── uv.lock                 # Locked dependencies
+├── src/demo001/            # Study-specific code
+│   ├── __init__.py
+│   └── utils.py
+├── analysis/               # Quarto analysis docs
+│   └── tlf-*.qmd
+├── data/                   # ADaM datasets
+├── output/                 # Generated TLFs
+└── tests/                  # Validation tests
 ```
 
-## File specifications + file collections
+:::
 
-File specifications offer flexibility and brevity in specifying the files to include.
+See: <https://pycsr.org/pkg-structure.html>
 
-| File specification type | Functions                                                                           |
-|-------------------------|-------------------------------------------------------------------------------------|
-| Manual discovery        | `file_spec()`                                                                       |
-| Automatic discovery     | `file_auto()`                                                                       |
-| Common patterns         | `file_root_core()`, `file_r()`, `file_man()`, `file_src()`, `file_vignettes()`, ... |
-| Default sets            | `file_default()`, `file_ectd()`                                                     |
+::: {style="font-size: 100%;"}
 
-<br>
+## Benefits
 
-File collections contain the evaluation results of file specifications for packing.
+:::: {.columns}
+::: {.column width="50%"}
 
-```{r, eval=FALSE, echo=TRUE}
-library("pkglite")
+**Consistency**
 
-"/path/to/pkg" %>%
-  collate(file_root_core(), file_r(), file_auto("inst/"))
+- Standard structure across projects
+- Team knows where files belong
+
+**Reproducibility**
+
+- `uv.lock` pins dependencies
+- `.python-version` specifies Python
+
+:::
+
+::: {.column width="50%"}
+
+**Automation**
+
+- `uv sync` restores environment
+- `quarto render` generates outputs
+- `pytest` validates code
+
+**Compliance**
+
+- Built-in documentation
+- Testing infrastructure
+- Standard structure
+
+:::
+:::
+:::
+
+## Git-centric workflow
+
+**Core principle:** All project assets in version control.
+
+**Plain text workflow:**
+
+- `.qmd` files for analysis (not `.ipynb` for final deliverables)
+- `.md` files for documentation
+- `.toml` files for configuration
+- Avoid `.xlsx` files for tracking
+
+**Project tracking:**
+
+- Issues for requirements
+- Pull requests for review
+- Project boards (Kanban)
+
+See: <https://pycsr.org/pkg-management.html>
+
+## Development lifecycle
+
+:::: {.columns}
+::: {.column width="50%"}
+
+**Planning:**
+
+- Define TLFs from SAP
+- Create mock tables
+- Assign validation levels
+- Lock Python version and package repo
+
+**Development:**
+
+- Create feature branches
+- Implement in `analysis/` and `src/`
+- Self-test against mocks
+- Open pull requests
+:::
+
+::: {.column width="50%"}
+**Validation:**
+
+- Independent review
+- Write unit tests in `tests/`
+- Run automated checks (`ruff`, `mypy`, `pytest`)
+
+**Delivery:**
+
+- Generate all outputs with `quarto render`
+- Prepare submission package
+:::
+:::
+
+# Break (5 min) {background-color="#385898"}
+
+# eCTD submission {background-color="#385898"}
+
+## FDA requirements
+
+[FDA Study Data Technical Conformance Guide](https://www.fda.gov/media/88173/download) Section 4.1.2.10:
+
+> Submit programs for **primary and secondary efficacy analyses**.
+> Specify software in **ADRG**.
+> Use **ASCII text format**.
+> No executable extensions.
+
+**Goal:** Enable reviewers to understand and confirm analysis algorithms.
+
+See: <https://pycsr.org/submission-overview.html>
+
+## eCTD Module 5 structure
+
+::: {style="font-size: 150%;"}
+
+```
+m5/datasets/<study-id>/analysis/adam/
+├── datasets/
+│   ├── *.xpt               # ADaM datasets
+│   ├── define.xml
+│   ├── adrg.pdf            # Instructions
+│   └── analysis-results-metadata.pdf
+└── programs/
+    ├── py0pkgs.txt         # Packed Python package
+    ├── tlf-01-*.txt        # Analysis programs
+    └── tlf-02-*.txt
 ```
 
-## pkglite.txt
+:::
 
-pkglite.txt follows the standard Debian Control File (DCF) format used by
-Debian, R, and RStudio IDE, to be both machine-readable and human-readable.
+**Key:** All files in `programs/` must be ASCII text.
 
-```text
-# Generated by pkglite: do not edit by hand
-# Use pkglite::unpack() to restore the packages
+## The solution: pkglite for Python
 
-Package: pkg1
-File: DESCRIPTION
+Packs Python projects into portable text files.
+
+**Why needed:**
+
+- Python packages have directory structure
+- May contain binary files
+- FDA requires ASCII text format
+
+**pkglite capabilities:**
+
+- Pack entire project into single `.txt` file
+- Preserve file paths and metadata
+- Unpack to restore original structure
+- Support multiple packages in one file
+
+Documentation: <https://pharmaverse.github.io/py-pkglite/>
+
+## Packing workflow
+
+**1. Create `.pkgliteignore`**
+
+```bash
+uvx pkglite use demo-py-esub/
+```
+
+**2. Pack the package**
+
+```bash
+uvx pkglite pack demo-py-esub/ \
+  -o programs/py0pkgs.txt
+```
+
+**3. Convert Quarto to Python scripts**
+
+- Render `.qmd` -> verify it works
+- Convert `.qmd` -> `.ipynb` -> `.py`
+- Clean and format with `ruff`
+- Save as `.txt` (no `.py` extension)
+
+See: <https://pycsr.org/submission-package.html>
+
+## Packed file format
+
+Human-readable Debian Control File (DCF) format:
+
+::: {style="font-size: 150%;"}
+
+```
+# Generated by py-pkglite
+# Use `pkglite unpack` to restore
+
+Package: demo-py-esub
+File: pyproject.toml
 Format: text
 Content:
-  Package: pkg1
-  Type: Package
-  Title: Example Package One
-  Version: 0.1.0
+  [project]
+  name = "demo001"
+  version = "0.1.0"
+  ...
 ```
 
-# Q&A
+:::
+
+Reviewers can read without special tools.
+
+## Updating ADRG
+
+Document the Python environment:
+
+**Python environment:**
+
+| Software | Version | Description |
+|----------|---------|-------------|
+| Python | 3.13.9 | Programming language |
+| uv     | 0.9.7  | Package manager      |
+
+**Packages:**
+
+| Package | Version | Description |
+|---------|---------|-------------|
+| polars | 1.35.1 | Data manipulation |
+| rtflite | 1.0.2 | RTF generation |
+| demo001 | 0.1.0 | Study functions |
+
+**Appendix:** Step-by-step reproduction instructions.
+
+## Dry run testing
+
+**Essential:** Simulate reviewer experience before submission.
+
+**Workflow:**
+
+1. Create clean directory
+2. Copy submission materials
+3. Unpack package: `uvx pkglite unpack programs/py0pkgs.txt -o .`
+4. Install dependencies: `cd demo-py-esub && uv sync`
+5. Run programs: `python ../programs/tlf-*.txt`
+6. Verify outputs match originals
+
+**Catches:** Missing dependencies, path errors, platform issues.
+
+See: <https://pycsr.org/submission-dryrun.html>
+
+## Demo repositories
+
+**Analysis package:**
+<https://github.com/elong0527/demo-py-esub>
+
+**Submission package:**
+<https://github.com/elong0527/demo-py-ectd>
+
+Clone and explore to see complete examples.
+
+# Q&A {background-color="#385898"}
+
+## Resources
+
+**Book:**
+
+- [pycsr.org](https://pycsr.org/)
+- Submit issues/PRs to [nanxstats/pycsr](https://github.com/nanxstats/pycsr)
+
+**Regulatory:**
+
+- [FDA Study Data Technical Conformance Guide](https://www.fda.gov/media/88173/download)
+- [eCTD specifications](https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/electronic-common-technical-document-ectd)
+
+**Technical:**
+
+- [rtflite](https://pharmaverse.github.io/rtflite/)
+- [pkglite for Python](https://pharmaverse.github.io/py-pkglite/)
+- [uv documentation](https://docs.astral.sh/uv/)
