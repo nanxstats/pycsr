@@ -8,7 +8,7 @@
 
 <meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
-<title>1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission</title>
+<title>16&nbsp; Submission dryrun – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./env-uv.html" rel="next">
-<link href="./preface.html" rel="prev">
+<link href="./references.html" rel="next">
+<link href="./submission-package.html" rel="prev">
 <link href="./assets/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -109,13 +109,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta property="og:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta property="og:title" content="16&nbsp; Submission dryrun – Python for Clinical Study Reports and Submission">
 <meta property="og:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta property="og:image" content="https://pycsr.org/assets/preview.png">
 <meta property="og:site_name" content="Python for Clinical Study Reports and Submission">
 <meta property="og:image:height" content="640">
 <meta property="og:image:width" content="1280">
-<meta name="twitter:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta name="twitter:title" content="16&nbsp; Submission dryrun – Python for Clinical Study Reports and Submission">
 <meta name="twitter:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta name="twitter:image" content="https://pycsr.org/assets/preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./submission-overview.html">eCTD submission</a></li><li class="breadcrumb-item"><a href="./submission-dryrun.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Submission dryrun</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./env-dev.html" class="sidebar-item-text sidebar-link active">
+  <a href="./env-dev.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></span></a>
   </div>
 </li>
@@ -330,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./submission-dryrun.html" class="sidebar-item-text sidebar-link">
+  <a href="./submission-dryrun.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Submission dryrun</span></span></a>
   </div>
 </li>
@@ -352,35 +352,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#development-environments" id="toc-development-environments" class="nav-link active" data-scroll-target="#development-environments"><span class="header-section-number">1.1</span> Development environments</a>
+  <li><a href="#why-dry-run-testing" id="toc-why-dry-run-testing" class="nav-link active" data-scroll-target="#why-dry-run-testing"><span class="header-section-number">16.1</span> Why dry run testing</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"><span class="header-section-number">16.2</span> Prerequisites</a></li>
+  <li><a href="#setting-up-the-test-environment" id="toc-setting-up-the-test-environment" class="nav-link" data-scroll-target="#setting-up-the-test-environment"><span class="header-section-number">16.3</span> Setting up the test environment</a>
   <ul class="collapse">
-  <li><a href="#github-codespaces" id="toc-github-codespaces" class="nav-link" data-scroll-target="#github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</a></li>
-  <li><a href="#positron" id="toc-positron" class="nav-link" data-scroll-target="#positron"><span class="header-section-number">1.1.2</span> Positron</a></li>
-  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code"><span class="header-section-number">1.1.3</span> VS Code</a></li>
+  <li><a href="#create-a-clean-directory" id="toc-create-a-clean-directory" class="nav-link" data-scroll-target="#create-a-clean-directory"><span class="header-section-number">16.3.1</span> Create a clean directory</a></li>
+  <li><a href="#install-uv" id="toc-install-uv" class="nav-link" data-scroll-target="#install-uv"><span class="header-section-number">16.3.2</span> Install uv</a></li>
   </ul></li>
-  <li><a href="#vs-code-settings" id="toc-vs-code-settings" class="nav-link" data-scroll-target="#vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</a>
+  <li><a href="#unpacking-the-python-package" id="toc-unpacking-the-python-package" class="nav-link" data-scroll-target="#unpacking-the-python-package"><span class="header-section-number">16.4</span> Unpacking the Python package</a>
   <ul class="collapse">
-  <li><a href="#unicode-highlighting" id="toc-unicode-highlighting" class="nav-link" data-scroll-target="#unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</a></li>
+  <li><a href="#unpack-with-py-pkglite" id="toc-unpack-with-py-pkglite" class="nav-link" data-scroll-target="#unpack-with-py-pkglite"><span class="header-section-number">16.4.1</span> Unpack with py-pkglite</a></li>
   </ul></li>
-  <li><a href="#terminal-setup" id="toc-terminal-setup" class="nav-link" data-scroll-target="#terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</a>
+  <li><a href="#installing-dependencies" id="toc-installing-dependencies" class="nav-link" data-scroll-target="#installing-dependencies"><span class="header-section-number">16.5</span> Installing dependencies</a>
   <ul class="collapse">
-  <li><a href="#shell" id="toc-shell" class="nav-link" data-scroll-target="#shell"><span class="header-section-number">1.3.1</span> Shell</a></li>
-  <li><a href="#terminal-emulator" id="toc-terminal-emulator" class="nav-link" data-scroll-target="#terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</a></li>
+  <li><a href="#sync-environment" id="toc-sync-environment" class="nav-link" data-scroll-target="#sync-environment"><span class="header-section-number">16.5.1</span> Sync environment</a></li>
+  <li><a href="#verify-installation" id="toc-verify-installation" class="nav-link" data-scroll-target="#verify-installation"><span class="header-section-number">16.5.2</span> Verify installation</a></li>
   </ul></li>
-  <li><a href="#ai-coding-assistants" id="toc-ai-coding-assistants" class="nav-link" data-scroll-target="#ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</a>
+  <li><a href="#running-analysis-programs" id="toc-running-analysis-programs" class="nav-link" data-scroll-target="#running-analysis-programs"><span class="header-section-number">16.6</span> Running analysis programs</a>
   <ul class="collapse">
-  <li><a href="#effective-use-of-ai-tools" id="toc-effective-use-of-ai-tools" class="nav-link" data-scroll-target="#effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</a></li>
+  <li><a href="#execute-programs" id="toc-execute-programs" class="nav-link" data-scroll-target="#execute-programs"><span class="header-section-number">16.6.1</span> Execute programs</a></li>
+  <li><a href="#verify-outputs" id="toc-verify-outputs" class="nav-link" data-scroll-target="#verify-outputs"><span class="header-section-number">16.6.2</span> Verify outputs</a></li>
   </ul></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.5</span> What’s next</a></li>
+  <li><a href="#comparing-outputs" id="toc-comparing-outputs" class="nav-link" data-scroll-target="#comparing-outputs"><span class="header-section-number">16.7</span> Comparing outputs</a>
+  <ul class="collapse">
+  <li><a href="#manual-comparison" id="toc-manual-comparison" class="nav-link" data-scroll-target="#manual-comparison"><span class="header-section-number">16.7.1</span> Manual comparison</a></li>
+  </ul></li>
+  <li><a href="#testing-checklist" id="toc-testing-checklist" class="nav-link" data-scroll-target="#testing-checklist"><span class="header-section-number">16.8</span> Testing checklist</a></li>
+  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices"><span class="header-section-number">16.9</span> Best practices</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">16.10</span> What’s next</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/submission-dryrun.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/submission-dryrun.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./submission-overview.html">eCTD submission</a></li><li class="breadcrumb-item"><a href="./submission-dryrun.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Submission dryrun</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></h1>
+<h1 class="title"><span id="sec-submission-dryrun" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Submission dryrun</span></span></h1>
 </div>
 
 
@@ -407,22 +415,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Set up a productive Python development environment for clinical study reporting. Learn about IDE options, essential extensions, and workflow tools.</p>
+<p>Learn how to perform a dry run test of your submission package. Simulate the reviewer experience to verify that your analysis can be reproduced from the submitted materials.</p>
 </div>
 </div>
-<section id="development-environments" class="level2 page-columns page-full" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="development-environments"><span class="header-section-number">1.1</span> Development environments</h2>
-<p>For this book, you have several options for your development environment. Choose the one that best fits your current setup and constraints.</p>
-<section id="github-codespaces" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</h3>
-<p>GitHub Codespaces provides a cloud-based development environment with everything pre-configured. This is the easiest option if you don’t have a local Python setup.</p>
-<p>We will provide a dev container configuration that includes:</p>
+<section id="why-dry-run-testing" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="why-dry-run-testing"><span class="header-section-number">16.1</span> Why dry run testing</h2>
+<p>Before submitting to regulatory agencies, you must verify that reviewers can reproduce your analysis.</p>
+<p>A dry run test simulates the reviewer workflow:</p>
+<ol type="1">
+<li>Start with a clean environment</li>
+<li>Follow ADRG instructions exactly</li>
+<li>Unpack and install packages</li>
+<li>Run analysis programs</li>
+<li>Verify outputs match original results</li>
+</ol>
+<p>This catches issues before submission:</p>
 <ul>
-<li>Python with uv pre-installed.</li>
-<li>All necessary VS Code extensions.</li>
-<li>Consistent environment across all readers, useable in the web browser.</li>
+<li>Missing dependencies</li>
+<li>Incorrect file paths</li>
+<li>Platform-specific code</li>
+<li>Documentation gaps</li>
+<li>Version mismatches</li>
 </ul>
-<p>To use Codespaces, simply click the “Code” button in the repository and select “Create codespace on main”.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dry run testing is not optional. It’s the only way to ensure your submission package actually works.</p>
+</div>
+</div>
+</section>
+<section id="prerequisites" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">16.2</span> Prerequisites</h2>
+<p>You need the eCTD submission package prepared in <a href="submission-package.html" class="quarto-xref"><span>Chapter 15</span></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/elong0527/demo-py-ectd.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> demo-py-ectd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The structure:</p>
+<pre><code>demo-py-ectd/m5/datasets/ectddemo/analysis/adam/
+├── datasets/
+│   ├── *.xpt
+│   ├── adrg.pdf
+│   └── analysis-results-metadata.pdf
+└── programs/
+    ├── py0pkgs.txt
+    └── tlf-*.txt</code></pre>
+</section>
+<section id="setting-up-the-test-environment" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="setting-up-the-test-environment"><span class="header-section-number">16.3</span> Setting up the test environment</h2>
+<section id="create-a-clean-directory" class="level3" data-number="16.3.1">
+<h3 data-number="16.3.1" class="anchored" data-anchor-id="create-a-clean-directory"><span class="header-section-number">16.3.1</span> Create a clean directory</h3>
+<p>Simulate a reviewer’s fresh environment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create temporary directory</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ~/dryrun-test</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/dryrun-test</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy submission materials</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ~/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/<span class="pp">*</span> .</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify structure</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see:</p>
+<pre><code>datasets programs
+
+./datasets:
+adadas.xpt      adlbc.xpt       adlbhpv.xpt     adrg.pdf        advs.xpt
+adae.xpt        adlbcpv.xpt     adlbhy.xpt      adsl.xpt        define.xml
+adcibc.xpt      adlbh.xpt       adnpix.xpt      adtte.xpt       define2-0-0.xsl
+
+./programs:
+py0pkgs.txt                tlf-03-baseline.txt        tlf-06-specific.txt
+tlf-01-disposition.txt     tlf-04-efficacy-ancova.txt
+tlf-02-population.txt      tlf-05-ae-summary.txt</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -433,110 +502,258 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Codespaces currently offers <a href="https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-and-billed-use-by-personal-accounts">120 hours of free compute time per month</a> for personal accounts. This is more than sufficient for this book.</p>
+<p>Use a completely separate directory, not your development environment. This ensures you are testing from a clean state.</p>
 </div>
 </div>
 </section>
-<section id="positron" class="level3 page-columns page-full" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="positron"><span class="header-section-number">1.1.2</span> Positron</h3>
-<p>Positron is Posit’s next-generation data science IDE, built on Code OSS (the open source core of VS Code), with specific improvements for R and Python development.</p>
-<p>Key features for Python work:</p>
-<ul>
-<li>Native notebook support.</li>
-<li>Interactive variable explorer.</li>
-<li>Integrated plot viewer.</li>
-<li>Built-in data viewer for DataFrames.</li>
-</ul>
+<section id="install-uv" class="level3" data-number="16.3.2">
+<h3 data-number="16.3.2" class="anchored" data-anchor-id="install-uv"><span class="header-section-number">16.3.2</span> Install uv</h3>
+<p>Follow the ADRG instructions exactly.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>uv 0.9.7 (0adb44480 2025-10-30)</code></pre>
+</section>
+</section>
+<section id="unpacking-the-python-package" class="level2 page-columns page-full" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="unpacking-the-python-package"><span class="header-section-number">16.4</span> Unpacking the Python package</h2>
+<section id="unpack-with-py-pkglite" class="level3 page-columns page-full" data-number="16.4.1">
+<h3 data-number="16.4.1" class="anchored" data-anchor-id="unpack-with-py-pkglite"><span class="header-section-number">16.4.1</span> Unpack with py-pkglite</h3>
+<p>Use pkglite to restore the package structure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvx</span> pkglite unpack programs/py0pkgs.txt <span class="at">-o</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>Unpacking demo-py-esub
+Writing _quarto.yml
+Writing uv.lock
+Writing .pkgliteignore
+Writing pyproject.toml
+Writing index.qmd
+Writing README.md
+Writing .gitignore
+Writing .python-version
+Writing analysis/tlf-05-ae-summary.qmd
+Writing analysis/tlf-02-population.qmd
+Writing analysis/tlf-03-baseline.qmd
+Writing analysis/.gitignore
+Writing analysis/tlf-06-specific.qmd
+Writing analysis/tlf-01-disposition.qmd
+Writing analysis/tlf-04-efficacy-ancova.qmd
+Writing tests/test_utils.py
+Writing tests/__init__.py
+Writing output/tlf_ae_specific.rtf
+Writing output/tlf_baseline.rtf
+Writing output/tlf_population.rtf
+Writing output/tlf_disposition.rtf
+Writing output/tlf_ae_summary.rtf
+Writing output/tlf_efficacy_ancova.rtf
+Writing .github/.gitignore
+Writing .github/workflows/quarto-publish.yml
+Writing data/adae.parquet
+Writing data/adlbhy.parquet
+Writing data/adsl.parquet
+Writing data/adtte.parquet
+Writing data/adlbc.parquet
+Writing data/adlbh.parquet
+Writing data/advs.parquet
+Writing src/demo001/baseline.py
+Writing src/demo001/population.py
+Writing src/demo001/__init__.py
+Writing src/demo001/utils.py
+Writing src/demo001/safety.py
+Writing src/demo001/efficacy.py
+✓ Unpacked 1 packages from programs/py0pkgs.txt into .</code></pre>
+<p>This should create:</p>
+<pre><code>demo-py-esub
+├── _quarto.yml
+├── analysis
+│&nbsp;&nbsp; ├── tlf-01-disposition.qmd
+│&nbsp;&nbsp; ├── tlf-02-population.qmd
+│&nbsp;&nbsp; ├── tlf-03-baseline.qmd
+│&nbsp;&nbsp; ├── tlf-04-efficacy-ancova.qmd
+│&nbsp;&nbsp; ├── tlf-05-ae-summary.qmd
+│&nbsp;&nbsp; └── tlf-06-specific.qmd
+├── data
+│&nbsp;&nbsp; ├── adae.parquet
+│&nbsp;&nbsp; ├── adlbc.parquet
+│&nbsp;&nbsp; ├── adlbh.parquet
+...</code></pre>
+<p>Verify the structure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> demo-py-esub/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> demo-py-esub/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
-<p>Positron uses Open VSX instead of the Microsoft VS Code marketplace. Most essential Python extensions are available, but the selection is more limited.</p>
-</div></div><p>Download Positron from <a href="https://positron.posit.co/" class="uri">https://positron.posit.co/</a>.</p>
+<p>The unpacked directory name comes from the packed package. It should match the original analysis project name.</p>
+</div></div></section>
 </section>
-<section id="vs-code" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="vs-code"><span class="header-section-number">1.1.3</span> VS Code</h3>
-<p>Visual Studio Code remains the most popular choice for Python development. It offers a rich ecosystem of extensions and tools.</p>
-<p>Essential extensions for this book:</p>
+<section id="installing-dependencies" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="installing-dependencies"><span class="header-section-number">16.5</span> Installing dependencies</h2>
+<section id="sync-environment" class="level3" data-number="16.5.1">
+<h3 data-number="16.5.1" class="anchored" data-anchor-id="sync-environment"><span class="header-section-number">16.5.1</span> Sync environment</h3>
+<p>Navigate to the unpacked package and install:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> demo-py-esub</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This creates:</p>
 <ul>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python</a>: Core Python language support.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance">Pylance</a>: Fast, feature-rich Python language server.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff">Ruff</a>: Lightning-fast linting and formatting.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a>: Syntax highlighting for TOML files (<code>pyproject.toml</code>).</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">Quarto</a>: Authoring support for Quarto documents.</li>
+<li><code>.venv/</code> virtual environment</li>
+<li>Installs all dependencies from <code>uv.lock</code></li>
+<li>Installs the <code>demo001</code> package in editable mode</li>
 </ul>
 </section>
-</section>
-<section id="vs-code-settings" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</h2>
-<section id="unicode-highlighting" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</h3>
-<p>Python allows Unicode characters in strings and identifiers. AI coding tools might also generate code with non-ASCII characters. For regulatory work, you should highlight non-ASCII characters to find these hidden issues early and avoid problems in submissions.</p>
-<p><strong>Via Settings UI:</strong></p>
-<ol type="1">
-<li>Open Command Palette (Cmd/Ctrl + Shift + P)</li>
-<li>Search for “Preferences: Open Settings (UI)”</li>
-<li>Search for “Unicode Highlight”</li>
-<li>Enable “Non Basic ASCII” for both trusted and untrusted workspaces</li>
-</ol>
-<p><strong>Via Settings JSON:</strong></p>
-<p>Open Command Palette with Cmd/Ctrl + Shift + P, select “Preferences: Open User Settings (JSON)”, then add:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="er">"editor.unicodeHighlight.nonBasicASCII":</span> <span class="er">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This highlights characters like curly quotes, em dashes, and other non-ASCII characters that could cause issues in eCTD submission packages.</p>
-</section>
-</section>
-<section id="terminal-setup" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</h2>
-<p>For local development, you will interact with uv and Quarto through the terminal.</p>
-<section id="shell" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="shell"><span class="header-section-number">1.3.1</span> Shell</h3>
-<p>Any modern shell works well:</p>
-<ul>
-<li>macOS/Linux: zsh (default on macOS), bash</li>
-<li>Windows: PowerShell, Windows Terminal</li>
-</ul>
-</section>
-<section id="terminal-emulator" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</h3>
-<p>If you are on macOS and want a faster terminal experience, consider <a href="https://ghostty.org/">Ghostty</a>. It is written in Zig for exceptional performance.</p>
-</section>
-</section>
-<section id="ai-coding-assistants" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</h2>
-<p>Modern agentic AI coding tools can accelerate statistical and clinical coding tasks, especially for popular programming languages like Python. We encourage you to use them, for example:</p>
-<ul>
-<li>Codex (command-line interface, VS Code extension)</li>
-<li>Claude Code (command-line interface)</li>
-<li>Cursor (AI-first editor)</li>
-<li>GitHub Copilot (VS Code extension)</li>
-</ul>
-<section id="effective-use-of-ai-tools" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</h3>
-<p>To use AI assistants effectively for programming, you need:</p>
-<p><strong>Product manager mindset</strong>: Know exactly what you want to build. In clinical reporting, this means understanding the table shell, statistical method, and regulatory requirements.</p>
-<p><strong>Software architect mindset</strong>: Evaluate model outputs critically. Can you spot issues with data transformations? Do the statistical computations match the statistical analysis plan? Is the output format submission-ready?</p>
-<div class="callout callout-style-default callout-warning callout-titled">
+<section id="verify-installation" class="level3" data-number="16.5.2">
+<h3 data-number="16.5.2" class="anchored" data-anchor-id="verify-installation"><span class="header-section-number">16.5.2</span> Verify installation</h3>
+<p>Check Python version in virtual environment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate  <span class="co"># macOS/Linux</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># .venv\Scripts\activate   # Windows</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>List installed packages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pip list</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verify the demo001 package:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import demo001; print(demo001.__version__)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The output should be <code>0.1.0</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>AI tools are assistants, not replacements for domain expertise. Always verify outputs against statistical analysis plans and regulatory guidance.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="whats-next" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">1.5</span> What’s next</h2>
-<p>With your development environment configured, you are ready to learn about uv, the modern project management tool for Python.</p>
-<p>In the next chapter, we will cover:</p>
+<p>If any imports fail, check:</p>
 <ul>
-<li>Creating and managing Python projects.</li>
-<li>Pinning Python versions.</li>
-<li>Installing dependencies.</li>
-<li>Understanding the modern Python packaging ecosystem.</li>
+<li>Python version matches <code>.python-version</code></li>
+<li>All dependencies installed from <code>uv.lock</code></li>
+<li>Package installed in editable mode</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="running-analysis-programs" class="level2" data-number="16.6">
+<h2 data-number="16.6" class="anchored" data-anchor-id="running-analysis-programs"><span class="header-section-number">16.6</span> Running analysis programs</h2>
+<section id="execute-programs" class="level3" data-number="16.6.1">
+<h3 data-number="16.6.1" class="anchored" data-anchor-id="execute-programs"><span class="header-section-number">16.6.1</span> Execute programs</h3>
+<p>Run each analysis program:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run first program</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> ../programs/tlf-01-disposition.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see:</p>
+<pre><code>/home/user/dryrun-test/demo-py-esub/output/tlf_disposition.rtf</code></pre>
+<p>The program should:</p>
+<ol type="1">
+<li>Load data from <code>../datasets/</code></li>
+<li>Perform analysis</li>
+<li>Generate RTF output in <code>output/</code></li>
+</ol>
+<p>Run remaining programs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> ../programs/tlf-02-population.txt</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> ../programs/tlf-03-baseline.txt</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> ../programs/tlf-04-efficacy-ancova.txt</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> ../programs/tlf-05-ae-summary.txt</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> ../programs/tlf-06-specific.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="verify-outputs" class="level3" data-number="16.6.2">
+<h3 data-number="16.6.2" class="anchored" data-anchor-id="verify-outputs"><span class="header-section-number">16.6.2</span> Verify outputs</h3>
+<p>Check that all RTF files were created:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> output/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>total 456
+-rw-r--r--@ 1 user  staff   170K Nov  6 21:59 tlf_ae_specific.rtf
+-rw-r--r--@ 1 user  staff   9.6K Nov  6 21:59 tlf_ae_summary.rtf
+-rw-r--r--@ 1 user  staff   7.6K Nov  6 21:58 tlf_baseline.rtf
+-rw-r--r--@ 1 user  staff    14K Nov  6 21:57 tlf_disposition.rtf
+-rw-r--r--@ 1 user  staff   8.7K Nov  6 21:59 tlf_efficacy_ancova.rtf
+-rw-r--r--@ 1 user  staff   4.0K Nov  6 21:58 tlf_population.rtf</code></pre>
+</section>
+</section>
+<section id="comparing-outputs" class="level2" data-number="16.7">
+<h2 data-number="16.7" class="anchored" data-anchor-id="comparing-outputs"><span class="header-section-number">16.7</span> Comparing outputs</h2>
+<section id="manual-comparison" class="level3" data-number="16.7.1">
+<h3 data-number="16.7.1" class="anchored" data-anchor-id="manual-comparison"><span class="header-section-number">16.7.1</span> Manual comparison</h3>
+<p>Open RTF files in a word processor and compare with original outputs, check if:</p>
+<ul>
+<li>Table structure matches</li>
+<li>Numbers are identical</li>
+<li>Formatting is correct</li>
+<li>Headers and footers present</li>
+</ul>
+<p>Since RTF files are plaintext files, you can also automate this comparison with diff-based workflows.</p>
+</section>
+</section>
+<section id="testing-checklist" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="testing-checklist"><span class="header-section-number">16.8</span> Testing checklist</h2>
+<p>Complete dry run test checklist:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="an">Environment setup:</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Clean directory created</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Correct Python version installed</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> uv installed and working</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>Package restoration:</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> <span class="in">`py0pkgs.txt`</span> unpacked successfully</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Package structure restored</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> All files present</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>Dependency installation:</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> <span class="in">`uv sync`</span> completed without errors</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> All packages installed</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Correct package versions</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>Program execution:</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> All analysis programs run without errors</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> RTF outputs generated</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> No missing data errors</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>Output verification:</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> All expected outputs present</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Numbers match original results</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Tables formatted correctly</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> No corruption or errors in RTF files</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>Documentation:</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> ADRG instructions followed successfully</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> No undocumented steps required</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Instructions are clear and complete</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For projects with many programs, you can automate the dry run with a shell script. We will leave that as an exercise for the reader.</p>
+</section>
+<section id="best-practices" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="best-practices"><span class="header-section-number">16.9</span> Best practices</h2>
+<p><strong>Test early, test often:</strong></p>
+<p>Don’t wait until the last minute. Run dry run tests throughout development.</p>
+<p><strong>Test on fresh systems:</strong></p>
+<p>Use virtual machines or Docker containers for truly clean environments.</p>
+<p><strong>Document everything:</strong></p>
+<p>Record commands, outputs, and any issues encountered.</p>
+<p><strong>Version control dry run scripts:</strong></p>
+<p>Keep test scripts in version control alongside analysis code.</p>
+<p><strong>Automate where possible:</strong></p>
+<p>Automated tests are faster and more reliable than manual testing.</p>
+<p><strong>Test on reviewer platforms:</strong></p>
+<p>If you know reviewers use Windows, test on Windows.</p>
+</section>
+<section id="whats-next" class="level2" data-number="16.10">
+<h2 data-number="16.10" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">16.10</span> What’s next</h2>
+<p>Congratulations! You’ve learned the complete workflow for Python-based clinical submissions. You’re now ready to apply these practices to real clinical trial projects. The Python clinical reporting ecosystem continues to evolve. Stay engaged with the community to learn best practices and contribute improvements. Here we list the important resources to explore:</p>
+<p><strong>Regulatory guidance:</strong></p>
+<ul>
+<li><a href="https://www.fda.gov/media/88173/download">FDA Study Data Technical Conformance Guide</a></li>
+<li><a href="https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/electronic-common-technical-document-ectd">eCTD specifications</a></li>
+</ul>
+<p><strong>Technical documentation:</strong></p>
+<ul>
+<li><a href="https://pharmaverse.github.io/rtflite/">rtflite documentation</a></li>
+<li><a href="https://pharmaverse.github.io/py-pkglite/">pkglite for Python documentation</a></li>
+<li><a href="https://docs.astral.sh/uv/">uv documentation</a></li>
+<li><a href="https://packaging.python.org/">Python Packaging User Guide</a></li>
+</ul>
+<p><strong>Example repositories:</strong></p>
+<ul>
+<li><a href="https://github.com/elong0527/demo-py-esub">demo-py-esub</a>: Analysis package</li>
+<li><a href="https://github.com/elong0527/demo-py-ectd">demo-py-ectd</a>: Submission package</li>
 </ul>
 
 
@@ -945,13 +1162,13 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./preface.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="./submission-package.html" class="pagination-link" aria-label="Submission package">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Submission package</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./env-uv.html" class="pagination-link" aria-label="Python projects with uv">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python projects with uv</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -960,4 +1177,4 @@ Warning
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/submission-dryrun.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/submission-dryrun.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>

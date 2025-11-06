@@ -8,7 +8,7 @@
 
 <meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
-<title>1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission</title>
+<title>14&nbsp; Submission overview – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,41 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -66,8 +31,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./env-uv.html" rel="next">
-<link href="./preface.html" rel="prev">
+<link href="./submission-package.html" rel="next">
+<link href="./pkg-management.html" rel="prev">
 <link href="./assets/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -109,13 +74,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta property="og:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta property="og:title" content="14&nbsp; Submission overview – Python for Clinical Study Reports and Submission">
 <meta property="og:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta property="og:image" content="https://pycsr.org/assets/preview.png">
 <meta property="og:site_name" content="Python for Clinical Study Reports and Submission">
 <meta property="og:image:height" content="640">
 <meta property="og:image:width" content="1280">
-<meta name="twitter:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta name="twitter:title" content="14&nbsp; Submission overview – Python for Clinical Study Reports and Submission">
 <meta name="twitter:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta name="twitter:image" content="https://pycsr.org/assets/preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -132,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./submission-overview.html">eCTD submission</a></li><li class="breadcrumb-item"><a href="./submission-overview.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Submission overview</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -207,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./env-dev.html" class="sidebar-item-text sidebar-link active">
+  <a href="./env-dev.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></span></a>
   </div>
 </li>
@@ -318,7 +283,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./submission-overview.html" class="sidebar-item-text sidebar-link">
+  <a href="./submission-overview.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Submission overview</span></span></a>
   </div>
 </li>
@@ -352,35 +317,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#development-environments" id="toc-development-environments" class="nav-link active" data-scroll-target="#development-environments"><span class="header-section-number">1.1</span> Development environments</a>
+  <li><a href="#electronic-common-technical-document" id="toc-electronic-common-technical-document" class="nav-link active" data-scroll-target="#electronic-common-technical-document"><span class="header-section-number">14.1</span> Electronic Common Technical Document</a></li>
+  <li><a href="#fda-requirements-for-analysis-programs" id="toc-fda-requirements-for-analysis-programs" class="nav-link" data-scroll-target="#fda-requirements-for-analysis-programs"><span class="header-section-number">14.2</span> FDA requirements for analysis programs</a></li>
+  <li><a href="#ectd-module-5-structure" id="toc-ectd-module-5-structure" class="nav-link" data-scroll-target="#ectd-module-5-structure"><span class="header-section-number">14.3</span> eCTD Module 5 structure</a></li>
+  <li><a href="#the-ascii-text-requirement" id="toc-the-ascii-text-requirement" class="nav-link" data-scroll-target="#the-ascii-text-requirement"><span class="header-section-number">14.4</span> The ASCII text requirement</a></li>
+  <li><a href="#the-solution-pkglite-for-python" id="toc-the-solution-pkglite-for-python" class="nav-link" data-scroll-target="#the-solution-pkglite-for-python"><span class="header-section-number">14.5</span> The solution: pkglite for Python</a>
   <ul class="collapse">
-  <li><a href="#github-codespaces" id="toc-github-codespaces" class="nav-link" data-scroll-target="#github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</a></li>
-  <li><a href="#positron" id="toc-positron" class="nav-link" data-scroll-target="#positron"><span class="header-section-number">1.1.2</span> Positron</a></li>
-  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code"><span class="header-section-number">1.1.3</span> VS Code</a></li>
+  <li><a href="#how-pkglite-works" id="toc-how-pkglite-works" class="nav-link" data-scroll-target="#how-pkglite-works"><span class="header-section-number">14.5.1</span> How pkglite works</a></li>
   </ul></li>
-  <li><a href="#vs-code-settings" id="toc-vs-code-settings" class="nav-link" data-scroll-target="#vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</a>
-  <ul class="collapse">
-  <li><a href="#unicode-highlighting" id="toc-unicode-highlighting" class="nav-link" data-scroll-target="#unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</a></li>
-  </ul></li>
-  <li><a href="#terminal-setup" id="toc-terminal-setup" class="nav-link" data-scroll-target="#terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</a>
-  <ul class="collapse">
-  <li><a href="#shell" id="toc-shell" class="nav-link" data-scroll-target="#shell"><span class="header-section-number">1.3.1</span> Shell</a></li>
-  <li><a href="#terminal-emulator" id="toc-terminal-emulator" class="nav-link" data-scroll-target="#terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</a></li>
-  </ul></li>
-  <li><a href="#ai-coding-assistants" id="toc-ai-coding-assistants" class="nav-link" data-scroll-target="#ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</a>
-  <ul class="collapse">
-  <li><a href="#effective-use-of-ai-tools" id="toc-effective-use-of-ai-tools" class="nav-link" data-scroll-target="#effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</a></li>
-  </ul></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.5</span> What’s next</a></li>
+  <li><a href="#python-language-considerations" id="toc-python-language-considerations" class="nav-link" data-scroll-target="#python-language-considerations"><span class="header-section-number">14.6</span> Python language considerations</a></li>
+  <li><a href="#submission-workflow-overview" id="toc-submission-workflow-overview" class="nav-link" data-scroll-target="#submission-workflow-overview"><span class="header-section-number">14.7</span> Submission workflow overview</a></li>
+  <li><a href="#what-goes-in-the-submission" id="toc-what-goes-in-the-submission" class="nav-link" data-scroll-target="#what-goes-in-the-submission"><span class="header-section-number">14.8</span> What goes in the submission</a></li>
+  <li><a href="#dependencies-and-package-management" id="toc-dependencies-and-package-management" class="nav-link" data-scroll-target="#dependencies-and-package-management"><span class="header-section-number">14.9</span> Dependencies and package management</a></li>
+  <li><a href="#platform-considerations" id="toc-platform-considerations" class="nav-link" data-scroll-target="#platform-considerations"><span class="header-section-number">14.10</span> Platform considerations</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">14.11</span> Next steps</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/submission-overview.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/submission-overview.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./submission-overview.html">eCTD submission</a></li><li class="breadcrumb-item"><a href="./submission-overview.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Submission overview</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></h1>
+<h1 class="title"><span id="sec-submission-overview" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Submission overview</span></span></h1>
 </div>
 
 
@@ -407,22 +366,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Set up a productive Python development environment for clinical study reporting. Learn about IDE options, essential extensions, and workflow tools.</p>
+<p>Understand FDA requirements for submitting analysis programs. Learn about the eCTD structure and how pkglite enables Python package submissions.</p>
 </div>
 </div>
-<section id="development-environments" class="level2 page-columns page-full" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="development-environments"><span class="header-section-number">1.1</span> Development environments</h2>
-<p>For this book, you have several options for your development environment. Choose the one that best fits your current setup and constraints.</p>
-<section id="github-codespaces" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</h3>
-<p>GitHub Codespaces provides a cloud-based development environment with everything pre-configured. This is the easiest option if you don’t have a local Python setup.</p>
-<p>We will provide a dev container configuration that includes:</p>
+<section id="electronic-common-technical-document" class="level2 page-columns page-full" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="electronic-common-technical-document"><span class="header-section-number">14.1</span> Electronic Common Technical Document</h2>
+<p>The electronic Common Technical Document (eCTD) provides a standard format for regulatory submissions.</p>
+<p>The eCTD organizes submission documents in a defined directory structure:</p>
 <ul>
-<li>Python with uv pre-installed.</li>
-<li>All necessary VS Code extensions.</li>
-<li>Consistent environment across all readers, useable in the web browser.</li>
+<li><strong>Module 1</strong>: Administrative information and prescribing information</li>
+<li><strong>Module 2</strong>: Common Technical Document summaries</li>
+<li><strong>Module 3</strong>: Quality (CMC)</li>
+<li><strong>Module 4</strong>: Nonclinical study reports</li>
+<li><strong>Module 5</strong>: Clinical study reports</li>
 </ul>
-<p>To use Codespaces, simply click the “Code” button in the repository and select “Create codespace on main”.</p>
+<p>For analysis programs, we focus on <strong>Module 5</strong> (clinical study reports).</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Full eCTD specifications are available from the <a href="https://www.ich.org/page/multidisciplinary-guidelines">ICH website</a>.</p>
+</div></div></section>
+<section id="fda-requirements-for-analysis-programs" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="fda-requirements-for-analysis-programs"><span class="header-section-number">14.2</span> FDA requirements for analysis programs</h2>
+<p>The <a href="https://www.fda.gov/media/88173/download">FDA Study Data Technical Conformance Guide</a> (Section 4.1.2.10) specifies:</p>
+<blockquote class="blockquote">
+<p>Sponsors should provide the software programs used to create all ADaM datasets and <strong>generate tables and figures associated with primary and secondary efficacy analyses</strong>. Furthermore, sponsors should submit software programs used to generate additional information included in Section 14 CLINICAL STUDIES of the Prescribing Information (PI) if applicable. <strong>The specific software utilized should be specified in the ADRG</strong>. The main purpose of requesting the submission of these programs <strong>is to understand the process by which the variables for the respective analyses were created and to confirm the analysis algorithms</strong>. Sponsors should submit software programs in <strong>ASCII text format</strong>; however, executable file extensions should not be used.</p>
+</blockquote>
+<p>Key requirements:</p>
+<ol type="1">
+<li>Submit programs for primary and secondary efficacy analyses</li>
+<li>Specify software and versions in ADRG</li>
+<li>Use ASCII text format</li>
+<li>No executable extensions</li>
+</ol>
+</section>
+<section id="ectd-module-5-structure" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="ectd-module-5-structure"><span class="header-section-number">14.3</span> eCTD Module 5 structure</h2>
+<p>Analysis datasets and programs are organized under Module 5:</p>
+<pre><code>m5/datasets/&lt;study-id&gt;/analysis/adam/</code></pre>
+<p>Within the <code>adam/</code> folder, two directories are critical:</p>
+<pre><code>m5/datasets/&lt;study-id&gt;/analysis/adam/
+├── datasets/
+│   ├── *.xpt                   # ADaM datasets in SAS format
+│   ├── define.xml              # Dataset definitions
+│   ├── adrg.pdf                # Analysis Data Reviewer's Guide
+│   └── analysis-results-metadata.pdf  # Analysis Results Metadata
+└── programs/
+    ├── py0pkgs.txt             # Packed Python packages
+    ├── tlf-01-disposition.txt  # Analysis program 1
+    ├── tlf-02-population.txt   # Analysis program 2
+    └── ...                     # Additional programs</code></pre>
+</section>
+<section id="the-ascii-text-requirement" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="the-ascii-text-requirement"><span class="header-section-number">14.4</span> The ASCII text requirement</h2>
+<p>Why ASCII text?</p>
+<p><strong>Platform independence:</strong></p>
+<ul>
+<li>Works on any operating system</li>
+<li>No special software needed to view</li>
+<li>Future-proof format</li>
+</ul>
+<p><strong>Review process:</strong></p>
+<ul>
+<li>Reviewers can read code without running it</li>
+<li>Easy to search and navigate</li>
+<li>Can copy code snippets for testing</li>
+</ul>
+<p><strong>Compliance verification:</strong></p>
+<ul>
+<li>Plain text prevents hidden code</li>
+<li>No macros or embedded executables</li>
+<li>Transparent to automated scanning</li>
+</ul>
+<p>This creates a challenge: how to submit a Python package (which has directory structure, binary files, etc.) as ASCII text files?</p>
+</section>
+<section id="the-solution-pkglite-for-python" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="the-solution-pkglite-for-python"><span class="header-section-number">14.5</span> The solution: pkglite for Python</h2>
+<p><a href="https://pharmaverse.github.io/py-pkglite/">pkglite for Python</a> solves the text file requirement by packing Python projects into portable text files. Key capabilities:</p>
+<ul>
+<li>Pack entire project directory structure into single text file</li>
+<li>Preserve file paths and metadata</li>
+<li>Exclude unnecessary files with <code>.pkgliteignore</code></li>
+<li>Unpack to restore original structure</li>
+<li>Support multiple projects in one file</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -433,86 +459,137 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Codespaces currently offers <a href="https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-and-billed-use-by-personal-accounts">120 hours of free compute time per month</a> for personal accounts. This is more than sufficient for this book.</p>
-</div>
-</div>
-</section>
-<section id="positron" class="level3 page-columns page-full" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="positron"><span class="header-section-number">1.1.2</span> Positron</h3>
-<p>Positron is Posit’s next-generation data science IDE, built on Code OSS (the open source core of VS Code), with specific improvements for R and Python development.</p>
-<p>Key features for Python work:</p>
+<p>pkglite for Python extends the original pkglite for R with:</p>
 <ul>
-<li>Native notebook support.</li>
-<li>Interactive variable explorer.</li>
-<li>Integrated plot viewer.</li>
-<li>Built-in data viewer for DataFrames.</li>
+<li>Support for any programming language (not just R)</li>
+<li>Content-based file classification (text vs binary)</li>
+<li>Command-line interface for automation</li>
+<li><code>.pkgliteignore</code> configuration support</li>
+</ul>
+</div>
+</div>
+<section id="how-pkglite-works" class="level3" data-number="14.5.1">
+<h3 data-number="14.5.1" class="anchored" data-anchor-id="how-pkglite-works"><span class="header-section-number">14.5.1</span> How pkglite works</h3>
+<p><strong>Packing:</strong></p>
+<ol type="1">
+<li>Scan project directory</li>
+<li>Classify files (text vs binary)</li>
+<li>Encode file paths and contents</li>
+<li>Write to single <code>.txt</code> file</li>
+</ol>
+<p><strong>Unpacking:</strong></p>
+<ol type="1">
+<li>Read <code>.txt</code> file</li>
+<li>Parse file paths and contents</li>
+<li>Recreate directory structure</li>
+<li>Write files to disk</li>
+</ol>
+<p>The packed text file follows the Debian Control File (DCF) format, similar to the R package pkglite output.</p>
+</section>
+</section>
+<section id="python-language-considerations" class="level2 page-columns page-full" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="python-language-considerations"><span class="header-section-number">14.6</span> Python language considerations</h2>
+<p>As of the <a href="https://www.fda.gov/media/85816/download">August 30, 2025 FDA guidance update</a>, the eCTD Module 5 specification explicitly allows <code>.zip</code> files “for delivering R packages.”</p>
+<p>However, Python (and other languages) are not explicitly mentioned.</p>
+<p><strong>Our approach:</strong></p>
+<p>Use pkglite to pack Python packages into portable text files. This follows the <strong>spirit</strong> of the FDA guidance:</p>
+<ul>
+<li>Provides ASCII text format programs</li>
+<li>Enables reproducibility</li>
+<li>Documents software versions</li>
+<li>Allows reviewer verification</li>
 </ul>
 
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
-<p>Positron uses Open VSX instead of the Microsoft VS Code marketplace. Most essential Python extensions are available, but the selection is more limited.</p>
-</div></div><p>Download Positron from <a href="https://positron.posit.co/" class="uri">https://positron.posit.co/</a>.</p>
-</section>
-<section id="vs-code" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="vs-code"><span class="header-section-number">1.1.3</span> VS Code</h3>
-<p>Visual Studio Code remains the most popular choice for Python development. It offers a rich ecosystem of extensions and tools.</p>
-<p>Essential extensions for this book:</p>
+<p>We developed pkglite for Python specifically to enable submission of source projects in <strong>any</strong> programming language following the same principles.</p>
+</div></div></section>
+<section id="submission-workflow-overview" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="submission-workflow-overview"><span class="header-section-number">14.7</span> Submission workflow overview</h2>
+<p>The complete submission workflow:</p>
+<p><strong>1. Develop analysis package:</strong></p>
 <ul>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python</a>: Core Python language support.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance">Pylance</a>: Fast, feature-rich Python language server.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff">Ruff</a>: Lightning-fast linting and formatting.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a>: Syntax highlighting for TOML files (<code>pyproject.toml</code>).</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">Quarto</a>: Authoring support for Quarto documents.</li>
+<li>Create Python package with uv</li>
+<li>Write analysis code in Quarto documents</li>
+<li>Validate outputs and functions</li>
+</ul>
+<p><strong>2. Prepare submission package:</strong></p>
+<ul>
+<li>Pack Python package with pkglite</li>
+<li>Convert Quarto documents to Python scripts</li>
+<li>Place files in eCTD Module 5 structure</li>
+</ul>
+<p><strong>3. Update documentation:</strong></p>
+<ul>
+<li>Update ADRG with software versions</li>
+<li>Provide reproduction instructions</li>
+<li>Update ARM with program metadata</li>
+</ul>
+<p><strong>4. Verify reproducibility:</strong></p>
+<ul>
+<li>Perform dry run test</li>
+<li>Unpack and install packages</li>
+<li>Reproduce analysis results</li>
+</ul>
+<p>The next chapters detail steps 2-4.</p>
+</section>
+<section id="what-goes-in-the-submission" class="level2" data-number="14.8">
+<h2 data-number="14.8" class="anchored" data-anchor-id="what-goes-in-the-submission"><span class="header-section-number">14.8</span> What goes in the submission</h2>
+<p><strong>Python packages</strong> (<code>programs/py0pkgs.txt</code>):</p>
+<p>All study-specific Python packages. These contain helper functions used across multiple analyses.</p>
+<p><strong>Analysis programs</strong> (<code>programs/tlf-*.txt</code>):</p>
+<p>Individual analysis scripts. Each generates one or more TLFs.</p>
+<p><strong>ADaM datasets</strong> (<code>datasets/*.xpt</code>):</p>
+<p>Analysis datasets in SAS transport format. Required by CDISC standards.</p>
+<p><strong>Documentation</strong> (<code>datasets/adrg.pdf</code>, <code>datasets/analysis-results-metadata.pdf</code>):</p>
+<p>ADRG provides:</p>
+<ul>
+<li>Python version and package versions</li>
+<li>Reproduction instructions</li>
+<li>Platform requirements</li>
+</ul>
+<p>ARM provides:</p>
+<ul>
+<li>Links between programs and outputs</li>
+<li>Program metadata</li>
+<li>Analysis descriptions</li>
 </ul>
 </section>
-</section>
-<section id="vs-code-settings" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</h2>
-<section id="unicode-highlighting" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</h3>
-<p>Python allows Unicode characters in strings and identifiers. AI coding tools might also generate code with non-ASCII characters. For regulatory work, you should highlight non-ASCII characters to find these hidden issues early and avoid problems in submissions.</p>
-<p><strong>Via Settings UI:</strong></p>
-<ol type="1">
-<li>Open Command Palette (Cmd/Ctrl + Shift + P)</li>
-<li>Search for “Preferences: Open Settings (UI)”</li>
-<li>Search for “Unicode Highlight”</li>
-<li>Enable “Non Basic ASCII” for both trusted and untrusted workspaces</li>
-</ol>
-<p><strong>Via Settings JSON:</strong></p>
-<p>Open Command Palette with Cmd/Ctrl + Shift + P, select “Preferences: Open User Settings (JSON)”, then add:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="er">"editor.unicodeHighlight.nonBasicASCII":</span> <span class="er">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This highlights characters like curly quotes, em dashes, and other non-ASCII characters that could cause issues in eCTD submission packages.</p>
-</section>
-</section>
-<section id="terminal-setup" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</h2>
-<p>For local development, you will interact with uv and Quarto through the terminal.</p>
-<section id="shell" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="shell"><span class="header-section-number">1.3.1</span> Shell</h3>
-<p>Any modern shell works well:</p>
+<section id="dependencies-and-package-management" class="level2" data-number="14.9">
+<h2 data-number="14.9" class="anchored" data-anchor-id="dependencies-and-package-management"><span class="header-section-number">14.9</span> Dependencies and package management</h2>
+<p><strong>Public packages:</strong></p>
+<p>Packages available on PyPI (e.g., <code>polars</code>, <code>rtflite</code>) do not need submission. Document versions in ADRG.</p>
+<p><strong>Proprietary packages:</strong></p>
+<p>Internal packages (e.g., company-specific utilities) should be included if they are:</p>
 <ul>
-<li>macOS/Linux: zsh (default on macOS), bash</li>
-<li>Windows: PowerShell, Windows Terminal</li>
+<li>Hosted in private repositories (not public)</li>
+<li>Required to run the analyses</li>
+<li>Not available to reviewers</li>
 </ul>
+<p>Pack proprietary packages together with analysis packages using pkglite.</p>
+<p><strong>Python version:</strong></p>
+<p>Specify the exact Python version in ADRG. Use <code>uv python pin</code> to lock the version in the project.</p>
+<p><strong>Package snapshots:</strong></p>
+<p>If your organization uses a package snapshot (similar to Posit Package Manager), provide the snapshot date in ADRG.</p>
 </section>
-<section id="terminal-emulator" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</h3>
-<p>If you are on macOS and want a faster terminal experience, consider <a href="https://ghostty.org/">Ghostty</a>. It is written in Zig for exceptional performance.</p>
-</section>
-</section>
-<section id="ai-coding-assistants" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</h2>
-<p>Modern agentic AI coding tools can accelerate statistical and clinical coding tasks, especially for popular programming languages like Python. We encourage you to use them, for example:</p>
+<section id="platform-considerations" class="level2" data-number="14.10">
+<h2 data-number="14.10" class="anchored" data-anchor-id="platform-considerations"><span class="header-section-number">14.10</span> Platform considerations</h2>
+<p><strong>Cross-platform compatibility:</strong></p>
+<p>Python code should work on Windows, macOS, and Linux.</p>
+<p>Avoid:</p>
 <ul>
-<li>Codex (command-line interface, VS Code extension)</li>
-<li>Claude Code (command-line interface)</li>
-<li>Cursor (AI-first editor)</li>
-<li>GitHub Copilot (VS Code extension)</li>
+<li>Platform-specific paths (<code>C:\</code> vs <code>/usr/</code>)</li>
+<li>Platform-specific system calls</li>
+<li>Binary dependencies that require compilation</li>
 </ul>
-<section id="effective-use-of-ai-tools" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</h3>
-<p>To use AI assistants effectively for programming, you need:</p>
-<p><strong>Product manager mindset</strong>: Know exactly what you want to build. In clinical reporting, this means understanding the table shell, statistical method, and regulatory requirements.</p>
-<p><strong>Software architect mindset</strong>: Evaluate model outputs critically. Can you spot issues with data transformations? Do the statistical computations match the statistical analysis plan? Is the output format submission-ready?</p>
+<p>Use:</p>
+<ul>
+<li><code>pathlib</code> for path handling</li>
+<li>Pure Python packages when possible</li>
+<li>Wheels for platform-independent distribution</li>
+</ul>
+<p><strong>External dependencies:</strong></p>
+<p>Minimize external dependencies beyond Python packages.</p>
+<p>If required (e.g., system libraries), document clearly in ADRG.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -523,21 +600,18 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>AI tools are assistants, not replacements for domain expertise. Always verify outputs against statistical analysis plans and regulatory guidance.</p>
+<p>Each external dependency increases the complexity of environment recreation. Keep it simple.</p>
 </div>
 </div>
 </section>
-</section>
-<section id="whats-next" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">1.5</span> What’s next</h2>
-<p>With your development environment configured, you are ready to learn about uv, the modern project management tool for Python.</p>
-<p>In the next chapter, we will cover:</p>
+<section id="next-steps" class="level2" data-number="14.11">
+<h2 data-number="14.11" class="anchored" data-anchor-id="next-steps"><span class="header-section-number">14.11</span> Next steps</h2>
+<p>The following chapters provide detailed instructions for:</p>
 <ul>
-<li>Creating and managing Python projects.</li>
-<li>Pinning Python versions.</li>
-<li>Installing dependencies.</li>
-<li>Understanding the modern Python packaging ecosystem.</li>
+<li><p><strong>Submission package</strong> (<a href="submission-package.html" class="quarto-xref"><span>Chapter 15</span></a>): Using pkglite to pack Python packages and analysis programs. Converting Quarto documents to Python scripts. Organizing files in eCTD structure.</p></li>
+<li><p><strong>Submission dryrun</strong> (<a href="submission-dryrun.html" class="quarto-xref"><span>Chapter 16</span></a>): Simulating the reviewer experience. Unpacking and installing packages. Reproducing analysis results.</p></li>
 </ul>
+<p>With this foundation, you’re ready to prepare your first Python submission package.</p>
 
 
 </section>
@@ -945,13 +1019,13 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./preface.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="./pkg-management.html" class="pagination-link" aria-label="Project management">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Project management</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./env-uv.html" class="pagination-link" aria-label="Python projects with uv">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python projects with uv</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./submission-package.html" class="pagination-link" aria-label="Submission package">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Submission package</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -960,4 +1034,4 @@ Warning
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/submission-overview.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/submission-overview.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>

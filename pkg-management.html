@@ -8,7 +8,7 @@
 
 <meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
-<title>1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission</title>
+<title>13&nbsp; Project management – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./env-uv.html" rel="next">
-<link href="./preface.html" rel="prev">
+<link href="./submission-overview.html" rel="next">
+<link href="./pkg-structure.html" rel="prev">
 <link href="./assets/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -109,13 +109,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta property="og:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta property="og:title" content="13&nbsp; Project management – Python for Clinical Study Reports and Submission">
 <meta property="og:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta property="og:image" content="https://pycsr.org/assets/preview.png">
 <meta property="og:site_name" content="Python for Clinical Study Reports and Submission">
 <meta property="og:image:height" content="640">
 <meta property="og:image:width" content="1280">
-<meta name="twitter:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta name="twitter:title" content="13&nbsp; Project management – Python for Clinical Study Reports and Submission">
 <meta name="twitter:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta name="twitter:image" content="https://pycsr.org/assets/preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pkg-overview.html">Analysis package</a></li><li class="breadcrumb-item"><a href="./pkg-management.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Project management</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./env-dev.html" class="sidebar-item-text sidebar-link active">
+  <a href="./env-dev.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></span></a>
   </div>
 </li>
@@ -301,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pkg-management.html" class="sidebar-item-text sidebar-link">
+  <a href="./pkg-management.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Project management</span></span></a>
   </div>
 </li>
@@ -352,35 +352,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#development-environments" id="toc-development-environments" class="nav-link active" data-scroll-target="#development-environments"><span class="header-section-number">1.1</span> Development environments</a>
+  <li><a href="#git-centric-workflow" id="toc-git-centric-workflow" class="nav-link active" data-scroll-target="#git-centric-workflow"><span class="header-section-number">13.1</span> Git-centric workflow</a></li>
+  <li><a href="#plain-text-workflow" id="toc-plain-text-workflow" class="nav-link" data-scroll-target="#plain-text-workflow"><span class="header-section-number">13.2</span> Plain text workflow</a></li>
+  <li><a href="#project-tracking" id="toc-project-tracking" class="nav-link" data-scroll-target="#project-tracking"><span class="header-section-number">13.3</span> Project tracking</a>
   <ul class="collapse">
-  <li><a href="#github-codespaces" id="toc-github-codespaces" class="nav-link" data-scroll-target="#github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</a></li>
-  <li><a href="#positron" id="toc-positron" class="nav-link" data-scroll-target="#positron"><span class="header-section-number">1.1.2</span> Positron</a></li>
-  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code"><span class="header-section-number">1.1.3</span> VS Code</a></li>
+  <li><a href="#issues-for-requirements" id="toc-issues-for-requirements" class="nav-link" data-scroll-target="#issues-for-requirements"><span class="header-section-number">13.3.1</span> Issues for requirements</a></li>
+  <li><a href="#pull-requests-for-review" id="toc-pull-requests-for-review" class="nav-link" data-scroll-target="#pull-requests-for-review"><span class="header-section-number">13.3.2</span> Pull requests for review</a></li>
+  <li><a href="#project-boards" id="toc-project-boards" class="nav-link" data-scroll-target="#project-boards"><span class="header-section-number">13.3.3</span> Project boards</a></li>
   </ul></li>
-  <li><a href="#vs-code-settings" id="toc-vs-code-settings" class="nav-link" data-scroll-target="#vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</a>
+  <li><a href="#development-lifecycle" id="toc-development-lifecycle" class="nav-link" data-scroll-target="#development-lifecycle"><span class="header-section-number">13.4</span> Development lifecycle</a>
   <ul class="collapse">
-  <li><a href="#unicode-highlighting" id="toc-unicode-highlighting" class="nav-link" data-scroll-target="#unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</a></li>
+  <li><a href="#planning" id="toc-planning" class="nav-link" data-scroll-target="#planning"><span class="header-section-number">13.4.1</span> Planning</a></li>
+  <li><a href="#development" id="toc-development" class="nav-link" data-scroll-target="#development"><span class="header-section-number">13.4.2</span> Development</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">13.4.3</span> Validation</a></li>
+  <li><a href="#delivery" id="toc-delivery" class="nav-link" data-scroll-target="#delivery"><span class="header-section-number">13.4.4</span> Delivery</a></li>
   </ul></li>
-  <li><a href="#terminal-setup" id="toc-terminal-setup" class="nav-link" data-scroll-target="#terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</a>
-  <ul class="collapse">
-  <li><a href="#shell" id="toc-shell" class="nav-link" data-scroll-target="#shell"><span class="header-section-number">1.3.1</span> Shell</a></li>
-  <li><a href="#terminal-emulator" id="toc-terminal-emulator" class="nav-link" data-scroll-target="#terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</a></li>
-  </ul></li>
-  <li><a href="#ai-coding-assistants" id="toc-ai-coding-assistants" class="nav-link" data-scroll-target="#ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</a>
-  <ul class="collapse">
-  <li><a href="#effective-use-of-ai-tools" id="toc-effective-use-of-ai-tools" class="nav-link" data-scroll-target="#effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</a></li>
-  </ul></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.5</span> What’s next</a></li>
+  <li><a href="#agile-practices" id="toc-agile-practices" class="nav-link" data-scroll-target="#agile-practices"><span class="header-section-number">13.5</span> Agile practices</a></li>
+  <li><a href="#automation-with-cicd" id="toc-automation-with-cicd" class="nav-link" data-scroll-target="#automation-with-cicd"><span class="header-section-number">13.6</span> Automation with CI/CD</a></li>
+  <li><a href="#collaboration-best-practices" id="toc-collaboration-best-practices" class="nav-link" data-scroll-target="#collaboration-best-practices"><span class="header-section-number">13.7</span> Collaboration best practices</a></li>
+  <li><a href="#version-control-discipline" id="toc-version-control-discipline" class="nav-link" data-scroll-target="#version-control-discipline"><span class="header-section-number">13.8</span> Version control discipline</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">13.9</span> What’s next</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/pkg-management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/pkg-management.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pkg-overview.html">Analysis package</a></li><li class="breadcrumb-item"><a href="./pkg-management.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Project management</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></h1>
+<h1 class="title"><span id="sec-pkg-management" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Project management</span></span></h1>
 </div>
 
 
@@ -407,22 +407,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Set up a productive Python development environment for clinical study reporting. Learn about IDE options, essential extensions, and workflow tools.</p>
+<p>Learn Git-centric workflows for managing clinical analysis projects. Understand agile development practices and validation strategies for regulatory compliance.</p>
 </div>
 </div>
-<section id="development-environments" class="level2 page-columns page-full" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="development-environments"><span class="header-section-number">1.1</span> Development environments</h2>
-<p>For this book, you have several options for your development environment. Choose the one that best fits your current setup and constraints.</p>
-<section id="github-codespaces" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</h3>
-<p>GitHub Codespaces provides a cloud-based development environment with everything pre-configured. This is the easiest option if you don’t have a local Python setup.</p>
-<p>We will provide a dev container configuration that includes:</p>
+<section id="git-centric-workflow" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="git-centric-workflow"><span class="header-section-number">13.1</span> Git-centric workflow</h2>
+<p>Clinical analysis projects require rigorous tracking and collaboration. A Git-centric workflow provides the foundation for reproducible, auditable work.</p>
+<p><strong>Core principle:</strong></p>
+<p>All project assets live in version control. Work is tracked through issues, pull requests, and project boards.</p>
+<p>This applies whether you use:</p>
 <ul>
-<li>Python with uv pre-installed.</li>
-<li>All necessary VS Code extensions.</li>
-<li>Consistent environment across all readers, useable in the web browser.</li>
+<li>GitHub Enterprise</li>
+<li>GitLab</li>
+<li>Bitbucket</li>
+<li>Azure DevOps</li>
 </ul>
-<p>To use Codespaces, simply click the “Code” button in the repository and select “Create codespace on main”.</p>
+<p>The specific platform matters less than the workflow discipline.</p>
+</section>
+<section id="plain-text-workflow" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="plain-text-workflow"><span class="header-section-number">13.2</span> Plain text workflow</h2>
+<p>Favor plain text formats for all project artifacts:</p>
+<p><strong>Use:</strong></p>
+<ul>
+<li><code>.qmd</code> files for analysis scripts (not Jupyter notebooks for final deliverables)</li>
+<li><code>.md</code> files for documentation</li>
+<li><code>.toml</code> files for configuration</li>
+<li><code>.txt</code> files for submission packages</li>
+</ul>
+<p><strong>Avoid:</strong></p>
+<ul>
+<li><code>.xlsx</code> files for tracking (no audit trail, merge conflicts)</li>
+<li>Binary formats when text alternatives exist</li>
+<li>Proprietary formats that require special tools</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -433,111 +450,334 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Codespaces currently offers <a href="https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-and-billed-use-by-personal-accounts">120 hours of free compute time per month</a> for personal accounts. This is more than sufficient for this book.</p>
+<p>Plain text enables:</p>
+<ul>
+<li>Clear diff views in pull requests</li>
+<li>Meaningful merge conflict resolution</li>
+<li>Searchable code history</li>
+<li>Command-line friendly workflows</li>
+</ul>
 </div>
 </div>
 </section>
-<section id="positron" class="level3 page-columns page-full" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="positron"><span class="header-section-number">1.1.2</span> Positron</h3>
-<p>Positron is Posit’s next-generation data science IDE, built on Code OSS (the open source core of VS Code), with specific improvements for R and Python development.</p>
-<p>Key features for Python work:</p>
+<section id="project-tracking" class="level2 page-columns page-full" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="project-tracking"><span class="header-section-number">13.3</span> Project tracking</h2>
+<p>Use properly labeled issues and pull requests to drive work. Follow <a href="https://code-review.tidyverse.org/">Tidyteam code review principles</a> for detailed operational advices.</p>
+<section id="issues-for-requirements" class="level3" data-number="13.3.1">
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="issues-for-requirements"><span class="header-section-number">13.3.1</span> Issues for requirements</h3>
+<p>Create issues to capture:</p>
 <ul>
-<li>Native notebook support.</li>
-<li>Interactive variable explorer.</li>
-<li>Integrated plot viewer.</li>
-<li>Built-in data viewer for DataFrames.</li>
+<li>Individual TLF specifications</li>
+<li>Bug reports</li>
+<li>Feature requests</li>
+<li>Validation tasks</li>
 </ul>
+<p>Example issue template:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>**Title**: Implement Table 14.1.1 - Disposition of Patients</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>**Description**:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Create disposition table following ICH E3 guidelines</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>**Deliverables**:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Quarto document: analysis/tlf-01-disposition.qmd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Output table: output/tlf-disposition.rtf</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Unit tests: tests/test_disposition.py</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>**Validation**: Independent review required</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pull-requests-for-review" class="level3" data-number="13.3.2">
+<h3 data-number="13.3.2" class="anchored" data-anchor-id="pull-requests-for-review"><span class="header-section-number">13.3.2</span> Pull requests for review</h3>
+<p><strong>ALL</strong> code changes must go through pull requests before getting into <code>main</code>:</p>
+<ul>
+<li>Developer creates feature branch</li>
+<li>Implements changes</li>
+<li>Opens pull request for review</li>
+<li>Reviewer validates code and outputs</li>
+<li>Changes merged after approval</li>
+</ul>
+<p>This creates an audit trail of who did what and when.</p>
+</section>
+<section id="project-boards" class="level3 page-columns page-full" data-number="13.3.3">
+<h3 data-number="13.3.3" class="anchored" data-anchor-id="project-boards"><span class="header-section-number">13.3.3</span> Project boards</h3>
+<p>Use Kanban-style project boards to visualize work:</p>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Backlog: Planned work</li>
+<li>In Progress: Active development</li>
+<li>Review: Awaiting validation</li>
+<li>Done: Completed and validated</li>
+</ul>
+<p><strong>Example board:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Backlog</th>
+<th>In Progress</th>
+<th>Review</th>
+<th>Done</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Table 14.3.5</td>
+<td>Table 14.1.1</td>
+<td>Table 14.2.1</td>
+<td>Table 14.1.2</td>
+</tr>
+<tr class="even">
+<td>Figure 14.4.1</td>
+<td></td>
+<td>Table 14.3.1</td>
+<td>Table 14.2.2</td>
+</tr>
+</tbody>
+</table>
+<p>This makes project status transparent to all stakeholders.</p>
 
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
-<p>Positron uses Open VSX instead of the Microsoft VS Code marketplace. Most essential Python extensions are available, but the selection is more limited.</p>
-</div></div><p>Download Positron from <a href="https://positron.posit.co/" class="uri">https://positron.posit.co/</a>.</p>
+<p>GitHub Projects, GitLab Boards, and Jira all support this workflow. Choose based on your organization’s infrastructure.</p>
+</div></div></section>
 </section>
-<section id="vs-code" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="vs-code"><span class="header-section-number">1.1.3</span> VS Code</h3>
-<p>Visual Studio Code remains the most popular choice for Python development. It offers a rich ecosystem of extensions and tools.</p>
-<p>Essential extensions for this book:</p>
+<section id="development-lifecycle" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="development-lifecycle"><span class="header-section-number">13.4</span> Development lifecycle</h2>
+<p>Clinical analysis projects follow a structured development lifecycle similar to software development.</p>
+<section id="planning" class="level3" data-number="13.4.1">
+<h3 data-number="13.4.1" class="anchored" data-anchor-id="planning"><span class="header-section-number">13.4.1</span> Planning</h3>
+<p>Define scope and requirements:</p>
 <ul>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python</a>: Core Python language support.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance">Pylance</a>: Fast, feature-rich Python language server.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff">Ruff</a>: Lightning-fast linting and formatting.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a>: Syntax highlighting for TOML files (<code>pyproject.toml</code>).</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">Quarto</a>: Authoring support for Quarto documents.</li>
+<li>List all TLFs from Statistical Analysis Plan (SAP)</li>
+<li>Create mock tables/shells</li>
+<li>Assign validation levels (independent review vs double programming)</li>
+<li>Set up validation tracking</li>
 </ul>
-</section>
-</section>
-<section id="vs-code-settings" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</h2>
-<section id="unicode-highlighting" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</h3>
-<p>Python allows Unicode characters in strings and identifiers. AI coding tools might also generate code with non-ASCII characters. For regulatory work, you should highlight non-ASCII characters to find these hidden issues early and avoid problems in submissions.</p>
-<p><strong>Via Settings UI:</strong></p>
-<ol type="1">
-<li>Open Command Palette (Cmd/Ctrl + Shift + P)</li>
-<li>Search for “Preferences: Open Settings (UI)”</li>
-<li>Search for “Unicode Highlight”</li>
-<li>Enable “Non Basic ASCII” for both trusted and untrusted workspaces</li>
-</ol>
-<p><strong>Via Settings JSON:</strong></p>
-<p>Open Command Palette with Cmd/Ctrl + Shift + P, select “Preferences: Open User Settings (JSON)”, then add:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="er">"editor.unicodeHighlight.nonBasicASCII":</span> <span class="er">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This highlights characters like curly quotes, em dashes, and other non-ASCII characters that could cause issues in eCTD submission packages.</p>
-</section>
-</section>
-<section id="terminal-setup" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</h2>
-<p>For local development, you will interact with uv and Quarto through the terminal.</p>
-<section id="shell" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="shell"><span class="header-section-number">1.3.1</span> Shell</h3>
-<p>Any modern shell works well:</p>
-<ul>
-<li>macOS/Linux: zsh (default on macOS), bash</li>
-<li>Windows: PowerShell, Windows Terminal</li>
-</ul>
-</section>
-<section id="terminal-emulator" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</h3>
-<p>If you are on macOS and want a faster terminal experience, consider <a href="https://ghostty.org/">Ghostty</a>. It is written in Zig for exceptional performance.</p>
-</section>
-</section>
-<section id="ai-coding-assistants" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</h2>
-<p>Modern agentic AI coding tools can accelerate statistical and clinical coding tasks, especially for popular programming languages like Python. We encourage you to use them, for example:</p>
-<ul>
-<li>Codex (command-line interface, VS Code extension)</li>
-<li>Claude Code (command-line interface)</li>
-<li>Cursor (AI-first editor)</li>
-<li>GitHub Copilot (VS Code extension)</li>
-</ul>
-<section id="effective-use-of-ai-tools" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</h3>
-<p>To use AI assistants effectively for programming, you need:</p>
-<p><strong>Product manager mindset</strong>: Know exactly what you want to build. In clinical reporting, this means understanding the table shell, statistical method, and regulatory requirements.</p>
-<p><strong>Software architect mindset</strong>: Evaluate model outputs critically. Can you spot issues with data transformations? Do the statistical computations match the statistical analysis plan? Is the output format submission-ready?</p>
-<div class="callout callout-style-default callout-warning callout-titled">
+<p>Create a validation tracker (plain text format):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> TLF <span class="pp">|</span> Type <span class="pp">|</span> Developer <span class="pp">|</span> Dev Status <span class="pp">|</span> Reviewer <span class="pp">|</span> Review Status <span class="pp">|</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|-----|------|-----------|------------|----------|---------------|</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> tlf-01-disposition <span class="pp">|</span> Table <span class="pp">|</span> Alice <span class="pp">|</span> Complete <span class="pp">|</span> Bob <span class="pp">|</span> In Progress <span class="pp">|</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> tlf-02-population <span class="pp">|</span> Table <span class="pp">|</span> Charlie <span class="pp">|</span> In Progress <span class="pp">|</span> Diana <span class="pp">|</span> Pending <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>AI tools are assistants, not replacements for domain expertise. Always verify outputs against statistical analysis plans and regulatory guidance.</p>
+<p>Lock down the Python version and package repository snapshot during planning. Changing these mid-project breaks reproducibility.</p>
 </div>
 </div>
 </section>
-</section>
-<section id="whats-next" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">1.5</span> What’s next</h2>
-<p>With your development environment configured, you are ready to learn about uv, the modern project management tool for Python.</p>
-<p>In the next chapter, we will cover:</p>
+<section id="development" class="level3" data-number="13.4.2">
+<h3 data-number="13.4.2" class="anchored" data-anchor-id="development"><span class="header-section-number">13.4.2</span> Development</h3>
+<p>Team members implement assigned TLFs:</p>
+<p><strong>1. Create feature branch:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> feature/tlf-01-disposition</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2. Implement analysis:</strong></p>
 <ul>
-<li>Creating and managing Python projects.</li>
-<li>Pinning Python versions.</li>
-<li>Installing dependencies.</li>
-<li>Understanding the modern Python packaging ecosystem.</li>
+<li>Write Quarto document in <code>analysis/</code></li>
+<li>Create helper functions in <code>src/</code> if needed</li>
+<li>Generate output in <code>output/</code></li>
 </ul>
+<p><strong>3. Self-test:</strong></p>
+<ul>
+<li>Verify against mock table</li>
+<li>Check calculations manually</li>
+<li>Run automated tests</li>
+</ul>
+<p><strong>4. Commit and push:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add analysis/tlf-01-disposition.qmd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Implement disposition table (Table 14.1.1)"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin feature/tlf-01-disposition</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>5. Open pull request:</strong></p>
+<p>Request review from assigned validator.</p>
+</section>
+<section id="validation" class="level3" data-number="13.4.3">
+<h3 data-number="13.4.3" class="anchored" data-anchor-id="validation"><span class="header-section-number">13.4.3</span> Validation</h3>
+<p>Independent reviewers verify deliverables:</p>
+<p><strong>For tables:</strong></p>
+<ul>
+<li>Compare output against specifications</li>
+<li>Verify calculations independently</li>
+<li>Check formatting requirements</li>
+<li>Review code for errors</li>
+</ul>
+<p><strong>For analysis functions:</strong></p>
+<ul>
+<li>Write unit tests in <code>tests/</code></li>
+<li>Verify edge cases</li>
+<li>Check type annotations</li>
+<li>Review docstrings</li>
+</ul>
+<p><strong>Validation testing example:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tests/test_disposition.py</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> demo001.disposition <span class="im">import</span> create_disposition_table</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_disposition_counts():</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Verify disposition table calculations."""</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Load test data</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pl.read_parquet(<span class="st">"tests/data/adsl_subset.parquet"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate table</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> create_disposition_table(df)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify counts</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"Screened"</span>][<span class="dv">0</span>] <span class="op">==</span> <span class="dv">254</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"Randomized"</span>][<span class="dv">0</span>] <span class="op">==</span> <span class="dv">254</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"Completed"</span>][<span class="dv">0</span>] <span class="op">==</span> <span class="dv">238</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run tests with pytest:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="delivery" class="level3" data-number="13.4.4">
+<h3 data-number="13.4.4" class="anchored" data-anchor-id="delivery"><span class="header-section-number">13.4.4</span> Delivery</h3>
+<p>Project lead ensures completion:</p>
+<p><strong>1. Run compliance checks:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run ruff check .</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run mypy src/</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">--cov</span><span class="op">=</span>demo001</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2. Generate all outputs in batch:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Review validation tracker:</strong></p>
+<p>Ensure all TLFs have completed validation.</p>
+<p><strong>4. Prepare submission package:</strong></p>
+<p>Pack for eCTD (covered in <a href="submission-package.html" class="quarto-xref"><span>Chapter 15</span></a>).</p>
+</section>
+</section>
+<section id="agile-practices" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="agile-practices"><span class="header-section-number">13.5</span> Agile practices</h2>
+<p>Clinical trials benefit from agile project management:</p>
+<p><strong>Iterative development:</strong></p>
+<ul>
+<li>Work in 2-week sprints</li>
+<li>Deliver subset of TLFs each sprint</li>
+<li>Get stakeholder feedback early</li>
+</ul>
+<p><strong>Continuous integration:</strong></p>
+<ul>
+<li>Automated testing on every push</li>
+<li>Catch errors before review</li>
+<li>Maintain code quality</li>
+</ul>
+<p><strong>Regular retrospectives:</strong></p>
+<ul>
+<li>What went well?</li>
+<li>What needs improvement?</li>
+<li>Adjust process accordingly</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Agile doesn’t mean uncontrolled. The validation requirements remain the same. Agile provides faster feedback loops within those constraints.</p>
+</div>
+</div>
+</section>
+<section id="automation-with-cicd" class="level2 page-columns page-full" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="automation-with-cicd"><span class="header-section-number">13.6</span> Automation with CI/CD</h2>
+<p>Automate repetitive tasks using continuous integration:</p>
+<p><strong>GitHub Actions example:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Validation</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">push</span><span class="kw">,</span><span class="at"> pull_request</span><span class="kw">]</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test</span><span class="kw">:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v5</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> astral-sh/setup-uv@v7</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> uv sync</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> uv run pytest tests/</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> uv run ruff check .</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">run</span><span class="kw">:</span><span class="at"> uv run mypy src/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This runs tests automatically on every pull request.</p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Catch errors before manual review</li>
+<li>Ensure consistent code quality</li>
+<li>Reduce reviewer burden</li>
+<li>Document test results</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>CI/CD is optional but highly recommended for projects with multiple developers.</p>
+</div></div></section>
+<section id="collaboration-best-practices" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="collaboration-best-practices"><span class="header-section-number">13.7</span> Collaboration best practices</h2>
+<p><strong>Work as a team:</strong></p>
+<ul>
+<li>Take project management training</li>
+<li>Understand your role in the lifecycle</li>
+<li>Communicate blockers early</li>
+</ul>
+<p><strong>Design clean architecture:</strong></p>
+<ul>
+<li>Separate business logic from data processing</li>
+<li>Write reusable components in <code>src/</code></li>
+<li>Keep analysis scripts in <code>analysis/</code> focused</li>
+</ul>
+<p><strong>Set capability boundaries:</strong></p>
+<ul>
+<li>Know what your team can deliver</li>
+<li>Avoid complex integrations (e.g., mixing R and Python in same package)</li>
+<li>Prefer simple, robust solutions</li>
+</ul>
+<p><strong>Contribute to community:</strong></p>
+<ul>
+<li>Share reusable components internally</li>
+<li>Open source when possible</li>
+<li>Learn from others’ approaches</li>
+</ul>
+</section>
+<section id="version-control-discipline" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="version-control-discipline"><span class="header-section-number">13.8</span> Version control discipline</h2>
+<p><strong>Branch strategy:</strong></p>
+<ul>
+<li><code>main</code>: Stable, validated code</li>
+<li><code>feature/*</code>: Development branches</li>
+<li><code>hotfix/*</code>: Emergency fixes</li>
+</ul>
+<p><strong>Commit messages:</strong></p>
+<p>Write clear, descriptive commits:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add ANCOVA analysis for primary endpoint (Table 14.2.1)"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update code"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Never commit:</strong></p>
+<ul>
+<li>Sensitive data</li>
+<li>Large binary files</li>
+<li>Generated outputs (use <code>.gitignore</code>)</li>
+<li>Temporary files</li>
+</ul>
+<p><strong>Always commit:</strong></p>
+<ul>
+<li>Source code (<code>.py</code>, <code>.qmd</code>)</li>
+<li>Configuration (<code>pyproject.toml</code>, <code>_quarto.yml</code>)</li>
+<li>Documentation (<code>README.md</code>)</li>
+<li>Tests (<code>tests/*.py</code>)</li>
+</ul>
+</section>
+<section id="whats-next" class="level2" data-number="13.9">
+<h2 data-number="13.9" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">13.9</span> What’s next</h2>
+<p>You’ve learned Git-centric project management workflows.</p>
+<p>The next chapter covers the detailed package structure:</p>
+<ul>
+<li>Directory layout for analysis packages</li>
+<li>Organizing code and content</li>
+<li>Integrating Quarto with Python packages</li>
+<li>Essential configuration files</li>
+</ul>
+<p>These practices ensure consistent, reproducible, collaborative clinical analysis projects.</p>
 
 
 </section>
@@ -945,13 +1185,13 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./preface.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="./pkg-structure.html" class="pagination-link" aria-label="Package structure">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Package structure</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./env-uv.html" class="pagination-link" aria-label="Python projects with uv">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python projects with uv</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./submission-overview.html" class="pagination-link" aria-label="Submission overview">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Submission overview</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -960,4 +1200,4 @@ Warning
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/pkg-management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/pkg-management.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>

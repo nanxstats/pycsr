@@ -636,7 +636,7 @@
     "href": "tlf-population.html#step-4-count-each-population",
     "title": "6  Study population",
     "section": "6.5 Step 4: Count Each Population",
-    "text": "6.5 Step 4: Count Each Population\nNow we calculate participant counts for each analysis population.\n\n6.5.1 All Randomized Participants\n\npop_all = count_by_treatment(\n    data=adsl,\n    population_name=\"Participants in population\"\n)\n\npop_all\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\n\n\n\n\n\n6.5.2 Intent-to-Treat Population\n\nadsl_itt = adsl.filter(pl.col(\"ITTFL\") == \"Y\")\npop_itt = count_by_treatment(\n    data=adsl_itt,\n    population_name=\"Participants included in ITT population\"\n)\n\npop_itt\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n\n\n\n\n\n\n6.5.3 Efficacy Population\n\nadsl_eff = adsl.filter(pl.col(\"EFFFL\") == \"Y\")\npop_eff = count_by_treatment(\n    data=adsl_eff,\n    population_name=\"Participants included in efficacy population\"\n)\n\npop_eff\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\n\n\n\n\n\n6.5.4 Safety Population\n\nadsl_saf = adsl.filter(pl.col(\"SAFFL\") == \"Y\")\npop_saf = count_by_treatment(\n    data=adsl_saf,\n    population_name=\"Participants included in safety population\"\n)\n\npop_saf\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
+    "text": "6.5 Step 4: Count Each Population\nNow we calculate participant counts for each analysis population.\n\n6.5.1 All Randomized Participants\n\npop_all = count_by_treatment(\n    data=adsl,\n    population_name=\"Participants in population\"\n)\n\npop_all\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n\n\n\n\n\n\n6.5.2 Intent-to-Treat Population\n\nadsl_itt = adsl.filter(pl.col(\"ITTFL\") == \"Y\")\npop_itt = count_by_treatment(\n    data=adsl_itt,\n    population_name=\"Participants included in ITT population\"\n)\n\npop_itt\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in ITT p…\n\n\n\"Placebo\"\n86\n\"Participants included in ITT p…\n\n\n\n\n\n\n\n\n6.5.3 Efficacy Population\n\nadsl_eff = adsl.filter(pl.col(\"EFFFL\") == \"Y\")\npop_eff = count_by_treatment(\n    data=adsl_eff,\n    population_name=\"Participants included in efficacy population\"\n)\n\npop_eff\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n81\n\"Participants included in effic…\n\n\n\"Placebo\"\n79\n\"Participants included in effic…\n\n\n\"Xanomeline High Dose\"\n74\n\"Participants included in effic…\n\n\n\n\n\n\n\n\n6.5.4 Safety Population\n\nadsl_saf = adsl.filter(pl.col(\"SAFFL\") == \"Y\")\npop_saf = count_by_treatment(\n    data=adsl_saf,\n    population_name=\"Participants included in safety population\"\n)\n\npop_saf\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Study population</span>"
@@ -647,7 +647,7 @@
     "href": "tlf-population.html#step-5-combine-all-populations",
     "title": "6  Study population",
     "section": "6.6 Step 5: Combine All Populations",
-    "text": "6.6 Step 5: Combine All Populations\nWe stack all population counts together into a single dataset.\n\nall_populations = pl.concat([\n    pop_all,\n    pop_itt,\n    pop_eff,\n    pop_saf\n])\n\nall_populations\n\n\nshape: (12, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n…\n…\n…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
+    "text": "6.6 Step 5: Combine All Populations\nWe stack all population counts together into a single dataset.\n\nall_populations = pl.concat([\n    pop_all,\n    pop_itt,\n    pop_eff,\n    pop_saf\n])\n\nall_populations\n\n\nshape: (12, 3)\n\n\n\nTRT01P\nn\npopulation\n\n\nstr\nu32\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n\n\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…",
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Study population</span>"
@@ -658,7 +658,7 @@
     "href": "tlf-population.html#step-6-calculate-percentages",
     "title": "6  Study population",
     "section": "6.7 Step 6: Calculate Percentages",
-    "text": "6.7 Step 6: Calculate Percentages\nWe join with the total counts and calculate what percentage each population represents of the total randomized participants.\n\nstats_with_pct = all_populations.join(\n    totals,\n    on=\"TRT01P\"\n).with_columns(\n    pct = (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1)\n)\n\nstats_with_pct\n\n\nshape: (12, 5)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\n\n\nstr\nu32\nstr\nu32\nf64\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n…\n…\n…\n…\n…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0",
+    "text": "6.7 Step 6: Calculate Percentages\nWe join with the total counts and calculate what percentage each population represents of the total randomized participants.\n\nstats_with_pct = all_populations.join(\n    totals,\n    on=\"TRT01P\"\n).with_columns(\n    pct = (100.0 * pl.col(\"n\") / pl.col(\"total\")).round(1)\n)\n\nstats_with_pct\n\n\nshape: (12, 5)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\n\n\nstr\nu32\nstr\nu32\nf64\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0",
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Study population</span>"
@@ -669,7 +669,7 @@
     "href": "tlf-population.html#step-7-format-display-values",
     "title": "6  Study population",
     "section": "6.8 Step 7: Format Display Values",
-    "text": "6.8 Step 7: Format Display Values\nFor the final table, we format the display text. The total randomized count shows just “N”, while subset populations show “N (%)”.\n\nformatted_stats = stats_with_pct.with_columns(\n    display = pl.when(pl.col(\"population\") == \"Participants in population\")\n        .then(pl.col(\"n\").cast(str)) \n        .otherwise(\n            pl.concat_str([ \n                pl.col(\"n\").cast(str),\n                pl.lit(\" (\"),\n                pl.col(\"pct\").round(1).cast(str),\n                pl.lit(\")\")\n            ])\n        )\n)\n\nformatted_stats\n\n\nshape: (12, 6)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\ndisplay\n\n\nstr\nu32\nstr\nu32\nf64\nstr\n\n\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\"86\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n…\n…\n…\n…\n…\n…\n\n\n\"Placebo\"\n86\n\"Participants included in safet…\n86\n100.0\n\"86 (100.0)\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"",
+    "text": "6.8 Step 7: Format Display Values\nFor the final table, we format the display text. The total randomized count shows just “N”, while subset populations show “N (%)”.\n\nformatted_stats = stats_with_pct.with_columns(\n    display = pl.when(pl.col(\"population\") == \"Participants in population\")\n        .then(pl.col(\"n\").cast(str)) \n        .otherwise(\n            pl.concat_str([ \n                pl.col(\"n\").cast(str),\n                pl.lit(\" (\"),\n                pl.col(\"pct\").round(1).cast(str),\n                pl.lit(\")\")\n            ])\n        )\n)\n\nformatted_stats\n\n\nshape: (12, 6)\n\n\n\nTRT01P\nn\npopulation\ntotal\npct\ndisplay\n\n\nstr\nu32\nstr\nu32\nf64\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n\"Placebo\"\n86\n\"Participants in population\"\n86\n100.0\n\"86\"\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants in population\"\n84\n100.0\n\"84\"\n\n\n…\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"\n\n\n\"Xanomeline Low Dose\"\n84\n\"Participants included in safet…\n84\n100.0\n\"84 (100.0)\"",
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Study population</span>"
@@ -724,7 +724,7 @@
     "href": "tlf-baseline.html#step-2-calculate-summary-statistics",
     "title": "7  Baseline characteristics",
     "section": "7.3 Step 2: Calculate Summary Statistics",
-    "text": "7.3 Step 2: Calculate Summary Statistics\nWe’ll create separate functions to handle continuous and categorical variables.\n\n7.3.1 Continuous Variables (Age)\nFor continuous variables, we calculate mean (SD) and median [min, max].\n\ndef summarize_continuous(df, var):\n    \"\"\"Calculate summary statistics for continuous variables\"\"\"\n    return df.group_by(\"TRT01P\").agg([\n        pl.col(var).mean().round(1).alias(\"mean\"),\n        pl.col(var).std().round(2).alias(\"sd\"),\n        pl.col(var).median().alias(\"median\"),\n        pl.col(var).min().alias(\"min\"),\n        pl.col(var).max().alias(\"max\"),\n        pl.len().alias(\"n\")\n    ])\n\nage_stats = summarize_continuous(adsl, \"AGE\")\nage_stats\n\n\nshape: (3, 7)\n\n\n\nTRT01P\nmean\nsd\nmedian\nmin\nmax\nn\n\n\nstr\nf64\nf64\nf64\nf64\nf64\nu32\n\n\n\n\n\"Xanomeline High Dose\"\n74.4\n7.89\n76.0\n56.0\n88.0\n84\n\n\n\"Placebo\"\n75.2\n8.59\n76.0\n52.0\n89.0\n86\n\n\n\"Xanomeline Low Dose\"\n75.7\n8.29\n77.5\n51.0\n88.0\n84\n\n\n\n\n\n\n\n\n7.3.2 Categorical Variables (Sex, Race)\nFor categorical variables, we calculate counts and percentages.\n\ndef summarize_categorical(df, var):\n    \"\"\"Calculate counts and percentages for categorical variables\"\"\"\n    # Get counts by treatment and category\n    counts = df.group_by([\"TRT01P\", var]).len()\n\n    # Get treatment totals for percentage calculations\n    totals = df.group_by(\"TRT01P\").len().rename({\"len\": \"total\"})\n\n    # Calculate percentages\n    result = counts.join(totals, on=\"TRT01P\").with_columns([\n        (100.0 * pl.col(\"len\") / pl.col(\"total\")).round(1).alias(\"pct\")\n    ])\n\n    return result\n\nsex_stats = summarize_categorical(adsl, \"SEX\")\nsex_stats\n\n\nshape: (6, 5)\n\n\n\nTRT01P\nSEX\nlen\ntotal\npct\n\n\nstr\nstr\nu32\nu32\nf64\n\n\n\n\n\"Placebo\"\n\"Male\"\n33\n86\n38.4\n\n\n\"Xanomeline Low Dose\"\n\"Female\"\n50\n84\n59.5\n\n\n\"Xanomeline Low Dose\"\n\"Male\"\n34\n84\n40.5\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n\"Female\"\n40\n84\n47.6\n\n\n\"Xanomeline High Dose\"\n\"Male\"\n44\n84\n52.4\n\n\n\n\n\n\n\nrace_stats = summarize_categorical(adsl, \"RACE\")\nrace_stats\n\n\nshape: (7, 5)\n\n\n\nTRT01P\nRACE\nlen\ntotal\npct\n\n\nstr\nstr\nu32\nu32\nf64\n\n\n\n\n\"Xanomeline High Dose\"\n\"American Indian Or Alaska Nati…\n1\n84\n1.2\n\n\n\"Placebo\"\n\"Black Or African American\"\n8\n86\n9.3\n\n\n\"Xanomeline High Dose\"\n\"White\"\n74\n84\n88.1\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline Low Dose\"\n\"Black Or African American\"\n6\n84\n7.1\n\n\n\"Placebo\"\n\"White\"\n78\n86\n90.7",
+    "text": "7.3 Step 2: Calculate Summary Statistics\nWe’ll create separate functions to handle continuous and categorical variables.\n\n7.3.1 Continuous Variables (Age)\nFor continuous variables, we calculate mean (SD) and median [min, max].\n\ndef summarize_continuous(df, var):\n    \"\"\"Calculate summary statistics for continuous variables\"\"\"\n    return df.group_by(\"TRT01P\").agg([\n        pl.col(var).mean().round(1).alias(\"mean\"),\n        pl.col(var).std().round(2).alias(\"sd\"),\n        pl.col(var).median().alias(\"median\"),\n        pl.col(var).min().alias(\"min\"),\n        pl.col(var).max().alias(\"max\"),\n        pl.len().alias(\"n\")\n    ])\n\nage_stats = summarize_continuous(adsl, \"AGE\")\nage_stats\n\n\nshape: (3, 7)\n\n\n\nTRT01P\nmean\nsd\nmedian\nmin\nmax\nn\n\n\nstr\nf64\nf64\nf64\nf64\nf64\nu32\n\n\n\n\n\"Xanomeline Low Dose\"\n75.7\n8.29\n77.5\n51.0\n88.0\n84\n\n\n\"Placebo\"\n75.2\n8.59\n76.0\n52.0\n89.0\n86\n\n\n\"Xanomeline High Dose\"\n74.4\n7.89\n76.0\n56.0\n88.0\n84\n\n\n\n\n\n\n\n\n7.3.2 Categorical Variables (Sex, Race)\nFor categorical variables, we calculate counts and percentages.\n\ndef summarize_categorical(df, var):\n    \"\"\"Calculate counts and percentages for categorical variables\"\"\"\n    # Get counts by treatment and category\n    counts = df.group_by([\"TRT01P\", var]).len()\n\n    # Get treatment totals for percentage calculations\n    totals = df.group_by(\"TRT01P\").len().rename({\"len\": \"total\"})\n\n    # Calculate percentages\n    result = counts.join(totals, on=\"TRT01P\").with_columns([\n        (100.0 * pl.col(\"len\") / pl.col(\"total\")).round(1).alias(\"pct\")\n    ])\n\n    return result\n\nsex_stats = summarize_categorical(adsl, \"SEX\")\nsex_stats\n\n\nshape: (6, 5)\n\n\n\nTRT01P\nSEX\nlen\ntotal\npct\n\n\nstr\nstr\nu32\nu32\nf64\n\n\n\n\n\"Xanomeline High Dose\"\n\"Male\"\n44\n84\n52.4\n\n\n\"Xanomeline Low Dose\"\n\"Male\"\n34\n84\n40.5\n\n\n\"Placebo\"\n\"Male\"\n33\n86\n38.4\n\n\n…\n…\n…\n…\n…\n\n\n\"Xanomeline Low Dose\"\n\"Female\"\n50\n84\n59.5\n\n\n\"Placebo\"\n\"Female\"\n53\n86\n61.6\n\n\n\n\n\n\n\nrace_stats = summarize_categorical(adsl, \"RACE\")\nrace_stats\n\n\nshape: (7, 5)\n\n\n\nTRT01P\nRACE\nlen\ntotal\npct\n\n\nstr\nstr\nu32\nu32\nf64\n\n\n\n\n\"Xanomeline Low Dose\"\n\"White\"\n78\n84\n92.9\n\n\n\"Xanomeline Low Dose\"\n\"Black Or African American\"\n6\n84\n7.1\n\n\n\"Placebo\"\n\"Black Or African American\"\n8\n86\n9.3\n\n\n…\n…\n…\n…\n…\n\n\n\"Placebo\"\n\"White\"\n78\n86\n90.7\n\n\n\"Xanomeline High Dose\"\n\"White\"\n74\n84\n88.1",
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Baseline characteristics</span>"
@@ -735,7 +735,7 @@
     "href": "tlf-baseline.html#step-3-format-results",
     "title": "7  Baseline characteristics",
     "section": "7.4 Step 3: Format Results",
-    "text": "7.4 Step 3: Format Results\nNow we format the statistics into the standard baseline table format.\n\n7.4.1 Format Age Statistics\n\n# Format age as \"Mean (SD)\" and \"Median [Min, Max]\"\nage_formatted = age_stats.with_columns([\n    pl.format(\"{} ({})\", pl.col(\"mean\"), pl.col(\"sd\")).alias(\"mean_sd\"),\n    pl.format(\"{} [{}, {}]\", pl.col(\"median\"), pl.col(\"min\"), pl.col(\"max\")).alias(\"median_range\")\n]).select([\"TRT01P\", \"mean_sd\", \"median_range\"])\n\nage_formatted\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nmean_sd\nmedian_range\n\n\nstr\nstr\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n\"74.4 (7.89)\"\n\"76.0 [56.0, 88.0]\"\n\n\n\"Placebo\"\n\"75.2 (8.59)\"\n\"76.0 [52.0, 89.0]\"\n\n\n\"Xanomeline Low Dose\"\n\"75.7 (8.29)\"\n\"77.5 [51.0, 88.0]\"\n\n\n\n\n\n\n\n\n7.4.2 Format Categorical Statistics\n\n# Format categorical as \"n (%)\"\nsex_formatted = sex_stats.with_columns(\n    pl.format(\"{} ({}%)\", pl.col(\"len\"), pl.col(\"pct\")).alias(\"n_pct\")\n).select([\"TRT01P\", \"SEX\", \"n_pct\"])\n\nrace_formatted = race_stats.with_columns(\n    pl.format(\"{} ({}%)\", pl.col(\"len\"), pl.col(\"pct\")).alias(\"n_pct\")\n).select([\"TRT01P\", \"RACE\", \"n_pct\"])\n\nsex_formatted\n\n\nshape: (6, 3)\n\n\n\nTRT01P\nSEX\nn_pct\n\n\nstr\nstr\nstr\n\n\n\n\n\"Placebo\"\n\"Male\"\n\"33 (38.4%)\"\n\n\n\"Xanomeline Low Dose\"\n\"Female\"\n\"50 (59.5%)\"\n\n\n\"Xanomeline Low Dose\"\n\"Male\"\n\"34 (40.5%)\"\n\n\n…\n…\n…\n\n\n\"Xanomeline High Dose\"\n\"Female\"\n\"40 (47.6%)\"\n\n\n\"Xanomeline High Dose\"\n\"Male\"\n\"44 (52.4%)\"",
+    "text": "7.4 Step 3: Format Results\nNow we format the statistics into the standard baseline table format.\n\n7.4.1 Format Age Statistics\n\n# Format age as \"Mean (SD)\" and \"Median [Min, Max]\"\nage_formatted = age_stats.with_columns([\n    pl.format(\"{} ({})\", pl.col(\"mean\"), pl.col(\"sd\")).alias(\"mean_sd\"),\n    pl.format(\"{} [{}, {}]\", pl.col(\"median\"), pl.col(\"min\"), pl.col(\"max\")).alias(\"median_range\")\n]).select([\"TRT01P\", \"mean_sd\", \"median_range\"])\n\nage_formatted\n\n\nshape: (3, 3)\n\n\n\nTRT01P\nmean_sd\nmedian_range\n\n\nstr\nstr\nstr\n\n\n\n\n\"Xanomeline Low Dose\"\n\"75.7 (8.29)\"\n\"77.5 [51.0, 88.0]\"\n\n\n\"Placebo\"\n\"75.2 (8.59)\"\n\"76.0 [52.0, 89.0]\"\n\n\n\"Xanomeline High Dose\"\n\"74.4 (7.89)\"\n\"76.0 [56.0, 88.0]\"\n\n\n\n\n\n\n\n\n7.4.2 Format Categorical Statistics\n\n# Format categorical as \"n (%)\"\nsex_formatted = sex_stats.with_columns(\n    pl.format(\"{} ({}%)\", pl.col(\"len\"), pl.col(\"pct\")).alias(\"n_pct\")\n).select([\"TRT01P\", \"SEX\", \"n_pct\"])\n\nrace_formatted = race_stats.with_columns(\n    pl.format(\"{} ({}%)\", pl.col(\"len\"), pl.col(\"pct\")).alias(\"n_pct\")\n).select([\"TRT01P\", \"RACE\", \"n_pct\"])\n\nsex_formatted\n\n\nshape: (6, 3)\n\n\n\nTRT01P\nSEX\nn_pct\n\n\nstr\nstr\nstr\n\n\n\n\n\"Xanomeline High Dose\"\n\"Male\"\n\"44 (52.4%)\"\n\n\n\"Xanomeline Low Dose\"\n\"Male\"\n\"34 (40.5%)\"\n\n\n\"Placebo\"\n\"Male\"\n\"33 (38.4%)\"\n\n\n…\n…\n…\n\n\n\"Xanomeline Low Dose\"\n\"Female\"\n\"50 (59.5%)\"\n\n\n\"Placebo\"\n\"Female\"\n\"53 (61.6%)\"",
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Baseline characteristics</span>"
@@ -1069,6 +1069,699 @@
     "crumbs": [
       "Clinical trial project",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>ANCOVA efficacy analysis</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html",
+    "href": "pkg-overview.html",
+    "title": "11  Packaging overview",
+    "section": "",
+    "text": "11.1 What is an analysis package\nAn analysis package is a Python package designed specifically to organize analysis scripts and code for a clinical trial project.\nUnlike general-purpose Python packages distributed on PyPI, analysis packages serve as:\nThink of it as combining:",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#what-is-an-analysis-package",
+    "href": "pkg-overview.html#what-is-an-analysis-package",
+    "title": "11  Packaging overview",
+    "section": "",
+    "text": "Project containers for clinical trial deliverables\nReproducible environments for analyses\nSubmission-ready structures for regulatory review\n\n\n\nPython package structure (for code organization)\nQuarto project (for report generation)\nRegulatory requirements (for eCTD submission)",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#why-use-an-analysis-package",
+    "href": "pkg-overview.html#why-use-an-analysis-package",
+    "title": "11  Packaging overview",
+    "section": "11.2 Why use an analysis package",
+    "text": "11.2 Why use an analysis package\nClinical trial projects have unique needs that standard Python projects may not address:\nRegulatory compliance:\n\nFDA requires submission of analysis programs in ASCII text format\nReviewers must be able to reproduce your results\nDocumentation must explain the analysis process\n\nTeam collaboration:\n\nMultiple statisticians and programmers work on hundreds of tables\nConsistent structure reduces communication overhead\nShared functions avoid code duplication\n\nLong-term maintenance:\n\nAnalysis must be reproducible years later\nEnvironment must be reconstructable\nCode and data provenance must be clear\n\nThe Python package structure addresses these needs systematically.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#analysis-package-vs-standard-package",
+    "href": "pkg-overview.html#analysis-package-vs-standard-package",
+    "title": "11  Packaging overview",
+    "section": "11.3 Analysis package vs standard package",
+    "text": "11.3 Analysis package vs standard package\nPython packages serve different purposes depending on context.\nStandard Python package (for PyPI):\n\nPurpose: Share reusable functionality\nAudience: General Python community\nScope: Generic, broadly applicable functions\nExample: polars, plotnine, rtflite\n\nAnalysis package (for submissions):\n\nPurpose: Organize trial-specific analyses\nAudience: Study team and regulators\nScope: Study-specific tables, listings, figures\nExample: demo001 (DEMO-001 study analysis)\n\n\n\nIn R terms, think of an analysis package like a project-specific R package (e.g., esubdemo) versus a CRAN package (e.g., dplyr).",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#key-components",
+    "href": "pkg-overview.html#key-components",
+    "title": "11  Packaging overview",
+    "section": "11.4 Key components",
+    "text": "11.4 Key components\nA typical analysis package contains:\nPython package structure:\n\npyproject.toml: Project metadata and dependencies\nsrc/studyname/: Study-specific Python functions\ntests/: Validation and testing code\nuv.lock: Exact dependency versions\n\nAnalysis content:\n\nanalysis/: Quarto documents for TLFs\ndata/: ADaM datasets (input)\noutput/: Generated tables, listings, figures (output)\n\nDocumentation:\n\nREADME.md: Project overview\n_quarto.yml: Quarto book configuration\n\nThis structure supports the complete lifecycle: development, validation, and submission.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#demo-project",
+    "href": "pkg-overview.html#demo-project",
+    "title": "11  Packaging overview",
+    "section": "11.5 Demo project",
+    "text": "11.5 Demo project\nThis book uses demo-py-esub as the demonstration project.\nThe project shows how to:\n\nOrganize analysis code as a Python package\nGenerate clinical study reports with Quarto\nPrepare deliverables for eCTD submission\n\nClone the project to follow along:\ngit clone https://github.com/elong0527/demo-py-esub.git\ncd demo-py-esub\nThe project generates six TLFs:\n\nDisposition of patients\nStudy population\nBaseline characteristics\nEfficacy analysis (ANCOVA)\nAdverse events summary\nAdverse events (specific)\n\nThese cover the most common clinical reporting scenarios.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#workflow-overview",
+    "href": "pkg-overview.html#workflow-overview",
+    "title": "11  Packaging overview",
+    "section": "11.6 Workflow overview",
+    "text": "11.6 Workflow overview\nThe typical workflow for an analysis package:\n1. Project setup:\n\nInitialize Python package with uv\nConfigure Quarto for report generation\nSet up version control with Git\n\n2. Development:\n\nWrite analysis functions in src/\nCreate Quarto documents in analysis/\nGenerate TLFs in output/\n\n3. Validation:\n\nWrite tests in tests/\nPerform independent review\nVerify outputs match specifications\n\n4. Submission:\n\nPack package into text files with pkglite\nPlace files in eCTD Module 5 structure\nUpdate ADRG with reproduction instructions\n\nThe following chapters detail each stage.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#benefits-of-this-approach",
+    "href": "pkg-overview.html#benefits-of-this-approach",
+    "title": "11  Packaging overview",
+    "section": "11.7 Benefits of this approach",
+    "text": "11.7 Benefits of this approach\nUsing Python packages for clinical analysis provides:\nConsistency:\n\nStandard structure across all projects\nTeam members know where to find code and outputs\nReduces onboarding time for new projects\n\nAutomation:\n\nuv manages dependencies automatically\nQuarto renders all reports in batch\nTesting frameworks verify correctness\n\nReproducibility:\n\nuv.lock ensures exact dependency versions\n.python-version specifies Python version\nRepository snapshots freeze package ecosystem\n\nCompliance:\n\nBuilt-in documentation with docstrings\nTesting infrastructure for validation\nStandard structure simplifies review\n\n\n\n\n\n\n\nImportant\n\n\n\nFor regulatory submissions, reproducibility is not optional. The FDA expects to reconstruct your exact environment and verify your results.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-overview.html#whats-next",
+    "href": "pkg-overview.html#whats-next",
+    "title": "11  Packaging overview",
+    "section": "11.8 What’s next",
+    "text": "11.8 What’s next\nThe next chapters cover:\n\nPackage structure: Organizing code and content (Chapter 12)\nProject management: Git-centric workflows for collaboration (Chapter 13)\nSubmission overview: eCTD requirements and pkglite (Chapter 14)\nSubmission package: Packing for eCTD Module 5 (Chapter 15)\nSubmission dryrun: Verifying reproducibility (Chapter 16)\n\nWith this foundation, you’re ready to learn how to manage analysis packages effectively.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Packaging overview</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html",
+    "href": "pkg-structure.html",
+    "title": "12  Package structure",
+    "section": "",
+    "text": "12.1 Core principle\nOrganize clinical analysis projects as valid Python packages that leverage the entire Python packaging toolchain (especially uv).\nAdditionally, integrate essential components for clinical reporting:\nThis hybrid structure combines Python package best practices with clinical trial deliverable requirements.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#core-principle",
+    "href": "pkg-structure.html#core-principle",
+    "title": "12  Package structure",
+    "section": "",
+    "text": "Quarto documents for reproducible analysis\nADaM datasets as inputs\nGenerated TLFs as outputs",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#complete-example-structure",
+    "href": "pkg-structure.html#complete-example-structure",
+    "title": "12  Package structure",
+    "section": "12.2 Complete example structure",
+    "text": "12.2 Complete example structure\nA clinical analysis package requires these essential components:\ndemo-py-esub/\n├── pyproject.toml\n├── .python-version\n├── uv.lock\n├── README.md\n├── .gitignore\n├── _quarto.yml\n├── index.qmd\n├── src/\n│   └── demo001/\n│       ├── __init__.py\n│       ├── utils.py\n│       ├── baseline.py\n│       ├── efficacy.py\n│       ├── population.py\n│       └── safety.py\n├── analysis/\n│   ├── tlf-01-disposition.qmd\n│   ├── tlf-02-population.qmd\n│   ├── tlf-03-baseline.qmd\n│   ├── tlf-04-efficacy-ancova.qmd\n│   ├── tlf-05-ae-summary.qmd\n│   └── tlf-06-specific.qmd\n├── data/\n│   ├── adsl.parquet\n│   ├── adae.parquet\n│   ├── adlbc.parquet\n│   ├── advs.parquet\n│   └── adtte.parquet\n├── output/\n│   ├── tlf-disposition.rtf\n│   ├── tlf-population.rtf\n│   ├── tlf-baseline.rtf\n│   ├── tlf-efficacy-ancova.rtf\n│   ├── tlf-ae-summary.rtf\n│   └── tlf-ae-specific.rtf\n└── tests/\n    ├── __init__.py\n    ├── test_utils.py\n    ├── test_baseline.py\n    └── data/\n        └── adsl_subset.parquet\nThis structure satisfies both Python packaging standards and regulatory submission requirements.\n\n\nIn R terms, this combines:\n\nR package structure (DESCRIPTION, R/, tests/)\nAnalysis project layout (vignettes/, data/, output/)",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#python-package-components",
+    "href": "pkg-structure.html#python-package-components",
+    "title": "12  Package structure",
+    "section": "12.3 Python package components",
+    "text": "12.3 Python package components\nThe Python package portion follows the Python Packaging User Guide.\n\n12.3.1 pyproject.toml\nThe single source of truth for project configuration:\n[project]\nname = \"demo001\"\nversion = \"0.1.0\"\ndescription = \"Analysis package for DEMO-001 study\"\nreadme = \"README.md\"\nrequires-python = \"&gt;=3.13\"\ndependencies = [\n    \"polars&gt;=1.35.1\",\n    \"plotnine&gt;=0.15.1\",\n    \"rtflite&gt;=1.0.2\",\n]\n\n[dependency-groups]\ndev = [\n    \"pytest&gt;=8.4.2\",\n    \"ruff&gt;=0.14.3\",\n    \"mypy&gt;=1.18.2\",\n]\n\n[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\nKey sections:\n\n[project]: Package metadata\n[project].dependencies: Runtime dependencies for analysis\n[dependency-groups.dev]: Development tools (testing, linting)\n[build-system]: How to build the package\n\n\n\n12.3.2 .python-version\nSpecifies the exact Python version:\n3.13.9\nCreated by uv python pin 3.13.9.\n\n\n\n\n\n\nImportant\n\n\n\nUse the full MAJOR.MINOR.PATCH version (e.g., 3.13.9), not just 3.13. This prevents drift as new patch versions are released.\n\n\n\n\n12.3.3 uv.lock\nLock file with exact dependency versions:\nversion = 1\nrequires-python = \"&gt;=3.13\"\n\n[[package]]\nname = \"polars\"\nversion = \"1.35.1\"\nsource = { registry = \"https://pypi.org/simple\" }\n...\nThis file is auto-generated by uv sync and uv lock.\nNever edit manually. Commit to version control.\n\n\n12.3.4 src/demo001/\nStudy-specific Python functions go here.\nFollowing the src/ layout (recommended):\nsrc/\n└── demo001/\n    ├── __init__.py         # Package initialization\n    ├── utils.py            # Utility functions\n    ├── baseline.py         # Baseline characteristics\n    ├── efficacy.py         # Efficacy analysis\n    ├── population.py       # Population analysis\n    └── safety.py           # Safety analysis\nWhy src/ layout?\n\nPrevents accidental imports from development directory\nForces proper package installation\nIndustry best practice\n\nEach module contains related functions. For example, utils.py:\n\"\"\"Utility functions for formatting and calculations.\"\"\"\n\ndef fmt_num(x: float, digits: int = 1, width: int = 5) -&gt; str:\n    \"\"\"Format a number with specified digits and width.\n\n    Parameters\n    ----------\n    x : float\n        Number to format\n    digits : int\n        Number of decimal places\n    width : int\n        Total width of formatted string\n\n    Returns\n    -------\n    str\n        Formatted number string\n\n    Examples\n    --------\n    &gt;&gt;&gt; fmt_num(12.345, digits=2, width=6)\n    ' 12.35'\n    \"\"\"\n    return f\"{x:&gt;{width}.{digits}f}\"\nDocument all functions with docstrings following the NumPy docstring standard.\n\n\n12.3.5 tests/\nValidation tests using pytest:\ntests/\n├── __init__.py\n├── test_utils.py           # Test utility functions\n├── test_baseline.py        # Test baseline functions\n└── data/                   # Test data fixtures\n    └── adsl_subset.parquet\nExample test:\n# tests/test_utils.py\nfrom demo001.utils import fmt_num\n\ndef test_fmt_num_basic():\n    \"\"\"Test basic number formatting.\"\"\"\n    assert fmt_num(12.345, digits=2, width=6) == \" 12.35\"\n\ndef test_fmt_num_padding():\n    \"\"\"Test width padding.\"\"\"\n    assert fmt_num(1.2, digits=1, width=5) == \"  1.2\"\nRun tests:\nuv run pytest\n\n\n\n\n\n\nNote\n\n\n\nFor clinical submissions, high test coverage demonstrates code quality. Aim for &gt;80% coverage for critical functions.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#quarto-project-components",
+    "href": "pkg-structure.html#quarto-project-components",
+    "title": "12  Package structure",
+    "section": "12.4 Quarto project components",
+    "text": "12.4 Quarto project components\nThe Quarto portion enables reproducible report generation.\n\n12.4.1 _quarto.yml\nQuarto project configuration:\nproject:\n  type: book\n\nbook:\n  title: \"DEMO-001 Analysis Results\"\n  chapters:\n    - index.qmd\n    - analysis/tlf-01-disposition.qmd\n    - analysis/tlf-02-population.qmd\n    - analysis/tlf-03-baseline.qmd\n    - analysis/tlf-04-efficacy-ancova.qmd\n    - analysis/tlf-05-ae-summary.qmd\n    - analysis/tlf-06-specific.qmd\n\nformat:\n  html:\n    theme: cosmo\nThis configures Quarto to render all analysis documents as a book.\n\n\n12.4.2 index.qmd\nLanding page for the Quarto book:\n---\ntitle: \"DEMO-001 Clinical Study Report\"\n---\n\n## Overview\n\nThis analysis package contains Tables, Listings, and Figures (TLFs)\nfor the DEMO-001 clinical trial.\n\n## Study Information\n\n- Protocol: DEMO-001\n- Phase: III\n- Indication: [Disease]\n- Primary Endpoint: [Endpoint]\n\n## Analysis Programs\n\nThe following TLFs are included:\n\n- **Disposition**: Patient disposition table\n- **Population**: Analysis population summary\n- **Baseline**: Baseline characteristics\n- **Efficacy**: Primary efficacy analysis (ANCOVA)\n- **AE Summary**: Adverse events summary\n- **AE Specific**: Specific adverse events\n\n\n12.4.3 analysis/\nAnalysis scripts as Quarto documents:\nanalysis/\n├── tlf-01-disposition.qmd\n├── tlf-02-population.qmd\n├── tlf-03-baseline.qmd\n├── tlf-04-efficacy-ancova.qmd\n├── tlf-05-ae-summary.qmd\n└── tlf-06-specific.qmd\nEach .qmd file:\n\nLoads required data\nPerforms analysis\nGenerates formatted output\nExports to RTF for submission\n\nExample structure:\n---\ntitle: \"Table 14.1.1 - Disposition of Patients\"\n---\n\n## Load Data\n\n```{python}\nimport polars as pl\nfrom demo001.utils import fmt_num\n\nadsl = pl.read_parquet(\"data/adsl.parquet\")\n```\n\n## Analysis\n\n```{python}\n# Calculate disposition counts\ndisposition = adsl.group_by(\"TRTA\").agg([\n    pl.len().alias(\"N\"),\n    pl.col(\"EOSSTT\").filter(pl.col(\"EOSSTT\") == \"COMPLETED\").count().alias(\"Completed\")\n])\n```\n\n## Output\n\n```{python}\nfrom rtflite import Table\n# Generate RTF table...\n```\n\n\n\n\n\n\nWarning\n\n\n\nFor final submissions, convert .qmd files to .py scripts. Covered in Chapter 15.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#data-and-output-directories",
+    "href": "pkg-structure.html#data-and-output-directories",
+    "title": "12  Package structure",
+    "section": "12.5 Data and output directories",
+    "text": "12.5 Data and output directories\n\n12.5.1 data/\nInput datasets in Parquet format:\ndata/\n├── adsl.parquet            # Subject-level analysis dataset\n├── adae.parquet            # Adverse events\n├── adlbc.parquet           # Lab chemistry\n├── advs.parquet            # Vital signs\n└── adtte.parquet           # Time-to-event\nWhy Parquet?\n\nFaster than CSV for large datasets\nPreserves data types\nSmaller file size\nPython ecosystem standard\n\nFor submission, ADaM datasets are converted to SAS .xpt format per FDA requirements.\n\n\n12.5.2 output/\nGenerated TLF outputs:\noutput/\n├── tlf-disposition.rtf\n├── tlf-population.rtf\n├── tlf-baseline.rtf\n├── tlf-efficacy-ancova.rtf\n├── tlf-ae-summary.rtf\n└── tlf-ae-specific.rtf\nRTF files are submission-ready and can be converted to PDF for review.\n\n\nThe output/ directory typically goes in .gitignore since outputs are generated from source code. Commit source, not generated artifacts.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#additional-files",
+    "href": "pkg-structure.html#additional-files",
+    "title": "12  Package structure",
+    "section": "12.6 Additional files",
+    "text": "12.6 Additional files\n\n12.6.1 .gitignore\nExclude generated files from version control:\n# Python\n__pycache__/\n*.py[cod]\n.venv/\n\n# Quarto\n_book/\n*.html\n\n# Output (generated)\noutput/\n\n# OS\n.DS_Store\nThumbs.db\n\n\n12.6.2 README.md\nProject documentation:\n# demo-py-esub\n\nAnalysis package for DEMO-001 clinical trial.\n\n## Installation\n\n```bash\ngit clone https://github.com/org/demo-py-esub.git\ncd demo-py-esub\nuv sync\n```\n\n## Usage\n\nGenerate all TLFs:\n\n```bash\nquarto render\n```\n\nRun tests:\n\n```bash\nuv run pytest tests/\n```",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#benefits-of-this-structure",
+    "href": "pkg-structure.html#benefits-of-this-structure",
+    "title": "12  Package structure",
+    "section": "12.7 Benefits of this structure",
+    "text": "12.7 Benefits of this structure\nConsistency:\n\nEvery project follows the same layout\nTeam members instantly know where files belong\nReduces cognitive load\n\nReproducibility:\n\nuv.lock pins all dependencies\n.python-version specifies Python version\nQuarto renders from source every time\n\nAutomation:\n\nuv sync restores environment\nquarto render regenerates all outputs\npytest validates all functions\n\nCompliance:\n\nStandard Python package can be built and distributed\nTests provide validation evidence\nDocumentation is built-in\n\n\n\n\n\n\n\nNote\n\n\n\nThe structure scales well. A project with 300 TLFs uses the same layout, just more files in analysis/ and src/.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#mixed-language-projects",
+    "href": "pkg-structure.html#mixed-language-projects",
+    "title": "12  Package structure",
+    "section": "12.8 Mixed language projects",
+    "text": "12.8 Mixed language projects\nIf your organization uses both R and Python:\nSeparate projects:\nclinical-trial-001/\n├── r-package/              # R-based analyses\n│   ├── DESCRIPTION\n│   ├── R/\n│   └── vignettes/\n├── python-package/         # Python-based analyses\n│   ├── pyproject.toml\n│   ├── src/\n│   └── analysis/\n├── data/                   # Shared ADaM datasets\n└── output/                 # Shared outputs\nWhy separate?\n\nDifferent build systems (devtools vs uv)\nDifferent dependency management (renv vs uv)\nDifferent testing frameworks (testthat vs pytest)\nSimpler to maintain\n\nShare data and outputs, not source code.\n\n\n\n\n\n\nCautionMixing programming languages in a single project is often a mistake\n\n\n\nJohn Carmack noted: “It’s almost always a mistake to mix languages in a single project.”\nMixing languages in a single project increases the complexity of dependency management, testing, and build processes. It can lead to confusion about which tools to use for specific tasks and complicate collaboration among team members who may specialize in different languages.\nKeep Python projects pure Python. Keep R projects pure R. Share data and outputs, not codebases.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-structure.html#whats-next",
+    "href": "pkg-structure.html#whats-next",
+    "title": "12  Package structure",
+    "section": "12.9 What’s next",
+    "text": "12.9 What’s next\nYou’ve learned the recommended structure for analysis packages.\nThe next part covers eCTD submission:\n\nRegulatory requirements for program submission\nUsing pkglite to pack Python packages\nCreating submission packages\nVerifying reproducibility with dry runs\n\nWith this structure in place, you’re ready to prepare submission-ready deliverables.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Package structure</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html",
+    "href": "pkg-management.html",
+    "title": "13  Project management",
+    "section": "",
+    "text": "13.1 Git-centric workflow\nClinical analysis projects require rigorous tracking and collaboration. A Git-centric workflow provides the foundation for reproducible, auditable work.\nCore principle:\nAll project assets live in version control. Work is tracked through issues, pull requests, and project boards.\nThis applies whether you use:\nThe specific platform matters less than the workflow discipline.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#git-centric-workflow",
+    "href": "pkg-management.html#git-centric-workflow",
+    "title": "13  Project management",
+    "section": "",
+    "text": "GitHub Enterprise\nGitLab\nBitbucket\nAzure DevOps",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#plain-text-workflow",
+    "href": "pkg-management.html#plain-text-workflow",
+    "title": "13  Project management",
+    "section": "13.2 Plain text workflow",
+    "text": "13.2 Plain text workflow\nFavor plain text formats for all project artifacts:\nUse:\n\n.qmd files for analysis scripts (not Jupyter notebooks for final deliverables)\n.md files for documentation\n.toml files for configuration\n.txt files for submission packages\n\nAvoid:\n\n.xlsx files for tracking (no audit trail, merge conflicts)\nBinary formats when text alternatives exist\nProprietary formats that require special tools\n\n\n\n\n\n\n\nNote\n\n\n\nPlain text enables:\n\nClear diff views in pull requests\nMeaningful merge conflict resolution\nSearchable code history\nCommand-line friendly workflows",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#project-tracking",
+    "href": "pkg-management.html#project-tracking",
+    "title": "13  Project management",
+    "section": "13.3 Project tracking",
+    "text": "13.3 Project tracking\nUse properly labeled issues and pull requests to drive work. Follow Tidyteam code review principles for detailed operational advices.\n\n13.3.1 Issues for requirements\nCreate issues to capture:\n\nIndividual TLF specifications\nBug reports\nFeature requests\nValidation tasks\n\nExample issue template:\n**Title**: Implement Table 14.1.1 - Disposition of Patients\n\n**Description**:\nCreate disposition table following ICH E3 guidelines\n\n**Deliverables**:\n- [ ] Quarto document: analysis/tlf-01-disposition.qmd\n- [ ] Output table: output/tlf-disposition.rtf\n- [ ] Unit tests: tests/test_disposition.py\n\n**Validation**: Independent review required\n\n\n13.3.2 Pull requests for review\nALL code changes must go through pull requests before getting into main:\n\nDeveloper creates feature branch\nImplements changes\nOpens pull request for review\nReviewer validates code and outputs\nChanges merged after approval\n\nThis creates an audit trail of who did what and when.\n\n\n13.3.3 Project boards\nUse Kanban-style project boards to visualize work:\nColumns:\n\nBacklog: Planned work\nIn Progress: Active development\nReview: Awaiting validation\nDone: Completed and validated\n\nExample board:\n\n\n\nBacklog\nIn Progress\nReview\nDone\n\n\n\n\nTable 14.3.5\nTable 14.1.1\nTable 14.2.1\nTable 14.1.2\n\n\nFigure 14.4.1\n\nTable 14.3.1\nTable 14.2.2\n\n\n\nThis makes project status transparent to all stakeholders.\n\n\nGitHub Projects, GitLab Boards, and Jira all support this workflow. Choose based on your organization’s infrastructure.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#development-lifecycle",
+    "href": "pkg-management.html#development-lifecycle",
+    "title": "13  Project management",
+    "section": "13.4 Development lifecycle",
+    "text": "13.4 Development lifecycle\nClinical analysis projects follow a structured development lifecycle similar to software development.\n\n13.4.1 Planning\nDefine scope and requirements:\n\nList all TLFs from Statistical Analysis Plan (SAP)\nCreate mock tables/shells\nAssign validation levels (independent review vs double programming)\nSet up validation tracking\n\nCreate a validation tracker (plain text format):\n| TLF | Type | Developer | Dev Status | Reviewer | Review Status |\n|-----|------|-----------|------------|----------|---------------|\n| tlf-01-disposition | Table | Alice | Complete | Bob | In Progress |\n| tlf-02-population | Table | Charlie | In Progress | Diana | Pending |\n\n\n\n\n\n\nImportant\n\n\n\nLock down the Python version and package repository snapshot during planning. Changing these mid-project breaks reproducibility.\n\n\n\n\n13.4.2 Development\nTeam members implement assigned TLFs:\n1. Create feature branch:\ngit checkout -b feature/tlf-01-disposition\n2. Implement analysis:\n\nWrite Quarto document in analysis/\nCreate helper functions in src/ if needed\nGenerate output in output/\n\n3. Self-test:\n\nVerify against mock table\nCheck calculations manually\nRun automated tests\n\n4. Commit and push:\ngit add analysis/tlf-01-disposition.qmd\ngit commit -m \"Implement disposition table (Table 14.1.1)\"\ngit push origin feature/tlf-01-disposition\n5. Open pull request:\nRequest review from assigned validator.\n\n\n13.4.3 Validation\nIndependent reviewers verify deliverables:\nFor tables:\n\nCompare output against specifications\nVerify calculations independently\nCheck formatting requirements\nReview code for errors\n\nFor analysis functions:\n\nWrite unit tests in tests/\nVerify edge cases\nCheck type annotations\nReview docstrings\n\nValidation testing example:\n# tests/test_disposition.py\nimport polars as pl\nfrom demo001.disposition import create_disposition_table\n\ndef test_disposition_counts():\n    \"\"\"Verify disposition table calculations.\"\"\"\n    # Load test data\n    df = pl.read_parquet(\"tests/data/adsl_subset.parquet\")\n\n    # Generate table\n    result = create_disposition_table(df)\n\n    # Verify counts\n    assert result[\"Screened\"][0] == 254\n    assert result[\"Randomized\"][0] == 254\n    assert result[\"Completed\"][0] == 238\nRun tests with pytest:\nuv run pytest\n\n\n13.4.4 Delivery\nProject lead ensures completion:\n1. Run compliance checks:\nuv run ruff check .\nuv run mypy src/\nuv run pytest --cov=demo001\n2. Generate all outputs in batch:\nquarto render\n3. Review validation tracker:\nEnsure all TLFs have completed validation.\n4. Prepare submission package:\nPack for eCTD (covered in Chapter 15).",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#agile-practices",
+    "href": "pkg-management.html#agile-practices",
+    "title": "13  Project management",
+    "section": "13.5 Agile practices",
+    "text": "13.5 Agile practices\nClinical trials benefit from agile project management:\nIterative development:\n\nWork in 2-week sprints\nDeliver subset of TLFs each sprint\nGet stakeholder feedback early\n\nContinuous integration:\n\nAutomated testing on every push\nCatch errors before review\nMaintain code quality\n\nRegular retrospectives:\n\nWhat went well?\nWhat needs improvement?\nAdjust process accordingly\n\n\n\n\n\n\n\nNote\n\n\n\nAgile doesn’t mean uncontrolled. The validation requirements remain the same. Agile provides faster feedback loops within those constraints.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#automation-with-cicd",
+    "href": "pkg-management.html#automation-with-cicd",
+    "title": "13  Project management",
+    "section": "13.6 Automation with CI/CD",
+    "text": "13.6 Automation with CI/CD\nAutomate repetitive tasks using continuous integration:\nGitHub Actions example:\nname: Validation\n\non: [push, pull_request]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: astral-sh/setup-uv@v7\n      - run: uv sync\n      - run: uv run pytest tests/\n      - run: uv run ruff check .\n      - run: uv run mypy src/\nThis runs tests automatically on every pull request.\nBenefits:\n\nCatch errors before manual review\nEnsure consistent code quality\nReduce reviewer burden\nDocument test results\n\n\n\nCI/CD is optional but highly recommended for projects with multiple developers.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#collaboration-best-practices",
+    "href": "pkg-management.html#collaboration-best-practices",
+    "title": "13  Project management",
+    "section": "13.7 Collaboration best practices",
+    "text": "13.7 Collaboration best practices\nWork as a team:\n\nTake project management training\nUnderstand your role in the lifecycle\nCommunicate blockers early\n\nDesign clean architecture:\n\nSeparate business logic from data processing\nWrite reusable components in src/\nKeep analysis scripts in analysis/ focused\n\nSet capability boundaries:\n\nKnow what your team can deliver\nAvoid complex integrations (e.g., mixing R and Python in same package)\nPrefer simple, robust solutions\n\nContribute to community:\n\nShare reusable components internally\nOpen source when possible\nLearn from others’ approaches",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#version-control-discipline",
+    "href": "pkg-management.html#version-control-discipline",
+    "title": "13  Project management",
+    "section": "13.8 Version control discipline",
+    "text": "13.8 Version control discipline\nBranch strategy:\n\nmain: Stable, validated code\nfeature/*: Development branches\nhotfix/*: Emergency fixes\n\nCommit messages:\nWrite clear, descriptive commits:\n# Good\ngit commit -m \"Add ANCOVA analysis for primary endpoint (Table 14.2.1)\"\n\n# Bad\ngit commit -m \"Update code\"\nNever commit:\n\nSensitive data\nLarge binary files\nGenerated outputs (use .gitignore)\nTemporary files\n\nAlways commit:\n\nSource code (.py, .qmd)\nConfiguration (pyproject.toml, _quarto.yml)\nDocumentation (README.md)\nTests (tests/*.py)",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "pkg-management.html#whats-next",
+    "href": "pkg-management.html#whats-next",
+    "title": "13  Project management",
+    "section": "13.9 What’s next",
+    "text": "13.9 What’s next\nYou’ve learned Git-centric project management workflows.\nThe next chapter covers the detailed package structure:\n\nDirectory layout for analysis packages\nOrganizing code and content\nIntegrating Quarto with Python packages\nEssential configuration files\n\nThese practices ensure consistent, reproducible, collaborative clinical analysis projects.",
+    "crumbs": [
+      "Analysis package",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project management</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html",
+    "href": "submission-overview.html",
+    "title": "14  Submission overview",
+    "section": "",
+    "text": "14.1 Electronic Common Technical Document\nThe electronic Common Technical Document (eCTD) provides a standard format for regulatory submissions.\nThe eCTD organizes submission documents in a defined directory structure:\nFor analysis programs, we focus on Module 5 (clinical study reports).",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#electronic-common-technical-document",
+    "href": "submission-overview.html#electronic-common-technical-document",
+    "title": "14  Submission overview",
+    "section": "",
+    "text": "Module 1: Administrative information and prescribing information\nModule 2: Common Technical Document summaries\nModule 3: Quality (CMC)\nModule 4: Nonclinical study reports\nModule 5: Clinical study reports\n\n\n\n\nFull eCTD specifications are available from the ICH website.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#fda-requirements-for-analysis-programs",
+    "href": "submission-overview.html#fda-requirements-for-analysis-programs",
+    "title": "14  Submission overview",
+    "section": "14.2 FDA requirements for analysis programs",
+    "text": "14.2 FDA requirements for analysis programs\nThe FDA Study Data Technical Conformance Guide (Section 4.1.2.10) specifies:\n\nSponsors should provide the software programs used to create all ADaM datasets and generate tables and figures associated with primary and secondary efficacy analyses. Furthermore, sponsors should submit software programs used to generate additional information included in Section 14 CLINICAL STUDIES of the Prescribing Information (PI) if applicable. The specific software utilized should be specified in the ADRG. The main purpose of requesting the submission of these programs is to understand the process by which the variables for the respective analyses were created and to confirm the analysis algorithms. Sponsors should submit software programs in ASCII text format; however, executable file extensions should not be used.\n\nKey requirements:\n\nSubmit programs for primary and secondary efficacy analyses\nSpecify software and versions in ADRG\nUse ASCII text format\nNo executable extensions",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#ectd-module-5-structure",
+    "href": "submission-overview.html#ectd-module-5-structure",
+    "title": "14  Submission overview",
+    "section": "14.3 eCTD Module 5 structure",
+    "text": "14.3 eCTD Module 5 structure\nAnalysis datasets and programs are organized under Module 5:\nm5/datasets/&lt;study-id&gt;/analysis/adam/\nWithin the adam/ folder, two directories are critical:\nm5/datasets/&lt;study-id&gt;/analysis/adam/\n├── datasets/\n│   ├── *.xpt                   # ADaM datasets in SAS format\n│   ├── define.xml              # Dataset definitions\n│   ├── adrg.pdf                # Analysis Data Reviewer's Guide\n│   └── analysis-results-metadata.pdf  # Analysis Results Metadata\n└── programs/\n    ├── py0pkgs.txt             # Packed Python packages\n    ├── tlf-01-disposition.txt  # Analysis program 1\n    ├── tlf-02-population.txt   # Analysis program 2\n    └── ...                     # Additional programs",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#the-ascii-text-requirement",
+    "href": "submission-overview.html#the-ascii-text-requirement",
+    "title": "14  Submission overview",
+    "section": "14.4 The ASCII text requirement",
+    "text": "14.4 The ASCII text requirement\nWhy ASCII text?\nPlatform independence:\n\nWorks on any operating system\nNo special software needed to view\nFuture-proof format\n\nReview process:\n\nReviewers can read code without running it\nEasy to search and navigate\nCan copy code snippets for testing\n\nCompliance verification:\n\nPlain text prevents hidden code\nNo macros or embedded executables\nTransparent to automated scanning\n\nThis creates a challenge: how to submit a Python package (which has directory structure, binary files, etc.) as ASCII text files?",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#the-solution-pkglite-for-python",
+    "href": "submission-overview.html#the-solution-pkglite-for-python",
+    "title": "14  Submission overview",
+    "section": "14.5 The solution: pkglite for Python",
+    "text": "14.5 The solution: pkglite for Python\npkglite for Python solves the text file requirement by packing Python projects into portable text files. Key capabilities:\n\nPack entire project directory structure into single text file\nPreserve file paths and metadata\nExclude unnecessary files with .pkgliteignore\nUnpack to restore original structure\nSupport multiple projects in one file\n\n\n\n\n\n\n\nNote\n\n\n\npkglite for Python extends the original pkglite for R with:\n\nSupport for any programming language (not just R)\nContent-based file classification (text vs binary)\nCommand-line interface for automation\n.pkgliteignore configuration support\n\n\n\n\n14.5.1 How pkglite works\nPacking:\n\nScan project directory\nClassify files (text vs binary)\nEncode file paths and contents\nWrite to single .txt file\n\nUnpacking:\n\nRead .txt file\nParse file paths and contents\nRecreate directory structure\nWrite files to disk\n\nThe packed text file follows the Debian Control File (DCF) format, similar to the R package pkglite output.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#python-language-considerations",
+    "href": "submission-overview.html#python-language-considerations",
+    "title": "14  Submission overview",
+    "section": "14.6 Python language considerations",
+    "text": "14.6 Python language considerations\nAs of the August 30, 2025 FDA guidance update, the eCTD Module 5 specification explicitly allows .zip files “for delivering R packages.”\nHowever, Python (and other languages) are not explicitly mentioned.\nOur approach:\nUse pkglite to pack Python packages into portable text files. This follows the spirit of the FDA guidance:\n\nProvides ASCII text format programs\nEnables reproducibility\nDocuments software versions\nAllows reviewer verification\n\n\n\nWe developed pkglite for Python specifically to enable submission of source projects in any programming language following the same principles.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#submission-workflow-overview",
+    "href": "submission-overview.html#submission-workflow-overview",
+    "title": "14  Submission overview",
+    "section": "14.7 Submission workflow overview",
+    "text": "14.7 Submission workflow overview\nThe complete submission workflow:\n1. Develop analysis package:\n\nCreate Python package with uv\nWrite analysis code in Quarto documents\nValidate outputs and functions\n\n2. Prepare submission package:\n\nPack Python package with pkglite\nConvert Quarto documents to Python scripts\nPlace files in eCTD Module 5 structure\n\n3. Update documentation:\n\nUpdate ADRG with software versions\nProvide reproduction instructions\nUpdate ARM with program metadata\n\n4. Verify reproducibility:\n\nPerform dry run test\nUnpack and install packages\nReproduce analysis results\n\nThe next chapters detail steps 2-4.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#what-goes-in-the-submission",
+    "href": "submission-overview.html#what-goes-in-the-submission",
+    "title": "14  Submission overview",
+    "section": "14.8 What goes in the submission",
+    "text": "14.8 What goes in the submission\nPython packages (programs/py0pkgs.txt):\nAll study-specific Python packages. These contain helper functions used across multiple analyses.\nAnalysis programs (programs/tlf-*.txt):\nIndividual analysis scripts. Each generates one or more TLFs.\nADaM datasets (datasets/*.xpt):\nAnalysis datasets in SAS transport format. Required by CDISC standards.\nDocumentation (datasets/adrg.pdf, datasets/analysis-results-metadata.pdf):\nADRG provides:\n\nPython version and package versions\nReproduction instructions\nPlatform requirements\n\nARM provides:\n\nLinks between programs and outputs\nProgram metadata\nAnalysis descriptions",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#dependencies-and-package-management",
+    "href": "submission-overview.html#dependencies-and-package-management",
+    "title": "14  Submission overview",
+    "section": "14.9 Dependencies and package management",
+    "text": "14.9 Dependencies and package management\nPublic packages:\nPackages available on PyPI (e.g., polars, rtflite) do not need submission. Document versions in ADRG.\nProprietary packages:\nInternal packages (e.g., company-specific utilities) should be included if they are:\n\nHosted in private repositories (not public)\nRequired to run the analyses\nNot available to reviewers\n\nPack proprietary packages together with analysis packages using pkglite.\nPython version:\nSpecify the exact Python version in ADRG. Use uv python pin to lock the version in the project.\nPackage snapshots:\nIf your organization uses a package snapshot (similar to Posit Package Manager), provide the snapshot date in ADRG.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#platform-considerations",
+    "href": "submission-overview.html#platform-considerations",
+    "title": "14  Submission overview",
+    "section": "14.10 Platform considerations",
+    "text": "14.10 Platform considerations\nCross-platform compatibility:\nPython code should work on Windows, macOS, and Linux.\nAvoid:\n\nPlatform-specific paths (C:\\ vs /usr/)\nPlatform-specific system calls\nBinary dependencies that require compilation\n\nUse:\n\npathlib for path handling\nPure Python packages when possible\nWheels for platform-independent distribution\n\nExternal dependencies:\nMinimize external dependencies beyond Python packages.\nIf required (e.g., system libraries), document clearly in ADRG.\n\n\n\n\n\n\nWarning\n\n\n\nEach external dependency increases the complexity of environment recreation. Keep it simple.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-overview.html#next-steps",
+    "href": "submission-overview.html#next-steps",
+    "title": "14  Submission overview",
+    "section": "14.11 Next steps",
+    "text": "14.11 Next steps\nThe following chapters provide detailed instructions for:\n\nSubmission package (Chapter 15): Using pkglite to pack Python packages and analysis programs. Converting Quarto documents to Python scripts. Organizing files in eCTD structure.\nSubmission dryrun (Chapter 16): Simulating the reviewer experience. Unpacking and installing packages. Reproducing analysis results.\n\nWith this foundation, you’re ready to prepare your first Python submission package.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Submission overview</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html",
+    "href": "submission-package.html",
+    "title": "15  Submission package",
+    "section": "",
+    "text": "15.1 Prerequisites\nThis chapter uses two demo repositories:\nAnalysis project: demo-py-esub\nSubmission package: demo-py-ectd\nWe assume paths demo-py-esub/ and demo-py-ectd/ below.\nInstall pkglite:\npkglite is not needed as a project dependency. Use uvx to run without installation:\nOr install globally with pipx:",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#prerequisites",
+    "href": "submission-package.html#prerequisites",
+    "title": "15  Submission package",
+    "section": "",
+    "text": "git clone https://github.com/elong0527/demo-py-esub.git\n\ngit clone https://github.com/elong0527/demo-py-ectd.git\n\n\n\nuvx pkglite --help\n\npipx install pkglite\n\n\n\n\n\n\nNote\n\n\n\nuvx and pipx both run command-line tools in isolated environments. Use uvx for one-off commands or pipx for frequently used tools.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#the-whole-game",
+    "href": "submission-package.html#the-whole-game",
+    "title": "15  Submission package",
+    "section": "15.2 The whole game",
+    "text": "15.2 The whole game\nThe eCTD Module 5 structure for Python submissions:\ndemo-py-ectd/m5/datasets/ectddemo/analysis/adam/\n├── datasets/\n│   ├── adsl.xpt\n│   ├── adae.xpt\n│   ├── ...\n│   ├── adrg.pdf\n│   ├── analysis-results-metadata.pdf\n│   ├── define.xml\n│   └── define2-0-0.xsl\n└── programs/\n    ├── py0pkgs.txt\n    ├── tlf-01-disposition.txt\n    ├── tlf-02-population.txt\n    ├── tlf-03-baseline.txt\n    ├── tlf-04-efficacy.txt\n    ├── tlf-05-ae-summary.txt\n    └── tlf-06-ae-specific.txt\ndatasets/ folder:\n\nADaM datasets in .xpt format (SAS transport)\ndefine.xml metadata (created by Pinnacle 21 or similar tools)\nADRG and ARM documentation\n\nprograms/ folder:\n\npy0pkgs.txt: Packed Python package(s)\ntlf-*.txt: Individual analysis programs\n\nAll files in programs/ must be ASCII text files.\n\n\n\n\n\n\nImportant\n\n\n\nFile naming conventions:\n\nUse lowercase letters only\nNo underscores or special characters\nUse hyphens for separators\nNo executable extensions (.py, .exe)",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#packing-python-packages-with-py-pkglite",
+    "href": "submission-package.html#packing-python-packages-with-py-pkglite",
+    "title": "15  Submission package",
+    "section": "15.3 Packing Python packages with py-pkglite",
+    "text": "15.3 Packing Python packages with py-pkglite\n\n15.3.1 Create .pkgliteignore\nFirst, create a .pkgliteignore file to exclude unnecessary files:\nuvx pkglite use demo-py-esub/\n✓ Created .pkgliteignore in /home/user/demo-py-esub\nThis generates demo-py-esub/.pkgliteignore with default exclusions:\n# Git\n.git/\n\n# OS\n.DS_Store\nThumbs.db\n\n# Python\n__pycache__/\n*.py[cod]\n.venv/\n\n# R\n.Rproj.user/\n.Rhistory\n.RData\n.Ruserdata\n\n# Quarto\n.quarto/\nThe .pkgliteignore file follows gitignore syntax.\nWhat to excluded:\n\nGenerated files (__pycache__, .venv)\nData and outputs (submitted separately)\nVersion control metadata\nQuarto book content (if converted to scripts separately)\n\nWhat to include:\n\nSource code (src/)\nConfiguration (pyproject.toml, uv.lock, .python-version)\nTests (tests/)\nEssential documentation for package installation\n\n\n\npkglite uses content-based file classification. Text files are packed directly. Binary files trigger warnings.\n\n\n15.3.2 Pack the package\nPack the analysis package into a text file:\nuvx pkglite pack demo-py-esub/ \\\n  -o demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt\nPacking demo-py-esub\nReading _quarto.yml\nReading uv.lock\nReading .pkgliteignore\nReading pyproject.toml\nReading index.qmd\nReading README.md\nReading .gitignore\nReading .python-version\nReading analysis/tlf-05-ae-summary.qmd\nReading analysis/tlf-02-population.qmd\nReading analysis/tlf-03-baseline.qmd\nReading analysis/.gitignore\nReading analysis/tlf-06-specific.qmd\nReading analysis/tlf-01-disposition.qmd\nReading analysis/tlf-04-efficacy-ancova.qmd\nReading tests/test_utils.py\nReading tests/__init__.py\nReading output/tlf_ae_specific.rtf\nReading output/tlf_baseline.rtf\nReading output/tlf_population.rtf\nReading output/tlf_disposition.rtf\nReading output/tlf_ae_summary.rtf\nReading output/tlf_efficacy_ancova.rtf\nReading .github/.gitignore\nReading .github/workflows/quarto-publish.yml\nReading data/adae.parquet\nReading data/adlbhy.parquet\nReading data/adsl.parquet\nReading data/adtte.parquet\nReading data/adlbc.parquet\nReading data/adlbh.parquet\nReading data/advs.parquet\nReading src/demo001/baseline.py\nReading src/demo001/population.py\nReading src/demo001/__init__.py\nReading src/demo001/utils.py\nReading src/demo001/safety.py\nReading src/demo001/efficacy.py\n✓ Packed 1 packages into /Users/nanx/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt\nThis creates a single text file containing:\n\npyproject.toml\n.python-version\nuv.lock\nAll files in src/\nAll files in tests/\n\n\n\n15.3.3 Inspect the packed file\nView the first few lines:\nhead -n 20 demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt\n# Generated by py-pkglite: do not edit by hand\n# Use `pkglite unpack` to restore the packages\n\nPackage: demo-py-esub\nFile: _quarto.yml\nFormat: text\nContent:\n  project:\n    type: book\n\n  book:\n    title: \"DEMO-001 Analysis Results\"\n    chapters:\n      - index.qmd\n      - analysis/tlf-01-disposition.qmd\n      - analysis/tlf-02-population.qmd\n      - analysis/tlf-03-baseline.qmd\n      - analysis/tlf-04-efficacy-ancova.qmd\n      - analysis/tlf-05-ae-summary.qmd\n      - analysis/tlf-06-specific.qmd\n\n\n15.3.4 Packing multiple packages\nIf you have dependencies in private repositories:\nuvx pkglite pack internal-utils/ demo-py-esub/ \\\n  -o demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/py0pkgs.txt\nPackages are packed in order specified. Always pack dependencies first (low-level before high-level).\n\n\n\n\n\n\nNote\n\n\n\nUnpacking will restore packages in the same order. Depending on how you reinstall them, the order may matter.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#converting-quarto-to-python-scripts",
+    "href": "submission-package.html#converting-quarto-to-python-scripts",
+    "title": "15  Submission package",
+    "section": "15.4 Converting Quarto to Python scripts",
+    "text": "15.4 Converting Quarto to Python scripts\nAnalysis programs must be plain Python scripts, not Quarto documents.\n\n15.4.1 The conversion workflow\nFor each .qmd file in analysis/:\n\nRender to verify it works\nConvert .qmd to .ipynb (Jupyter notebook)\nConvert .ipynb to .py (Python script)\nClean up comments and formatting\nSave as .txt file\n\n\n\n15.4.2 Automated conversion script\nThis shell script automates the conversion:\n#!/bin/bash\n\ncd demo-py-esub/\nuv sync\nsource .venv/bin/activate\n\nconvert_analysis() {\n    local analysis_name=$1\n    local analysis_path=\"analysis/$analysis_name.qmd\"\n    local output_path=\"$HOME/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs\"\n\n    # Render .qmd to verify it works\n    quarto render \"$analysis_path\" --quiet\n\n    # Convert .qmd to .ipynb\n    quarto convert \"$analysis_path\"\n\n    # Convert .ipynb to .py using nbconvert\n    uvx --from nbconvert jupyter-nbconvert \\\n        --to python \"analysis/$analysis_name.ipynb\" \\\n        --output \"$output_path/$analysis_name.py\"\n\n    # Remove all comments (lines starting with #)\n    awk '!/^#/' \"$output_path/$analysis_name.py\" &gt; temp && \\\n        mv temp \"$output_path/$analysis_name.py\"\n\n    # Consolidate consecutive blank lines\n    awk 'NF {p = 0} !NF {p++} p &lt; 2' \"$output_path/$analysis_name.py\" &gt; temp && \\\n        mv temp \"$output_path/$analysis_name.py\"\n\n    # Clean up intermediate files\n    rm \"analysis/$analysis_name.ipynb\"\n\n    # Format with ruff\n    uvx ruff format \"$output_path/$analysis_name.py\"\n\n    # Rename .py to .txt (no executable extension)\n    mv \"$output_path/$analysis_name.py\" \"$output_path/$analysis_name.txt\"\n}\n\n# Convert all analysis files\nfor qmd_file in analysis/*.qmd; do\n    analysis=$(basename \"$qmd_file\" .qmd)\n    convert_analysis \"$analysis\"\ndone\nSave as convert_analyses.sh and run:\nchmod +x convert_analyses.sh\n./convert_analyses.sh\n\n\n15.4.3 Add reviewer instructions\nOptionally, add a header to each .txt file:\n# Note to Reviewer\n#\n# To rerun this analysis program, please refer to the ADRG appendix.\nThis helps reviewers understand how to execute the code.\nAutomated insertion:\nheader='# Note to Reviewer\n#\n# To rerun this analysis program, please refer to the ADRG appendix.\n#\n'\n\nadd_header() {\n    local file=$1\n    echo \"$header\" | cat - \"$file\" &gt; temp && mv temp \"$file\"\n}\n\nfor txt_file in demo-py-ectd/m5/datasets/ectddemo/analysis/adam/programs/tlf-*.txt; do\n    add_header \"$txt_file\"\ndone",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#verifying-ascii-compliance",
+    "href": "submission-package.html#verifying-ascii-compliance",
+    "title": "15  Submission package",
+    "section": "15.5 Verifying ASCII compliance",
+    "text": "15.5 Verifying ASCII compliance\nNon-ASCII characters (curly quotes, em dashes, Unicode symbols) will cause submission issues. Always verify before submission.\nCurrently, there is no built-in py-pkglite utility to check for ASCII compliance, so contributions are welcome! A example verification script is available in rtflite: verify_ascii.py.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#compliance-checklist",
+    "href": "submission-package.html#compliance-checklist",
+    "title": "15  Submission package",
+    "section": "15.6 Compliance checklist",
+    "text": "15.6 Compliance checklist\nBefore finalizing the submission package:\nFile naming:\n\n- [ ] All filenames are lowercase\n- [ ] No underscores or special characters\n- [ ] No `.py` extensions (use `.txt`)\n\nContent:\n\n- [ ] All `.txt` files are ASCII compliant\n- [ ] Python package unpacks correctly\n- [ ] Analysis programs run without errors\n\nStructure:\n\n- [ ] Files in correct eCTD Module 5 directories\n- [ ] `py0pkgs.txt` in `programs/`\n- [ ] Analysis programs in `programs/`\n- [ ] ADaM datasets in `datasets/`\n\nDocumentation:\n\n- [ ] ADRG includes Python version\n- [ ] ADRG includes package versions\n- [ ] ADRG includes reproduction instructions\n- [ ] ARM links programs to outputs",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#updating-adrg",
+    "href": "submission-package.html#updating-adrg",
+    "title": "15  Submission package",
+    "section": "15.7 Updating ADRG",
+    "text": "15.7 Updating ADRG\nThe ADRG must document the Python environment and provide reproduction instructions.\n\n15.7.1 Section: Macro Programs\nExample content:\n7.x Macro Programs\n\nSubmitted Python programs follow the naming pattern `tlf-##-*.txt`.\nAll study-specific Python functions are saved in the `py0pkgs.txt` file.\n\nThe recommended steps to unpack and use these functions are described in the Appendix.\n\nThe table below contains the software version and program metadata:\n\n**Analysis programs table:**\n\n| Program Name | Output Table | Title |\n|--------------|--------------|-------|\n| tlf-01-disposition.txt | Table 14.1.1 | Disposition of Patients |\n| tlf-02-population.txt | Table 14.1.2 | Analysis Population |\n| tlf-03-baseline.txt | Table 14.1.3 | Baseline Characteristics |\n| tlf-04-efficacy.txt | Table 14.2.1 | Efficacy Analysis (ANCOVA) |\n| tlf-05-ae-summary.txt | Table 14.3.1 | Adverse Events Summary |\n| tlf-06-ae-specific.txt | Table 14.3.2 | Specific Adverse Events |\n\n**Python environment table:**\n\n| Software | Version | Description |\n|----------|---------|-------------|\n| Python | 3.13.9 | Programming language |\n| uv | 0.5.18 | Package manager |\n\n**Python packages table:**\n\n| Package | Version | Description |\n|---------|---------|-------------|\n| polars | 1.35.1 | Data manipulation |\n| plotnine | 0.15.1 | Data visualization |\n| rtflite | 1.0.2 | RTF table generation |\n| statsmodels | 0.14.0 | Statistical models |\n\n**Proprietary packages table:**\n\n| Package | Version | Description |\n|---------|---------|-------------|\n| demo001 | 0.1.0 | DEMO-001 study analysis functions |\n\n\nPackage versions can be extracted from uv.lock or by running uv pip list.\n\n\n15.7.2 Appendix: Reproduction instructions\nProvide step-by-step instructions for reviewers:\nAppendix: Instructions to Execute Analysis Programs\n\n1. Install uv\n\nFollow instructions at https://docs.astral.sh/uv/getting-started/installation/\n\n2. Create working directory\n\nCreate a temporary directory (e.g., `C:/tempwork/` on Windows).\nCopy all files from `m5/datasets/ectddemo/analysis/adam/` to this directory.\n\n3. Unpack and install Python packages\n\nNavigate to the working directory and run:\n\n```bash\nuvx pkglite unpack programs/py0pkgs.txt -o .\n```\n\nThis restores the package structure in the current directory.\n\nInstall the package:\n\n```bash\ncd demo-py-esub\nuv sync\n```\n\nThis installs all dependencies and the demo001 package.\n\n5. Copy data to the correct location\n\nEnsure the `datasets/` folder with ADaM datasets is in the working directory.\n\n6. Execute analysis programs\n\nRun each program in order:\n\n```bash\ncd demo-py-esub\nsource .venv/bin/activate    # macOS/Linux\n# or .venv\\Scripts\\activate  # Windows\n\npython ../programs/tlf-01-disposition.txt\npython ../programs/tlf-02-population.txt\npython ../programs/tlf-03-baseline.txt\npython ../programs/tlf-04-efficacy.txt\npython ../programs/tlf-05-ae-summary.txt\npython ../programs/tlf-06-ae-specific.txt\n```\n\nEach program generates RTF output in the specified output directory.\n\n\n\n\n\n\nNote\n\n\n\nTailor the instructions to your organization’s environment. Include any special configuration (e.g., proxy settings, internal package indexes).",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#updating-arm",
+    "href": "submission-package.html#updating-arm",
+    "title": "15  Submission package",
+    "section": "15.8 Updating ARM",
+    "text": "15.8 Updating ARM\nThe Analysis Results Metadata (ARM) documents the relationship between programs and outputs.\n\n15.8.1 Section 2: Analysis Results Metadata Summary\nExample table:\n\n\n\n\n\n\n\n\n\n\nTable Reference\nTable Title\nProgramming Language\nProgram Name\nInput Files\n\n\n\n\nTable 14.1.1\nDisposition of Patients\nPython\ntlf-01-disposition.txt\nadsl.xpt\n\n\nTable 14.1.2\nAnalysis Population\nPython\ntlf-02-population.txt\nadsl.xpt\n\n\nTable 14.1.3\nBaseline Characteristics\nPython\ntlf-03-baseline.txt\nadsl.xpt\n\n\n\n\n\n15.8.2 Section 3: Analysis Results Metadata Details\nFor each table, provide:\nTable Reference: Table 14.1.1\nAnalysis Result: Disposition counts by treatment group\nAnalysis Reason: Describe study population\nAnalysis Purpose: Primary\nProgramming Statements: (Python version 3.13.9), [programs/tlf-01-disposition.txt]",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#testing-the-submission-package",
+    "href": "submission-package.html#testing-the-submission-package",
+    "title": "15  Submission package",
+    "section": "15.9 Testing the submission package",
+    "text": "15.9 Testing the submission package\nBefore finalizing, test the complete workflow:\n\nUnpack py0pkgs.txt in a clean directory\nInstall packages per ADRG instructions\nRun each analysis program\nVerify outputs match original results\n\nThis is covered in detail in Chapter 16.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-package.html#whats-next",
+    "href": "submission-package.html#whats-next",
+    "title": "15  Submission package",
+    "section": "15.10 What’s next",
+    "text": "15.10 What’s next\nYou’ve learned how to prepare Python submission packages.\nThe next chapter covers dry run testing:\n\nSimulating the reviewer workflow\nUnpacking and installing from text files\nReproducing analysis results\nVerifying compliance\n\nDry run testing ensures your submission package works correctly.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Submission package</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html",
+    "href": "submission-dryrun.html",
+    "title": "16  Submission dryrun",
+    "section": "",
+    "text": "16.1 Why dry run testing\nBefore submitting to regulatory agencies, you must verify that reviewers can reproduce your analysis.\nA dry run test simulates the reviewer workflow:\nThis catches issues before submission:",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#why-dry-run-testing",
+    "href": "submission-dryrun.html#why-dry-run-testing",
+    "title": "16  Submission dryrun",
+    "section": "",
+    "text": "Start with a clean environment\nFollow ADRG instructions exactly\nUnpack and install packages\nRun analysis programs\nVerify outputs match original results\n\n\n\nMissing dependencies\nIncorrect file paths\nPlatform-specific code\nDocumentation gaps\nVersion mismatches\n\n\n\n\n\n\n\nImportant\n\n\n\nDry run testing is not optional. It’s the only way to ensure your submission package actually works.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#prerequisites",
+    "href": "submission-dryrun.html#prerequisites",
+    "title": "16  Submission dryrun",
+    "section": "16.2 Prerequisites",
+    "text": "16.2 Prerequisites\nYou need the eCTD submission package prepared in Chapter 15:\ngit clone https://github.com/elong0527/demo-py-ectd.git\ncd demo-py-ectd\nThe structure:\ndemo-py-ectd/m5/datasets/ectddemo/analysis/adam/\n├── datasets/\n│   ├── *.xpt\n│   ├── adrg.pdf\n│   └── analysis-results-metadata.pdf\n└── programs/\n    ├── py0pkgs.txt\n    └── tlf-*.txt",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#setting-up-the-test-environment",
+    "href": "submission-dryrun.html#setting-up-the-test-environment",
+    "title": "16  Submission dryrun",
+    "section": "16.3 Setting up the test environment",
+    "text": "16.3 Setting up the test environment\n\n16.3.1 Create a clean directory\nSimulate a reviewer’s fresh environment:\n# Create temporary directory\nmkdir ~/dryrun-test\ncd ~/dryrun-test\n\n# Copy submission materials\ncp -r ~/demo-py-ectd/m5/datasets/ectddemo/analysis/adam/* .\n\n# Verify structure\nls -R\nYou should see:\ndatasets programs\n\n./datasets:\nadadas.xpt      adlbc.xpt       adlbhpv.xpt     adrg.pdf        advs.xpt\nadae.xpt        adlbcpv.xpt     adlbhy.xpt      adsl.xpt        define.xml\nadcibc.xpt      adlbh.xpt       adnpix.xpt      adtte.xpt       define2-0-0.xsl\n\n./programs:\npy0pkgs.txt                tlf-03-baseline.txt        tlf-06-specific.txt\ntlf-01-disposition.txt     tlf-04-efficacy-ancova.txt\ntlf-02-population.txt      tlf-05-ae-summary.txt\n\n\n\n\n\n\nNote\n\n\n\nUse a completely separate directory, not your development environment. This ensures you are testing from a clean state.\n\n\n\n\n16.3.2 Install uv\nFollow the ADRG instructions exactly.\n# Verify\nuv --version\nuv 0.9.7 (0adb44480 2025-10-30)",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#unpacking-the-python-package",
+    "href": "submission-dryrun.html#unpacking-the-python-package",
+    "title": "16  Submission dryrun",
+    "section": "16.4 Unpacking the Python package",
+    "text": "16.4 Unpacking the Python package\n\n16.4.1 Unpack with py-pkglite\nUse pkglite to restore the package structure:\nuvx pkglite unpack programs/py0pkgs.txt -o .\nUnpacking demo-py-esub\nWriting _quarto.yml\nWriting uv.lock\nWriting .pkgliteignore\nWriting pyproject.toml\nWriting index.qmd\nWriting README.md\nWriting .gitignore\nWriting .python-version\nWriting analysis/tlf-05-ae-summary.qmd\nWriting analysis/tlf-02-population.qmd\nWriting analysis/tlf-03-baseline.qmd\nWriting analysis/.gitignore\nWriting analysis/tlf-06-specific.qmd\nWriting analysis/tlf-01-disposition.qmd\nWriting analysis/tlf-04-efficacy-ancova.qmd\nWriting tests/test_utils.py\nWriting tests/__init__.py\nWriting output/tlf_ae_specific.rtf\nWriting output/tlf_baseline.rtf\nWriting output/tlf_population.rtf\nWriting output/tlf_disposition.rtf\nWriting output/tlf_ae_summary.rtf\nWriting output/tlf_efficacy_ancova.rtf\nWriting .github/.gitignore\nWriting .github/workflows/quarto-publish.yml\nWriting data/adae.parquet\nWriting data/adlbhy.parquet\nWriting data/adsl.parquet\nWriting data/adtte.parquet\nWriting data/adlbc.parquet\nWriting data/adlbh.parquet\nWriting data/advs.parquet\nWriting src/demo001/baseline.py\nWriting src/demo001/population.py\nWriting src/demo001/__init__.py\nWriting src/demo001/utils.py\nWriting src/demo001/safety.py\nWriting src/demo001/efficacy.py\n✓ Unpacked 1 packages from programs/py0pkgs.txt into .\nThis should create:\ndemo-py-esub\n├── _quarto.yml\n├── analysis\n│   ├── tlf-01-disposition.qmd\n│   ├── tlf-02-population.qmd\n│   ├── tlf-03-baseline.qmd\n│   ├── tlf-04-efficacy-ancova.qmd\n│   ├── tlf-05-ae-summary.qmd\n│   └── tlf-06-specific.qmd\n├── data\n│   ├── adae.parquet\n│   ├── adlbc.parquet\n│   ├── adlbh.parquet\n...\nVerify the structure:\nls -la demo-py-esub/\nOr:\ntree demo-py-esub/\n\n\nThe unpacked directory name comes from the packed package. It should match the original analysis project name.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#installing-dependencies",
+    "href": "submission-dryrun.html#installing-dependencies",
+    "title": "16  Submission dryrun",
+    "section": "16.5 Installing dependencies",
+    "text": "16.5 Installing dependencies\n\n16.5.1 Sync environment\nNavigate to the unpacked package and install:\ncd demo-py-esub\nuv sync\nThis creates:\n\n.venv/ virtual environment\nInstalls all dependencies from uv.lock\nInstalls the demo001 package in editable mode\n\n\n\n16.5.2 Verify installation\nCheck Python version in virtual environment:\nsource .venv/bin/activate  # macOS/Linux\n# .venv\\Scripts\\activate   # Windows\n\npython --version\nList installed packages:\nuv pip list\nVerify the demo001 package:\npython -c \"import demo001; print(demo001.__version__)\"\nThe output should be 0.1.0.\n\n\n\n\n\n\nNote\n\n\n\nIf any imports fail, check:\n\nPython version matches .python-version\nAll dependencies installed from uv.lock\nPackage installed in editable mode",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#running-analysis-programs",
+    "href": "submission-dryrun.html#running-analysis-programs",
+    "title": "16  Submission dryrun",
+    "section": "16.6 Running analysis programs",
+    "text": "16.6 Running analysis programs\n\n16.6.1 Execute programs\nRun each analysis program:\n# Run first program\npython ../programs/tlf-01-disposition.txt\nYou should see:\n/home/user/dryrun-test/demo-py-esub/output/tlf_disposition.rtf\nThe program should:\n\nLoad data from ../datasets/\nPerform analysis\nGenerate RTF output in output/\n\nRun remaining programs:\npython ../programs/tlf-02-population.txt\npython ../programs/tlf-03-baseline.txt\npython ../programs/tlf-04-efficacy-ancova.txt\npython ../programs/tlf-05-ae-summary.txt\npython ../programs/tlf-06-specific.txt\n\n\n16.6.2 Verify outputs\nCheck that all RTF files were created:\nls -lh output/\ntotal 456\n-rw-r--r--@ 1 user  staff   170K Nov  6 21:59 tlf_ae_specific.rtf\n-rw-r--r--@ 1 user  staff   9.6K Nov  6 21:59 tlf_ae_summary.rtf\n-rw-r--r--@ 1 user  staff   7.6K Nov  6 21:58 tlf_baseline.rtf\n-rw-r--r--@ 1 user  staff    14K Nov  6 21:57 tlf_disposition.rtf\n-rw-r--r--@ 1 user  staff   8.7K Nov  6 21:59 tlf_efficacy_ancova.rtf\n-rw-r--r--@ 1 user  staff   4.0K Nov  6 21:58 tlf_population.rtf",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#comparing-outputs",
+    "href": "submission-dryrun.html#comparing-outputs",
+    "title": "16  Submission dryrun",
+    "section": "16.7 Comparing outputs",
+    "text": "16.7 Comparing outputs\n\n16.7.1 Manual comparison\nOpen RTF files in a word processor and compare with original outputs, check if:\n\nTable structure matches\nNumbers are identical\nFormatting is correct\nHeaders and footers present\n\nSince RTF files are plaintext files, you can also automate this comparison with diff-based workflows.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#testing-checklist",
+    "href": "submission-dryrun.html#testing-checklist",
+    "title": "16  Submission dryrun",
+    "section": "16.8 Testing checklist",
+    "text": "16.8 Testing checklist\nComplete dry run test checklist:\nEnvironment setup:\n\n- [ ] Clean directory created\n- [ ] Correct Python version installed\n- [ ] uv installed and working\n\nPackage restoration:\n\n- [ ] `py0pkgs.txt` unpacked successfully\n- [ ] Package structure restored\n- [ ] All files present\n\nDependency installation:\n\n- [ ] `uv sync` completed without errors\n- [ ] All packages installed\n- [ ] Correct package versions\n\nProgram execution:\n\n- [ ] All analysis programs run without errors\n- [ ] RTF outputs generated\n- [ ] No missing data errors\n\nOutput verification:\n\n- [ ] All expected outputs present\n- [ ] Numbers match original results\n- [ ] Tables formatted correctly\n- [ ] No corruption or errors in RTF files\n\nDocumentation:\n\n- [ ] ADRG instructions followed successfully\n- [ ] No undocumented steps required\n- [ ] Instructions are clear and complete\nFor projects with many programs, you can automate the dry run with a shell script. We will leave that as an exercise for the reader.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#best-practices",
+    "href": "submission-dryrun.html#best-practices",
+    "title": "16  Submission dryrun",
+    "section": "16.9 Best practices",
+    "text": "16.9 Best practices\nTest early, test often:\nDon’t wait until the last minute. Run dry run tests throughout development.\nTest on fresh systems:\nUse virtual machines or Docker containers for truly clean environments.\nDocument everything:\nRecord commands, outputs, and any issues encountered.\nVersion control dry run scripts:\nKeep test scripts in version control alongside analysis code.\nAutomate where possible:\nAutomated tests are faster and more reliable than manual testing.\nTest on reviewer platforms:\nIf you know reviewers use Windows, test on Windows.",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
+    ]
+  },
+  {
+    "objectID": "submission-dryrun.html#whats-next",
+    "href": "submission-dryrun.html#whats-next",
+    "title": "16  Submission dryrun",
+    "section": "16.10 What’s next",
+    "text": "16.10 What’s next\nCongratulations! You’ve learned the complete workflow for Python-based clinical submissions. You’re now ready to apply these practices to real clinical trial projects. The Python clinical reporting ecosystem continues to evolve. Stay engaged with the community to learn best practices and contribute improvements. Here we list the important resources to explore:\nRegulatory guidance:\n\nFDA Study Data Technical Conformance Guide\neCTD specifications\n\nTechnical documentation:\n\nrtflite documentation\npkglite for Python documentation\nuv documentation\nPython Packaging User Guide\n\nExample repositories:\n\ndemo-py-esub: Analysis package\ndemo-py-ectd: Submission package",
+    "crumbs": [
+      "eCTD submission",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Submission dryrun</span>"
     ]
   },
   {

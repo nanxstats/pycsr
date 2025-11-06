@@ -8,7 +8,7 @@
 
 <meta name="description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 
-<title>1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission</title>
+<title>11&nbsp; Packaging overview – Python for Clinical Study Reports and Submission</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./env-uv.html" rel="next">
-<link href="./preface.html" rel="prev">
+<link href="./pkg-structure.html" rel="next">
+<link href="./tlf-efficacy-ancova.html" rel="prev">
 <link href="./assets/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -109,13 +109,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta property="og:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta property="og:title" content="11&nbsp; Packaging overview – Python for Clinical Study Reports and Submission">
 <meta property="og:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta property="og:image" content="https://pycsr.org/assets/preview.png">
 <meta property="og:site_name" content="Python for Clinical Study Reports and Submission">
 <meta property="og:image:height" content="640">
 <meta property="og:image:width" content="1280">
-<meta name="twitter:title" content="1&nbsp; Python developer setup – Python for Clinical Study Reports and Submission">
+<meta name="twitter:title" content="11&nbsp; Packaging overview – Python for Clinical Study Reports and Submission">
 <meta name="twitter:description" content="Learn how to prepare tables, listings, and figures for clinical study report and submit to regulatory agencies, the essential part of clinical trial development.">
 <meta name="twitter:image" content="https://pycsr.org/assets/preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pkg-overview.html">Analysis package</a></li><li class="breadcrumb-item"><a href="./pkg-overview.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Packaging overview</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./env-dev.html" class="sidebar-item-text sidebar-link active">
+  <a href="./env-dev.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></span></a>
   </div>
 </li>
@@ -289,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pkg-overview.html" class="sidebar-item-text sidebar-link">
+  <a href="./pkg-overview.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Packaging overview</span></span></a>
   </div>
 </li>
@@ -352,35 +352,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#development-environments" id="toc-development-environments" class="nav-link active" data-scroll-target="#development-environments"><span class="header-section-number">1.1</span> Development environments</a>
-  <ul class="collapse">
-  <li><a href="#github-codespaces" id="toc-github-codespaces" class="nav-link" data-scroll-target="#github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</a></li>
-  <li><a href="#positron" id="toc-positron" class="nav-link" data-scroll-target="#positron"><span class="header-section-number">1.1.2</span> Positron</a></li>
-  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code"><span class="header-section-number">1.1.3</span> VS Code</a></li>
-  </ul></li>
-  <li><a href="#vs-code-settings" id="toc-vs-code-settings" class="nav-link" data-scroll-target="#vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</a>
-  <ul class="collapse">
-  <li><a href="#unicode-highlighting" id="toc-unicode-highlighting" class="nav-link" data-scroll-target="#unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</a></li>
-  </ul></li>
-  <li><a href="#terminal-setup" id="toc-terminal-setup" class="nav-link" data-scroll-target="#terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</a>
-  <ul class="collapse">
-  <li><a href="#shell" id="toc-shell" class="nav-link" data-scroll-target="#shell"><span class="header-section-number">1.3.1</span> Shell</a></li>
-  <li><a href="#terminal-emulator" id="toc-terminal-emulator" class="nav-link" data-scroll-target="#terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</a></li>
-  </ul></li>
-  <li><a href="#ai-coding-assistants" id="toc-ai-coding-assistants" class="nav-link" data-scroll-target="#ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</a>
-  <ul class="collapse">
-  <li><a href="#effective-use-of-ai-tools" id="toc-effective-use-of-ai-tools" class="nav-link" data-scroll-target="#effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</a></li>
-  </ul></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.5</span> What’s next</a></li>
+  <li><a href="#what-is-an-analysis-package" id="toc-what-is-an-analysis-package" class="nav-link active" data-scroll-target="#what-is-an-analysis-package"><span class="header-section-number">11.1</span> What is an analysis package</a></li>
+  <li><a href="#why-use-an-analysis-package" id="toc-why-use-an-analysis-package" class="nav-link" data-scroll-target="#why-use-an-analysis-package"><span class="header-section-number">11.2</span> Why use an analysis package</a></li>
+  <li><a href="#analysis-package-vs-standard-package" id="toc-analysis-package-vs-standard-package" class="nav-link" data-scroll-target="#analysis-package-vs-standard-package"><span class="header-section-number">11.3</span> Analysis package vs standard package</a></li>
+  <li><a href="#key-components" id="toc-key-components" class="nav-link" data-scroll-target="#key-components"><span class="header-section-number">11.4</span> Key components</a></li>
+  <li><a href="#demo-project" id="toc-demo-project" class="nav-link" data-scroll-target="#demo-project"><span class="header-section-number">11.5</span> Demo project</a></li>
+  <li><a href="#workflow-overview" id="toc-workflow-overview" class="nav-link" data-scroll-target="#workflow-overview"><span class="header-section-number">11.6</span> Workflow overview</a></li>
+  <li><a href="#benefits-of-this-approach" id="toc-benefits-of-this-approach" class="nav-link" data-scroll-target="#benefits-of-this-approach"><span class="header-section-number">11.7</span> Benefits of this approach</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">11.8</span> What’s next</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/pkg-overview.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/pkg-overview.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./env-dev.html">Environment and toolchain</a></li><li class="breadcrumb-item"><a href="./env-dev.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pkg-overview.html">Analysis package</a></li><li class="breadcrumb-item"><a href="./pkg-overview.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Packaging overview</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Python developer setup</span></h1>
+<h1 class="title"><span id="sec-pkg-overview" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Packaging overview</span></span></h1>
 </div>
 
 
@@ -407,137 +395,196 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Set up a productive Python development environment for clinical study reporting. Learn about IDE options, essential extensions, and workflow tools.</p>
+<p>Understand the concept of analysis packages for clinical study reports. Learn how Python packages provide structure, reproducibility, and compliance for regulatory submissions.</p>
 </div>
 </div>
-<section id="development-environments" class="level2 page-columns page-full" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="development-environments"><span class="header-section-number">1.1</span> Development environments</h2>
-<p>For this book, you have several options for your development environment. Choose the one that best fits your current setup and constraints.</p>
-<section id="github-codespaces" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="github-codespaces"><span class="header-section-number">1.1.1</span> GitHub Codespaces</h3>
-<p>GitHub Codespaces provides a cloud-based development environment with everything pre-configured. This is the easiest option if you don’t have a local Python setup.</p>
-<p>We will provide a dev container configuration that includes:</p>
+<section id="what-is-an-analysis-package" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="what-is-an-analysis-package"><span class="header-section-number">11.1</span> What is an analysis package</h2>
+<p>An <strong>analysis package</strong> is a Python package designed specifically to organize analysis scripts and code for a clinical trial project.</p>
+<p>Unlike general-purpose Python packages distributed on PyPI, analysis packages serve as:</p>
 <ul>
-<li>Python with uv pre-installed.</li>
-<li>All necessary VS Code extensions.</li>
-<li>Consistent environment across all readers, useable in the web browser.</li>
+<li>Project containers for clinical trial deliverables</li>
+<li>Reproducible environments for analyses</li>
+<li>Submission-ready structures for regulatory review</li>
 </ul>
-<p>To use Codespaces, simply click the “Code” button in the repository and select “Create codespace on main”.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Codespaces currently offers <a href="https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-and-billed-use-by-personal-accounts">120 hours of free compute time per month</a> for personal accounts. This is more than sufficient for this book.</p>
-</div>
-</div>
-</section>
-<section id="positron" class="level3 page-columns page-full" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="positron"><span class="header-section-number">1.1.2</span> Positron</h3>
-<p>Positron is Posit’s next-generation data science IDE, built on Code OSS (the open source core of VS Code), with specific improvements for R and Python development.</p>
-<p>Key features for Python work:</p>
+<p>Think of it as combining:</p>
 <ul>
-<li>Native notebook support.</li>
-<li>Interactive variable explorer.</li>
-<li>Integrated plot viewer.</li>
-<li>Built-in data viewer for DataFrames.</li>
+<li>Python package structure (for code organization)</li>
+<li>Quarto project (for report generation)</li>
+<li>Regulatory requirements (for eCTD submission)</li>
+</ul>
+</section>
+<section id="why-use-an-analysis-package" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="why-use-an-analysis-package"><span class="header-section-number">11.2</span> Why use an analysis package</h2>
+<p>Clinical trial projects have unique needs that standard Python projects may not address:</p>
+<p><strong>Regulatory compliance:</strong></p>
+<ul>
+<li>FDA requires submission of analysis programs in ASCII text format</li>
+<li>Reviewers must be able to reproduce your results</li>
+<li>Documentation must explain the analysis process</li>
+</ul>
+<p><strong>Team collaboration:</strong></p>
+<ul>
+<li>Multiple statisticians and programmers work on hundreds of tables</li>
+<li>Consistent structure reduces communication overhead</li>
+<li>Shared functions avoid code duplication</li>
+</ul>
+<p><strong>Long-term maintenance:</strong></p>
+<ul>
+<li>Analysis must be reproducible years later</li>
+<li>Environment must be reconstructable</li>
+<li>Code and data provenance must be clear</li>
+</ul>
+<p>The Python package structure addresses these needs systematically.</p>
+</section>
+<section id="analysis-package-vs-standard-package" class="level2 page-columns page-full" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="analysis-package-vs-standard-package"><span class="header-section-number">11.3</span> Analysis package vs standard package</h2>
+<p>Python packages serve different purposes depending on context.</p>
+<p><strong>Standard Python package</strong> (for PyPI):</p>
+<ul>
+<li>Purpose: Share reusable functionality</li>
+<li>Audience: General Python community</li>
+<li>Scope: Generic, broadly applicable functions</li>
+<li>Example: <code>polars</code>, <code>plotnine</code>, <code>rtflite</code></li>
+</ul>
+<p><strong>Analysis package</strong> (for submissions):</p>
+<ul>
+<li>Purpose: Organize trial-specific analyses</li>
+<li>Audience: Study team and regulators</li>
+<li>Scope: Study-specific tables, listings, figures</li>
+<li>Example: <code>demo001</code> (DEMO-001 study analysis)</li>
 </ul>
 
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
-<p>Positron uses Open VSX instead of the Microsoft VS Code marketplace. Most essential Python extensions are available, but the selection is more limited.</p>
-</div></div><p>Download Positron from <a href="https://positron.posit.co/" class="uri">https://positron.posit.co/</a>.</p>
-</section>
-<section id="vs-code" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="vs-code"><span class="header-section-number">1.1.3</span> VS Code</h3>
-<p>Visual Studio Code remains the most popular choice for Python development. It offers a rich ecosystem of extensions and tools.</p>
-<p>Essential extensions for this book:</p>
+<p>In R terms, think of an analysis package like a project-specific R package (e.g., esubdemo) versus a CRAN package (e.g., dplyr).</p>
+</div></div></section>
+<section id="key-components" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="key-components"><span class="header-section-number">11.4</span> Key components</h2>
+<p>A typical analysis package contains:</p>
+<p><strong>Python package structure:</strong></p>
 <ul>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python</a>: Core Python language support.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance">Pylance</a>: Fast, feature-rich Python language server.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff">Ruff</a>: Lightning-fast linting and formatting.</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml">Even Better TOML</a>: Syntax highlighting for TOML files (<code>pyproject.toml</code>).</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">Quarto</a>: Authoring support for Quarto documents.</li>
+<li><code>pyproject.toml</code>: Project metadata and dependencies</li>
+<li><code>src/studyname/</code>: Study-specific Python functions</li>
+<li><code>tests/</code>: Validation and testing code</li>
+<li><code>uv.lock</code>: Exact dependency versions</li>
 </ul>
-</section>
-</section>
-<section id="vs-code-settings" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="vs-code-settings"><span class="header-section-number">1.2</span> VS Code settings</h2>
-<section id="unicode-highlighting" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="unicode-highlighting"><span class="header-section-number">1.2.1</span> Unicode highlighting</h3>
-<p>Python allows Unicode characters in strings and identifiers. AI coding tools might also generate code with non-ASCII characters. For regulatory work, you should highlight non-ASCII characters to find these hidden issues early and avoid problems in submissions.</p>
-<p><strong>Via Settings UI:</strong></p>
-<ol type="1">
-<li>Open Command Palette (Cmd/Ctrl + Shift + P)</li>
-<li>Search for “Preferences: Open Settings (UI)”</li>
-<li>Search for “Unicode Highlight”</li>
-<li>Enable “Non Basic ASCII” for both trusted and untrusted workspaces</li>
-</ol>
-<p><strong>Via Settings JSON:</strong></p>
-<p>Open Command Palette with Cmd/Ctrl + Shift + P, select “Preferences: Open User Settings (JSON)”, then add:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="er">"editor.unicodeHighlight.nonBasicASCII":</span> <span class="er">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This highlights characters like curly quotes, em dashes, and other non-ASCII characters that could cause issues in eCTD submission packages.</p>
-</section>
-</section>
-<section id="terminal-setup" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="terminal-setup"><span class="header-section-number">1.3</span> Terminal setup</h2>
-<p>For local development, you will interact with uv and Quarto through the terminal.</p>
-<section id="shell" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="shell"><span class="header-section-number">1.3.1</span> Shell</h3>
-<p>Any modern shell works well:</p>
+<p><strong>Analysis content:</strong></p>
 <ul>
-<li>macOS/Linux: zsh (default on macOS), bash</li>
-<li>Windows: PowerShell, Windows Terminal</li>
+<li><code>analysis/</code>: Quarto documents for TLFs</li>
+<li><code>data/</code>: ADaM datasets (input)</li>
+<li><code>output/</code>: Generated tables, listings, figures (output)</li>
 </ul>
-</section>
-<section id="terminal-emulator" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="terminal-emulator"><span class="header-section-number">1.3.2</span> Terminal emulator</h3>
-<p>If you are on macOS and want a faster terminal experience, consider <a href="https://ghostty.org/">Ghostty</a>. It is written in Zig for exceptional performance.</p>
-</section>
-</section>
-<section id="ai-coding-assistants" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="ai-coding-assistants"><span class="header-section-number">1.4</span> AI coding assistants</h2>
-<p>Modern agentic AI coding tools can accelerate statistical and clinical coding tasks, especially for popular programming languages like Python. We encourage you to use them, for example:</p>
+<p><strong>Documentation:</strong></p>
 <ul>
-<li>Codex (command-line interface, VS Code extension)</li>
-<li>Claude Code (command-line interface)</li>
-<li>Cursor (AI-first editor)</li>
-<li>GitHub Copilot (VS Code extension)</li>
+<li><code>README.md</code>: Project overview</li>
+<li><code>_quarto.yml</code>: Quarto book configuration</li>
 </ul>
-<section id="effective-use-of-ai-tools" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="effective-use-of-ai-tools"><span class="header-section-number">1.4.1</span> Effective use of AI tools</h3>
-<p>To use AI assistants effectively for programming, you need:</p>
-<p><strong>Product manager mindset</strong>: Know exactly what you want to build. In clinical reporting, this means understanding the table shell, statistical method, and regulatory requirements.</p>
-<p><strong>Software architect mindset</strong>: Evaluate model outputs critically. Can you spot issues with data transformations? Do the statistical computations match the statistical analysis plan? Is the output format submission-ready?</p>
-<div class="callout callout-style-default callout-warning callout-titled">
+<p>This structure supports the complete lifecycle: development, validation, and submission.</p>
+</section>
+<section id="demo-project" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="demo-project"><span class="header-section-number">11.5</span> Demo project</h2>
+<p>This book uses <a href="https://github.com/elong0527/demo-py-esub"><code>demo-py-esub</code></a> as the demonstration project.</p>
+<p>The project shows how to:</p>
+<ul>
+<li>Organize analysis code as a Python package</li>
+<li>Generate clinical study reports with Quarto</li>
+<li>Prepare deliverables for eCTD submission</li>
+</ul>
+<p>Clone the project to follow along:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/elong0527/demo-py-esub.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> demo-py-esub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The project generates six TLFs:</p>
+<ul>
+<li>Disposition of patients</li>
+<li>Study population</li>
+<li>Baseline characteristics</li>
+<li>Efficacy analysis (ANCOVA)</li>
+<li>Adverse events summary</li>
+<li>Adverse events (specific)</li>
+</ul>
+<p>These cover the most common clinical reporting scenarios.</p>
+</section>
+<section id="workflow-overview" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="workflow-overview"><span class="header-section-number">11.6</span> Workflow overview</h2>
+<p>The typical workflow for an analysis package:</p>
+<p><strong>1. Project setup:</strong></p>
+<ul>
+<li>Initialize Python package with uv</li>
+<li>Configure Quarto for report generation</li>
+<li>Set up version control with Git</li>
+</ul>
+<p><strong>2. Development:</strong></p>
+<ul>
+<li>Write analysis functions in <code>src/</code></li>
+<li>Create Quarto documents in <code>analysis/</code></li>
+<li>Generate TLFs in <code>output/</code></li>
+</ul>
+<p><strong>3. Validation:</strong></p>
+<ul>
+<li>Write tests in <code>tests/</code></li>
+<li>Perform independent review</li>
+<li>Verify outputs match specifications</li>
+</ul>
+<p><strong>4. Submission:</strong></p>
+<ul>
+<li>Pack package into text files with pkglite</li>
+<li>Place files in eCTD Module 5 structure</li>
+<li>Update ADRG with reproduction instructions</li>
+</ul>
+<p>The following chapters detail each stage.</p>
+</section>
+<section id="benefits-of-this-approach" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="benefits-of-this-approach"><span class="header-section-number">11.7</span> Benefits of this approach</h2>
+<p>Using Python packages for clinical analysis provides:</p>
+<p><strong>Consistency:</strong></p>
+<ul>
+<li>Standard structure across all projects</li>
+<li>Team members know where to find code and outputs</li>
+<li>Reduces onboarding time for new projects</li>
+</ul>
+<p><strong>Automation:</strong></p>
+<ul>
+<li>uv manages dependencies automatically</li>
+<li>Quarto renders all reports in batch</li>
+<li>Testing frameworks verify correctness</li>
+</ul>
+<p><strong>Reproducibility:</strong></p>
+<ul>
+<li><code>uv.lock</code> ensures exact dependency versions</li>
+<li><code>.python-version</code> specifies Python version</li>
+<li>Repository snapshots freeze package ecosystem</li>
+</ul>
+<p><strong>Compliance:</strong></p>
+<ul>
+<li>Built-in documentation with docstrings</li>
+<li>Testing infrastructure for validation</li>
+<li>Standard structure simplifies review</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>AI tools are assistants, not replacements for domain expertise. Always verify outputs against statistical analysis plans and regulatory guidance.</p>
+<p>For regulatory submissions, reproducibility is not optional. The FDA expects to reconstruct your exact environment and verify your results.</p>
 </div>
 </div>
 </section>
-</section>
-<section id="whats-next" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">1.5</span> What’s next</h2>
-<p>With your development environment configured, you are ready to learn about uv, the modern project management tool for Python.</p>
-<p>In the next chapter, we will cover:</p>
+<section id="whats-next" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">11.8</span> What’s next</h2>
+<p>The next chapters cover:</p>
 <ul>
-<li>Creating and managing Python projects.</li>
-<li>Pinning Python versions.</li>
-<li>Installing dependencies.</li>
-<li>Understanding the modern Python packaging ecosystem.</li>
+<li><strong>Package structure</strong>: Organizing code and content (<a href="pkg-structure.html" class="quarto-xref"><span>Chapter 12</span></a>)</li>
+<li><strong>Project management</strong>: Git-centric workflows for collaboration (<a href="pkg-management.html" class="quarto-xref"><span>Chapter 13</span></a>)</li>
+<li><strong>Submission overview</strong>: eCTD requirements and pkglite (<a href="submission-overview.html" class="quarto-xref"><span>Chapter 14</span></a>)</li>
+<li><strong>Submission package</strong>: Packing for eCTD Module 5 (<a href="submission-package.html" class="quarto-xref"><span>Chapter 15</span></a>)</li>
+<li><strong>Submission dryrun</strong>: Verifying reproducibility (<a href="submission-dryrun.html" class="quarto-xref"><span>Chapter 16</span></a>)</li>
 </ul>
+<p>With this foundation, you’re ready to learn how to manage analysis packages effectively.</p>
 
 
 </section>
@@ -945,13 +992,13 @@ Warning
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./preface.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="./tlf-efficacy-ancova.html" class="pagination-link" aria-label="ANCOVA efficacy analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">ANCOVA efficacy analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./env-uv.html" class="pagination-link" aria-label="Python projects with uv">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python projects with uv</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./pkg-structure.html" class="pagination-link" aria-label="Package structure">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Package structure</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -960,4 +1007,4 @@ Warning
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/env-dev.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/env-dev.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/nanxstats/pycsr/edit/main/pkg-overview.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nanxstats/pycsr/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/nanxstats/pycsr/blob/main/pkg-overview.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
