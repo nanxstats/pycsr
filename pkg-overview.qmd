@@ -1,0 +1,198 @@
+# Packaging overview {#sec-pkg-overview}
+
+::: callout-tip
+## Objective
+
+Understand the concept of analysis packages for clinical study reports.
+Learn how Python packages provide structure, reproducibility, and compliance for regulatory submissions.
+:::
+
+## What is an analysis package
+
+An **analysis package** is a Python package designed specifically to organize analysis scripts and code for a clinical trial project.
+
+Unlike general-purpose Python packages distributed on PyPI, analysis packages serve as:
+
+- Project containers for clinical trial deliverables
+- Reproducible environments for analyses
+- Submission-ready structures for regulatory review
+
+Think of it as combining:
+
+- Python package structure (for code organization)
+- Quarto project (for report generation)
+- Regulatory requirements (for eCTD submission)
+
+## Why use an analysis package
+
+Clinical trial projects have unique needs that standard Python projects may not address:
+
+**Regulatory compliance:**
+
+- FDA requires submission of analysis programs in ASCII text format
+- Reviewers must be able to reproduce your results
+- Documentation must explain the analysis process
+
+**Team collaboration:**
+
+- Multiple statisticians and programmers work on hundreds of tables
+- Consistent structure reduces communication overhead
+- Shared functions avoid code duplication
+
+**Long-term maintenance:**
+
+- Analysis must be reproducible years later
+- Environment must be reconstructable
+- Code and data provenance must be clear
+
+The Python package structure addresses these needs systematically.
+
+## Analysis package vs standard package
+
+Python packages serve different purposes depending on context.
+
+**Standard Python package** (for PyPI):
+
+- Purpose: Share reusable functionality
+- Audience: General Python community
+- Scope: Generic, broadly applicable functions
+- Example: `polars`, `plotnine`, `rtflite`
+
+**Analysis package** (for submissions):
+
+- Purpose: Organize trial-specific analyses
+- Audience: Study team and regulators
+- Scope: Study-specific tables, listings, figures
+- Example: `demo001` (DEMO-001 study analysis)
+
+::: aside
+In R terms, think of an analysis package like a project-specific R package
+(e.g., esubdemo) versus a CRAN package (e.g., dplyr).
+:::
+
+## Key components
+
+A typical analysis package contains:
+
+**Python package structure:**
+
+- `pyproject.toml`: Project metadata and dependencies
+- `src/studyname/`: Study-specific Python functions
+- `tests/`: Validation and testing code
+- `uv.lock`: Exact dependency versions
+
+**Analysis content:**
+
+- `analysis/`: Quarto documents for TLFs
+- `data/`: ADaM datasets (input)
+- `output/`: Generated tables, listings, figures (output)
+
+**Documentation:**
+
+- `README.md`: Project overview
+- `_quarto.yml`: Quarto book configuration
+
+This structure supports the complete lifecycle: development, validation, and submission.
+
+## Demo project
+
+This book uses [`demo-py-esub`](https://github.com/elong0527/demo-py-esub) as the demonstration project.
+
+The project shows how to:
+
+- Organize analysis code as a Python package
+- Generate clinical study reports with Quarto
+- Prepare deliverables for eCTD submission
+
+Clone the project to follow along:
+
+```bash
+git clone https://github.com/elong0527/demo-py-esub.git
+cd demo-py-esub
+```
+
+The project generates six TLFs:
+
+- Disposition of patients
+- Study population
+- Baseline characteristics
+- Efficacy analysis (ANCOVA)
+- Adverse events summary
+- Adverse events (specific)
+
+These cover the most common clinical reporting scenarios.
+
+## Workflow overview
+
+The typical workflow for an analysis package:
+
+**1. Project setup:**
+
+- Initialize Python package with uv
+- Configure Quarto for report generation
+- Set up version control with Git
+
+**2. Development:**
+
+- Write analysis functions in `src/`
+- Create Quarto documents in `analysis/`
+- Generate TLFs in `output/`
+
+**3. Validation:**
+
+- Write tests in `tests/`
+- Perform independent review
+- Verify outputs match specifications
+
+**4. Submission:**
+
+- Pack package into text files with pkglite
+- Place files in eCTD Module 5 structure
+- Update ADRG with reproduction instructions
+
+The following chapters detail each stage.
+
+## Benefits of this approach
+
+Using Python packages for clinical analysis provides:
+
+**Consistency:**
+
+- Standard structure across all projects
+- Team members know where to find code and outputs
+- Reduces onboarding time for new projects
+
+**Automation:**
+
+- uv manages dependencies automatically
+- Quarto renders all reports in batch
+- Testing frameworks verify correctness
+
+**Reproducibility:**
+
+- `uv.lock` ensures exact dependency versions
+- `.python-version` specifies Python version
+- Repository snapshots freeze package ecosystem
+
+**Compliance:**
+
+- Built-in documentation with docstrings
+- Testing infrastructure for validation
+- Standard structure simplifies review
+
+::: callout-important
+For regulatory submissions, reproducibility is not optional.
+The FDA expects to reconstruct your exact environment and verify your results.
+:::
+
+## What's next
+
+The next chapters cover:
+
+- **Package structure**: Organizing code and content (@sec-pkg-structure)
+- **Project management**: Git-centric workflows for collaboration (@sec-pkg-management)
+- **Submission overview**: eCTD requirements and pkglite (@sec-submission-overview)
+- **Submission package**: Packing for eCTD Module 5 (@sec-submission-package)
+- **Submission dryrun**: Verifying reproducibility (@sec-submission-dryrun)
+
+With this foundation, you're ready to learn how to manage analysis packages effectively.
