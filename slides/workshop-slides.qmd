@@ -376,8 +376,6 @@ The goal is to help you translate data frame to tables in RTF file.
 
 ![rtflite](rtflite.png){width=300}
 
-# Break and/or exercise (5 min) {background-color="#385898"}
-
 # CSR examples {background-color="#385898"}
 
 ## Disposition table
@@ -494,14 +492,6 @@ demo-py-esub/
 :::
 
 See: <https://pycsr.org/pkg-structure.html>
-
-## Project management
-
-- The SDLC
-  - Planning
-  - Development
-  - Validation
-  - Operation
 
 ::: {style="font-size: 100%;"}
 
