@@ -11,13 +11,15 @@ We value your participation and contribution.
 - Contributors: contributed at least one commit to the source code.
 - [List of authors and contributors](https://pycsr.org/preface.html#authors-and-contributors)
 
-## Codespaces 
+## Quick Start
 
 To explore code in this book, use the "Open in GitHub Codespaces" button below.
 
 [![](https://github.com/codespaces/badge.svg)](https://codespaces.new/nanxstats/pycsr?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
 
 ## Installing dependency 
+
+Using `uv` is recommended to work on the project.
 
 ### Update Python version:
 
