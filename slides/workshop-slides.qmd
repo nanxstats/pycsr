@@ -472,6 +472,8 @@ project, with 4 goals in mind:
 
 ## Package structure
 
+[![](https://github.com/codespaces/badge.svg)](https://codespaces.new/elong0527/demo-py-esub?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+
 ::: {style="font-size: 150%;"}
 
 ```
