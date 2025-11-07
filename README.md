@@ -13,8 +13,7 @@ We value your participation and contribution.
 
 ## Codespaces 
 
-To use a pre-configured Codespaces for this book,
-use the "Open in GitHub Codespaces" button below.
+To explore code in this book, use the "Open in GitHub Codespaces" button below.
 
 [![](https://github.com/codespaces/badge.svg)](https://codespaces.new/nanxstats/pycsr?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
 
