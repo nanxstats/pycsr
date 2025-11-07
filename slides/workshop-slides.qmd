@@ -75,6 +75,7 @@ In this workshop, we assume you have
 basic Python programming experience and clinical development knowledge.
 
 Examples:
+
 - Data manipulation: polars, plotnine, rtflite.
 - ADaM data: `adsl`, `adae`, etc.
 
@@ -324,8 +325,6 @@ pl.col("USUBJID").n_unique()
 
 ## Motivation
 
-::: {style="font-size: 70%;"}
-
 In the pharmaceutical industry, RTF/Microsoft Word play a central role
 in preparing clinical study reports
 
@@ -334,60 +333,6 @@ in preparing clinical study reports
 Different organizations can have different table standards
 
 - For example, table layout, font size, border type, footnote, data source
-
-- rtflite is a Python package to create production-ready tables and figures in RTF format.
-
-## Design 
-
-rtflite is designed to:
-
-- Provide simple Python classes that map to table elements
-  (title, headers, body, footnotes) for intuitive table construction.
-- Offer a canonical Python API with a clear, composable interface.
-- Focus exclusively on **table formatting and layout**,
-  leaving data manipulation to dataframe libraries like polars or pandas.
-- Minimize external dependencies for maximum portability and reliability.
-
-:::
-
-## Workflow
-
-Before creating an RTF table, we need to:
-
-- Figure out table layout.
-
-- Split the layout into small tasks in the form of a computer program.
-
-- Execute the program.
-
-## Basic workflow
-
-Three-step process:
-
-1. **Prepare data**: Use polars to calculate statistics
-2. **Define structure**: Create rtflite components (title, headers, body, footnotes)
-3. **Generate RTF**: Write output file for submission
-
-```python
-import polars as pl
-import rtflite as rtf
-
-# Load and prepare data
-df = pl.read_parquet("data/adsl.parquet")
-
-# Create RTF document
-doc = rtf.RTFDocument(
-    df=df.head(6),
-    rtf_title=rtf.RTFTitle(text=["Your Table Title"]),
-    rtf_column_header=rtf.RTFColumnHeader(...),
-    rtf_body=rtf.RTFBody(),
-    rtf_source=rtf.RTFSource(text=["Source: ADSL"])
-)
-
-doc.write_rtf("output.rtf")
-```
-
-<embed src="../pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
 
 ## Package overview
 
@@ -400,179 +345,32 @@ rtflite package provides the flexibility to customize table appearance for
 
 rtflite package also provides the flexibility to convert figures in RTF format.
 
-## Simple example: adverse events
+## Example 
 
-rtflite only focuses on **table format**.
-Data manipulation and analysis should be handled by other Python packages.
+```python
+import polars as pl
+import rtflite as rtf
 
-## Key rtflite components
+# Load and prepare data
+df = pl.read_parquet("data/adsl.parquet")
+
+# Create RTF document
+doc = rtf.RTFDocument(
+    df=df.head(6),
+    rtf_body=rtf.RTFBody(),
+)
+
+doc.write_rtf("output.rtf")
+```
+
+<embed src="../pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
+
+## Key components
 
 rtflite provides Python classes `RTFDocument` that map to table elements.
 The goal is to help you translate data frame to tables in RTF file.
 
 ![rtflite](rtflite.png){width=300}
-
-`RTFTitle`: Main and subtitle lines
-
-```python
-rtf.RTFTitle(text=["Main Title", "Subtitle"])
-```
-
-`RTFColumnHeader`: Define column structure
-
-```python
-rtf.RTFColumnHeader(
-    text=["", "Placebo", "Low Dose", "High Dose"],
-    col_rel_width=[3, 2, 2, 2],
-    text_justification=["l", "c", "c", "c"]
-)
-```
-
-`RTFBody`: Table content formatting
-
-```python
-rtf.RTFBody(col_rel_width=[3, 2, 2, 2])
-```
-
-## Multi-level headers
-
-Create hierarchical column headers:
-
-```python
-rtf_column_header=[
-    rtf.RTFColumnHeader(
-        text=["", "Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"],
-        col_rel_width=[3] + [2] * 3
-    ),
-    rtf.RTFColumnHeader(
-        text=["", "n", "(%)", "n", "(%)", "n", "(%)"],
-        col_rel_width=[3] + [1] * 6,
-        border_top=[""] + ["single"] * 6,
-        border_left=["single"] + ["single", ""] * 3
-    )
-]
-```
-
-## Advanced features
-
-**Multiple tables in one document:**
-
-```python
-doc = rtf.RTFDocument(
-    df=[table1, table2],  # List of DataFrames
-    rtf_column_header=[header1, header2],
-    rtf_body=[body1, body2]
-)
-```
-
-**Conditional formatting:**
-
-```python
-rtf.RTFBody(
-    text_font_style=lambda df, i, j:
-        "b" if not df[i, j].startswith("  ") else ""
-)
-```
-
-## Typical TLF workflow
-
-Seven-step pattern seen across all examples:
-
-1. **Load data**: Read Parquet datasets (ADSL, ADAE, ADLBC)
-2. **Filter population**: Apply analysis population flags
-3. **Calculate statistics**: Group, aggregate, join
-4. **Format values**: Create display strings (Mean (SD), n (%))
-5. **Reshape data**: Pivot to wide format if needed
-6. **Combine sections**: Stack multiple result tables
-7. **Generate RTF**: Create publication-ready output
-
-**Focus on one step at a time** - break complex tables into manageable pieces.
-
-# Common patterns {background-color="#385898"}
-
-## Reusable helper functions
-
-**Create functions for repeated operations:**
-
-```python
-def count_by_treatment(data, population_name):
-    """Count participants by treatment group"""
-    return data.group_by("TRT01P").agg(
-        n = pl.len()
-    ).with_columns(
-        population = pl.lit(population_name)
-    )
-```
-
-**Benefits:**
-
-- Reduce code duplication
-- Easier to maintain and test
-- Clear, self-documenting code
-
-## Handling hierarchical structures
-
-**Use indentation for subcategories:**
-
-```python
-pl.concat_str([pl.lit("    "), pl.col("DCREASCD")])
-```
-
-**Build tables row by row when needed:**
-
-```python
-table_rows = []
-table_rows.append(["Section Header", "", "", ""])
-table_rows.append([f"  {category}", value1, value2, value3])
-```
-
-**Maintain sort order with Enum:**
-
-```python
-.sort(pl.col("category").cast(pl.Enum(category_order)))
-```
-
-## Statistical analysis integration
-
-**Use pandas bridge for statsmodels:**
-
-```python
-# Convert for analysis
-ancova_df = gluc_data.to_pandas()
-
-# Fit model
-model = smf.ols("CHG ~ TRTP + BASE", data=ancova_df).fit()
-
-# Convert back to polars for formatting
-results_df = pl.DataFrame(results_dict)
-```
-
-**Key libraries:**
-
-- `statsmodels`: Linear models, ANCOVA
-- `scipy.stats`: Statistical tests, distributions
-
-## Best practices & pitfalls
-
-::: {style="font-size: 85%;"}
-
-**Do:**
-
-- Use `.n_unique()` to count unique subjects (not `.len()` on event data)
-- Fill nulls with typed literals: `pl.lit(None, dtype=pl.Float64)`
-- Sort pivoted results to ensure consistent column order
-- Use left joins with treatment levels to preserve all groups
-- Test with safety population (SAFFL == "Y") for AE tables
-
-**Avoid:**
-
-- Counting events when you need subject counts
-- Missing categories in pivoted data (use `.fill_null(0)`)
-- Inconsistent data types causing schema errors
-- Forgetting to filter to analysis population
-- Hard-coded column names (treatment groups may vary)
-
-:::
 
 # Break and/or exercise (5 min) {background-color="#385898"}
 
