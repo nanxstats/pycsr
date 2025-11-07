@@ -25,7 +25,8 @@
 				"tamasfe.even-better-toml",
 				"ms-toolsai.jupyter",
 				"quarto.quarto",
-				"nanxstats.textmate-rstheme"
+				"nanxstats.textmate-rstheme",
+				"syncfusioninc.document-viewer-vscode-extensions"
 			],
 			"settings": {
 				"editor.fontSize": 20,
