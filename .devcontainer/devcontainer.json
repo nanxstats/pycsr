@@ -23,6 +23,7 @@
 				"ms-python.vscode-pylance",
 				"charliermarsh.ruff",
 				"tamasfe.even-better-toml",
+				"ms-toolsai.jupyter",
 				"quarto.quarto",
 				"nanxstats.textmate-rstheme"
 			],
