@@ -74,6 +74,10 @@ Interested in R? check <https://r4csr.org/>
 In this workshop, we assume you have
 basic Python programming experience and clinical development knowledge.
 
+Pre-configured Codespaces for pycsr book
+
+[![](https://github.com/codespaces/badge.svg)](https://codespaces.new/nanxstats/pycsr?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+
 Examples:
 
 - Data manipulation: polars, plotnine, rtflite.
