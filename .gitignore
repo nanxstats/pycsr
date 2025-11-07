@@ -1,6 +1,5 @@
 /env/
 .Rproj.user
-*.html
 
 /.quarto/
 /_book/

@@ -27,7 +27,7 @@ Four parts of this workshop:
    Use `uv` to create and manage reproducible Python projects. Develop and collaborate in GitHub Codespaces, Visual Studio Code, or Positron.
 
 2. **Python packages for clinical reporting (Yilong)**\
-   A guided tour of essential packages such as `polars`, `plotnine`, and `rtflite`, with demonstrations of creating TLFs commonly used in clinical trials.
+   A guided tour of essential packages such as `polars` and `rtflite`, with demonstrations of creating TLFs commonly used in clinical trials.
 
 3. **Manage clinical trial A&R projects (Yilong)**\
    Practical project structure, conventions, and execution from data to deliverables.
