@@ -12,6 +12,7 @@ format:
     smaller: true
     embed-resources: true
     slide-number: true
+    scrollable: true
 title-slide-attributes:
   data-background-color: "#385898"
 ---
@@ -30,6 +31,7 @@ Four parts of this workshop:
 
 3. **Manage clinical trial A&R projects (Yilong)**\
    Practical project structure, conventions, and execution from data to deliverables.
+
 4. **Prepare eCTD submission packages (Nan)**\
    An example workflow for assembling submission-ready source code and outputs using `py-pkglite`, aligned with eCTD requirements.
 
@@ -65,13 +67,14 @@ Interested in R? check <https://r4csr.org/>
 - Team members from Meta Platforms and Merck & Co., Inc., Rahway, NJ, USA
 
 - Contributors of pycsr and r4csr training materials
-  - Please consider submitting issues or PR in the repo
+  - Please consider submitting issues or PR in the repos
 
 ## Preparation
 
 In this workshop, we assume you have
 basic Python programming experience and clinical development knowledge.
 
+Examples:
 - Data manipulation: polars, plotnine, rtflite.
 - ADaM data: `adsl`, `adae`, etc.
 
@@ -79,7 +82,7 @@ basic Python programming experience and clinical development knowledge.
 
 - Training material: <https://pycsr.org/>
 
-- During the workshop, we will use the `pycsr` project
+- During the workshop, we will use [pycsr](https://github.com/nanxstats/pycsr) and [demo-py-esub](https://github.com/elong0527/demo-py-esub) projects
   - Project link will be shared in chat
   - Post questions in group chat
 
@@ -253,6 +256,8 @@ In a CSR, most of TLFs are located in:
 
 ## Why polars?
 
+<https://pycsr.org/tlf-overview.html#polars>
+
 Modern Python dataframe library designed for performance and expressiveness.
 
 **Key advantages:**
@@ -332,6 +337,8 @@ Different organizations can have different table standards
 
 - rtflite is a Python package to create production-ready tables and figures in RTF format.
 
+## Design 
+
 rtflite is designed to:
 
 - Provide simple Python classes that map to table elements
@@ -362,16 +369,25 @@ Three-step process:
 3. **Generate RTF**: Write output file for submission
 
 ```python
+import polars as pl
+import rtflite as rtf
+
+# Load and prepare data
+df = pl.read_parquet("data/adsl.parquet")
+
+# Create RTF document
 doc = rtf.RTFDocument(
-    df=your_dataframe,
+    df=df.head(6),
     rtf_title=rtf.RTFTitle(text=["Your Table Title"]),
     rtf_column_header=rtf.RTFColumnHeader(...),
-    rtf_body=rtf.RTFBody(...),
+    rtf_body=rtf.RTFBody(),
     rtf_source=rtf.RTFSource(text=["Source: ADSL"])
 )
 
 doc.write_rtf("output.rtf")
 ```
+
+<embed src="../pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
 
 ## Package overview
 
@@ -390,6 +406,11 @@ rtflite only focuses on **table format**.
 Data manipulation and analysis should be handled by other Python packages.
 
 ## Key rtflite components
+
+rtflite provides Python classes `RTFDocument` that map to table elements.
+The goal is to help you translate data frame to tables in RTF file.
+
+![rtflite](rtflite.png){width=300}
 
 `RTFTitle`: Main and subtitle lines
 
@@ -634,6 +655,9 @@ A **Python package** designed specifically to organize analysis scripts and code
 
 **Purpose:**
 
+Our primary focus is creating a standard folder structure to organize the
+project, with 4 goals in mind:
+
 - Project containers for clinical trial deliverables
 - Reproducible environments for analyses
 - Submission-ready structures for regulatory review
@@ -666,6 +690,14 @@ demo-py-esub/
 :::
 
 See: <https://pycsr.org/pkg-structure.html>
+
+## Project management
+
+- The SDLC
+  - Planning
+  - Development
+  - Validation
+  - Operation
 
 ::: {style="font-size: 100%;"}
 
