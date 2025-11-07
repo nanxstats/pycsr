@@ -323,7 +323,7 @@ doc_ancova = rtf.RTFDocument(
     df=[tbl1, tbl2],
     rtf_title=rtf.RTFTitle(
         text=[
-            "Analysis of Covariance (ANCOVA) of Change from Baseline in",
+            "ANCOVA of Change from Baseline in",
             "Fasting Glucose (mmol/L) at Week 24 (LOCF)",
             "Efficacy Analysis Population"
         ]
@@ -333,7 +333,7 @@ doc_ancova = rtf.RTFDocument(
         [
             rtf.RTFColumnHeader(
                 text=["", "Baseline", "Week 24 (LOCF)", "Change from Baseline", ""],
-                col_rel_width=[3, 2, 2, 3, 2],
+                col_rel_width=[3, 2, 2, 2, 2],
                 text_justification=["l", "c", "c", "c", "c"],
                 text_format="b"
             ),
@@ -381,7 +381,7 @@ doc_ancova = rtf.RTFDocument(
     rtf_footnote=rtf.RTFFootnote(
         text=[
             "{^a}LS means and differences in LS means are based on an ANCOVA model with treatment and baseline glucose as covariates.",
-            f"{{^b}}p-values are from the ANCOVA model testing treatment effects (overall F-test p-value: {model.f_pvalue:.4f}).",
+            f"{{^b}}p-values are from the ANCOVA model testing treatment effects",
             "LOCF (Last Observation Carried Forward) approach is used for missing Week 24 values.",
             "ANCOVA = Analysis of Covariance; CI = Confidence Interval; LS = Least Squares; SD = Standard Deviation"
         ]
