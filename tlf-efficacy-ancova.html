@@ -419,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="setup" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">10.2</span> Setup</h2>
-<div id="1b011b8d" class="cell" data-execution_count="1">
+<div id="8d5dd647" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -427,12 +427,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats <span class="im">as</span> scipy_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="432defd5" class="cell" data-execution_count="2">
+<div id="acb2ad08" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>polars.config.Config</code></pre>
 </div>
 </div>
-<div id="070a8547" class="cell" data-execution_count="3">
+<div id="549e538c" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adlbc <span class="op">=</span> pl.read_parquet(<span class="st">"data/adlbc.parquet"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>treatments <span class="op">=</span> [<span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -441,7 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-explore-laboratory-data-structure" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="step-1-explore-laboratory-data-structure"><span class="header-section-number">10.3</span> Step 1: Explore Laboratory Data Structure</h2>
 <p>We start by understanding the glucose data structure and endpoint definitions.</p>
-<div id="07dc2799" class="cell" data-execution_count="4">
+<div id="7301cd03" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display key laboratory variables</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Key ADLBC variables for efficacy analysis</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lab_vars <span class="op">=</span> adlbc.select([<span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span>, <span class="st">"PARAM"</span>, <span class="st">"AVISIT"</span>, <span class="st">"AVISITN"</span>, <span class="st">"AVAL"</span>, <span class="st">"BASE"</span>, <span class="st">"CHG"</span>])</span>
@@ -544,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cbef7198" class="cell" data-execution_count="5">
+<div id="dc9bd7a3" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Focus on glucose parameter</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gluc_visits <span class="op">=</span> adlbc.<span class="bu">filter</span>(pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>).select(<span class="st">"AVISIT"</span>, <span class="st">"AVISITN"</span>).unique().sort(<span class="st">"AVISITN"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Available glucose measurement visits</span></span>
@@ -603,7 +603,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-define-analysis-population-and-endpoint" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="step-2-define-analysis-population-and-endpoint"><span class="header-section-number">10.4</span> Step 2: Define Analysis Population and Endpoint</h2>
 <p>Following the Statistical Analysis Plan, we focus on the efficacy population for the primary endpoint.</p>
-<div id="4cfb5a92" class="cell" data-execution_count="6">
+<div id="6f5063bb" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean data types and prepare datasets</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adlbc_clean <span class="op">=</span> adlbc.with_columns([</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    pl.col(c).cast(<span class="bu">str</span>).<span class="bu">str</span>.strip_chars()</span>
@@ -623,7 +623,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>71882</code></pre>
 </div>
 </div>
-<div id="7b4ecfb2" class="cell" data-execution_count="7">
+<div id="c90d6a72" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine glucose data availability by visit and treatment</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gluc_availability <span class="op">=</span> (</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    adlbc_eff.<span class="bu">filter</span>(pl.col(<span class="st">"PARAMCD"</span>) <span class="op">==</span> <span class="st">"GLUC"</span>)</span>
@@ -695,7 +695,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3-implement-locf-imputation-strategy" class="level2" data-number="10.5">
 <h2 data-number="10.5" class="anchored" data-anchor-id="step-3-implement-locf-imputation-strategy"><span class="header-section-number">10.5</span> Step 3: Implement LOCF Imputation Strategy</h2>
 <p>We apply Last Observation Carried Forward (LOCF) for missing Week 24 glucose values.</p>
-<div id="63632c4e" class="cell" data-execution_count="8">
+<div id="101ec9f0" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare glucose data with LOCF for Week 24 endpoint</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gluc_data <span class="op">=</span> (</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adlbc_eff</span>
@@ -807,7 +807,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="97a707fd" class="cell" data-execution_count="9">
+<div id="1e002b7a" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assess LOCF imputation impact</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>locf_summary <span class="op">=</span> (</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    gluc_data</span>
@@ -879,7 +879,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-4-calculate-descriptive-statistics" class="level2" data-number="10.6">
 <h2 data-number="10.6" class="anchored" data-anchor-id="step-4-calculate-descriptive-statistics"><span class="header-section-number">10.6</span> Step 4: Calculate Descriptive Statistics</h2>
 <p>We compute baseline, Week 24, and change from baseline statistics by treatment group.</p>
-<div id="c7b73b9b" class="cell" data-execution_count="10">
+<div id="5d181c8f" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate comprehensive descriptive statistics</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> []</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> trt <span class="kw">in</span> treatments:</span>
@@ -992,7 +992,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-perform-ancova-analysis" class="level2" data-number="10.7">
 <h2 data-number="10.7" class="anchored" data-anchor-id="step-5-perform-ancova-analysis"><span class="header-section-number">10.7</span> Step 5: Perform ANCOVA Analysis</h2>
 <p>We fit the ANCOVA model with treatment and baseline glucose as covariates.</p>
-<div id="2de50ca7" class="cell" data-execution_count="11">
+<div id="cf1828cf" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to pandas for statsmodels compatibility</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ancova_df <span class="op">=</span> gluc_data.to_pandas()</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ancova_df[<span class="st">"TRTP"</span>] <span class="op">=</span> pd.Categorical(ancova_df[<span class="st">"TRTP"</span>], categories<span class="op">=</span>treatments)</span>
@@ -1058,7 +1058,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<div id="5753801e" class="cell" data-execution_count="12">
+<div id="c6f45b74" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate adjusted means (LS means) at mean baseline value</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>base_mean <span class="op">=</span> ancova_df[<span class="st">"BASE"</span>].mean()</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>var_cov <span class="op">=</span> model.cov_params()</span>
@@ -1146,7 +1146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-6-pairwise-treatment-comparisons" class="level2" data-number="10.8">
 <h2 data-number="10.8" class="anchored" data-anchor-id="step-6-pairwise-treatment-comparisons"><span class="header-section-number">10.8</span> Step 6: Pairwise Treatment Comparisons</h2>
 <p>We calculate treatment differences and their statistical significance.</p>
-<div id="0cc515e7" class="cell" data-execution_count="13">
+<div id="4dd13bc1" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate pairwise comparisons vs. placebo</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>tbl2_data <span class="op">=</span> []</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>comparisons <span class="op">=</span> [</span>
@@ -1237,7 +1237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-7-prepare-tables-for-rtf-output" class="level2" data-number="10.9">
 <h2 data-number="10.9" class="anchored" data-anchor-id="step-7-prepare-tables-for-rtf-output"><span class="header-section-number">10.9</span> Step 7: Prepare Tables for RTF Output</h2>
 <p>We format the analysis results into publication-ready tables.</p>
-<div id="76788109" class="cell" data-execution_count="14">
+<div id="64f00758" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1: Descriptive Statistics and LS Means</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tbl1_data <span class="op">=</span> []</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s, ls <span class="kw">in</span> <span class="bu">zip</span>(desc_stats, ls_means):</span>
@@ -1327,7 +1327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="79686750" class="cell" data-execution_count="15">
+<div id="b7049e2c" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 2: Pairwise Comparisons (formatted for output)</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>tbl2_formatted <span class="op">=</span> []</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> tbl2_data:</span>
@@ -1383,7 +1383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-8-create-regulatory-compliant-rtf-document" class="level2" data-number="10.10">
 <h2 data-number="10.10" class="anchored" data-anchor-id="step-8-create-regulatory-compliant-rtf-document"><span class="header-section-number">10.10</span> Step 8: Create Regulatory-Compliant RTF Document</h2>
 <p>We generate a comprehensive efficacy table following regulatory submission standards.</p>
-<div id="d0daccc2" class="cell" data-execution_count="16">
+<div id="ea6e3e87" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create comprehensive RTF document with multiple table sections</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>doc_ancova <span class="op">=</span> rtf.RTFDocument(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>[tbl1, tbl2],</span>
@@ -1467,7 +1467,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_efficacy_ancova.rtf</code></pre>
 </div>
 </div>
-<div id="e3656a29" class="cell" data-execution_count="17">
+<div id="100bbcc1" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>PosixPath('pdf/tlf_efficacy_ancova.pdf')</code></pre>
 </div>
