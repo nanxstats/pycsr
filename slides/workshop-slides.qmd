@@ -303,28 +303,6 @@ df.group_by("TRT01P").agg(n = pl.len())
 .pivot(index="category", on="TRT01P", values="n")
 ```
 
-## Handling missing data
-
-**Fill nulls for categorical counts:**
-
-```python
-.with_columns(
-    pl.col(["n_0", "n_54", "n_81"]).fill_null(0)
-)
-```
-
-**Use typed literals for schema consistency:**
-
-```python
-pl.lit(None, dtype=pl.Float64).alias("pct")
-```
-
-**Count unique subjects (not events):**
-
-```python
-pl.col("USUBJID").n_unique()
-```
-
 # rtflite intro {background-color="#385898"}
 
 ## Motivation
@@ -347,7 +325,9 @@ rtflite package provides the flexibility to customize table appearance for
 - **Flexible control**: the specification of the cell style can be row or column vectorized.
 - **Complicated format**: pagination, section grouping, multiple table concatenations, etc.
 
+::: callout-note
 rtflite package also provides the flexibility to convert figures in RTF format.
+:::
 
 ## Example 
 
