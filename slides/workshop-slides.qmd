@@ -2,7 +2,6 @@
 title: "Python for Clinical Study Reports and Submission"
 subtitle: "R/Pharma 2025 Workshop"
 author: "Yilong Zhang, Nan Xiao"
-<<<<<<< HEAD
 date: "November 7, 2025"
 self-contained: true
 format:
@@ -13,16 +12,9 @@ format:
     smaller: true
     embed-resources: true
     slide-number: true
+    scrollable: true
 title-slide-attributes:
   data-background-color: "#385898"
-=======
-date: "2025-11-07"
-format: 
-    revealjs:
-        embed-resources: true
-        smaller: true
-        scrollable: true
->>>>>>> ab77ec6 (update workshop slides)
 ---
 
 # Welcome {background-color="#385898"}
@@ -31,7 +23,6 @@ format:
 
 Four parts of this workshop:
 
-<<<<<<< HEAD
 1. **Python environment setup (Nan)**\
    Use `uv` to create and manage reproducible Python projects. Develop and collaborate in GitHub Codespaces, Visual Studio Code, or Positron.
 
@@ -40,14 +31,9 @@ Four parts of this workshop:
 
 3. **Manage clinical trial A&R projects (Yilong)**\
    Practical project structure, conventions, and execution from data to deliverables.
+
 4. **Prepare eCTD submission packages (Nan)**\
    An example workflow for assembling submission-ready source code and outputs using `py-pkglite`, aligned with eCTD requirements.
-=======
-1. **Python environment setup (Nan)**: Use `uv` to create and manage reproducible Python projects. Develop and collaborate in GitHub Codespaces, Visual Studio Code, or Positron.
-2. **Python packages for clinical reporting (Yilong)**: A guided tour of essential packages such as `polars`, and `rtflite`, with demonstrations of creating TLFs commonly used in clinical trials.
-3. **Manage a clinical trial A&R project (Yilong)**: Practical project structure, conventions, and execution from data to deliverables.
-4. **Preparing eCTD submission packages (Nan)**: An example workflow for assembling submission-ready source code and outputs using `py-pkglite`, aligned with eCTD requirements.
->>>>>>> ab77ec6 (update workshop slides)
 
 ## Disclaimer
 
@@ -78,39 +64,25 @@ Interested in R? check <https://r4csr.org/>
   - It is a fun and productive annual gathering
   - Please consider sharing stories and use cases to expand the community
 
-<<<<<<< HEAD
 - Team members from Meta Platforms and Merck & Co., Inc., Rahway, NJ, USA
 
 - Contributors of pycsr and r4csr training materials
-  - Please consider submitting issues or PR in the repo
-=======
-- Contributors of pycsr and r4csr training materials.
-  - Please consider submitting issues or PR in the repos.
->>>>>>> ab77ec6 (update workshop slides)
+  - Please consider submitting issues or PR in the repos
 
 ## Preparation
 
 In this workshop, we assume you have
 basic Python programming experience and clinical development knowledge.
 
-<<<<<<< HEAD
+Examples:
 - Data manipulation: polars, plotnine, rtflite.
 - ADaM data: `adsl`, `adae`, etc.
-=======
-Examples: 
-- Data manipulation: polars, rtflite.
-- ADaM data: `adsl`, `adae` etc.
->>>>>>> ab77ec6 (update workshop slides)
 
 ## Resource
 
 - Training material: <https://pycsr.org/>
 
-<<<<<<< HEAD
-- During the workshop, we will use the `pycsr` project
-=======
-- During the workshop, we will use [pycsr](https://github.com/nanxstats/pycsr) and [demo-py-esub](https://github.com/elong0527/demo-py-esub) project.
->>>>>>> ab77ec6 (update workshop slides)
+- During the workshop, we will use [pycsr](https://github.com/nanxstats/pycsr) and [demo-py-esub](https://github.com/elong0527/demo-py-esub) projects
   - Project link will be shared in chat
   - Post questions in group chat
 
@@ -282,11 +254,9 @@ In a CSR, most of TLFs are located in:
 
 # polars intro {background-color="#385898"}
 
-<<<<<<< HEAD
 ## Why polars?
-=======
-<https://pycsr.org/tlf-overview.html#polars> 
->>>>>>> ab77ec6 (update workshop slides)
+
+<https://pycsr.org/tlf-overview.html#polars>
 
 Modern Python dataframe library designed for performance and expressiveness.
 
@@ -392,7 +362,6 @@ Before creating an RTF table, we need to:
 
 ## Basic workflow
 
-<<<<<<< HEAD
 Three-step process:
 
 1. **Prepare data**: Use polars to calculate statistics
@@ -400,30 +369,25 @@ Three-step process:
 3. **Generate RTF**: Write output file for submission
 
 ```python
+import polars as pl
+import rtflite as rtf
+
+# Load and prepare data
+df = pl.read_parquet("data/adsl.parquet")
+
+# Create RTF document
 doc = rtf.RTFDocument(
-    df=your_dataframe,
+    df=df.head(6),
     rtf_title=rtf.RTFTitle(text=["Your Table Title"]),
     rtf_column_header=rtf.RTFColumnHeader(...),
-    rtf_body=rtf.RTFBody(...),
+    rtf_body=rtf.RTFBody(),
     rtf_source=rtf.RTFSource(text=["Source: ADSL"])
 )
 
 doc.write_rtf("output.rtf")
 ```
-=======
-```python
-import polars as pl
-df = pl.read_parquet("data/adae.parquet")
-df.select(["USUBJID", "TRTA", "AEDECOD"])
-doc = df.RTFDocument(
-    df=adsl.head(6),
-    rtf_body=rtf.RTFBody(),  
-)
-doc.write_rtf("rtf/tlf_overview1.rtf")
-```
 
 <embed src="../pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
->>>>>>> ab77ec6 (update workshop slides)
 
 ## Package overview
 
@@ -434,20 +398,20 @@ rtflite package provides the flexibility to customize table appearance for
 - **Flexible control**: the specification of the cell style can be row or column vectorized.
 - **Complicated format**: pagination, section grouping, multiple table concatenations, etc.
 
-<<<<<<< HEAD
 rtflite package also provides the flexibility to convert figures in RTF format.
 
 ## Simple example: adverse events
 
 rtflite only focuses on **table format**.
 Data manipulation and analysis should be handled by other Python packages.
-=======
-> rtflite package also provides the flexibility to convert figures in RTF format.
->>>>>>> ab77ec6 (update workshop slides)
 
 ## Key rtflite components
 
-<<<<<<< HEAD
+rtflite provides Python classes `RTFDocument` that map to table elements.
+The goal is to help you translate data frame to tables in RTF file.
+
+![rtflite](rtflite.png){width=300}
+
 `RTFTitle`: Main and subtitle lines
 
 ```python
@@ -463,12 +427,6 @@ rtf.RTFColumnHeader(
     text_justification=["l", "c", "c", "c"]
 )
 ```
-=======
-rtflite provides a Python classes `RTFDocument` that map to table elements.
-  The goal is to help you translate data frame to tables in RTF file.
-
-![rtflite](rtflite.png){width=300}
->>>>>>> ab77ec6 (update workshop slides)
 
 `RTFBody`: Table content formatting
 
@@ -697,30 +655,23 @@ A **Python package** designed specifically to organize analysis scripts and code
 
 **Purpose:**
 
-<<<<<<< HEAD
+Our primary focus is creating a standard folder structure to organize the
+project, with 4 goals in mind:
+
 - Project containers for clinical trial deliverables
 - Reproducible environments for analyses
 - Submission-ready structures for regulatory review
-=======
-Our primary focus is creating a standard folder structure to organize the
-project, with 4 goals in mind:
->>>>>>> ab77ec6 (update workshop slides)
 
 **Combines:**
 
-<<<<<<< HEAD
 - Python package structure (code organization)
 - Quarto project (report generation)
 - Regulatory requirements (eCTD submission)
 
 ## Package structure
-=======
-## Project management
->>>>>>> ab77ec6 (update workshop slides)
 
 ::: {style="font-size: 150%;"}
 
-<<<<<<< HEAD
 ```
 demo-py-esub/
 ├── pyproject.toml          # Project metadata
@@ -734,70 +685,19 @@ demo-py-esub/
 ├── data/                   # ADaM datasets
 ├── output/                 # Generated TLFs
 └── tests/                  # Validation tests
-=======
-- The SDLC
-  - Planning
-  - Development
-  - Validation
-  - Operation
-
-# Break (5 min)
-
-# eCTD submission
-
-## Overview
-
-> add a link
-
-## Submission package
-
-We will discuss strategies to prepare proprietary Python project and analysis code
-into proper formats for submission:
-
-- The whole game
-- Practical considerations
-- Prepare submission package using `py-pkglite`
-- Prepare analysis programs
-- Update ADRG and ARM
-
-> add a link
-
-# pkglite
-
-> To be updated. 
-
-## pkglite: compact package representations
-
-- To provide a **tool** for packing and restoring R packages as plaintext
-assets that are easy to store, transfer, and review.
-- To provide a **grammar** for specifying the file packing scope that is
-functional, precise, and extendable.
-- To provide a **standard** for exchanging the packed asset that is
-unambiguous, human-friendly, and machine-readable.
-
-## Pipe-friendly workflow
-
-```{r, eval=FALSE, echo=TRUE}
-library("pkglite")
-
-"/path/to/pkg/" %>%
-  collate(file_ectd()) %>%
-  pack()
-
-pack(
-  "/path/to/pkg1/" %>% collate(file_ectd()),
-  "/path/to/pkg2/" %>% collate(file_ectd()),
-  output = "/path/to/pkglite.txt"
-)
-
-"/path/to/pkglite.txt" %>%
-  unpack(output = "/path/to/output/")
->>>>>>> ab77ec6 (update workshop slides)
 ```
 
 :::
 
 See: <https://pycsr.org/pkg-structure.html>
+
+## Project management
+
+- The SDLC
+  - Planning
+  - Development
+  - Validation
+  - Operation
 
 ::: {style="font-size: 100%;"}
 
