@@ -4,7 +4,7 @@
 	"name": "Python 3",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:2-3.13-trixie",
-	// Features to add to the dev container. More info: https://containers.dev/features.
+	// Features to add` to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers-extra/features/uv:1": {},
 		"ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {}
@@ -25,8 +25,7 @@
 				"tamasfe.even-better-toml",
 				"ms-toolsai.jupyter",
 				"quarto.quarto",
-				"nanxstats.textmate-rstheme",
-				"syncfusioninc.document-viewer-vscode-extensions"
+				"nanxstats.textmate-rstheme"
 			],
 			"settings": {
 				"editor.fontSize": 20,
