@@ -12,7 +12,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "uv sync",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -39,7 +39,8 @@
 				"diffEditor.ignoreTrimWhitespace": false,
 				"terminal.integrated.fontSize": 18,
 				"workbench.preferredLightColorTheme": "textmate.rstheme",
-				"workbench.preferredDarkColorTheme": "textmate.rstheme"
+				"workbench.preferredDarkColorTheme": "textmate.rstheme",
+				"python.defaultInterpreterPath": "/workspaces/pycsr/.venv/bin/python"
 			}
 		}
 	}
