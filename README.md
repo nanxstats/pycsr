@@ -37,6 +37,20 @@ uv sync
 
 ## Build the book
 
+Render all formats:
+
 ```bash
 quarto render
+```
+
+Render HTML only:
+
+```bash
+quarto render --to html
+```
+
+Render slides:
+
+```bash
+quarto render slides/workshop-slides.qmd
 ```
