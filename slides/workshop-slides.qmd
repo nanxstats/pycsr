@@ -3,14 +3,13 @@ title: "Python for Clinical Study Reports and Submission"
 subtitle: "R/Pharma 2025 Workshop"
 author: "Yilong Zhang, Nan Xiao"
 date: "November 7, 2025"
-self-contained: true
+embed-resources: true
 format:
   revealjs:
     theme: [default, custom.scss]
     mainfont: "Lato, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
     monofont: "JetBrains Mono, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace"
     smaller: true
-    embed-resources: true
     slide-number: true
     scrollable: true
 title-slide-attributes:
@@ -329,7 +328,7 @@ rtflite package provides the flexibility to customize table appearance for
 rtflite package also provides the flexibility to convert figures in RTF format.
 :::
 
-## Example 
+## Example
 
 ```python
 import polars as pl
@@ -347,7 +346,7 @@ doc = rtf.RTFDocument(
 doc.write_rtf("output.rtf")
 ```
 
-<embed src="../pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
+<embed src="https://pycsr.org/pdf/tlf_overview1.pdf" style="width:100%; height:400px" type="application/pdf">
 
 ## Key components
 
