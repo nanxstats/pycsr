@@ -494,15 +494,15 @@ Note
 </div>
 </div>
 <p>To illustrate the basic usage of Polars, let’s work with a sample ADSL dataset. This dataset contains subject-level information from a clinical trial, which will serve as a practical example for generating summaries using Polars.</p>
-<div id="3372945e" class="cell" data-execution_count="1">
+<div id="8410089b" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f2c3a0c4" class="cell" data-execution_count="2">
+<div id="1f30d30f" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>polars.config.Config</code></pre>
 </div>
 </div>
-<div id="4cc7d83a" class="cell" data-execution_count="3">
+<div id="550cf051" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read clinical data</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -581,10 +581,10 @@ Note
 <section id="io" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="io"><span class="header-section-number">4.5.1</span> I/O</h3>
 <p>Polars supports multiple data formats for input and output (see the <a href="https://docs.pola.rs/user-guide/io/">I/O guide</a>). For clinical development, we recommend the <code>.parquet</code> format because tools in Python, R, and Julia can read and write it without conversion. The example below loads subject-level ADSL data with Polars.</p>
-<div id="c5eb94f0" class="cell" data-execution_count="4">
+<div id="da0753e9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d7283f25" class="cell" data-execution_count="5">
+<div id="810675a6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> adsl.select(<span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"TRT01A"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>) <span class="co"># select columns</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>adsl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -666,7 +666,7 @@ Note
 <section id="filtering" class="level3" data-number="4.5.2">
 <h3 data-number="4.5.2" class="anchored" data-anchor-id="filtering"><span class="header-section-number">4.5.2</span> Filtering</h3>
 <p>Filtering in Polars uses the <code>.filter()</code> method with column expressions. Below are examples applied to the ADSL data.</p>
-<div id="aff2b65f" class="cell" data-execution_count="6">
+<div id="ffd8719f" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter female subjects</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adsl.<span class="bu">filter</span>(pl.col(<span class="st">"SEX"</span>) <span class="op">==</span> <span class="st">"Female"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
@@ -743,7 +743,7 @@ Note
 </div>
 </div>
 </div>
-<div id="3665dc34" class="cell" data-execution_count="7">
+<div id="33c7b570" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter subjects with Age &gt;= 65</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>adsl.<span class="bu">filter</span>(pl.col(<span class="st">"AGE"</span>) <span class="op">&gt;=</span> <span class="dv">65</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
@@ -824,7 +824,7 @@ Note
 <section id="deriving" class="level3" data-number="4.5.3">
 <h3 data-number="4.5.3" class="anchored" data-anchor-id="deriving"><span class="header-section-number">4.5.3</span> Deriving</h3>
 <p>Deriving new variables is common in clinical data analysis for creating age groups, BMI categories, or treatment flags. Polars uses <code>.with_columns()</code> to add new columns while keeping existing ones.</p>
-<div id="d42d3300" class="cell" data-execution_count="8">
+<div id="ed483c41" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create age groups</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adsl.with_columns([</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"AGE"</span>) <span class="op">&lt;</span> <span class="dv">65</span>)</span>
@@ -919,7 +919,7 @@ Note
 <h3 data-number="4.5.4" class="anchored" data-anchor-id="grouping"><span class="header-section-number">4.5.4</span> Grouping</h3>
 <p>Grouping operations are fundamental for creating summary statistics in clinical reports. Polars uses <code>group_by()</code> followed by aggregation functions to compute counts, means, and other statistics by categorical variables like treatment groups.</p>
 <p>The <code>.count()</code> method provides a quick way to get subject counts by group.</p>
-<div id="4d44dc78" class="cell" data-execution_count="9">
+<div id="7bed19da" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count by treatment group</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>adsl.group_by(<span class="st">"TRT01A"</span>).<span class="bu">len</span>().sort(<span class="st">"TRT01A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -961,7 +961,7 @@ Note
 </div>
 </div>
 <p>You can also use <code>.agg()</code> with multiple aggregation functions:</p>
-<div id="030d19de" class="cell" data-execution_count="10">
+<div id="16d296cb" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age statistics by treatment group</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>adsl.group_by(<span class="st">"TRT01A"</span>).agg([</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"AGE"</span>).mean().<span class="bu">round</span>(<span class="dv">1</span>).alias(<span class="st">"mean_age"</span>),</span>
@@ -1015,7 +1015,7 @@ Note
 <h3 data-number="4.5.5" class="anchored" data-anchor-id="joining"><span class="header-section-number">4.5.5</span> Joining</h3>
 <p>Joining datasets is essential for combining subject-level data (ADSL) with event-level data (e.g.&nbsp;ADAE, ADLB). Polars supports various join types including inner, left, and full joins.</p>
 <p>Here is a toy example that splits ADSL and joins it back by <code>USUBJID</code>.</p>
-<div id="cb8f6bc6" class="cell" data-execution_count="11">
+<div id="f19e66aa" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simple demographics subset</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>demo <span class="op">=</span> adsl.select(<span class="st">"USUBJID"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>).head(<span class="dv">3</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1076,7 +1076,7 @@ Note
 <section id="pivoting" class="level3" data-number="4.5.6">
 <h3 data-number="4.5.6" class="anchored" data-anchor-id="pivoting"><span class="header-section-number">4.5.6</span> Pivoting</h3>
 <p>Pivoting transforms data from long to wide format, commonly needed for creating tables. Use <code>.pivot()</code> to reshape grouped data into columns.</p>
-<div id="071e1b40" class="cell" data-execution_count="12">
+<div id="07fff1f2" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary by treatment and sex</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    adsl</span>
@@ -1114,16 +1114,16 @@ Note
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Female"</td>
-<td>53</td>
-<td>40</td>
-<td>50</td>
-</tr>
-<tr class="even">
 <td>"Male"</td>
 <td>33</td>
 <td>44</td>
 <td>34</td>
+</tr>
+<tr class="even">
+<td>"Female"</td>
+<td>53</td>
+<td>40</td>
+<td>50</td>
 </tr>
 </tbody>
 </table>
@@ -1135,7 +1135,7 @@ Note
 </section>
 <section id="rtflite" class="level2" data-number="4.6">
 <h2 data-number="4.6" class="anchored" data-anchor-id="rtflite"><span class="header-section-number">4.6</span> rtflite</h2>
-<div id="2c756c8c" class="cell" data-execution_count="13">
+<div id="2ad94556" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>rtflite is a Python package for creating production-ready tables and figures in RTF format. While Polars handles the data processing and statistical calculations, rtflite focuses exclusively on the presentation layer. The package is designed to:</p>
@@ -1161,7 +1161,7 @@ Note
 <li><code>TRTA</code>: Actual Treatment</li>
 <li><code>AEDECOD</code>: Dictionary-Derived Term</li>
 </ul>
-<div id="1f5ae676" class="cell" data-execution_count="15">
+<div id="4fa293e4" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load adverse events data</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pl.read_parquet(<span class="st">"data/adae.parquet"</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1228,7 +1228,7 @@ Note
 <section id="table-ready-data" class="level3" data-number="4.6.2">
 <h3 data-number="4.6.2" class="anchored" data-anchor-id="table-ready-data"><span class="header-section-number">4.6.2</span> Table-ready data</h3>
 <p>In this AE example, we provide the number of subjects with each type of AE by treatment group.</p>
-<div id="e1793bfe" class="cell" data-execution_count="16">
+<div id="41babe09" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tbl <span class="op">=</span> (</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    df.group_by([<span class="st">"TRTA"</span>, <span class="st">"AEDECOD"</span>])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    .agg(pl.<span class="bu">len</span>().alias(<span class="st">"n"</span>))</span>
@@ -1329,12 +1329,12 @@ Note
 <li><code>RTFDocument()</code> transfers table layout information into RTF syntax.</li>
 <li><code>write_rtf()</code> saves encoded RTF into a <code>.rtf</code> file.</li>
 </ul>
-<div id="5c3aee3d" class="cell" data-execution_count="17">
+<div id="3552fa1f" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview1.rtf</code></pre>
 </div>
 </div>
-<div id="f2010e8c" class="cell" data-execution_count="18">
+<div id="8a2cb9fb" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>PosixPath('pdf/tlf_overview1.pdf')</code></pre>
 </div>
@@ -1346,12 +1346,12 @@ Note
 <p>If we want to adjust the width of each column to provide more space to the first column, this can be achieved by updating <code>col_rel_width</code> in <code>RTFBody</code>.</p>
 <p>The input of <code>col_rel_width</code> is a list with the same length as the number of columns. This argument defines the relative length of each column within a pre-defined total column width.</p>
 <p>In this example, the defined relative width is 3:2:2:2. Only the ratio of <code>col_rel_width</code> is used. Therefore it is equivalent to use <code>col_rel_width = [6,4,4,4]</code> or <code>col_rel_width = [1.5,1,1,1]</code>.</p>
-<div id="8bf84980" class="cell" data-execution_count="19">
+<div id="7c6016f3" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview2.rtf</code></pre>
 </div>
 </div>
-<div id="5e612233" class="cell" data-execution_count="20">
+<div id="9c8cc219" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>PosixPath('pdf/tlf_overview2.pdf')</code></pre>
 </div>
@@ -1361,12 +1361,12 @@ Note
 <section id="column-headers" class="level3" data-number="4.6.6">
 <h3 data-number="4.6.6" class="anchored" data-anchor-id="column-headers"><span class="header-section-number">4.6.6</span> Column headers</h3>
 <p>In <code>RTFColumnHeader</code>, the <code>text</code> argument provides the column header content as a list of strings.</p>
-<div id="8c9a2f23" class="cell" data-execution_count="21">
+<div id="0cf1085b" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview3.rtf</code></pre>
 </div>
 </div>
-<div id="4fd312ce" class="cell" data-execution_count="22">
+<div id="85100e2b" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>PosixPath('pdf/tlf_overview3.pdf')</code></pre>
 </div>
@@ -1375,12 +1375,12 @@ Note
 <p>We also allow column headers to be displayed in multiple lines. If an empty column name is needed for a column, you can insert an empty string. For example, <code>["name 1", "", "name 3"]</code>.</p>
 <p>In <code>RTFColumnHeader</code>, the <code>col_rel_width</code> can be used to align column headers with different numbers of columns.</p>
 <p>By using <code>RTFColumnHeader</code> with <code>col_rel_width</code>, one can customize complex column headers. If there are multiple pages, the column header will repeat on each page by default.</p>
-<div id="c2184b49" class="cell" data-execution_count="23">
+<div id="be3bafa7" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview4.rtf</code></pre>
 </div>
 </div>
-<div id="e65a2c34" class="cell" data-execution_count="24">
+<div id="6a7fc9e6" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>PosixPath('pdf/tlf_overview4.pdf')</code></pre>
 </div>
@@ -1395,12 +1395,12 @@ Note
 <li><code>RTFFootnote</code>: Add explanatory footnotes</li>
 <li><code>RTFSource</code>: Add data source attribution</li>
 </ul>
-<div id="619cf41c" class="cell" data-execution_count="25">
+<div id="2ec6a27d" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview5.rtf</code></pre>
 </div>
 </div>
-<div id="507580f6" class="cell" data-execution_count="26">
+<div id="86841c6f" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>PosixPath('pdf/tlf_overview5.pdf')</code></pre>
 </div>
@@ -1416,12 +1416,12 @@ Note
 <li><strong>Text alignment</strong>: Left (<code>l</code>), center (<code>c</code>), right (<code>r</code>), justify (<code>j</code>)</li>
 <li><strong>Font properties</strong>: Font size, font family</li>
 </ul>
-<div id="5d794054" class="cell" data-execution_count="27">
+<div id="f0b44b96" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview6.rtf</code></pre>
 </div>
 </div>
-<div id="68f1af62" class="cell" data-execution_count="28">
+<div id="7da40616" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>PosixPath('pdf/tlf_overview6.pdf')</code></pre>
 </div>
@@ -1436,12 +1436,12 @@ Note
 <li><strong>Border sides</strong>: <code>border_top</code>, <code>border_bottom</code>, <code>border_left</code>, <code>border_right</code></li>
 <li><strong>Page borders</strong>: <code>border_first</code>, <code>border_last</code> for first/last rows across pages</li>
 </ul>
-<div id="2c0d70c8" class="cell" data-execution_count="29">
+<div id="4e905511" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-stdout">
 <pre><code>rtf/tlf_overview7.rtf</code></pre>
 </div>
 </div>
-<div id="74ee9e49" class="cell" data-execution_count="30">
+<div id="c1b365de" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-display" data-execution_count="30">
 <pre><code>PosixPath('pdf/tlf_overview7.pdf')</code></pre>
 </div>
