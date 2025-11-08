@@ -12,7 +12,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "uv sync",
+	"postCreateCommand": "uv sync && sudo apt-get update -y -qq && sudo apt-get install -y libreoffice texlive texlive-luatex texlive-latex-extra texlive-fonts-extra",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -25,6 +25,7 @@
 				"tamasfe.even-better-toml",
 				"ms-toolsai.jupyter",
 				"quarto.quarto",
+				"James-Yu.latex-workshop",
 				"nanxstats.textmate-rstheme"
 			],
 			"settings": {
