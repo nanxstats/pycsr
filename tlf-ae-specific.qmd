@@ -43,7 +43,7 @@ adae = pl.read_parquet("data/adae.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
-## Step 1: Load and Explore Data
+## Step 1: Load and explore data
 
 We start by examining the adverse events data structure and understanding the MedDRA hierarchy.
 
@@ -64,7 +64,7 @@ soc_summary = adae.group_by("AEBODSYS").agg(
 soc_summary
 ```
 
-## Step 2: Prepare Analysis Population
+## Step 2: Prepare analysis population
 
 Following regulatory standards, we focus on the safety analysis population.
 
@@ -87,7 +87,7 @@ adae_safety = adae.join(adsl_safety, on="USUBJID", how="inner")
 adae_safety.height
 ```
 
-## Step 3: Data Preparation and Standardization
+## Step 3: Data preparation and standardization
 
 We standardize the adverse event terms and prepare the hierarchical data structure.
 
@@ -108,7 +108,7 @@ ae_counts = (
 ae_counts
 ```
 
-## Step 4: Build Hierarchical Table Structure
+## Step 4: Build hierarchical table structure
 
 We create a nested table structure with SOC headers and indented specific terms.
 
@@ -157,7 +157,7 @@ df_ae_specific.shape
 df_ae_specific
 ```
 
-## Step 5: Create Regulatory-Compliant RTF Output
+## Step 5: Create regulatory-compliant RTF output
 
 We format the table following regulatory submission standards with proper hierarchy and formatting.
 

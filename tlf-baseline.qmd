@@ -28,7 +28,7 @@ import rtflite as rtf # RTF reporting
 pl.Config.set_tbl_rows(5)
 ```
 
-## Step 1: Load Data
+## Step 1: Load data
 
 We start by loading the Subject-level Analysis Dataset (ADSL) and filtering to the safety population.
 
@@ -41,11 +41,11 @@ adsl = (
 adsl
 ```
 
-## Step 2: Calculate Summary Statistics
+## Step 2: Calculate summary statistics
 
 We'll create separate functions to handle continuous and categorical variables.
 
-### Continuous Variables (Age)
+### Continuous variables (age)
 
 For continuous variables, we calculate mean (SD) and median [min, max].
 
@@ -65,7 +65,7 @@ age_stats = summarize_continuous(adsl, "AGE")
 age_stats
 ```
 
-### Categorical Variables (Sex, Race)
+### Categorical variables (sex, race)
 
 For categorical variables, we calculate counts and percentages.
 
@@ -94,11 +94,11 @@ race_stats = summarize_categorical(adsl, "RACE")
 race_stats
 ```
 
-## Step 3: Format Results
+## Step 3: Format results
 
 Now we format the statistics into the standard baseline table format.
 
-### Format Age Statistics
+### Format age statistics
 
 ```{python}
 # Format age as "Mean (SD)" and "Median [Min, Max]"
@@ -110,7 +110,7 @@ age_formatted = age_stats.with_columns([
 age_formatted
 ```
 
-### Format Categorical Statistics
+### Format categorical statistics
 
 ```{python}
 # Format categorical as "n (%)"
@@ -125,7 +125,7 @@ race_formatted = race_stats.with_columns(
 sex_formatted
 ```
 
-## Step 4: Create Table Structure
+## Step 4: Create table structure
 
 We'll build the table row by row following the standard baseline table format.
 
@@ -188,7 +188,7 @@ baseline_table = pl.DataFrame(
 baseline_table
 ```
 
-## Step 5: Generate Publication-Ready Output
+## Step 5: Generate publication-ready output
 
 Finally, we format the baseline table for regulatory submission using the `rtflite` package.
 
@@ -203,7 +203,7 @@ doc_baseline = rtf.RTFDocument(
     df=baseline_table,
     rtf_title=rtf.RTFTitle(
         text=[
-            "Baseline Characteristics of Participants", 
+            "Baseline Characteristics of Participants",
             "(All Participants Randomized)"
         ]
     ),

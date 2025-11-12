@@ -32,7 +32,7 @@ import rtflite as rtf # Reporting in RTF format
 pl.Config.set_tbl_rows(5)
 ```
 
-## Step 1: Load Data
+## Step 1: Load data
 
 We start by loading the Subject-level Analysis Dataset (ADSL), which contains all participant information needed for our disposition table.
 
@@ -55,7 +55,7 @@ Let's examine the key variables we'll use to build our disposition table:
 adsl.select(["USUBJID", "TRT01P", "TRT01PN", "DISCONFL", "DCREASCD"])
 ```
 
-## Step 2: Count Total Participants
+## Step 2: Count total participants
 
 First, we count how many participants were enrolled in each treatment group.
 
@@ -81,7 +81,7 @@ n_rand = (
 n_rand
 ```
 
-## Step 3: Count Completed Participants
+## Step 3: Count completed participants
 
 Next, we identify participants who successfully completed the study and calculate what percentage they represent of each treatment group.
 
@@ -113,7 +113,7 @@ n_complete = (
 n_complete
 ```
 
-## Step 4: Count Discontinued Participants
+## Step 4: Count discontinued participants
 
 Now we count participants who left the study early, regardless of their specific reason.
 
@@ -144,7 +144,7 @@ n_disc = (
 n_disc
 ```
 
-## Step 5: Break Down Discontinuation Reasons
+## Step 5: Break down discontinuation reasons
 
 For regulatory reporting, we need to show the specific reasons why participants discontinued.
 
@@ -180,7 +180,7 @@ n_reason = (
 n_reason
 ```
 
-## Step 6: Combine All Results
+## Step 6: Combine all results
 
 Now we stack all our individual summaries together to create the complete disposition table.
 
@@ -197,7 +197,7 @@ tbl_disp = pl.concat([
 tbl_disp
 ```
 
-## Step 7: Generate Publication-Ready Output
+## Step 7: Generate publication-ready output
 
 Finally, we format our table in RTF format using the `rtflite` package.
 
