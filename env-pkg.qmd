@@ -379,12 +379,7 @@ project/
 └── output/             # Shared output (TLFs, reports)
 ```
 
-**Why separate?**
-
-As John Carmack [noted](https://www.youtube.com/watch?v=I845O57ZSy4&t=1097s):
-"It's almost always a mistake to mix languages in a single project."
-
-Reasons:
+**Why separate?** There are a few reasons:
 
 - Different build systems.
 - Different dependency management.
