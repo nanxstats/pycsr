@@ -1,16 +1,20 @@
 # Welcome {.unnumbered}
 
 Welcome to Python for Clinical Study Reports and Submission.
-Clinical study reports (CSR) are crucial components in clinical trial development.
-A CSR is an "integrated" full scientific report of an individual clinical trial.
+Clinical study reports (CSRs) sit at the heart of clinical trial development.
+They bring the design, analysis, and interpretation of a study together
+in an integrated document.
 
-The [ICH E3: Structure and Content of Clinical Study Reports](https://database.ich.org/sites/default/files/E3_Guideline.pdf)
-offers comprehensive instructions to sponsors on the creation of a CSR.
-This book is a clear and straightforward guide on using Python to streamline the
-process of preparing CSRs. Additionally, it provides detailed guidance on the
-submission process to regulatory agencies. Whether you are a beginner or an
-experienced developer, this book is an indispensable asset in your
-clinical reporting toolkit.
+This book shows how to use Python to plan, build, and automate CSRs,
+from data and analyses to tables, figures, and listings.
+We follow the [ICH E3 guidance on structure and content
+](https://database.ich.org/sites/default/files/E3_Guideline.pdf) and
+demonstrate practical, reproducible workflows that help you meet those expectations.
+
+Whether you are new to Python or already working in clinical reporting,
+you will find small, reusable examples you can adopt right away,
+along with patterns and checklists for organizing work for
+regulatory submission and effective team collaboration.
 
 **This is a work-in-progress draft.**
 
