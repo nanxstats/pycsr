@@ -48,7 +48,7 @@ adlbc = pl.read_parquet("data/adlbc.parquet")
 treatments = ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
 ```
 
-## Step 1: Explore Laboratory Data Structure
+## Step 1: Explore laboratory data structure
 
 We start by understanding the glucose data structure and endpoint definitions.
 
@@ -66,7 +66,7 @@ gluc_visits = adlbc.filter(pl.col("PARAMCD") == "GLUC").select("AVISIT", "AVISIT
 gluc_visits
 ```
 
-## Step 2: Define Analysis Population and Endpoint
+## Step 2: Define analysis population and endpoint
 
 Following the Statistical Analysis Plan, we focus on the efficacy population for the primary endpoint.
 
@@ -100,7 +100,7 @@ gluc_availability = (
 gluc_availability
 ```
 
-## Step 3: Implement LOCF Imputation Strategy
+## Step 3: Implement LOCF imputation strategy
 
 We apply Last Observation Carried Forward (LOCF) for missing Week 24 glucose values.
 
@@ -140,7 +140,7 @@ locf_summary = (
 locf_summary
 ```
 
-## Step 4: Calculate Descriptive Statistics
+## Step 4: Calculate descriptive statistics
 
 We compute baseline, Week 24, and change from baseline statistics by treatment group.
 
@@ -177,7 +177,7 @@ desc_df = pl.DataFrame(desc_stats)
 desc_df
 ```
 
-## Step 5: Perform ANCOVA Analysis
+## Step 5: Perform ANCOVA analysis
 
 We fit the ANCOVA model with treatment and baseline glucose as covariates.
 
@@ -230,7 +230,7 @@ ls_means_df = pl.DataFrame(ls_means)
 ls_means_df
 ```
 
-## Step 6: Pairwise Treatment Comparisons
+## Step 6: Pairwise treatment comparisons
 
 We calculate treatment differences and their statistical significance.
 
@@ -269,7 +269,7 @@ comparison_df = pl.DataFrame(tbl2_data)
 comparison_df
 ```
 
-## Step 7: Prepare Tables for RTF Output
+## Step 7: Prepare tables for RTF output
 
 We format the analysis results into publication-ready tables.
 
@@ -313,7 +313,7 @@ tbl2 = pl.DataFrame(tbl2_formatted, orient="row", schema=["Comparison", "Diff_CI
 tbl2
 ```
 
-## Step 8: Create Regulatory-Compliant RTF Document
+## Step 8: Create regulatory-compliant RTF document
 
 We generate a comprehensive efficacy table following regulatory submission standards.
 

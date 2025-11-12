@@ -36,7 +36,7 @@ import rtflite as rtf
 pl.Config.set_tbl_rows(5)
 ```
 
-## Step 1: Load Data
+## Step 1: Load data
 
 We need two datasets for AE analysis: the subject-level dataset (ADSL) and the adverse events dataset (ADAE).
 
@@ -62,7 +62,7 @@ Key ADAE variables used in this analysis:
 - **AEOUT**: Outcome of adverse event (e.g., "RECOVERED", "RECOVERING", "NOT RECOVERED", "FATAL")
 - **AEACN**: Action taken with study treatment (e.g., "DOSE NOT CHANGED", "DRUG WITHDRAWN", "DOSE REDUCED")
 
-## Step 2: Filter Safety Population
+## Step 2: Filter safety population
 
 For safety analyses, we focus on participants who received at least one dose of study treatment.
 
@@ -90,7 +90,7 @@ adae_safety = adae.join(adsl_safety, on="USUBJID")
 adae_safety.height
 ```
 
-## Step 3: Define AE Categories
+## Step 3: Define AE categories
 
 We'll calculate participant counts for standard AE categories used in regulatory submissions.
 
@@ -183,7 +183,7 @@ discontinued = count_participants(
 categories.append(discontinued)
 ```
 
-## Step 4: Combine and Calculate Percentages
+## Step 4: Combine and calculate percentages
 
 Now we combine all categories and calculate percentages based on the safety population.
 
@@ -209,7 +209,7 @@ ae_summary = ae_summary.join(
 ae_summary.sort(["category", "TRT01A"])
 ```
 
-## Step 5: Format for Display
+## Step 5: Format for display
 
 We'll format the counts and percentages for the final table display.
 
@@ -230,7 +230,7 @@ ae_formatted = ae_summary.with_columns([
 ae_formatted.select(["category", "TRT01A", "n_display", "pct_display"])
 ```
 
-## Step 6: Create Final Table Structure
+## Step 6: Create final table structure
 
 We reshape the data to create the final table with treatments as columns.
 
@@ -268,7 +268,7 @@ final_table = ae_wide.select(column_order).sort(
 final_table
 ```
 
-## Step 7: Generate Publication-Ready Output
+## Step 7: Generate publication-ready output
 
 Finally, we format the AE summary table for regulatory submission using the `rtflite` package.
 

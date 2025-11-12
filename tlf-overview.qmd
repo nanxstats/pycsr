@@ -19,19 +19,19 @@ focusing on the tools and workflows demonstrated throughout this book.
 
 ## Background
 
-Submitting clinical trial results to regulatory agencies is a crucial aspect of clinical development. 
-The [Electronic Common Technical Document (eCTD)](https://en.wikipedia.org/wiki/Electronic_common_technical_document) 
-has emerged as the global standard format for regulatory submissions. 
+Submitting clinical trial results to regulatory agencies is a crucial aspect of clinical development.
+The [Electronic Common Technical Document (eCTD)](https://en.wikipedia.org/wiki/Electronic_common_technical_document)
+has emerged as the global standard format for regulatory submissions.
 For instance, the United States Food and Drug Administration (US FDA) [mandates the use of eCTD](https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/electronic-common-technical-document-ectd) for new drug applications and biologics license applications.
 
-A CSR provides comprehensive information about the methods and results of an individual clinical study. 
-To support the statistical analysis, numerous tables, listings, 
-and figures are included within the main text and appendices. 
-The creation of a CSR is a collaborative effort that involves 
+A CSR provides comprehensive information about the methods and results of an individual clinical study.
+To support the statistical analysis, numerous tables, listings,
+and figures are included within the main text and appendices.
+The creation of a CSR is a collaborative effort that involves
 various professionals such as clinicians, medical writers, statisticians, and statistical programmers.
 
-Within an organization, these professionals typically collaborate to define, develop, validate, and deliver the necessary TLFs for a CSR. These TLFs serve to summarize the efficacy and/or safety of the pharmaceutical product under study. 
-In the pharmaceutical industry, Microsoft Word is widely utilized for CSR preparation. 
+Within an organization, these professionals typically collaborate to define, develop, validate, and deliver the necessary TLFs for a CSR. These TLFs serve to summarize the efficacy and/or safety of the pharmaceutical product under study.
+In the pharmaceutical industry, Microsoft Word is widely utilized for CSR preparation.
 As a result, the deliverables from statisticians and statistical programmers are commonly provided in formats such as `.rtf`, `.doc`, `.docx` to align with industry standards and requirements.
 
 ::: {.callout-note}
@@ -74,7 +74,7 @@ Key advantages of Polars include:
 - **Familiar syntax**: Similar to tidyverse-style pipelines, making it accessible to R users
 - **Type safety**: Strong typing system that catches errors early in development
 
-The creators of Polars have provided exceptional 
+The creators of Polars have provided exceptional
 [documentation](https://docs.pola.rs/api/python/stable/reference/index.html) and [tutorials](https://docs.pola.rs/user-guide/getting-started) that serve as valuable resources for learning and mastering the functionalities of the library.
 
 Furthermore, several books are available that serve as introductions to Polars:
@@ -87,8 +87,8 @@ This prior knowledge enables a more efficient and focused exploration of the cli
 concepts presented throughout the book.
 :::
 
-To illustrate the basic usage of Polars, let's work with a sample ADSL dataset. 
-This dataset contains subject-level information from a clinical trial, 
+To illustrate the basic usage of Polars, let's work with a sample ADSL dataset.
+This dataset contains subject-level information from a clinical trial,
 which will serve as a practical example for generating summaries using Polars.
 
 ```{python}
@@ -186,11 +186,11 @@ adsl.group_by("TRT01A").agg([
 
 ### Joining
 
-Joining datasets is essential for combining subject-level data (ADSL) 
+Joining datasets is essential for combining subject-level data (ADSL)
 with event-level data (e.g. ADAE, ADLB).
 Polars supports various join types including inner, left, and full joins.
 
-Here is a toy example that splits ADSL and joins it back by `USUBJID`. 
+Here is a toy example that splits ADSL and joins it back by `USUBJID`.
 
 ```{python}
 # Create a simple demographics subset
@@ -228,7 +228,7 @@ Having covered the essential Polars operations for data manipulation, we now tur
 ## rtflite
 
 ```{python}
-import rtflite as rtf 
+import rtflite as rtf
 ```
 
 ```{python}
@@ -565,7 +565,7 @@ converter.convert("rtf/tlf_overview7.rtf", output_dir="pdf/", format="pdf", over
 
 <embed src="pdf/tlf_overview7.pdf" style="width:100%; height:400px" type="application/pdf">
 
-## Next Steps
+## Next steps
 
 Having covered the fundamental concepts and tools for creating clinical TLFs with Python, readers can explore specific implementations based on their requirements:
 
