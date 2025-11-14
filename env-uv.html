@@ -470,7 +470,7 @@ Warning
 <section id="python-packaging-standards" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="python-packaging-standards"><span class="header-section-number">2.3</span> Python packaging standards</h2>
 <p>Python has standardized on <code>pyproject.toml</code> as the configuration file for all projects. This is similar to R’s <code>DESCRIPTION</code> file but uses TOML format.</p>
-<p>The Official Python packaging guide is available at <a href="https://packaging.python.org/" class="uri">https://packaging.python.org/</a>.</p>
+<p>The official Python packaging guide is available at <a href="https://packaging.python.org/" class="uri">https://packaging.python.org/</a>.</p>
 <p>Key concepts:</p>
 <ul>
 <li><code>pyproject.toml</code> defines project metadata and dependencies.</li>
@@ -727,7 +727,11 @@ Tip
 <h3 data-number="2.11.1" class="anchored" data-anchor-id="build-wheel"><span class="header-section-number">2.11.1</span> Build wheel</h3>
 <p>Create distribution files:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> build</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This creates: - <code>dist/pycsr_example-0.1.0.tar.gz</code> (source distribution) - <code>dist/pycsr_example-0.1.0-py3-none-any.whl</code> (wheel)</p>
+<p>This creates:</p>
+<ul>
+<li><code>dist/pycsr_example-0.1.0.tar.gz</code> (source distribution)</li>
+<li><code>dist/pycsr_example-0.1.0-py3-none-any.whl</code> (wheel)</li>
+</ul>
 </section>
 <section id="publish-to-pypi" class="level3" data-number="2.11.2">
 <h3 data-number="2.11.2" class="anchored" data-anchor-id="publish-to-pypi"><span class="header-section-number">2.11.2</span> Publish to PyPI</h3>
