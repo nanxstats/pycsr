@@ -60,7 +60,7 @@ into a single, cohesive tool.
 Python has standardized on `pyproject.toml` as the configuration file
 for all projects. This is similar to R's `DESCRIPTION` file but uses TOML format.
 
-The Official Python packaging guide is available at <https://packaging.python.org/>.
+The official Python packaging guide is available at <https://packaging.python.org/>.
 
 Key concepts:
 
@@ -384,6 +384,7 @@ uv build
 ```
 
 This creates:
+
 - `dist/pycsr_example-0.1.0.tar.gz` (source distribution)
 - `dist/pycsr_example-0.1.0-py3-none-any.whl` (wheel)
 
