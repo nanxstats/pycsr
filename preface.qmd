@@ -14,8 +14,8 @@ Each part of the book makes certain assumptions about the readers' background:
   are individual contributors to a clinical project with prior experience in
   Python. Familiarity with data manipulation using Polars is expected.
   Recommended references for this part include
-  [Python Polars: The Definitive Guide](https://polarsguide.com/), theand the
-  [rtflite documentation](https://rtflite.readthedocs.io/).
+  [Python Polars: The Definitive Guide](https://polarsguide.com/), and the
+  [rtflite documentation](https://pharmaverse.github.io/rtflite/).
 
 - Part 3, titled "Clinical trial project", provides general information and
   examples on managing a clinical trial A&R project using Python. It assumes that readers

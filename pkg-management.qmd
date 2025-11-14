@@ -76,6 +76,7 @@ Example issue template:
 Create disposition table following ICH E3 guidelines
 
 **Deliverables**:
+
 - [ ] Quarto document: analysis/tlf-01-disposition.qmd
 - [ ] Output table: output/tlf-disposition.rtf
 - [ ] Unit tests: tests/test_disposition.py
