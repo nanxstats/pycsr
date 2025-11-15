@@ -424,8 +424,17 @@ cd dev-practice
 # Add dev dependencies
 uv add --dev ruff mypy pytest pytest-cov
 
+# Add build system to pyproject.toml
+cat >> pyproject.toml << 'EOF'
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+EOF
+
 # Create stats module
 mkdir -p src/dev_practice
+touch src/dev_practice/__init__.py
 cat > src/dev_practice/stats.py << 'EOF'
 def mean(values: list[float]) -> float:
     """Calculate the arithmetic mean of a list of numbers."""
@@ -461,20 +470,25 @@ uv run pytest --cov=dev_practice --cov-report=term
 Expected output from pytest:
 
 ```
-============================= test session starts ==============================
+=================================== test session starts ===================================
+platform darwin -- Python 3.14.0, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Users/user/dev-practice
+configfile: pyproject.toml
+plugins: cov-7.0.0
 collected 3 items
 
-tests/test_stats.py ...                                                  [100%]
+tests/test_stats.py ...                                                             [100%]
 
----------- coverage: platform darwin, python 3.13.9-final-0 ----------
-Name                        Stmts   Miss  Cover
------------------------------------------------
-src/dev_practice/__init__.py    0      0   100%
-src/dev_practice/stats.py       4      0   100%
------------------------------------------------
-TOTAL                           4      0   100%
+===================================== tests coverage ======================================
+____________________ coverage: platform darwin, python 3.14.0-final-0 _____________________
 
-============================== 3 passed in 0.05s ===============================
+Name                           Stmts   Miss  Cover
+--------------------------------------------------
+src/dev_practice/__init__.py       0      0   100%
+src/dev_practice/stats.py          4      0   100%
+--------------------------------------------------
+TOTAL                              4      0   100%
+==================================== 3 passed in 0.02s ====================================
 ```
 
 </details>
