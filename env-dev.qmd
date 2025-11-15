@@ -99,6 +99,8 @@ Essential extensions for this book:
   Syntax highlighting for TOML files (`pyproject.toml`).
 - [Quarto](https://marketplace.visualstudio.com/items?itemName=quarto.quarto):
   Authoring support for Quarto documents.
+- [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop):
+  Previewing PDF files in VS Code.
 
 ## VS Code settings
 

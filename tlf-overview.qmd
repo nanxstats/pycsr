@@ -75,7 +75,7 @@ Key advantages of Polars include:
 - **Type safety**: Strong typing system that catches errors early in development
 
 The creators of Polars have provided exceptional
-[documentation](https://docs.pola.rs/api/python/stable/reference/index.html) and [tutorials](https://docs.pola.rs/user-guide/getting-started) that serve as valuable resources for learning and mastering the functionalities of the library.
+[documentation](https://docs.pola.rs/api/python/stable/reference/index.html) and [tutorials](https://docs.pola.rs/user-guide/getting-started/) that serve as valuable resources for learning and mastering the functionalities of the library.
 
 Furthermore, several books are available that serve as introductions to Polars:
 
