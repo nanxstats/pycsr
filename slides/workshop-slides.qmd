@@ -173,7 +173,7 @@ uv init pycsr-example
 cd pycsr-example
 
 # Pin Python version
-uv python pin 3.13.9
+uv python pin 3.14.0
 
 # Add dependencies
 uv add polars plotnine rtflite
@@ -224,7 +224,7 @@ All configured in `pyproject.toml`.
 
 **`.python-version` file**
 
-- Specifies exact Python version (e.g., `3.13.9`)
+- Specifies exact Python version (for example, `3.14.0`)
 - Critical for regulatory submissions
 
 # Delivering TLFs in CSR {background-color="#385898"}
@@ -685,15 +685,15 @@ Document the Python environment:
 
 | Software | Version | Description |
 |----------|---------|-------------|
-| Python | 3.13.9 | Programming language |
-| uv     | 0.9.7  | Package manager      |
+| Python | 3.14.0 | Programming language |
+| uv     | 0.9.9  | Package manager      |
 
 **Packages:**
 
 | Package | Version | Description |
 |---------|---------|-------------|
 | polars | 1.35.1 | Data manipulation |
-| rtflite | 1.0.2 | RTF generation |
+| rtflite | 1.1.0 | RTF generation |
 | demo001 | 0.1.0 | Study functions |
 
 **Appendix:** Step-by-step reproduction instructions.

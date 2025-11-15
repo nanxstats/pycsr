@@ -438,8 +438,8 @@ The table below contains the software version and program metadata:
 
 | Software | Version | Description |
 |----------|---------|-------------|
-| Python | 3.13.9 | Programming language |
-| uv | 0.5.18 | Package manager |
+| Python | 3.14.0 | Programming language |
+| uv | 0.9.9 | Package manager |
 
 **Python packages table:**
 
@@ -447,7 +447,7 @@ The table below contains the software version and program metadata:
 |---------|---------|-------------|
 | polars | 1.35.1 | Data manipulation |
 | plotnine | 0.15.1 | Data visualization |
-| rtflite | 1.0.2 | RTF table generation |
+| rtflite | 1.1.0 | RTF table generation |
 | statsmodels | 0.14.0 | Statistical models |
 
 **Proprietary packages table:**
@@ -548,7 +548,7 @@ Table Reference: Table 14.1.1
 Analysis Result: Disposition counts by treatment group
 Analysis Reason: Describe study population
 Analysis Purpose: Primary
-Programming Statements: (Python version 3.13.9), [programs/tlf-01-disposition.txt]
+Programming Statements: (Python version 3.14.0), [programs/tlf-01-disposition.txt]
 ```
 
 ## Testing the submission package

@@ -37,7 +37,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.14'
 
       - name: Install LibreOffice
         run: sudo apt-get update && sudo apt-get install libreoffice --no-install-recommends
