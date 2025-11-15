@@ -17,25 +17,14 @@ To explore code in this book, use the "Open in GitHub Codespaces" button below.
 
 [![](https://github.com/codespaces/badge.svg)](https://codespaces.new/nanxstats/pycsr?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
 
-## Installing dependencies
-
-We use `uv` to manage the Python environment.
-
-Update Python version:
-
-```bash
-uv python pin x.y.z
-uv sync
-```
-
-Update dependencies:
-
-```bash
-uv lock --upgrade
-uv sync
-```
-
 ## Build the book
+
+Restore and activate the virtual environment using `uv`:
+
+```bash
+uv sync
+source .venv/bin/activate
+```
 
 Render all formats:
 
@@ -53,4 +42,20 @@ Render slides:
 
 ```bash
 quarto render slides/workshop-slides.qmd
+```
+
+## Maintenance
+
+Update Python version:
+
+```bash
+uv python pin x.y.z
+uv sync
+```
+
+Update dependencies:
+
+```bash
+uv lock --upgrade
+uv sync
 ```
