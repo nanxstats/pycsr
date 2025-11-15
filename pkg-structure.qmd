@@ -94,16 +94,16 @@ description = "Analysis package for DEMO-001 study"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "polars>=1.35.1",
     "plotnine>=0.15.1",
-    "rtflite>=1.0.2",
+    "polars>=1.35.2",
+    "rtflite>=1.1.0",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.4.2",
-    "ruff>=0.14.3",
     "mypy>=1.18.2",
+    "pytest>=9.0.1",
+    "ruff>=0.14.5",
 ]
 
 [build-system]
@@ -123,13 +123,13 @@ Key sections:
 Specifies the exact Python version:
 
 ```
-3.13.9
+3.14.0
 ```
 
-Created by `uv python pin 3.13.9`.
+Created by `uv python pin 3.14.0`.
 
 ::: callout-important
-Use the full `MAJOR.MINOR.PATCH` version (e.g., `3.13.9`), not just `3.13`.
+Use the full `MAJOR.MINOR.PATCH` version (for example, `3.14.0`), not just `3.14`.
 This prevents drift as new patch versions are released.
 :::
 

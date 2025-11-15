@@ -177,15 +177,15 @@ Key sections:
 Specify the exact Python version for your project:
 
 ```bash
-uv python pin 3.13.9
+uv python pin 3.14.0
 ```
 
 This updates `.python-version` file so everyone uses the same Python version
 when they restore the environment.
 
 ::: callout-important
-Use the full `MAJOR.MINOR.PATCH` version (for example, `3.13.9`) rather than
-just `MAJOR.MINOR` (for example, `3.13`). This prevents drift as new patch
+Use the full `MAJOR.MINOR.PATCH` version (for example, `3.14.0`) rather than
+just `MAJOR.MINOR` (for example, `3.14`). This prevents drift as new patch
 versions are released.
 :::
 
@@ -204,7 +204,7 @@ uv python list
 Install a specific Python version if needed:
 
 ```bash
-uv python install 3.13.9
+uv python install 3.14.0
 ```
 
 ## Managing dependencies
@@ -228,16 +228,16 @@ This updates `pyproject.toml`:
 ```toml
 [project]
 dependencies = [
-    "polars>=1.34.0",
-    "plotnine>=0.15.0",
-    "rtflite>=1.0.2",
+    "plotnine>=0.15.1",
+    "polars>=1.35.2",
+    "rtflite>=1.1.0",
 ]
 
-[dependency-groups.dev]
-dependencies = [
-    "ruff>=0.14.1",
-    "pytest>=8.4.2",
+[dependency-groups]
+dev = [
     "mypy>=1.18.2",
+    "pytest>=9.0.1",
+    "ruff>=0.14.5",
 ]
 ```
 
@@ -408,7 +408,7 @@ publishing on PyPI will make them more visible.
 Create a small project to practice uv commands:
 
 1. Initialize a new project called `csr-practice`.
-2. Pin Python to version 3.13.9 (or latest available).
+2. Pin Python to version 3.14.0 (or latest available).
 3. Add `polars` as a dependency.
 4. Add `pytest` as a development dependency.
 5. Examine the generated `pyproject.toml` and `uv.lock` files.
@@ -423,7 +423,7 @@ uv init csr-practice
 cd csr-practice
 
 # Pin Python version
-uv python pin 3.13.9
+uv python pin 3.14.0
 
 # Add dependencies
 uv add polars

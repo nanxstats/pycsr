@@ -226,7 +226,7 @@ ARM provides:
 
 **Public packages:**
 
-Packages available on PyPI (e.g., `polars`, `rtflite`) do not need submission.
+Packages available on PyPI (e.g., `polars`, `rtflite`, `pkglite`) do not need submission.
 Document versions in ADRG.
 
 **Proprietary packages:**
