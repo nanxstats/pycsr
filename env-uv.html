@@ -562,7 +562,7 @@ Note
 <section id="pin-python-version" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="pin-python-version"><span class="header-section-number">2.7</span> Pin Python version</h2>
 <p>Specify the exact Python version for your project:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python pin 3.13.9</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python pin 3.14.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This updates <code>.python-version</code> file so everyone uses the same Python version when they restore the environment.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -574,7 +574,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Use the full <code>MAJOR.MINOR.PATCH</code> version (for example, <code>3.13.9</code>) rather than just <code>MAJOR.MINOR</code> (for example, <code>3.13</code>). This prevents drift as new patch versions are released.</p>
+<p>Use the full <code>MAJOR.MINOR.PATCH</code> version (for example, <code>3.14.0</code>) rather than just <code>MAJOR.MINOR</code> (for example, <code>3.14</code>). This prevents drift as new patch versions are released.</p>
 </div>
 </div>
 <p>Why pin the exact version:</p>
@@ -586,7 +586,7 @@ Important
 <p>Check which Python versions are available:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python list</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Install a specific Python version if needed:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python install 3.13.9</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python install 3.14.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="managing-dependencies" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="managing-dependencies"><span class="header-section-number">2.8</span> Managing dependencies</h2>
@@ -599,16 +599,16 @@ Important
 <p>This updates <code>pyproject.toml</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project]</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"polars&gt;=1.34.0"</span><span class="op">,</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"plotnine&gt;=0.15.0"</span><span class="op">,</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rtflite&gt;=1.0.2"</span><span class="op">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"plotnine&gt;=0.15.1"</span><span class="op">,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"polars&gt;=1.35.2"</span><span class="op">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rtflite&gt;=1.1.0"</span><span class="op">,</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">[dependency-groups.dev]</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ruff&gt;=0.14.1"</span><span class="op">,</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pytest&gt;=8.4.2"</span><span class="op">,</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mypy&gt;=1.18.2"</span><span class="op">,</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">[dependency-groups]</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mypy&gt;=1.18.2"</span><span class="op">,</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pytest&gt;=9.0.1"</span><span class="op">,</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ruff&gt;=0.14.5"</span><span class="op">,</span></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -757,7 +757,7 @@ Note
 <p>Create a small project to practice uv commands:</p>
 <ol type="1">
 <li>Initialize a new project called <code>csr-practice</code>.</li>
-<li>Pin Python to version 3.13.9 (or latest available).</li>
+<li>Pin Python to version 3.14.0 (or latest available).</li>
 <li>Add <code>polars</code> as a dependency.</li>
 <li>Add <code>pytest</code> as a development dependency.</li>
 <li>Examine the generated <code>pyproject.toml</code> and <code>uv.lock</code> files.</li>
@@ -772,7 +772,7 @@ View solution
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> csr-practice</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pin Python version</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python pin 3.13.9</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python pin 3.14.0</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add dependencies</span></span>
 <span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add polars</span>
