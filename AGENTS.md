@@ -6,7 +6,7 @@
 - Rendered assets land in `_book/`, `pdf/`, and `rtf/`; keep those directories clean of hand edits.
 - Shared styling resides in `custom.scss`, with supporting fonts in `fonts/`.
 - Python utilities belong under `src/pycsr`, and downstream scripts should import from that namespace.
-- Possible R materials mirror the Python material inside `r4csr/`; treat it as a sibling Quarto project.
+- Optional R materials mirror the Python material inside `r4csr/`; treat it as a sibling Quarto project.
 
 ## Build, test, and development commands
 
