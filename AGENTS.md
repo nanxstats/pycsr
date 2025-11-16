@@ -12,7 +12,7 @@
 
 - Refresh dependencies with `uv sync`, which honors `pyproject.toml` and `uv.lock`.
 - Pin Python versions using `uv python pin <version>` followed by `uv sync` to regenerate the environment.
-- When dependencies change, run `uv lock --upgrade`, update the lock file via `uv sync`, and activate the environment.
+- When dependencies change, run `uv lock --upgrade` to update the lock file, then run `uv sync` to synchronize your environment.
 - Build the book with `quarto render --to html` to populate `_book/`.
 - Use `quarto preview` for iterative writing and layout checks.
 
