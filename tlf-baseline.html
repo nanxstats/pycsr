@@ -410,11 +410,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Baseline characteristics tables summarize the demographic and clinical characteristics of study participants at enrollment. Following <a href="https://database.ich.org/sites/default/files/E3_Guideline.pdf">ICH E3 guidance</a>, these tables are essential for understanding the study population and assessing comparability between treatment groups.</p>
 <p>This tutorial shows you how to create a baseline characteristics table using Python’s <code>rtflite</code> package.</p>
 <embed src="pdf/tlf_baseline.pdf" style="width:100%; height:600px" type="application/pdf">
-<div id="20d52f85" class="cell" data-execution_count="1">
+<div id="b467b77a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl <span class="co"># Data manipulation</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rtflite <span class="im">as</span> rtf <span class="co"># RTF reporting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="79b3a376" class="cell" data-execution_count="2">
+<div id="90623ce5" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>polars.config.Config</code></pre>
 </div>
@@ -423,7 +423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-load-data" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="step-1-load-data"><span class="header-section-number">7.2</span> Step 1: Load data</h2>
 <p>We start by loading the Subject-level Analysis Dataset (ADSL) and filtering to the safety population.</p>
-<div id="a253f375" class="cell" data-execution_count="3">
+<div id="5b3d9621" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adsl <span class="op">=</span> (</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    pl.read_parquet(<span class="st">"data/adsl.parquet"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    .select([<span class="st">"USUBJID"</span>, <span class="st">"TRT01P"</span>, <span class="st">"AGE"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>])</span>
@@ -511,7 +511,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="continuous-variables-age" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="continuous-variables-age"><span class="header-section-number">7.3.1</span> Continuous variables (age)</h3>
 <p>For continuous variables, we calculate mean (SD) and median [min, max].</p>
-<div id="cc29b8a0" class="cell" data-execution_count="4">
+<div id="1b44e425" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_continuous(df, var):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate summary statistics for continuous variables"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.group_by(<span class="st">"TRT01P"</span>).agg([</span>
@@ -557,15 +557,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>75.7</td>
-<td>8.29</td>
-<td>77.5</td>
-<td>51.0</td>
-<td>88.0</td>
-<td>84</td>
-</tr>
-<tr class="even">
 <td>"Placebo"</td>
 <td>75.2</td>
 <td>8.59</td>
@@ -573,6 +564,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>52.0</td>
 <td>89.0</td>
 <td>86</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>75.7</td>
+<td>8.29</td>
+<td>77.5</td>
+<td>51.0</td>
+<td>88.0</td>
+<td>84</td>
 </tr>
 <tr class="odd">
 <td>"Xanomeline High Dose"</td>
@@ -592,7 +592,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="categorical-variables-sex-race" class="level3" data-number="7.3.2">
 <h3 data-number="7.3.2" class="anchored" data-anchor-id="categorical-variables-sex-race"><span class="header-section-number">7.3.2</span> Categorical variables (sex, race)</h3>
 <p>For categorical variables, we calculate counts and percentages.</p>
-<div id="f3908f4d" class="cell" data-execution_count="5">
+<div id="ad7f1f29" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_categorical(df, var):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate counts and percentages for categorical variables"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get counts by treatment and category</span></span>
@@ -638,11 +638,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>"Female"</td>
-<td>40</td>
+<td>"Xanomeline Low Dose"</td>
+<td>"Male"</td>
+<td>34</td>
 <td>84</td>
-<td>47.6</td>
+<td>40.5</td>
 </tr>
 <tr class="even">
 <td>"Xanomeline High Dose"</td>
@@ -652,11 +652,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>52.4</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
+<td>"Xanomeline High Dose"</td>
 <td>"Female"</td>
-<td>53</td>
-<td>86</td>
-<td>61.6</td>
+<td>40</td>
+<td>84</td>
+<td>47.6</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -667,10 +667,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td>"Xanomeline Low Dose"</td>
-<td>"Male"</td>
-<td>34</td>
+<td>"Female"</td>
+<td>50</td>
 <td>84</td>
-<td>40.5</td>
+<td>59.5</td>
 </tr>
 <tr class="even">
 <td>"Placebo"</td>
@@ -684,7 +684,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="4177a518" class="cell" data-execution_count="6">
+<div id="a18c1de2" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>race_stats <span class="op">=</span> summarize_categorical(adsl, <span class="st">"RACE"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>race_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
@@ -729,11 +729,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>9.3</td>
 </tr>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
+<td>"Xanomeline High Dose"</td>
 <td>"White"</td>
-<td>78</td>
+<td>74</td>
 <td>84</td>
-<td>92.9</td>
+<td>88.1</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -743,18 +743,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>…</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
-<td>"White"</td>
-<td>78</td>
-<td>86</td>
-<td>90.7</td>
-</tr>
-<tr class="even">
 <td>"Xanomeline High Dose"</td>
 <td>"American Indian Or Alaska Nati…</td>
 <td>1</td>
 <td>84</td>
 <td>1.2</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline High Dose"</td>
+<td>"Black Or African American"</td>
+<td>9</td>
+<td>84</td>
+<td>10.7</td>
 </tr>
 </tbody>
 </table>
@@ -768,7 +768,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now we format the statistics into the standard baseline table format.</p>
 <section id="format-age-statistics" class="level3" data-number="7.4.1">
 <h3 data-number="7.4.1" class="anchored" data-anchor-id="format-age-statistics"><span class="header-section-number">7.4.1</span> Format age statistics</h3>
-<div id="06dc70f4" class="cell" data-execution_count="7">
+<div id="037076b9" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format age as "Mean (SD)" and "Median [Min, Max]"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>age_formatted <span class="op">=</span> age_stats.with_columns([</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">)"</span>, pl.col(<span class="st">"mean"</span>), pl.col(<span class="st">"sd"</span>)).alias(<span class="st">"mean_sd"</span>),</span>
@@ -800,14 +800,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline Low Dose"</td>
-<td>"75.7 (8.29)"</td>
-<td>"77.5 [51.0, 88.0]"</td>
-</tr>
-<tr class="even">
 <td>"Placebo"</td>
 <td>"75.2 (8.59)"</td>
 <td>"76.0 [52.0, 89.0]"</td>
+</tr>
+<tr class="even">
+<td>"Xanomeline Low Dose"</td>
+<td>"75.7 (8.29)"</td>
+<td>"77.5 [51.0, 88.0]"</td>
 </tr>
 <tr class="odd">
 <td>"Xanomeline High Dose"</td>
@@ -822,7 +822,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="format-categorical-statistics" class="level3" data-number="7.4.2">
 <h3 data-number="7.4.2" class="anchored" data-anchor-id="format-categorical-statistics"><span class="header-section-number">7.4.2</span> Format categorical statistics</h3>
-<div id="b34fc695" class="cell" data-execution_count="8">
+<div id="60890665" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Format categorical as "n (%)"</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sex_formatted <span class="op">=</span> sex_stats.with_columns(</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">format</span>(<span class="st">"</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">%)"</span>, pl.col(<span class="st">"len"</span>), pl.col(<span class="st">"pct"</span>)).alias(<span class="st">"n_pct"</span>)</span>
@@ -857,9 +857,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>"Xanomeline High Dose"</td>
-<td>"Female"</td>
-<td>"40 (47.6%)"</td>
+<td>"Xanomeline Low Dose"</td>
+<td>"Male"</td>
+<td>"34 (40.5%)"</td>
 </tr>
 <tr class="even">
 <td>"Xanomeline High Dose"</td>
@@ -867,9 +867,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>"44 (52.4%)"</td>
 </tr>
 <tr class="odd">
-<td>"Placebo"</td>
+<td>"Xanomeline High Dose"</td>
 <td>"Female"</td>
-<td>"53 (61.6%)"</td>
+<td>"40 (47.6%)"</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -878,8 +878,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td>"Xanomeline Low Dose"</td>
-<td>"Male"</td>
-<td>"34 (40.5%)"</td>
+<td>"Female"</td>
+<td>"50 (59.5%)"</td>
 </tr>
 <tr class="even">
 <td>"Placebo"</td>
@@ -896,7 +896,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-4-create-table-structure" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="step-4-create-table-structure"><span class="header-section-number">7.5</span> Step 4: Create table structure</h2>
 <p>We’ll build the table row by row following the standard baseline table format.</p>
-<div id="1d5e81d0" class="cell" data-execution_count="9">
+<div id="d7eb22b2" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to get value for a treatment group</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_value(df, treatment):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get value for a specific treatment group or return default"""</span></span>
@@ -1023,7 +1023,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-generate-publication-ready-output" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="step-5-generate-publication-ready-output"><span class="header-section-number">7.6</span> Step 5: Generate publication-ready output</h2>
 <p>Finally, we format the baseline table for regulatory submission using the <code>rtflite</code> package.</p>
-<div id="546edb5e" class="cell" data-execution_count="10">
+<div id="7b7f3436" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get treatment group sizes for column headers</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>treatment_n <span class="op">=</span> adsl.group_by(<span class="st">"TRT01P"</span>).<span class="bu">len</span>().sort(<span class="st">"TRT01P"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>n_placebo <span class="op">=</span> treatment_n.<span class="bu">filter</span>(pl.col(<span class="st">"TRT01P"</span>) <span class="op">==</span> <span class="st">"Placebo"</span>)[<span class="st">"len"</span>][<span class="dv">0</span>]</span>
@@ -1060,7 +1060,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rtf/tlf_baseline.rtf</code></pre>
 </div>
 </div>
-<div id="23eb62cc" class="cell" data-execution_count="11">
+<div id="e521c685" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>PosixPath('pdf/tlf_baseline.pdf')</code></pre>
 </div>
