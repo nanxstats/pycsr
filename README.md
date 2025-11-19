@@ -41,7 +41,7 @@ quarto render --to html
 Render slides:
 
 ```bash
-quarto render slides/workshop-slides.qmd
+quarto render slides/rinpharma2025/index.qmd
 ```
 
 ## Maintenance
