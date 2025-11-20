@@ -2,28 +2,25 @@
 
 ## In this book {.unnumbered}
 
-This book is designed for people who are interested in using Python for clinical development. 
+This book is designed for people who are interested in using Python for clinical development.
 Each part of the book makes certain assumptions about the readers' background:
 
-- Part 1, titled "Environment and toolchain" and "Reporting packages", provides general
+- Part 1, titled "Environment and toolchain", provides general
   information on setting up Python development environments for clinical reporting.
-  
-
-- Part 2, titled "Delivering TLFs in CSR", provides general information and
+- Part 2, titled "Clinical trial project", provides general information and
   examples on creating tables, listings, and figures using Python. It assumes that readers
   are individual contributors to a clinical project with prior experience in
   Python. Familiarity with data manipulation using Polars is expected.
   Recommended references for this part include
-  [Python Polars: The Definitive Guide](https://polarsguide.com/), and the
+  [Python Polars: The Definitive Guide](https://polarsguide.com/) and the
   [rtflite documentation](https://pharmaverse.github.io/rtflite/).
-
-- Part 3, titled "Clinical trial project", provides general information and
+- Part 3, titled "Analysis package", provides general information and
   examples on managing a clinical trial A&R project using Python. It assumes that readers
   are project leads who have experience in Python package development.
-
-- Part 4, titled "eCTD submission package", provides general information on
+- Part 4, titled "eCTD submission", provides general information on
   preparing submission packages related to the CSR in the
-  electronic Common Technical Document (eCTD) format using Python.
+  electronic Common Technical Document (eCTD) format using
+  [pkglite for Python](https://pharmaverse.github.io/py-pkglite/).
   It assumes that readers are project leads of clinical projects who possess
   experience in Python package development and regulatory submission processes.
 
