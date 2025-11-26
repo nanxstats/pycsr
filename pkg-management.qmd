@@ -20,8 +20,8 @@ Work is tracked through issues, pull requests, and project boards.
 This applies whether you use:
 
 - GitHub Enterprise
-- GitLab
-- Bitbucket
+- GitLab Self-Managed/Dedicated
+- Bitbucket Data Center
 - Azure DevOps
 
 The specific platform matters less than the workflow discipline.
