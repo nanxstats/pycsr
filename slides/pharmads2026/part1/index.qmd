@@ -2,7 +2,7 @@
 title: "Part I: Python Environment and Toolchain"
 subtitle: "PharmaDS 2026 Short Course: Python for Clinical Development with AI Applications"
 author: "Yuting Xu"
-date: "Mar. 23, 2026"
+date: "March 23, 2026"
 embed-resources: true
 format:
   revealjs:

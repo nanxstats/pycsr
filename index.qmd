@@ -25,6 +25,6 @@ regulatory submission and effective team collaboration.
 | Venue | Type | Date | Materials |
 |-------|------|------|-----------|
 | R/Pharma Conference | Workshop | 2025-11-07 | [Slides](https://pycsr.org/slides/rinpharma2025/) |
-| PharmaDS2026 Conference | Conference | 2026-03-23 | [Slides: Part I](https://pycsr.org/slides/pharmaDS2026/Part_1/) |
+| PharmaDS 2026 Conference | Short course | 2026-03-23 | [Slides: Part I](https://pycsr.org/slides/pharmads2026/part1/) |
 
 :::
