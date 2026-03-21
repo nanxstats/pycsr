@@ -1,0 +1,44 @@
+/*-- scss:defaults --*/
+
+$primary: #385898 !default;
+$presentation-title-slide-text-align: left;
+
+#title-slide .title {
+  font-size: 2.75rem;
+}
+
+.reveal h1 {
+  font-size: 4rem !important;
+  color: #FFFFFF !important;
+}
+
+.reveal h2 {
+  font-size: 2.375rem !important;
+  margin-bottom: 25px !important;
+}
+
+/*-- scss:rules --*/
+
+@font-face {
+  font-display: swap;
+  font-family: "Lato";
+  src: url("https://pycsr.org/site_libs/bootstrap/fonts/Lato-VF.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Lato";
+  src: url("https://pycsr.org/site_libs/bootstrap/fonts/Lato-Italic-VF.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "JetBrains Mono";
+  src: url("https://pycsr.org/site_libs/bootstrap/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}

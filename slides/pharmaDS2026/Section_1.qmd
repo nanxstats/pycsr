@@ -1,0 +1,598 @@
+---
+title: "Part I: Python Environment and Toolchain"
+subtitle: "PharmaDS 2026 Short Course: Python for Clinical Development with AI Applications"
+author: "Yuting Xu"
+date: "Mar. 23, 2026"
+embed-resources: true
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    mainfont: "Lato, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
+    monofont: "JetBrains Mono, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace"
+    smaller: true
+    slide-number: true
+    scrollable: true
+title-slide-attributes:
+   data-background-color: "#385898"
+---
+
+# Welcome {background-color="#385898"}
+
+## Outline
+
+Three parts of this short course:
+
+1. **Python environment setup (Yuting)**\
+   Use `uv` to create and manage reproducible Python projects. Develop and collaborate in GitHub Codespaces or Visual Studio Code.
+
+2. **Python packages for clinical reporting (Yilong)**\
+   Take a guided tour of using Python for TLF creation commonly used in clinical trials and CSR project management.
+
+3. **AI Applications (Eric)**\
+   Explore how AI tools can be applied to clinical data analysis and trial design from a statistician’s perspective.
+
+
+::: callout-note
+Interested in R? check <https://r4csr.org/>
+::: 
+
+
+## Disclaimer
+
+The views and opinions expressed in this presentation are those of the
+individual presenters and do not represent those of their affiliated
+organizations or institutions.
+
+\
+
+::: callout-note
+The toolchain, process, and formats may be different in different organizations.
+We only provide one common way to address them.
+:::
+
+## Acknowledgements
+
+::: {style="font-size: 100%; line-height: 2.5;"}
+
+- PharmaDS Conference 2026 organizers
+
+- Authors of the open source book [_Python for Clinical Study Reports and Submissions_](https://pycsr.org/): [Yilong Zhang](https://elong0527.github.io/) and [Nan Xiao](https://nanx.me/)
+
+- Contributors of [pycsr](https://pycsr.org/#events) and [r4csr](https://r4csr.org/#events) training materials
+
+::: 
+
+# Python development environment {background-color="#385898"}
+
+
+## Integrated Development Environments (IDEs)
+
+Two recommended options:
+
+**GitHub Codespaces**
+
+- Cloud-based, pre-configured, convenient for collaboration
+- Linux system with full admin access, so you can install any tools you need
+- No local setup needed, only requires a GitHub account and a browser
+- Free usage 120 hours/month
+- Each codespace can be linked to an existing GitHub repo or empty template
+
+**VS Code**
+
+- Most popular choice
+- Rich extension ecosystem for all programming languages and tools
+- Leading platform for GitHub Copilot that provides the most feature-rich and integrated experience
+
+
+## GitHub Codespaces
+
+::: {style="font-size: 75%;"}
+
+**Getting started:**
+
+- Option 1. Navigate to any GitHub repository
+  * Press `.` (period) to open VS Code in the browser, **or**
+  * Click button: Code → Codespaces → Create codespace on main (or any other) branch
+- Option 2. [GitHub Codespace Portal](https://github.com/codespaces) -> New codespace -> Select repo and branch
+
+**What you get:**
+
+- Access to Linux system (Ubuntu) with a VS Code web interface from any device with a browser, or you can connect to it with your local VS Code desktop app
+- Pre-installed tools can be defined in `.devcontainer/devcontainer.json`, such as uv, specific VS Code extensions, and any command-line tools
+- Persistent storage for your workspace files
+
+**Free tier:**
+
+- 120 core-hours/month on the free individual GitHub plan
+  * A 2-core machine uses 2 core-hours per hour → 60 hours/month
+- Do not forget to **stop and/or delete** your codespace when not in use to reduce costs!
+
+:::
+
+## VS Code
+
+::: {style="font-size: 85%;"}
+
+**Installation**
+
+
+- Download and install from [VS Code website](https://code.visualstudio.com/)
+- Install the Language Runtime: 
+  * Python: from [python.org](https://www.python.org/downloads/), or via package managers like Homebrew on macOS
+  * R: from [r-project.org](https://www.r-project.org/)
+- Install the corresponding VS Code Extensions: 
+  * Python extension from Microsoft
+  * R extension from REditorSupport
+
+
+
+**Additional Recommended Extensions**
+
+- GitHub Copilot Chat: AI code assistant
+- Python; R; Quarto; Jupyter: Language support and integration
+- Git Graph, GitLens: Git visualization and management
+- Black Formatter, Ruff: Code formatting and linting
+- mypy, Pylance: Type checking
+
+:::
+
+## Alternative IDEs
+
+**[Positron](https://positron.posit.co/)**
+
+- Posit's next-gen IDE, built on Code OSS (the core of VS Code)
+- Primarily support R and Python
+- Native [notebook](https://positron.posit.co/jupyter-notebooks.html) support
+- Built-in [data viewer](https://positron.posit.co/variables-pane.html) (similar four-panel layout as RStudio)
+- Built-in [AI assistant](https://positron.posit.co/assistant.html) with native GitHub Copilot integration
+
+
+**[JupyterLab](https://jupyter.org)**
+
+- Popular in data science community
+- Interactive computing environment
+- Supports code, data/figure visualization and documentation in cell-by-cell notebooks
+- Additional kernels can be installed to work with a wide range of other programming languages
+
+
+# Python package and project manager: uv {background-color="#385898"}
+
+## Python environment management
+
+Python projects rely heavily on rapidly evolving open-source libraries that often have conflicting version requirements.
+
+- In contrast, R often uses a single global library for all projects
+
+- Python package and project managers are essential because they prevent version conflicts by isolating each project's specific dependencies into its own dedicated environment.
+
+Key goal: Ensure **reproducibility** across different machines/platforms and over time, which is critical for regulatory submissions!
+
+## What we need
+
+::: {style="font-size: 85%;"}
+- **Package & Dependency Management**
+
+  * Find, install, and track external libraries and their dependencies
+  * Resolve any version conflicts between them
+
+- **Environment Management**
+
+  * Python Version Management: Specify, install, and switch between different versions of Python
+  * Virtual Environments: Create isolated environments for each project to prevent conflicts and ensure reproducibility
+
+- **Project Workflow & Automation**
+
+  * Standardized Configuration: Document project metadata, scripts, and tool settings.
+  * Regular development tasks: Run your test code or linters
+  * Project Initialization: Create new projects with a standard directory layout and configuration files.
+
+- **Python package building & distribution**
+
+  * Packaging your code into standard distribution formats
+  * Publishing to package repositories like PyPI
+
+:::
+
+## Why [uv](https://github.com/astral-sh/uv)?
+
+`uv` is a modern Python package and project manager written in Rust.
+
+All-in-One tool that handles Python environments, package dependencies, project maintenance, builds and publishing in a single workflow.
+
+Replaces scattered toolchain:
+
+- `pip` + `venv` + `pyenv` + `pip-tools` + `setuptools` + `poetry`...
+
+Additional benefits:
+
+- **Fast**: 10-100x faster than traditional Python package managers like pip
+- **Modern**: Uses standard format `pyproject.toml` as the single source of truth, which prevents conflicting information scattered across multiple files
+- **Reliable**: Automatically creates or updates the universal cross-platform lockfile `uv.lock` for to ensure reproducible and deterministic environments
+- **Independence**: Has its own official standalone installer, coexist with Homebrew and the broader macOS ecosystem better than traditional tools like pyenv or Poetry
+
+
+
+## Installing uv
+
+::: callout-note
+Skip if using GitHub Codespaces: uv is pre-installed there.
+:::
+
+\
+
+**macOS/Linux:**
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows:**
+
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Verify:**
+
+```bash
+uv --version
+```
+
+More installation options [here](https://docs.astral.sh/uv/getting-started/installation/).
+
+## Quick start with uv - New project 
+
+Create a new project 
+
+```bash
+uv init toyexample
+```
+
+Check the created files:
+```bash
+cd toyexample
+ls -al
+```
+
+Create the first commit:
+```bash
+git status
+git add --all
+git commit -m "Initialize project with uv"
+```
+
+Pin Python version
+```bash
+uv python pin 3.14.0
+```
+
+List installed packages (empty at this point)
+```bash
+uv pip list
+```
+
+## Quick start with uv - Package management
+
+Add dependencies
+```bash
+uv add polars plotnine rtflite
+```
+
+Add dev dependencies
+```bash
+uv add --dev ruff mypy pytest pytest-cov
+```
+
+Manually edit `pyproject.toml` to add additional dependencies or dev-dependencies sections, e.g. `dependencies = ["scikit-learn", "seaborn","dash"]`, then try the following commands - 
+
+Resolves dependencies:
+```bash
+uv lock --check  # check whether uv.lock is out-of-sync with pyproject.toml
+uv lock # update the lock file with the new dependencies
+```
+
+Sync environment:
+```bash
+uv sync # install the new dependencies
+```
+
+## Quick start with uv - Using the virtual environment
+
+Revise the `main.py` file to test the installed packages, e.g.
+```python
+import rtflite
+
+def main():
+    print("rtflite version:", rtflite.__version__)
+```
+
+Try running the two commands below -
+```bash
+uv run python main.py
+python main.py
+```
+
+Activate the virtual environment installed by uv
+```bash
+source /workspace/codespaces-blank/toyexample/.venv/bin/activate
+```
+
+Deactivate the virtual environment when you are done
+```bash
+deactivate
+```
+
+
+
+## Quick start with uv - Additional commands
+
+Update uv itself
+```bash
+uv self update
+```
+
+Upgrade packages and sync environment
+```bash
+uv lock --upgrade-package plotnine # only updates the uv.lock file and pyproject.toml
+uv sync # update the environment with the new plotnine version
+```
+
+Uninstall packages
+```bash
+uv remove scikit-learn seaborn dash
+```
+
+For more details, refer to the [uv official guide](https://docs.astral.sh/uv/guides/projects/)
+
+
+
+## Alternatives
+
+**Conda**
+
+- Manages Python versions and packages by creating isolated environments 
+- Popular in data science, since it handles both Python and non-Python dependencies (e.g., C++ libraries, CUDA, or R)
+- Not as fast or modern as uv
+- Recommend [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (the official minimal installer from Anaconda, Inc.) or [Miniforge](https://github.com/conda-forge/miniforge)  (community-driven alternative installer, 100% free and faster)
+
+**Poetry**
+
+- Python package manager that handles dependency, packaging and publishing
+- Uses pyproject.toml
+- Not as comprehensive as uv for environment management
+- Long-standing and widely used in the Python community: Mature, stable and well-documented
+
+
+# Python toolchain essentials {background-color="#385898"}
+
+## Typical Development Workflow
+
+- Code formatting and linting: Improves code format quality, readability, consistency, and catches errors early
+- Verify data/variable types: Improves functional safety
+- Run tests and check coverage: Validates code behavior, ensures correctness, and identifies untested code
+- Generate documentation or reproducible user guides: Facilitate collaboration and application
+- Use Git for version control and collaboration: Ensure all the changes are tracked and well-documented, and enable seamless collaboration across teams
+
+
+## Recommended Python Toolchain: Ruff
+
+**Ruff** - Code formatting and linting
+
+```bash
+uv run ruff format . # spacing, line breaks, and indentation etc.
+uv run ruff format --check . # check whether the code is properly formatted without making changes
+uv run ruff check .  # check for linting issues (e.g., unused imports, naming conventions, potential bugs) without making changes
+uv run ruff check --fix . # Try to automatically fix linting issues where possible
+```
+
+Add this function to main.py and run ruff to see the formatting and linting suggestions
+
+```python
+def fun_add(a,b):
+    output=a+b
+    print("Results:", output)
+    return output
+```
+
+## Recommended Python Toolchain: mypy
+
+**mypy** - Type checking
+
+```bash
+uv run mypy .
+uv run mypy main.py
+```
+
+Add the following code to main.py and run mypy to see the type checking errors
+```python
+def fun_add(a: int, b: int) -> int:
+    output = a + b
+    print("Results:", output)
+    return output
+
+def fun_concat(s1: str, s2: str) -> str:
+    output = s1 + s2
+    print("Results:", output)
+    return output
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
+    fun_add(1, 2)  # correct usage
+    fun_add(1, "2")  # type error, mypy will catch this
+    fun_concat("Hello, ", "world!")  # correct usage
+    fun_concat("Hello, ", 5)  # type error, mypy will catch this
+```
+
+## Recommended Python Toolchain: pytest
+
+**pytest** - Testing framework
+
+```bash
+# (example syntax, do not run)
+uv run pytest tests/
+uv run pytest --cov=src/rtflite tests/
+```
+
+Save the code below to `run_pytests.py` 
+```python
+from main import fun_add, fun_concat
+
+def test_fun_add_integers():
+    assert fun_add(1, 2) == 3
+
+def test_fun_concat_strings():
+    assert fun_concat("Hello, ", "world!") == "Hello, world!"
+```
+
+Run the following terminal commands to see how pytest works with uv
+```bash
+uv run pytest run_pytests.py
+uv run pytest run_pytests.py --cov=main
+uv run pytest run_pytests.py --cov=main --cov-report=html
+```
+
+## Recommended Python Toolchain: Documentation
+
+**quarto** - Documentation and report generation
+
+```bash
+quartodoc build
+quarto render report.qmd
+```
+
+Alternative tools:
+
+- [Docstrings](https://peps.python.org/pep-0257/): Use triple quotes to document functions and classes
+- [Sphinx](https://www.sphinx-doc.org/): Generate documentation from docstrings
+- [Github Pages](https://pages.github.com/): Host documentation online
+- [GitHub Wiki](https://docs.github.com/en/communities/documenting-your-project-with-wikis/about-wikis): Internal documentation
+- [Jupyter Notebooks](https://jupyter.org/): Combine code, documentation, and visualizations in an interactive format
+
+
+
+
+# Summary {background-color="#385898"}
+
+## Key concepts
+
+**Virtual environments are mandatory in Python**
+
+- Isolate project dependencies
+- Prevent conflicts
+- Enable reproducibility
+
+**Dependency locking**
+
+- `uv.lock` pins exact versions
+- Ensures reproducible environments
+- Similar to R's `renv.lock`
+
+**`.python-version` file**
+
+- Specifies exact Python version (for example, `3.14.0`)
+- Critical for regulatory submissions
+
+## Action Items
+
+**<span style="color: navy;">Pre-configured GitHub Codespaces:</span>**
+
+[![](https://github.com/codespaces/badge.svg)](https://codespaces.new/nanxstats/pycsr?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+
+
+::: {style="font-size: 85%; padding-left: 2em;"}
+
+**What's pre-installed:**
+
+- Python 3.14 + `uv`
+- `polars`, `plotnine`, `rtflite`, and other clinical reporting related packages
+- Quarto for document rendering
+- Ruff for linting and formatting
+
+**Workflow inside Codespaces:**
+
+```bash
+# Dependencies are already synced on creation
+uv run python scripts/tlf_t_ae.py   # run a script
+uv run quarto render report.qmd     # render a report
+uv run pytest tests/                # run tests
+```
+:::
+
+**<span style="color: navy;">eBook: _Python for Clinical Study Reports and Submission_</span>:** [pycsr.org](https://pycsr.org/) 
+
+
+
+## Resources
+
+**Regulatory:**
+
+- [FDA Study Data Technical Conformance Guide](https://www.fda.gov/media/88173/download)
+- [eCTD specifications](https://www.fda.gov/drugs/electronic-regulatory-submission-and-review/electronic-common-technical-document-ectd)
+
+**Technical:**
+
+- [rtflite](https://pharmaverse.github.io/rtflite/)
+- [pkglite for Python](https://pharmaverse.github.io/py-pkglite/)
+- [uv documentation](https://docs.astral.sh/uv/)
+
+
+# Break (5 min) {background-color="#385898"}
+
+::: {style="font-size: 120%;"}
+Optional hands-on exercise: Repeat the quick start steps to create a new project and install dependencies with uv in an empty GitHub Codespaces or on your own laptop.
+:::
+
+
+
+
+# Appendix {background-color="#99ccff"}
+
+## MiniConda and Miniforge
+
+::: {style="font-size: 75%;"}
+- Share exactly the same syntax as [conda](https://docs.conda.io/projects/conda/en/latest/index.html), but with different channels and licensing
+  * Miniconda looks for packages in the defaults channel (Anaconda's repo).
+  * Miniforge looks for packages in the conda-forge channel (Community repo).
+- Miniconda requires a paid commercial license for organizations with more than 200 employees (still free for individuals, education system and smaller businesses)
+- Basic conda commands (For more information, see [Conda Cheat Sheet](https://conda.io/projects/conda/en/latest/user-guide/cheatsheet.html))
+:::
+
+```bash
+conda create -n myenv python=3.14
+conda activate myenv
+conda install numpy pandas matplotlib
+conda install -c conda-forge polars plotnine
+pip install rtflite
+conda list
+conda update numpy
+conda remove matplotlib
+conda env export > environment.yml
+conda deactivate
+conda info --envs // conda env list
+conda env remove --name myenv
+```
+
+::: callout-note
+In miniforge, you can swap `conda` for `mamba` for faster speed, e.g. `mamba install pandas`
+:::
+
+## Python package and project manager: Traditional & Specialized Tools
+
+- **pip**: The standard, built-in package installer for Python, essential for downloading packages from PyPI.
+- **Pipenv**: Combines pip, pipfile, and virtualenv into a single toolchain, focusing on secure, locked dependency management.
+- **Poetry**: Focuses on deterministic dependency management and packaging, using pyproject.toml for projects and publishing.
+- **Conda**: A popular cross-platform manager (often used in data science) that handles Python packages and non-Python dependencies.
+- **pipx**: Specialized in installing and running Python application CLI tools, keeping them isolated from project dependencies.
+
+
+## Key Concepts in Python Packaging
+
+- **pyproject.toml**: The modern, standard file for configuring build systems and defining metadata/dependencies.
+- **Virtual Environments (venv)**: Isolated environments to prevent dependency conflicts between projects.
+- **PyPI (Python Package Index)**: The repository for all open-source Python packages.
+- **Modules & Packages**: Structured code (files and directories) that enable reusability.
+
+For modern projects, uv is heavily recommended for its efficiency, while pip remains the standard for basic needs. 
