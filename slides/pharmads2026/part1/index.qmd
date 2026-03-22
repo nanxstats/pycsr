@@ -1,7 +1,7 @@
 ---
 title: "Part I: Python Environment and Toolchain"
-subtitle: "PharmaDS 2026 Short Course: Python for Clinical Development with AI Applications"
-author: "Yuting Xu"
+subtitle: "PharmaDS 2026 Short Course #5: Python for Clinical Development with AI Applications"
+author: "Yuting Xu -  Affiliation: Biostatistics, Vaccines R&D, Sanofi, Morristown, NJ"
 date: "March 23, 2026"
 embed-resources: true
 format:
@@ -44,6 +44,13 @@ individual presenters and do not represent those of their affiliated
 organizations or institutions.
 
 \
+This work did not receive any specific funding.
+
+<small>Disclosure of interest statement: 
+Yuting Xu is a Sanofi employee and may hold shares and/or stock options in the company. 
+</small>
+
+\
 
 ::: callout-note
 The toolchain, process, and formats may be different in different organizations.
@@ -74,7 +81,6 @@ Two recommended options:
 - Cloud-based, pre-configured, convenient for collaboration
 - Linux system with full admin access, so you can install any tools you need
 - No local setup needed, only requires a GitHub account and a browser
-- Free usage 120 hours/month
 - Each codespace can be linked to an existing GitHub repo or empty template
 
 **VS Code**
@@ -206,7 +212,7 @@ Replaces scattered toolchain:
 Additional benefits:
 
 - **Fast**: 10-100x faster than traditional Python package managers like pip
-- **Modern**: Uses standard format `pyproject.toml` as the single source of truth, which prevents conflicting information scattered across multiple files
+- **Standard**: Uses a central configuration `pyproject.toml` file as the single source of truth, which prevents conflicting information scattered across multiple files
 - **Reliable**: Automatically creates or updates the universal cross-platform lockfile `uv.lock` for to ensure reproducible and deterministic environments
 - **Independence**: Has its own official standalone installer, coexist with Homebrew and the broader macOS ecosystem better than traditional tools like pyenv or Poetry
 
@@ -367,11 +373,11 @@ For more details, refer to the [uv official guide](https://docs.astral.sh/uv/gui
 
 ## Typical Development Workflow
 
-- Code formatting and linting: Improves code format quality, readability, consistency, and catches errors early
-- Verify data/variable types: Improves functional safety
-- Run tests and check coverage: Validates code behavior, ensures correctness, and identifies untested code
-- Generate documentation or reproducible user guides: Facilitate collaboration and application
-- Use Git for version control and collaboration: Ensure all the changes are tracked and well-documented, and enable seamless collaboration across teams
+- `ruff` - Code formatting and linting: Improves code format quality, readability, consistency, and catches errors early
+- `mypy` - Type checking: Improves functional safety
+- `pytest` - Testing framework: Validates code behavior, ensures correctness, and identifies untested code
+- `quarto` - Documentation and report generation: Facilitate collaboration and application
+- `Git` - Version control and collaboration: Ensure all the changes are tracked and well-documented, and enable seamless collaboration across teams
 
 
 ## Recommended Python Toolchain: Ruff
@@ -454,9 +460,9 @@ uv run pytest run_pytests.py --cov=main
 uv run pytest run_pytests.py --cov=main --cov-report=html
 ```
 
-## Recommended Python Toolchain: Documentation
+## Recommended Python Toolchain: Analysis and Reporting
 
-**quarto** - Documentation and report generation
+**quarto** - Analysis and report generation
 
 ```bash
 quartodoc build
