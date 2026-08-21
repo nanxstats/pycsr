@@ -66,7 +66,7 @@ Key concepts:
 
 - `pyproject.toml` defines project metadata and dependencies.
 - `uv.lock` records exact versions (like `renv.lock`).
-- Build backends (like `hatchling`) create distributable packages.
+- Build backends (like `uv_build`) create distributable packages.
 
 ## Installing uv
 
@@ -132,6 +132,10 @@ uv init pycsr-example
 cd pycsr-example
 ```
 
+By default, `uv init` creates a packaged project with a `src/` layout and
+configures `uv_build` as its build backend. For a project that only needs an
+environment and standalone scripts, use `uv init --no-package`.
+
 This creates a basic structure:
 
 ```
@@ -161,9 +165,12 @@ description = "Example clinical study report project"
 dependencies = []
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
 ```
+
+The generated `uv_build` version range requirement is based on the installed
+uv version, so keep the range written by `uv init`.
 
 Key sections:
 
@@ -364,15 +371,12 @@ See [using tools in uv](https://docs.astral.sh/uv/guides/tools/) for details.
 
 ## Building and publishing
 
-For creating distributable packages, you need a build backend.
-The simplest option is `hatchling`.
-
-Add to `pyproject.toml`:
+Packaged projects created with `uv init` are ready to build with `uv_build`:
 
 ```toml
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
 ```
 
 ### Build wheel
@@ -450,14 +454,14 @@ dependencies = [
     "polars>=1.18.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=8.3.4",
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
 ```
 
 </details>

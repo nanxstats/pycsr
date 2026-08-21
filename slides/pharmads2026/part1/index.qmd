@@ -251,7 +251,7 @@ More installation options [here](https://docs.astral.sh/uv/getting-started/insta
 Create a new project 
 
 ```bash
-uv init toyexample
+uv init --no-package toyexample
 ```
 
 Check the created files:
