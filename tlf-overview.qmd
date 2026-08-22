@@ -320,7 +320,6 @@ A minimal example below illustrates how to combine components to create an RTF t
 - `write_rtf()` saves encoded RTF into a `.rtf` file.
 
 ```{python}
-#| echo: false
 # Create simple RTF document
 doc = rtf.RTFDocument(
     df=tbl.head(6),
@@ -351,7 +350,6 @@ Only the ratio of `col_rel_width` is used.
 Therefore it is equivalent to use `col_rel_width = [6,4,4,4]` or `col_rel_width = [1.5,1,1,1]`.
 
 ```{python}
-#| echo: false
 # Create RTF document with custom column widths
 doc = rtf.RTFDocument(
     df=tbl.head(6),
@@ -376,7 +374,6 @@ In `RTFColumnHeader`, the `text` argument provides the column header content
 as a list of strings.
 
 ```{python}
-#| echo: false
 # Create RTF document with column headers
 doc = rtf.RTFDocument(
     df=tbl.head(6),
@@ -412,7 +409,6 @@ By using `RTFColumnHeader` with `col_rel_width`, one can customize complex colum
 If there are multiple pages, the column header will repeat on each page by default.
 
 ```{python}
-#| echo: false
 # Create RTF document with multi-line column headers
 doc = rtf.RTFDocument(
     df=tbl.head(50),
@@ -451,7 +447,6 @@ RTF documents can include additional components to provide context and documenta
 - `RTFSource`: Add data source attribution
 
 ```{python}
-#| echo: false
 # Create RTF document with titles, footnotes, and source
 doc = rtf.RTFDocument(
     df=tbl.head(15),
@@ -497,7 +492,6 @@ rtflite supports various text formatting options:
 - **Font properties**: Font size, font family
 
 ```{python}
-#| echo: false
 # Create RTF document with text formatting and alignment
 doc = rtf.RTFDocument(
     df=tbl.head(10),
@@ -536,7 +530,6 @@ Table borders can be customized extensively:
 - **Page borders**: `border_first`, `border_last` for first/last rows across pages
 
 ```{python}
-#| echo: false
 # Create RTF document with custom borders
 doc = rtf.RTFDocument(
     df=tbl.head(8),
