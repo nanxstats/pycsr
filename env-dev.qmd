@@ -101,6 +101,9 @@ Essential extensions for this book:
   Authoring support for Quarto documents.
 - [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop):
   LaTeX authoring support; used here for PDF preview.
+- [RTF Preview](https://marketplace.visualstudio.com/items?itemName=elong0527.vs-rtf-preview):
+  Preview RTF files directly in VS Code instead of viewing the raw RTF code.
+  This extension was developed by book author Yilong Zhang.
 
 ## VS Code settings
 
