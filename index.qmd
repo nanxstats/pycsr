@@ -16,8 +16,6 @@ you will find small, reusable examples you can adopt right away,
 along with patterns and checklists for organizing work for
 regulatory submission and effective team collaboration.
 
-**This is a work-in-progress draft.**
-
 ::: {.content-visible when-format="html"}
 
 ## Events {.unnumbered}
