@@ -27,5 +27,6 @@ regulatory submission and effective team collaboration.
 | R/Pharma Conference | Workshop | 2025-11-07 | [Slides](https://pycsr.org/slides/rinpharma2025/), [video](https://www.youtube.com/watch?v=e-ZjrLA_ev8) |
 | PharmaDS 2026 Conference | Short course | 2026-03-23 | [Slides: Part I](https://pycsr.org/slides/pharmads2026/part1/) |
 | PharmaDS 2026 Conference | Short course | 2026-03-23 | [Slides: Part III](https://github.com/user-attachments/files/26182994/demo_tutorial.pdf) |
+| R/Pharma Conference | Workshop | 2026-09-28 | [Workshop Page](https://pos.it/pycsr-rpharma-2026), [Slides](https://pycsr.org/slides/rinpharma2026/) |
 
 :::
