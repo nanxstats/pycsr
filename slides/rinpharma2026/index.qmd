@@ -73,9 +73,9 @@ A **Python package** designed specifically to organize analysis scripts and code
 **Purpose:**
 
 Our primary focus is creating a standard folder structure to organize the
-project, with 4 goals in mind:
+project, with 3 goals in mind:
 
-- Project containers for clinical trial deliverables
+- Project folder structure for clinical trial deliverables
 - Reproducible environments for analyses
 - Submission-ready structures for regulatory review
 
