@@ -355,14 +355,10 @@ See: <https://pycsr.org/submission-dryrun.html>
 
 ## Resources
 
-**Workshop Page**
 
-- [pos.it/pycsr-rpharma-2026](https://pos.it/pycsr-rpharma-2026)
 
-**Book:**
-
-- [pycsr.org](https://pycsr.org/)
-- Submit issues/PRs to [nanxstats/pycsr](https://github.com/nanxstats/pycsr)
+- **Workshop Page** [pos.it/pycsr-rpharma-2026](https://pos.it/pycsr-rpharma-2026)
+- **Book:** [pycsr.org](https://pycsr.org/)
 
 **Regulatory:**
 
